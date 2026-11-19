@@ -294,7 +294,9 @@ export function buildWorld(m, settings) {
   const hazards = [];
   const ev = { hz: [], key: [], w: [], gaps: [], cookOut: [], share: [] };
   hazardIds.forEach((id, hIdx) => {
-    const h = m.hazards[id];
+    // A hazard may unfold differently in different places.
+    const base = m.hazards[id];
+    const h = base.byLocation && base.byLocation[loc] ? { ...base, ...base.byLocation[loc] } : base;
     if (h.tickBox && !(settings.ticks && settings.ticks[h.tickBox])) return;
     let p;
     const custom = settings.probabilities && settings.probabilities[id];
