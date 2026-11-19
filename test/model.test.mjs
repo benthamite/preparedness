@@ -211,6 +211,29 @@ test('the option to leave caps the harm, and makes partial stocks worth less', (
   assert.equal(r.entries.length, 1);
 });
 
+test('an item can make leaving likelier to be possible, and cheaper', () => {
+  const d = fixture();
+  d.hazards.storm.leave = { feasible: 0.5, earliestDay: 0, fixedUsdPerHousehold: 0, usdPerPersonDay: 10 };
+  d.items = [{ id: 'plan', scalesWith: 'household', price: 0, lifeYears: 5, setupHours: 2, reliability: 1, lateBuyClass: 'none', effects: [{ type: 'leave', feasible: 0.6, cost: 0.25 }] }];
+  const r = run(d);
+  // Unprepared: half can leave (paying $80), half stay ($400 and 40 micromorts).
+  near(r.harm.unprepared.usd, 0.1 * (0.5 * 80 + 0.5 * 400));
+  near(r.harm.unprepared.mm, 0.1 * 0.5 * 40);
+  // With the plan: 80% can leave, paying $60.
+  near(r.entries[0].hardshipUsd, 0.1 * ((0.5 * 80 + 0.5 * 400) - (0.8 * 60 + 0.2 * 400)));
+  near(r.entries[0].micromorts, 0.1 * (0.5 - 0.2) * 40);
+  near(r.entries[0].annualCostUsd, 2 * 20 * 0.03 / (1 - Math.pow(1.03, -5)));
+});
+
+test('a fixed price is paid once, with the first level', () => {
+  const d = fixture();
+  Object.assign(d.items[0], { scalesWith: 'household', fixedPrice: 100, price: 5, ladder: [{ label: 'a', units: 6 }, { label: 'b', units: 12 }] });
+  const r = run(d);
+  const total = r.entries.reduce((s, e) => s + e.upfrontUsd, 0);
+  near(total, 100 + 12 * 5);
+  near(r.entries.reduce((s, e) => s + e.annualCostUsd, 0), 160 * CRF10);
+});
+
 test('reducers scale harm; within a group only the best counts', () => {
   const d = fixture();
   d.hazards.fire = {

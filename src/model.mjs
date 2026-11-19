@@ -385,6 +385,7 @@ export function buildWorld(m, settings) {
   }
 
   // ---- items ----
+  const leaveFx = [];
   const capProviders = {};
   const capFuel = {};
   const suppliers = needs.map(() => []);
@@ -408,7 +409,11 @@ export function buildWorld(m, settings) {
     const unitUsd = it.price * priceIndex;
     const perUnit = unitUsd * ((1 - e) * crf(rate, life) + e * rate)
       + (it.upkeepUsdPerUnitYear || 0) + (it.volumeLitres || 0) * storage;
-    const fixed = (it.setupHours || 0) * timeValue * crf(rate, life)
+    // A fixed price is paid once, with the first level (a heater, as against
+    // the fuel that is the item's ladder).
+    const fixedUsd = (it.fixedPrice || 0) * priceIndex;
+    const fixed = fixedUsd * ((1 - e) * crf(rate, life) + e * rate)
+      + (it.setupHours || 0) * timeValue * crf(rate, life)
       + (it.upkeepHoursPerYear || 0) * timeValue + (it.upkeepUsdPerYear || 0);
     const item = {
       i, id: it.id, spec: it, applicable, ladder, scale,
@@ -418,7 +423,8 @@ export function buildWorld(m, settings) {
       reliability: it.reliability === undefined ? 1 : it.reliability,
       lateClass: it.lateBuyClass || 'none',
       requires: it.requires || [],
-      unitUsd, perUnit, fixed,
+      unitUsd, perUnit, fixed, fixedUsd,
+      leave: false,
       needSet: new Set(),
       chanSet: new Set(),
       sideRisks: [],
@@ -453,6 +459,13 @@ export function buildWorld(m, settings) {
       } else if (fx.type === 'sideRisk') {
         const k = needIndex[fx.need];
         if (k !== undefined) item.sideRisks.push({ k, c: channelIndex[fx.channel], mm: fx.micromortsPerDay });
+      } else if (fx.type === 'leave') {
+        // Makes leaving likelier to be possible, or cheaper.
+        leaveFx.push({
+          i, feasible: fx.feasible || 0, cost: fx.cost || 0,
+          hazards: !fx.hazards || fx.hazards.includes('all') ? null : new Set(fx.hazards),
+        });
+        item.leave = true;
       }
     }
     return item;
@@ -484,7 +497,18 @@ export function buildWorld(m, settings) {
     for (const k of needSet) for (const e of eventsOfNeed[k]) if (!seen[e]) { seen[e] = 1; list.push(e); }
     return list;
   }
-  for (const it of items) it.events = eventsOf(it.needSet);
+  const leaveEvents = [];
+  for (let e = 0; e < E; e++) if (Lopt[e * J + 1] !== Infinity) leaveEvents.push(e);
+  function eventsFor(needSet, leave) {
+    const list = eventsOf(needSet);
+    if (!leave) return list;
+    const seen = new Uint8Array(E);
+    const out = [];
+    for (const e of list) { seen[e] = 1; out.push(e); }
+    for (const e of leaveEvents) if (!seen[e]) out.push(e);
+    return out;
+  }
+  for (const it of items) it.events = eventsFor(it.needSet, it.leave);
 
   // ---- what the household has in a given event ----
   function unitsIn(e, it, level) {
@@ -606,15 +630,33 @@ export function buildWorld(m, settings) {
         for (let j = 0; j < J; j++) { tot$[j] += R$[base + j]; totM[j] += RM[base + j]; }
       }
     }
+    if (Lopt[e * J + 1] === Infinity) { res.usd = tot$[0]; res.mm = totM[0]; return res; }
+    // Items that make leaving likelier to be possible, or cheaper.
+    const hz = hazards[ev.hz[e]];
+    let f = hz.feasible;
+    let cut = 0;
+    if (leaveFx.length) {
+      let keep = 1;
+      for (const lf of leaveFx) {
+        if (lf.hazards && !lf.hazards.has(hz.id)) continue;
+        const it = items[lf.i];
+        if (unitsIn(e, it, level) <= 0 || !works(e, it, level)) continue;
+        f += (1 - f) * lf.feasible;
+        keep *= 1 - lf.cost;
+      }
+      cut = 1 - keep;
+    }
     let best = 0;
+    let bestUsd = tot$[0];
     let bestCost = tot$[0] + v * totM[0];
     for (let j = 1; j < J; j++) {
       if (Lopt[e * J + j] === Infinity) continue;
-      const c = tot$[j] + v * totM[j];
-      if (c < bestCost) { bestCost = c; best = j; }
+      const usd = tot$[j] - cut * leaveCost[e * J + j];
+      const c = usd + v * totM[j];
+      if (c < bestCost) { bestCost = c; best = j; bestUsd = usd; }
     }
-    const f = best === 0 ? 0 : hazards[ev.hz[e]].feasible;
-    res.usd = f * tot$[best] + (1 - f) * tot$[0];
+    if (best === 0) f = 0;
+    res.usd = f * bestUsd + (1 - f) * tot$[0];
     res.mm = f * totM[best] + (1 - f) * totM[0];
     return res;
   }
@@ -684,7 +726,7 @@ export function buildWorld(m, settings) {
     if (add.length > 1) {
       needSet = new Set();
       for (const [i] of add) for (const k of items[i].needSet) needSet.add(k);
-      events = eventsOf(needSet);
+      events = eventsFor(needSet, add.some(([i]) => items[i].leave));
     }
     for (const [i, lv] of add) level[i] = lv;
     let usd = 0, mm = 0;
@@ -715,7 +757,7 @@ export function buildWorld(m, settings) {
     const units = (it.unitsAt(to) - it.unitsAt(from)) * it.scale;
     return {
       annual: units * it.perUnit + (from === 0 ? it.fixed : 0),
-      upfront: units * it.unitUsd,
+      upfront: units * it.unitUsd + (from === 0 ? it.fixedUsd : 0),
       hours: from === 0 ? (it.spec.setupHours || 0) : 0,
       units,
     };
