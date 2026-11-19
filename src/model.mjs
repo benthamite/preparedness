@@ -722,7 +722,7 @@ export function buildWorld(m, settings) {
   }
 
   return {
-    v, items, needs, hazards, needIds, channelIds, E, people,
+    v, timeValue, items, needs, hazards, needIds, channelIds, E, people,
     capProviders, refresh, total, delta, cost,
     itemIndex: Object.fromEntries(items.map((it) => [it.id, it.i])),
     newLevel: () => new Int32Array(items.length),
@@ -840,6 +840,7 @@ export function rank(data, settings) {
   return {
     entries,
     micromortValueUsd: W.v,
+    timeValueUsdPerHour: W.timeValue,
     harm: { unprepared: baseline, start, end: W.total() },
     hazards: W.hazards.map((hz) => ({ id: hz.id, p: hz.p })),
     events: W.E,
@@ -848,7 +849,8 @@ export function rank(data, settings) {
 
 // How sure is each entry? Samples every uncertain parameter, replays the
 // ranked order, and reports the spread of each entry's ratio.
-export function robustness(data, settings, order, { samples = 200, seed = 1 } = {}) {
+// With `raw`, returns each entry's sampled ratios instead of their summary.
+export function robustness(data, settings, order, { samples = 200, seed = 1, raw = false } = {}) {
   const ratios = order.map(() => []);
   for (let s = 0; s < samples; s++) {
     const m = resolveModel(data, normalFrom(mulberry32(seed * 7919 + s)));
@@ -862,6 +864,7 @@ export function robustness(data, settings, order, { samples = 200, seed = 1 } = 
       ratios[n].push(ratioOf(d.usd + W.v * d.mm, c.annual));
     });
   }
+  if (raw) return ratios;
   return ratios.map((list) => {
     const sorted = [...list].sort((a, b) => a - b);
     const at = (p) => sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))];

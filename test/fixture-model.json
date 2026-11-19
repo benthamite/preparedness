@@ -1,0 +1,103 @@
+{
+  "version": "fixture",
+  "locations": { "us": { "label": "United States" }, "buenosAires": { "label": "Buenos Aires" } },
+  "outlooks": { "forecast": { "label": "Public forecasts" }, "pessimistic": { "label": "Pessimistic" } },
+  "defaults": {
+    "location": "us", "outlook": "forecast", "dwelling": "apartment", "car": false,
+    "cooking": "electric", "heating": "electric", "airConditioning": true, "pumpedWater": false,
+    "household": { "adults": 2, "children": 0, "age60to74": 0, "age75plus": 0, "onMedication": 0, "criticalDrug": 0, "powerDependent": 0, "infants": 0, "pets": 0 },
+    "ticks": { "coldWinters": true, "hotSummers": false, "hurricane": false, "earthquake": false, "wildfire": false, "flood": false },
+    "owned": {}, "probabilities": {}, "parameters": {}
+  },
+  "parameters": {
+    "micromortValueUsd": { "us": { "lo": 5, "mid": 12, "hi": 20 }, "buenosAires": { "lo": 1, "mid": 3, "hi": 6 } },
+    "timeValueUsdPerHour": { "us": 20, "buenosAires": 6 },
+    "realDiscountRate": 0.03,
+    "storageCostUsdPerLitreYear": { "apartment": 0.1, "house": 0.03 },
+    "priceIndex": { "us": 1, "buenosAires": 1.4 },
+    "homePresence": 0.9,
+    "leaveHardshipUsdPerPersonDay": 30
+  },
+  "needs": {
+    "water": {
+      "label": "Drinking water", "per": "person", "gap": "water", "special": "water", "demandPerPersonDay": 3,
+      "baselineDays": { "lo": 0.3, "mid": 1, "hi": 2 },
+      "hardship": { "steps": [{ "fromDay": 1, "lo": 30, "mid": 74, "hi": 150 }, { "fromDay": 4, "lo": 60, "mid": 150, "hi": 400 }] },
+      "mortality": { "steps": [{ "fromDay": 1, "lo": 0, "mid": 0.2, "hi": 2 }, { "fromDay": 4, "lo": 1, "mid": 10, "hi": 100 }] },
+      "multipliers": { "age75plus": { "mortality": 6 }, "child": { "mortality": 2 } }
+    },
+    "warmth": {
+      "label": "Warmth", "per": "person", "gap": "warmth",
+      "baselineDays": 0,
+      "hardship": { "steps": [{ "fromDay": 1, "lo": 20, "mid": 50, "hi": 120 }] },
+      "mortality": { "steps": [{ "fromDay": 1, "lo": 0.5, "mid": 3, "hi": 10 }] },
+      "multipliers": { "age75plus": { "mortality": 10 }, "age60to74": { "mortality": 4 } },
+      "coping": [{ "channel": "co", "share": 0.12 }]
+    },
+    "light": {
+      "label": "Light", "per": "household", "gap": "power", "demandPerHouseholdDay": 1,
+      "baselineDays": 0.5,
+      "hardship": { "steps": [{ "fromDay": 1, "lo": 3, "mid": 10, "hi": 25 }] },
+      "mortality": { "steps": [{ "fromDay": 1, "lo": 0, "mid": 0.05, "hi": 0.3 }] }
+    }
+  },
+  "channels": { "fire": {}, "co": {}, "infection": { "multipliers": { "age75plus": { "mortality": 30 }, "age60to74": { "mortality": 8 }, "child": { "mortality": 0.05 } } } },
+  "hazards": {
+    "severeStorm": {
+      "label": "Severe storm", "definition": "A regional storm that cuts utilities for more than a day.",
+      "probability": { "us": { "lo": 0.02, "mid": 0.035, "hi": 0.2, "max": 1 }, "buenosAires": { "lo": 0.05, "mid": 0.15, "hi": 0.4, "max": 1 } },
+      "windows": {
+        "power": { "pOccur": 1, "days": { "p50": 1.5, "p90": 4, "p99": 12 } },
+        "water": { "pOccur": { "lo": 0.05, "mid": 0.15, "hi": 0.4, "max": 1 }, "days": { "p50": 1, "p90": 4, "p99": 14 }, "shareTreatable": 0.5 }
+      },
+      "coldShare": 0.3, "hotShare": 0.2,
+      "leave": { "feasible": 0.7, "earliestDay": 1, "fixedUsdPerHousehold": 100, "usdPerPersonDay": 90 },
+      "warningDays": 1, "lateBuy": { "staple": 0.5, "specialty": 0.1 },
+      "exposures": [],
+      "durationScale": { "lo": 0.6, "mid": 1, "hi": 1.7 }
+    },
+    "pandemicSevere": {
+      "label": "Severe pandemic", "definition": "A pandemic far worse than COVID-19.",
+      "probability": { "all": { "forecast": { "lo": 0.0003, "mid": 0.002, "hi": 0.01, "max": 1 }, "pessimistic": { "lo": 0.005, "mid": 0.02, "hi": 0.06, "max": 1 } } },
+      "windows": {},
+      "leave": { "feasible": 0, "earliestDay": 0, "fixedUsdPerHousehold": 0, "usdPerPersonDay": 0 },
+      "warningDays": 30, "lateBuy": { "staple": 0.8, "specialty": 0.15 },
+      "exposures": [{ "channel": "infection", "micromortsPerPerson": { "lo": 5000, "mid": 30000, "hi": 100000 }, "hardshipUsdPerPerson": 4000 }]
+    },
+    "houseFire": {
+      "label": "House fire", "definition": "A reported fire in the home.",
+      "probability": { "all": 0.003 },
+      "windows": {},
+      "leave": { "feasible": 0, "earliestDay": 0, "fixedUsdPerHousehold": 0, "usdPerPersonDay": 0 },
+      "warningDays": 0, "lateBuy": { "staple": 0, "specialty": 0 },
+      "exposures": [{ "channel": "fire", "micromortsPerPerson": 3500, "financialUsdPerHousehold": 25000 }]
+    }
+  },
+  "items": [
+    { "id": "water-stored", "name": "Stored tap water", "spec": "Rigid food-grade containers, refilled once a year.", "units": "litres", "confidence": "derived",
+      "scalesWith": "person", "ladder": [{ "label": "3 days", "units": 9 }, { "label": "7 days", "units": 21 }, { "label": "14 days", "units": 42 }],
+      "price": { "lo": 0.5, "mid": 0.8, "hi": 1.2 }, "lifeYears": 10, "setupHours": 0.5, "upkeepHoursPerYear": 0.5, "everydayShare": 0, "volumeLitres": 1.1,
+      "reliability": 0.97, "lateBuyClass": "staple", "effects": [{ "type": "supply", "need": "water", "amount": 1 }], "sources": ["https://www.cdc.gov/water-emergency/about/index.html"] },
+    { "id": "water-filter", "name": "Water filter", "spec": "Hollow-fibre filter.", "confidence": "guess",
+      "scalesWith": "household", "price": 29, "lifeYears": 10, "setupHours": 0.3, "everydayShare": 0.1, "volumeLitres": 0.3,
+      "reliability": 0.9, "lateBuyClass": "specialty", "effects": [{ "type": "capability", "capability": "treatWater" }] },
+    { "id": "sleeping-bags", "name": "Sleeping bags", "spec": "One three-season bag per person.", "confidence": "guess",
+      "scalesWith": "person", "price": 55, "lifeYears": 15, "setupHours": 0.3, "everydayShare": 0.3, "volumeLitres": 12,
+      "reliability": 0.98, "lateBuyClass": "staple", "conditions": ["coldWinters"],
+      "effects": [{ "type": "reduce", "target": "warmth", "hazards": ["all"], "fraction": { "lo": 0.3, "mid": 0.6, "hi": 0.85, "max": 1 }, "adherence": 0.9 }] },
+    { "id": "flashlight", "name": "Flashlight and batteries", "spec": "LED flashlight with spare cells.", "confidence": "guess",
+      "scalesWith": "household", "price": 20, "lifeYears": 10, "setupHours": 0.1, "everydayShare": 0.5, "volumeLitres": 0.3,
+      "reliability": 0.9, "lateBuyClass": "staple", "effects": [{ "type": "supply", "need": "light", "amount": 30 }] },
+    { "id": "co-alarm", "name": "Carbon monoxide alarm", "spec": "Battery CO alarm.", "confidence": "derived",
+      "scalesWith": "household", "price": 30, "lifeYears": 7, "setupHours": 0.2, "everydayShare": 0, "volumeLitres": 0,
+      "reliability": 0.9, "lateBuyClass": "staple", "effects": [{ "type": "reduce", "target": "co", "hazards": ["all"], "fraction": 0.5, "adherence": 1 }] },
+    { "id": "smoke-alarm", "name": "Smoke alarm", "spec": "Ten-year sealed-battery alarm.", "confidence": "data",
+      "scalesWith": "household", "price": 25, "lifeYears": 10, "setupHours": 0.3, "upkeepHoursPerYear": 0.1, "everydayShare": 0, "volumeLitres": 0,
+      "reliability": 0.9, "lateBuyClass": "staple", "effects": [{ "type": "reduce", "target": "fire", "hazards": ["all"], "fraction": { "lo": 0.3, "mid": 0.54, "hi": 0.7, "max": 1 }, "adherence": 1, "on": "mortality" }],
+      "sources": ["https://www.nfpa.org/education-and-research/research/nfpa-research/fire-statistical-reports/smoke-alarms-in-us-home-fires"] },
+    { "id": "respirator", "name": "Elastomeric respirator", "spec": "Half-mask with P100 filters, one per person.", "confidence": "guess",
+      "scalesWith": "person", "price": 30, "lifeYears": 10, "setupHours": 1, "everydayShare": 0, "volumeLitres": 2,
+      "reliability": 0.9, "lateBuyClass": "specialty",
+      "effects": [{ "type": "reduce", "target": "infection", "hazards": ["pandemicSevere"], "fraction": { "lo": 0.3, "mid": 0.6, "hi": 0.9, "max": 1 }, "adherence": { "lo": 0.3, "mid": 0.6, "hi": 0.9, "max": 1 }, "group": "respirator" }] }
+  ]
+}
