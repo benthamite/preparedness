@@ -91,6 +91,7 @@ function controls() {
   <details class="panel" id="haz-panel"${s.showHazards ? ' open' : ''}>
     <summary>Annual probabilities (edit any)</summary>
     <div class="hazards" id="hazards"></div>
+    <div class="field" style="margin-top:8px"><button type="button" id="copy-probs">Copy these numbers</button><input type="text" id="probs-text" readonly style="flex:1;display:none"></div>
   </details>`;
 }
 
@@ -270,6 +271,15 @@ $('controls').addEventListener('click', (ev) => {
     open = {};
     controls();
     compute();
+  } else if (ev.target.id === 'copy-probs') {
+    // The probabilities in use, as text: percent a year by hazard.
+    const text = JSON.stringify(Object.fromEntries(result.hazards.map((h) => [h.id, Number((100 * h.p).toPrecision(3))])));
+    const box = $('probs-text');
+    box.value = text;
+    box.style.display = '';
+    box.select();
+    const done = () => { ev.target.textContent = 'Copied'; setTimeout(() => { ev.target.textContent = 'Copy these numbers'; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => {});
   }
 });
 $('controls').addEventListener('toggle', () => { settings.showHazards = $('haz-panel').open; save(); fit(); }, true);
