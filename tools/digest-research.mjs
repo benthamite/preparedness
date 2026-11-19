@@ -53,9 +53,9 @@ for (const file of files) {
         for (const e of it.effects) {
           if (e.type === 'supply') console.log(`  + supply ${e.need}: ${n(e.amountPerUnit)} ${clip(e.amountUnit, 30)}`);
           else if (e.type === 'capability') console.log(`  + capability ${e.capability}`);
-          else if (e.type === 'reduce') console.log(`  + reduce ${e.target} in [${e.hazards.join(',')}]: removes ${q(e.fractionRemoved)} × adherence ${q(e.adherence)} | ${clip(e.notes, 90)}`);
+          else if (e.type === 'reduce') console.log(`  + reduce ${e.target} in [${e.hazards.join(',')}]: removes ${q(e.fractionRemoved)} × adherence ${q(e.adherence)} | ${clip(e.notes, 200)}`);
           else if (e.type === 'sideRisk') console.log(`  + sideRisk ${e.channel}: ${q(e.micromortsPerDayOfUse)} mm/day, mitigated by ${e.mitigatedBy || '-'}`);
-          else console.log(`  + other: ${clip(e.description, 120)}`);
+          else console.log(`  + other: ${clip(e.description, 420)}`);
         }
       }
       for (const x of d.excluded || []) console.log(`EXCLUDED ${clip(String(x.what), 50)}: ${clip(x.reason, 90)}`);

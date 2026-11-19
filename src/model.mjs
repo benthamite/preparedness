@@ -167,6 +167,8 @@ function peopleOf(settings) {
   const mark = (flag, n) => { for (let i = 0; i < Math.min(list.length, n || 0); i++) list[i].flags[flag] = true; };
   for (const f of FLAGS) mark(f, h[f]);
   mark('onMedication', Math.max(h.onMedication || 0, h.criticalDrug || 0));
+  // Infants are the youngest children.
+  for (let i = 0; i < Math.min(counts.child, h.infants || 0); i++) list[list.length - 1 - i].flags.infant = true;
   return list;
 }
 
@@ -193,6 +195,8 @@ function holds(condition, settings) {
     case 'criticalDrug': return (s.household.criticalDrug || 0) > 0;
     case 'onMedication': return Math.max(s.household.onMedication || 0, s.household.criticalDrug || 0) > 0;
     case 'age60plus': return (s.household.age60to74 || 0) + (s.household.age75plus || 0) > 0;
+    case 'livesAlone': return (s.household.adults || 0) + (s.household.children || 0) + (s.household.age60to74 || 0) + (s.household.age75plus || 0) === 1;
+    case 'severalPeople': return (s.household.adults || 0) + (s.household.children || 0) + (s.household.age60to74 || 0) + (s.household.age75plus || 0) > 1;
     case 'airConditioning': return !!s.airConditioning;
     case 'noAirConditioning': return !s.airConditioning;
     default: return !!(s.ticks && s.ticks[condition]);
@@ -282,7 +286,9 @@ export function buildWorld(m, settings) {
       demand: n.demandPerPersonDay !== undefined ? n.demandPerPersonDay * who.length : (n.demandPerHouseholdDay || 1),
       leaveEnds: n.leaveEnds !== false,
       home: n.home !== false,
-      baseline: n.baselineDays || 0,
+      // What the household covers unprepared; some households cover more
+      // (a car charges phones for as long as it has fuel).
+      baseline: (n.baselineIf || []).reduce((b, x) => (holds(x.if, settings) ? Math.max(b, x.days) : b), n.baselineDays || 0),
     };
   });
 
@@ -432,7 +438,10 @@ export function buildWorld(m, settings) {
     if (!applicable) return item;
     for (const fx of it.effects || []) {
       if (fx.type === 'supply' && fx.capability) {
-        (capFuel[fx.capability] ||= []).push({ i, days: fx.amount / (fx.perDay || 1) });
+        // Fuel for a capability, in days: hours of stove burn, say, over the
+        // hours a day the household uses.
+        const perDay = fx.perPersonDay ? fx.perPersonDay * Math.max(1, nPeople) : (fx.perDay || 1);
+        (capFuel[fx.capability] ||= []).push({ i, days: fx.amount / perDay });
         for (const nid of capNeeds[fx.capability] || []) if (nid in needIndex) item.needSet.add(needIndex[nid]);
       } else if (fx.type === 'supply') {
         const k = needIndex[fx.need];
@@ -443,7 +452,10 @@ export function buildWorld(m, settings) {
         (capProviders[fx.capability] ||= []).push(i);
         for (const nid of capNeeds[fx.capability] || []) if (nid in needIndex) item.needSet.add(needIndex[nid]);
       } else if (fx.type === 'reduce') {
-        const f = fx.fraction * (fx.adherence === undefined ? 1 : fx.adherence);
+        // `othersOnly`: the item protects everyone but the member who holds
+        // it (someone trained in CPR cannot resuscitate themselves).
+        const f = fx.fraction * (fx.adherence === undefined ? 1 : fx.adherence)
+          * (fx.othersOnly ? Math.max(0, nPeople - 1) / Math.max(1, nPeople) : 1);
         const red = {
           i, f, on: fx.on || 'both', group: fx.group || null,
           hazards: !fx.hazards || fx.hazards.includes('all') ? null : new Set(fx.hazards),
