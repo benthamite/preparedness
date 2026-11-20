@@ -1,0 +1,403 @@
+{
+  "kind": "ai",
+  "group": "ai-timelines",
+  "timelines": [
+    {
+      "id": "preset-short",
+      "label": "Short: AGI most likely in 2027 (AI Futures Project, November 2026)",
+      "source": "https://blog.aifutures.org/p/q35-timelines-update-looks-like-the",
+      "definition": "PRESET, my construction. Brief's AGI (about AI 2027's superhuman AI researcher, SAR). Anchors: AI Futures Project, 10 Nov 2026: all six forecasters expect SAR 'likely' in 2027; SAR medians May 2027 (Kokotajlo) and August 2027 (Lifland); the post's simple extrapolation gives 65% by end-2027 and 84% by end-2028; Romeo Dean's model variation gives 63% by end-2027, a 90th percentile near 2034 and about 92% by 2040. Their forecasts assume no substantial deliberate slowdown; I shaded 2027 and 2028 a few points below the model outputs for that reason and followed Dean's variation for the tail. Points for 2030, 2035, 2050 and 2100 are interpolated or extrapolated by me.",
+      "cumulative": [
+        {"year": 2027, "p": 0.60}, {"year": 2028, "p": 0.78}, {"year": 2030, "p": 0.86},
+        {"year": 2035, "p": 0.91}, {"year": 2040, "p": 0.93}, {"year": 2050, "p": 0.95}, {"year": 2100, "p": 0.97}
+      ]
+    },
+    {
+      "id": "preset-middle",
+      "label": "Middle: around 2030 (Metaculus community; Greenblatt; Hassabis's claim)",
+      "source": "https://www.metaculus.com/questions/5121/date-of-artificial-general-intelligence/",
+      "definition": "PRESET, my construction. Brief's AGI. Anchors: Metaculus strong-AGI community estimate 6 Jun 2030 (1.9k forecasters, read 19 Nov 2026), with quartiles of about Feb 2028 and Mar 2036 taken from a search snippet, not a page I fetched; Ryan Greenblatt, 6 Apr 2026: 30% for AI R&D parity by end-2028 and a median of early 2031; Ajeya Cotra's April 2026 median of early 2030 for AI R&D parity, as cited by Greenblatt; Demis Hassabis, May 2026: 'around 2030, plus or minus a year' (a claim). The 2040, 2050 and 2100 points are my extrapolation, not sourced.",
+      "cumulative": [
+        {"year": 2027, "p": 0.22}, {"year": 2028, "p": 0.34}, {"year": 2030, "p": 0.52},
+        {"year": 2035, "p": 0.74}, {"year": 2040, "p": 0.83}, {"year": 2050, "p": 0.90}, {"year": 2100, "p": 0.96}
+      ]
+    },
+    {
+      "id": "preset-long",
+      "label": "Long: 2040s (LEAP superforecasters and experts, AI researcher survey, Erdil)",
+      "source": "https://forecastingresearch.substack.com/p/leap-wave-8-ai-timelines",
+      "definition": "PRESET, my construction. Brief's AGI. Anchors: FRI LEAP Wave 8 (fielded 20 Apr to 11 May 2026): 80% that AGI exists before 2100; conditional median year 2047 for superforecasters and 2050 for experts; 25th percentiles 2036 and 2039. AI Impacts ESPAI 2024 (fielded Dec 2024): HLMI 10% by 2027 and 50% by 2042. Ege Erdil, Apr 2025: about 30% for full automation of remote work within ten years and a median of about 20 years. I placed 2035 to 2050 between LEAP (taken as 0.8 to 1.0 times its stated quantiles) and Erdil. The 2027 to 2030 points are my guess; none of these sources states them except ESPAI, whose 10% by 2027 I judged too high for this view.",
+      "cumulative": [
+        {"year": 2027, "p": 0.02}, {"year": 2028, "p": 0.04}, {"year": 2030, "p": 0.08},
+        {"year": 2035, "p": 0.22}, {"year": 2040, "p": 0.35}, {"year": 2050, "p": 0.52}, {"year": 2100, "p": 0.82}
+      ]
+    },
+    {
+      "id": "preset-not-this-century",
+      "label": "Not this century (Hanson; the 'normal technology' view)",
+      "source": "https://www.theblaze.com/return/when-will-computers-be-smarter-than-humans-return-asked-top-ai-experts-robin-hanson",
+      "definition": "PRESET, my quantification of a mostly qualitative view. Brief's AGI. Anchors: Robin Hanson, Dec 2023: 'my median-estimate date for the creation of a human-level AI is roughly 2150' and 'pretty sure it won't be in the next thirty years'. Narayanan and Kapoor give no probabilities; they expect impacts 'on the timescale of decades' and 'do not expect strong AGI to arrive anytime soon' (Nov 2025). Rodney Brooks keeps proxy milestones at 'not before 2050' (Jan 2026). For comparison, XPT superforecasters in 2022 gave 1% by 2030, 20.5% by 2050 and 74.8% by 2100 on a Bostrom-affirms-AGI question, which is less sceptical than this preset after 2040. Every number here is my guess fitted to Hanson's two statements.",
+      "cumulative": [
+        {"year": 2027, "p": 0.001}, {"year": 2028, "p": 0.002}, {"year": 2030, "p": 0.005},
+        {"year": 2035, "p": 0.015}, {"year": 2040, "p": 0.03}, {"year": 2050, "p": 0.07}, {"year": 2100, "p": 0.30}
+      ]
+    },
+    {
+      "id": "aifp-2026-11-sar-extrapolation",
+      "label": "AI Futures Project Q3.5 update (10 Nov 2026): superhuman AI researcher, simple research-taste extrapolation",
+      "source": "https://blog.aifutures.org/p/q35-timelines-update-looks-like-the",
+      "definition": "Superhuman AI Researcher (SAR): an AI that could fully automate AI R&D; the closest published milestone to the brief's AGI. Model output, not an all-things-considered view: 'The Monte Carlo gives a median SAR date of July 2027, with 65% of draws reaching SAR by the end of 2027 and 84% by the end of 2028.' Conditional on no substantial deliberate slowdown. Authors: Eli Lifland, Brendan Halstead, Daniel Kokotajlo, Romeo Dean and two others (sections headed Thomas and Lukas).",
+      "cumulative": [{"year": 2027, "p": 0.65}, {"year": 2028, "p": 0.84}]
+    },
+    {
+      "id": "aifp-2026-11-sar-dean-variation",
+      "label": "AI Futures Project Q3.5 update (10 Nov 2026): superhuman AI researcher, Romeo Dean's model variation",
+      "source": "https://blog.aifutures.org/p/q35-timelines-update-looks-like-the",
+      "definition": "SAR, as above. Dean's variation of the AI Futures Model: 63% of runs reach SAR by the end of 2027, 'levelling off near 92%' by 2040; 10th to 90th percentile range stretches 'to about 2034'. The plain model gives 84% by end-2027 and about 98% by 2040. Dean: 'I don't trust this model variation very much.' Conditional on no deliberate slowdown.",
+      "cumulative": [{"year": 2027, "p": 0.63}, {"year": 2034, "p": 0.90}, {"year": 2040, "p": 0.92}]
+    },
+    {
+      "id": "aifp-2026-11-tedai-dean-variation",
+      "label": "AI Futures Project Q3.5 update (10 Nov 2026): top-expert-dominating AI, Romeo Dean's model variation",
+      "source": "https://blog.aifutures.org/p/q35-timelines-update-looks-like-the",
+      "definition": "TED-AI: 'at least as good as top human experts at virtually all cognitive tasks'; slightly beyond the brief's AGI. Dean's variation: 38% by end-2027, about 76% by 2040 (plain model 62% and about 91%). The group as a whole states a 35 to 65% chance of TED-AI before 2028. Individual TED-AI medians: Kokotajlo Sep 2027, Halstead Apr 2028, Thomas Apr 2028, Lifland Sep 2028, Dean Sep 2028.",
+      "cumulative": [{"year": 2027, "p": 0.38}, {"year": 2040, "p": 0.76}]
+    },
+    {
+      "id": "aifp-kokotajlo-2025-12",
+      "label": "Daniel Kokotajlo, AI Futures Model update (31 Dec 2025): AGI",
+      "source": "https://blog.aifutures.org/p/ai-futures-model-dec-2025-update",
+      "definition": "His all-things-considered view at the end of 2025. Median unchanged at about the end of 2030 (TED-AI median Dec 2030 per the 27 Jan 2026 clarifying post); 'say, 9% by EOY 2026' for 'things going crazy' (milestone not named); 'still 6% that there's no AGI even in 2050'. Superseded by his 2026 updates.",
+      "cumulative": [{"year": 2026, "p": 0.09}, {"year": 2030, "p": 0.50}, {"year": 2050, "p": 0.94}]
+    },
+    {
+      "id": "aifp-lifland-2025-12",
+      "label": "Eli Lifland, AI Futures Model update (31 Dec 2025): automated coder",
+      "source": "https://blog.aifutures.org/p/ai-futures-model-dec-2025-update",
+      "definition": "'My all-things-considered distribution is: 10th percentile 2027.5, 50th percentile 2032.5, 90th percentile 2085.' The sentence does not name the milestone; it matches his automated-coder median of 'early 2032' in the Q1 2026 post. Automated coder (AC) can replace an AGI project's whole coding staff; it comes before SAR, so before the brief's AGI. Entered at the calendar year containing each percentile. Superseded.",
+      "cumulative": [{"year": 2027, "p": 0.10}, {"year": 2032, "p": 0.50}, {"year": 2085, "p": 0.90}]
+    },
+    {
+      "id": "ai-2027-lifland-sc-2025-04",
+      "label": "AI 2027 timelines forecast (April 2025): superhuman coder, Eli Lifland all-things-considered",
+      "source": "https://ai-2027.com/research/timelines-forecast",
+      "definition": "Superhuman coder (SC): 'an AI system for which the company could run with 5% of their compute budget 30x as many agents' (my fetch cut the definition off there; it goes on to compare the agents with the company's best engineers). SC precedes SAR, so it precedes the brief's AGI. 80% interval 2026 to after 2050, median 2030. The AI 2027 scenario itself (SC March 2027, SAR August 2027, ASI December 2027) was one trajectory near the authors' mode, not their median.",
+      "cumulative": [{"year": 2026, "p": 0.10}, {"year": 2030, "p": 0.50}]
+    },
+    {
+      "id": "ai-2027-jurkovic-sc-2025-04",
+      "label": "AI 2027 timelines forecast (April 2025): superhuman coder, Nikola Jurkovic all-things-considered",
+      "source": "https://ai-2027.com/research/timelines-forecast",
+      "definition": "Superhuman coder, as above. 80% interval 2026 to 2040, median 2028.",
+      "cumulative": [{"year": 2026, "p": 0.10}, {"year": 2028, "p": 0.50}, {"year": 2040, "p": 0.90}]
+    },
+    {
+      "id": "ai-2027-futuresearch-sc-2025-04",
+      "label": "AI 2027 timelines forecast (April 2025): superhuman coder, FutureSearch aggregate (n=3)",
+      "source": "https://ai-2027.com/research/timelines-forecast",
+      "definition": "Superhuman coder, as above. 80% interval 2027 to after 2050, median 2033.",
+      "cumulative": [{"year": 2027, "p": 0.10}, {"year": 2033, "p": 0.50}]
+    },
+    {
+      "id": "metaculus-strong-agi-2026-11",
+      "label": "Metaculus 'first general AI system' (strong AGI), community prediction read 19 Nov 2026",
+      "source": "https://www.metaculus.com/questions/embed/5121/",
+      "definition": "Question 5121: a system that passes a two-hour adversarial Turing test, has general robotic capability (assembling a model car), scores at least 75% on every MMLU task and 90% on average, and at least 90% on APPS. Stricter than the brief's AGI in requiring robotics; weaker in not requiring autonomous research. Verified: community estimate 6 Jun 2030, 1.9k forecasters. NOT verified: the quartiles (about Feb 2028 and Mar 2036) come from a search-engine snippet of the question page. The three points are those quartiles and the median moved to the nearest year-end.",
+      "cumulative": [{"year": 2027, "p": 0.24}, {"year": 2030, "p": 0.52}, {"year": 2035, "p": 0.74}]
+    },
+    {
+      "id": "dwarkesh-patel-2026-11",
+      "label": "Dwarkesh Patel (13 Nov 2026): automated AI researchers as good as the very best humans",
+      "source": "https://www.dwarkesh.com/p/rsi",
+      "definition": "'If I had to pick my median year for when automated researchers will be as good as the very best human AI researchers (and assuming the labs don't intentionally slow down), I'd guess 2028.' 'I'd guess there's a 25% chance that it doesn't happen until after 2032.' Essentially the brief's AGI. In June 2025 his 50/50 date for human-like on-the-job learning was 2032.",
+      "cumulative": [{"year": 2028, "p": 0.50}, {"year": 2032, "p": 0.75}]
+    },
+    {
+      "id": "greenblatt-2026-04",
+      "label": "Ryan Greenblatt, Redwood Research (6 Apr 2026): AI R&D parity",
+      "source": "https://blog.redwoodresearch.org/p/ais-can-now-often-do-massive-easy",
+      "definition": "AI R&D parity: the leading AI company would be better off firing all its human researchers than reverting to 2020-era AI. Close to the brief's AGI for AI research, narrower for other remote work. 'I'm at 30% for AI R&D parity' by end-2028 (previously about 15% for full automation); 'my median of early 2031', entered as 0.49 at end-2030. Predates the November 2026 METR report.",
+      "cumulative": [{"year": 2028, "p": 0.30}, {"year": 2030, "p": 0.49}]
+    },
+    {
+      "id": "cotra-2022-08",
+      "label": "Ajeya Cotra, two-year update (2 Aug 2022): transformative AI",
+      "source": "https://www.lesswrong.com/posts/AfH2oPHCApdKicM4m/two-year-update-on-my-personal-ai-timelines",
+      "definition": "Transformative AI, with the bar lowered to 'just automating most of the tasks in ML research and engineering'; close to the brief's AGI. '~15% probability by 2030', '~35% probability by 2036', 'a median of ~2040', '~60% probability by 2050'. Superseded: by April 2026 her median for AI R&D parity was early 2030 (as cited by Greenblatt), and on 6 Nov 2026 she reported 'a big update' toward shorter timelines without numbers.",
+      "cumulative": [{"year": 2030, "p": 0.15}, {"year": 2036, "p": 0.35}, {"year": 2040, "p": 0.50}, {"year": 2050, "p": 0.60}]
+    },
+    {
+      "id": "cotra-2020-bio-anchors",
+      "label": "Ajeya Cotra, biological anchors report (2020): transformative AI",
+      "source": "https://www.lesswrong.com/posts/AfH2oPHCApdKicM4m/two-year-update-on-my-personal-ai-timelines",
+      "definition": "As restated in her 2022 update: 'roughly ~15% probability of transformative AI by 2036' and 'a median of ~2050'. Superseded twice.",
+      "cumulative": [{"year": 2036, "p": 0.15}, {"year": 2050, "p": 0.50}]
+    },
+    {
+      "id": "samotsvety-2023-01",
+      "label": "Samotsvety AGI timelines update (24 Jan 2023), mean of eight forecasters",
+      "source": "https://forum.effectivealtruism.org/posts/ByBBqwRXWqX5m9erL/update-to-samotsvety-agi-timelines",
+      "definition": "AGI defined as 'a system capable of passing the adversarial Turing test against a top-5% human who has access to experts on various topics'. A conversational test, not autonomous remote work: arguably weaker than the brief's AGI. Mean 0.31 by 2030, 0.63 by 2050, 0.81 by 2100; years for 10%, 50%, 90%: 2026, 2041, 2164. No later Samotsvety update found, so this predates everything since GPT-4.",
+      "cumulative": [{"year": 2026, "p": 0.10}, {"year": 2030, "p": 0.31}, {"year": 2041, "p": 0.50}, {"year": 2050, "p": 0.63}, {"year": 2100, "p": 0.81}, {"year": 2164, "p": 0.90}]
+    },
+    {
+      "id": "espai-2024-hlmi",
+      "label": "AI Impacts ESPAI 2024 (fielded 9 to 24 Dec 2024, published Sep 2026): high-level machine intelligence, mean aggregate",
+      "source": "https://aiimpacts.org/wp-content/uploads/2026/09/ESPAI2024.pdf",
+      "definition": "HLMI: 'unaided machines can accomplish every task better and more cheaply than human workers'. Stricter than the brief's AGI: it includes physical tasks. 1,580 researchers. 'HLMI reaches a 10% chance in 2027 and a 50% chance in 2042.' The 50% year was 2061 in 2016, 2059 in 2022 and 2047 in 2023. Median aggregate: 10% in 2030, 50% in 2044, 90% in 2072.",
+      "cumulative": [{"year": 2027, "p": 0.10}, {"year": 2042, "p": 0.50}]
+    },
+    {
+      "id": "espai-2024-faol",
+      "label": "AI Impacts ESPAI 2024 (fielded Dec 2024): full automation of labor, mean aggregate",
+      "source": "https://aiimpacts.org/wp-content/uploads/2026/09/ESPAI2024.pdf",
+      "definition": "FAOL: all occupations fully automatable. Far stricter than the brief's AGI. 'FAOL reaches a 10% chance in 2035 and a 50% chance in 2098', a 17-year drop from the 2023 survey. The gap between the HLMI and FAOL answers is a known framing effect.",
+      "cumulative": [{"year": 2035, "p": 0.10}, {"year": 2098, "p": 0.50}]
+    },
+    {
+      "id": "espai-2023-hlmi",
+      "label": "AI Impacts ESPAI 2023 (fielded Oct 2023): high-level machine intelligence, aggregate",
+      "source": "https://arxiv.org/abs/2401.02843",
+      "definition": "HLMI as above. 2,778 researchers. 'A 10% chance of HLMI by 2027' and 'a 50% chance of HLMI by 2047'. Superseded by the 2024 wave.",
+      "cumulative": [{"year": 2027, "p": 0.10}, {"year": 2047, "p": 0.50}]
+    },
+    {
+      "id": "leap-w8-experts-2026-05",
+      "label": "FRI Longitudinal Expert AI Panel, Wave 8 (fielded 20 Apr to 11 May 2026): AGI, median expert",
+      "source": "https://forecastingresearch.substack.com/p/leap-wave-8-ai-timelines",
+      "definition": "AGI: a commercially available system that 'can outperform the 90th percentile professional human employee in every primarily non-physical occupation' on at least 90% of tasks at no more than 5x the cost of human labour, resolved when more than half of panelists agree it exists. The closest of any source to the brief's AGI; the cost test and the panel vote push it later. Median expert: 80% before 2100; median year 2050 conditional on that; 25% by 2039, 75% by 2065. Entered as stated; if those quantiles are conditional on arrival before 2100, the unconditional figures are 0.8 times these. Predates the November 2026 METR report.",
+      "cumulative": [{"year": 2039, "p": 0.25}, {"year": 2050, "p": 0.50}, {"year": 2065, "p": 0.75}]
+    },
+    {
+      "id": "leap-w8-superforecasters-2026-05",
+      "label": "FRI Longitudinal Expert AI Panel, Wave 8 (April to May 2026): AGI, median superforecaster",
+      "source": "https://leap.forecastingresearch.org/reports/wave8",
+      "definition": "Same question. Median superforecaster: 80% before 2100; conditional median year 2047; 25th percentile 2036. Same caveat on conditioning.",
+      "cumulative": [{"year": 2036, "p": 0.25}, {"year": 2047, "p": 0.50}]
+    },
+    {
+      "id": "xpt-2022-superforecasters",
+      "label": "Existential Risk Persuasion Tournament (forecasts 2022): 'Nick Bostrom affirms AGI', median superforecaster",
+      "source": "https://forum.effectivealtruism.org/posts/KGGDduXSwZQTQJ9xc",
+      "definition": "Probability that Nick Bostrom affirms the existence of AGI by each year: 1.0%, 20.5%, 74.8%. A loose proxy for the brief's AGI. Their median 'date of advanced AI' (a Turing-test style bundle) was 2060. FRI found in 2025 that superforecasters gave an average of 9.7% to the AI progress outcomes that then occurred, so treat as stale.",
+      "cumulative": [{"year": 2030, "p": 0.01}, {"year": 2050, "p": 0.205}, {"year": 2100, "p": 0.748}]
+    },
+    {
+      "id": "xpt-2022-domain-experts",
+      "label": "Existential Risk Persuasion Tournament (forecasts 2022): 'Nick Bostrom affirms AGI', median AI domain expert",
+      "source": "https://forum.effectivealtruism.org/posts/KGGDduXSwZQTQJ9xc",
+      "definition": "Same question: 9.0%, 46.0%, 87.0%. Median 'date of advanced AI' 2046.",
+      "cumulative": [{"year": 2030, "p": 0.09}, {"year": 2050, "p": 0.46}, {"year": 2100, "p": 0.87}]
+    },
+    {
+      "id": "epoch-direct-approach",
+      "label": "Epoch AI Direct Approach interactive model (published 31 May 2023, last revised Jan 2024): transformative AI",
+      "source": "https://epoch.ai/blog/direct-approach-interactive-model",
+      "definition": "Transformative AI: 'AI that if deployed widely, would precipitate a change comparable to the industrial revolution'. Later than the brief's AGI by construction. Model output under default parameters as shown on the page on 19 Nov 2026: 10% by 2025, median 2029, 90% by 2084; 57% by 2030, 85% by 2050, 91% by 2100. 'The outputs of this model should not be construed as the authors' all-things-considered views.' Its 10% by 2025 has already failed.",
+      "cumulative": [{"year": 2025, "p": 0.10}, {"year": 2029, "p": 0.50}, {"year": 2030, "p": 0.57}, {"year": 2050, "p": 0.85}, {"year": 2084, "p": 0.90}, {"year": 2100, "p": 0.91}]
+    },
+    {
+      "id": "erdil-2025-04",
+      "label": "Ege Erdil, Epoch AI Gradient Updates (26 Apr 2025): full automation of remote work",
+      "source": "https://epoch.ai/gradient-updates/the-case-for-multi-decade-ai-timelines",
+      "definition": "Full automation of remote work, which he pegs to about $20 trillion a year of AI revenue. Matches the brief's AGI closely, with an adoption test added. 'My own median timelines of ~20 years'; ten years 'is plausible' but 'I would only give this outcome around 30% chance'. Entered as 30% by 2035 and 50% by 2045. No 2026 revision found.",
+      "cumulative": [{"year": 2035, "p": 0.30}, {"year": 2045, "p": 0.50}]
+    }
+  ],
+  "parameters": [
+    {
+      "id": "transitionYears",
+      "definition": "Length of the period of elevated AI-driven risk that starts when AGI arrives.",
+      "unit": "years",
+      "value": {
+        "lo": 2, "mid": 5, "hi": 12, "tag": "guess",
+        "basis": "No source states a window. lo is the fast-takeoff view: AGI to ASI in about a year (Davidson 2023 best guess 'less than 1 year'; Aschenbrenner; AI 2027, where the outcome is settled within about 3 years of SAR). hi is the slow view: Hanson's transition of 'roughly a decade', GATE's gains 'over roughly a decade', MacAskill and Moorhouse's century of progress in a decade, Narayanan and Kapoor's decades. mid of 5: Davidson gives about 50% to a takeoff (20% to 100% automation) under 3 years and 80% under 10; log interpolation puts about 63% under 5 years, so five years covers a little more than half of his distribution, counted from before AGI."
+      }
+    },
+    {
+      "id": "shareOfRiskBeforeAGI",
+      "definition": "Share of all AI-driven risk of survivable catastrophe, from now to the end of the transition, that falls before the AGI milestone.",
+      "unit": "share (0 to 1)",
+      "value": {
+        "lo": 0.05, "mid": 0.15, "hi": 0.5, "tag": "guess",
+        "basis": "My arithmetic, not a published figure: share = Y / (Y + 5k), with Y the ramp-weighted years until AGI and k the ratio of the annual rate in the transition to today's. k of 5 to 10 is suggested by FRI LEAP Wave 9, where experts' AI-catastrophe probability by 2030 is 1% under rapid progress and 0.08% under slow. Y = 1.5 (short preset) gives 3 to 6%; Y = 6 (middle) 11 to 19%; Y = 25 (long) 33 to 50%. lo is therefore the short-timeline view and hi the long-timeline or normal-technology view. Better computed from the reader's timeline than fixed."
+      }
+    },
+    {
+      "id": "agiToAsiYears",
+      "definition": "Time from AGI (superhuman AI researcher) to ASI.",
+      "unit": "years",
+      "value": {
+        "lo": 0.3, "mid": 1.5, "hi": 10, "tag": "guess",
+        "basis": "lo: AI 2027 takeoff forecast, SAR to superintelligent AI researcher 0.3 years and on to ASI 0.16 years at the median (https://ai-2027.com/research/takeoff-forecast). mid: between Davidson's 'less than 1 year' and Lifland's Dec 2025 view of 30% under one year and 60% under three years from automated coder to ASI. hi: Erdil and Barnett treat a software-only singularity as 'an unlikely outcome' and expect acceleration only 'after several years or decades' of broad automation."
+      }
+    },
+    {
+      "id": "pExistentialGivenAGI",
+      "definition": "Probability of existential catastrophe (extinction or permanent disempowerment) caused by AI, conditional on AGI arriving.",
+      "unit": "probability",
+      "value": {
+        "lo": 0.01, "mid": 0.2, "hi": 0.8, "tag": "derived",
+        "basis": "lo, superforecasters: XPT 0.38% AI extinction by 2100 unconditional, which FRI says 'more than quadruples' given AGI by 2070; Metaculus 'five years after AGI, will humans be extinct?' 1%; Good Judgment superforecasters 6% by 2200 given AGI by 2070. mid, the cluster of careful concerned views: Ord 20% conditional, Christiano 22%, Shulman 20 to 25%, Scott Alexander 20%, AI Impacts 2024 mean 18% and median 10%, Samotsvety 38% (23% for its less-engaged subset). hi: Kokotajlo 70%, Mowshowitz 60%, and Yudkowsky, who gives no number but calls death the most likely result. I picked the middle and rounded the ends; the ends are others' stated views."
+      }
+    },
+    {
+      "id": "shareSurvivable",
+      "definition": "Share of all AI-caused catastrophe probability (survivable plus existential) in which a household could survive and preparation could matter.",
+      "unit": "share (0 to 1)",
+      "value": {
+        "lo": 0.25, "mid": 0.7, "hi": 0.95, "tag": "derived",
+        "basis": "mid from two ratios at the 10%-of-humanity threshold: XPT experts 3% extinction out of 12% catastrophe by 2100 (75% survivable; superforecasters 82%), and Metaculus question 2513, where 25% of AI catastrophes cut population by 95% or more. hi is the sceptic's view once smaller events are counted (LEAP Wave 9: 62 to 70% for an AI-driven event of 50 deaths or $100 billion by 2050, against 2% for a 10% die-off). lo is my arithmetic for a highly concerned view: with 0.7 existential and about 0.25 survivable, 0.25 / 0.95 = 0.26. Depends on the threshold for 'catastrophe'; better computed from the model's own hazard rates."
+      }
+    },
+    {
+      "id": "annualPSurvivableAiCatastrophe10pct",
+      "definition": "Annual probability, averaged over the century, of an AI-caused catastrophe that kills more than 10% of humans within five years and is not extinction. World-level.",
+      "unit": "probability per year",
+      "value": {
+        "lo": 0.0002, "mid": 0.0012, "hi": 0.002, "tag": "derived",
+        "basis": "p = 1 - (1 - P)^(1/n). lo: XPT superforecasters, 2.13% catastrophe minus 0.38% extinction by 2100 = 1.75% over 78 years = 0.023% a year. mid: XPT domain experts, 12% minus 3% = 9% = 0.12% a year. hi: Metaculus, 40% (q1493) x 43% (q1495) x 75% (1 minus q2513) = 12.9% over 73 years = 0.19% a year. LEAP Wave 9 experts: 2% by 2100 under slow progress (0.027% a year), 10% under rapid (0.14%). These are century averages; the sources do not say how much falls in the transition."
+      }
+    },
+    {
+      "id": "annualPLargeAiIncidentWorld",
+      "definition": "Annual probability, somewhere in the world, of an AI-driven incident with at least 50 to 1,000 deaths or at least $100 to $200 billion of damage. Not a per-household rate.",
+      "unit": "probability per year",
+      "value": {
+        "lo": 0.039, "mid": 0.048, "hi": 0.22, "tag": "derived",
+        "basis": "lo and mid: FRI LEAP Wave 9 (June 2026), an AI-driven event with at least 50 deaths or $100 billion damage by end-2050: median expert 62% (3.9% a year over 24.5 years), median superforecaster 70% (4.8%). hi: Metaculus q21553, AI malfunction causing at least 1,000 deaths or $200 billion before 2032, 72% from only 55 forecasters = 22% a year over 5.1 years. The two disagree by a factor of five although LEAP's threshold is lower; I trust LEAP more. Economic damage alone can resolve both."
+      }
+    },
+    {
+      "id": "pOrdinaryHazardsRecedeWithinTransition",
+      "definition": "Probability that, five years after AGI and with no existential catastrophe, material abundance or protective technology has made ordinary household hazards and scarcity largely irrelevant.",
+      "unit": "probability",
+      "value": {
+        "lo": 0.02, "mid": 0.1, "hi": 0.5, "tag": "guess",
+        "basis": "My guess. lo: Narayanan and Kapoor, diffusion 'over decades, not years'. mid: the small Metaculus 'five years after AGI' pools expect a recognisable world: 6.03% real growth, 6.47% in extreme poverty, 8.78 billion people (17 to 41 forecasters each). hi: fast-takeoff optimists, for example the AI 2027 slowdown ending, where superintelligence arrives in April 2028 and 2029 is headed 'Transformation', and Amodei's 50 to 100 years of biology in 5 to 10 years."
+      }
+    }
+  ],
+  "views": [
+    {"who": "AI Futures Project (Kokotajlo, Alexander, Larsen, Lifland, Dean)", "claim": "AI 2027, as published: the scenario has a superhuman coder in March 2027, a superhuman AI researcher in August 2027 and ASI in December 2027. It is one trajectory, not the authors' median.", "source": "https://ai-2027.com/", "year": 2025, "verified": true},
+    {"who": "Eli Lifland, Nikola Jurkovic, FutureSearch", "claim": "AI 2027 timelines forecast: all-things-considered medians for a superhuman coder were 2030 (Lifland), 2028 (Jurkovic) and 2033 (FutureSearch aggregate, n=3).", "source": "https://ai-2027.com/research/timelines-forecast", "year": 2025, "verified": true},
+    {"who": "Daniel Kokotajlo", "claim": "AGI median over time, as he and co-authors list it: 2070 (2018), 2050 (early 2020), 2030 (Nov 2020), 2029 (Aug 2021 to early 2022), 2027 (Dec 2022 to Jan 2025), 2028 (Feb to Apr 2025), end of 2029 (Aug 2025), 2030 (Nov 2025), Dec 2030 (Jan 2026).", "source": "https://blog.aifutures.org/p/clarifying-how-our-ai-timelines-forecasts", "year": 2026, "verified": true},
+    {"who": "Eli Lifland", "claim": "AGI median over time: about 2060 (2021), 2050 (Jul 2022), 2038 (Jan 2024), 2035 (mid-2024), 2032 (Dec 2024), 2031 (Apr 2025), 2033 (Jul 2025), 2035 (Nov 2025 and Jan 2026).", "source": "https://blog.aifutures.org/p/clarifying-how-our-ai-timelines-forecasts", "year": 2026, "verified": true},
+    {"who": "AI Futures Project (Kokotajlo, Lifland, Halstead, Kastner)", "claim": "AI Futures Model, 31 Dec 2025: with Lifland's parameters the new model puts a superhuman coder in Dec 2031; 'the AI Futures Model median is 5 years later than the AI 2027 model'.", "source": "https://blog.aifutures.org/p/ai-futures-model-dec-2025-update", "year": 2025, "verified": true},
+    {"who": "AI Futures Project (Kokotajlo, Lifland, Halstead)", "claim": "Q1 2026 update, 2 Apr 2026: 'Daniel's Automated Coder (AC) median has moved from late 2029 to mid 2028' and Eli's 'from early 2032 to mid 2030', after METR's Time Horizon 1.1 and results for Gemini 3, GPT-5.2 and Claude Opus 4.6.", "source": "https://blog.aifutures.org/p/q1-2026-timelines-update", "year": 2026, "verified": true},
+    {"who": "Daniel Kokotajlo", "claim": "His August 2026 position, as he restates it in November: 'my 50% mark for AC was December 2027 and my 50% mark for SAR was December 2028'. August 2026 TED-AI medians: Kokotajlo late 2028, Halstead early 2031, Lifland mid-2032, Thomas early 2032, Dean early 2035.", "source": "https://blog.aifutures.org/p/q35-timelines-update-looks-like-the", "year": 2026, "verified": true},
+    {"who": "AI Futures Project (Lifland, Halstead, Kokotajlo, Dean and two others)", "claim": "Q3.5 update, 10 Nov 2026: 'Now, all of us forecast that Superhuman AI Researcher (SAR) will likely arrive at some point in 2027 (assuming no substantial deliberate slowdown)', and 'a 35-65% chance that Top-Expert-Dominating AI (TED-AI) ... will arrive before 2028'.", "source": "https://blog.aifutures.org/p/q35-timelines-update-looks-like-the", "year": 2026, "verified": true},
+    {"who": "Daniel Kokotajlo", "claim": "10 Nov 2026: 'let's say May 2027 for SAR median, i.e., 50% chance of SAR by May 2027'; TED-AI median Sep 2027. He adds: 'I still have substantial credence that things will turn out to take longer than the models and trendlines naively imply.'", "source": "https://blog.aifutures.org/p/q35-timelines-update-looks-like-the", "year": 2026, "verified": true},
+    {"who": "Eli Lifland", "claim": "10 Nov 2026: 'I'm at a SAR median of August 2027, and a TED-AI median of September 2028.' He notes 'a nagging feeling that the update feels so large without being based on commensurate evidence'.", "source": "https://blog.aifutures.org/p/q35-timelines-update-looks-like-the", "year": 2026, "verified": true},
+    {"who": "METR", "claim": "19 Mar 2025: time horizons double about every 7 months; 'If the trend of the past 6 years continues to the end of this decade, frontier AI systems will be capable of autonomously carrying out month-long projects.' The 2024 to 2025 trend would bring that about 2.5 years earlier.", "source": "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/", "year": 2025, "verified": true},
+    {"who": "METR", "claim": "Time Horizon 1.1, 29 Jan 2026: doubling time 196 days over 2019 to 2025, 130.8 days after 2023, 88.6 days from 2024 on. Longest measured: Claude Opus 4.5 at 320 minutes (95% CI 170 to 729).", "source": "https://metr.org/blog/2026-01-29-time-horizon-1-1/", "year": 2026, "verified": true},
+    {"who": "METR", "claim": "Time-horizons page: 'Measurements above 16 hrs are unreliable with our current task suite.' Marked 'no longer actively updated' on 8 Sep 2026.", "source": "https://metr.org/time-horizons/", "year": 2026, "verified": true},
+    {"who": "METR", "claim": "An early Claude Mythos Preview snapshot, evaluated in March 2026, had a 50% time horizon of at least 16 hours (95% CI 8.5 to 55 hours), 'at the upper end of what we can measure without new tasks'. Read in The Decoder's report of METR's post, not on METR's site.", "source": "https://the-decoder.com/metr-says-it-can-barely-measure-claude-mythos-palo-alto-networks-warns-of-autonomous-ai-attackers/", "year": 2026, "verified": false},
+    {"who": "METR", "claim": "5 Nov 2026: Anthropic is 'likely improving the capabilities of their models on well-specified tasks at around twice the rate' of March 2024 to October 2025 (1.9x on Anthropic's capability index, 95% CI 1.5 to 2.8x); 'a majority (perhaps ~80%)' of the acceleration is due to AI. 'Anthropic redacted a majority of the evidence we found most informative.' No forecast dates.", "source": "https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment/", "year": 2026, "verified": true},
+    {"who": "Ajeya Cotra", "claim": "14 Jan 2026, probabilities for the end of 2026: (near) full automation of AI R&D 10%; top-human-expert-dominating AI 5%; self-sufficient AI 2.5%; unrecoverable loss of control 0.5%.", "source": "https://www.planned-obsolescence.org/p/ai-predictions-for-2026", "year": 2026, "verified": true},
+    {"who": "Ajeya Cotra", "claim": "April 2026 medians, as cited by Ryan Greenblatt from her chart: AI R&D parity early 2030; 'AI stack + conflict parity' mid-2032. Her own post gives them only in a chart I could not read.", "source": "https://blog.redwoodresearch.org/p/ais-can-now-often-do-massive-easy", "year": 2026, "verified": false},
+    {"who": "Ajeya Cotra", "claim": "6 Nov 2026, on the METR report: 'I made a big update based on this report'; the dramatic-acceleration threshold 'has already been crossed'; a naive extrapolation 'implies that we would reach extreme superintelligence within a year'. She gives no bottom-line forecast.", "source": "https://www.planned-obsolescence.org/p/ai-is-dramatically-accelerating-ai", "year": 2026, "verified": true},
+    {"who": "Ryan Greenblatt", "claim": "3 Nov 2025: 'powerful AI by early 2027 is around 6% likely'; transformatively powerful AI is 'more likely than not within 10 years'.", "source": "https://blog.redwoodresearch.org/p/whats-up-with-anthropic-predicting", "year": 2025, "verified": true},
+    {"who": "Ryan Greenblatt", "claim": "6 Apr 2026: 'I'm at 30% for AI R&D parity' by end-2028, up from about 15% for full automation; 'my median of early 2031'. 'My views aren't that reflectively stable.'", "source": "https://blog.redwoodresearch.org/p/ais-can-now-often-do-massive-easy", "year": 2026, "verified": true},
+    {"who": "Metaculus community", "claim": "Strong AGI (q5121): 6 Jun 2030, 1.9k forecasters. Weak AGI (q3479, a robotics-free and easier test set): 17 Aug 2027, 1.8k forecasters. Both read on the embed pages, 19 Nov 2026; no quartiles shown.", "source": "https://www.metaculus.com/questions/embed/3479/", "year": 2026, "verified": true},
+    {"who": "Metaculus community", "claim": "Strong AGI quartiles of about Feb 2028 and Mar 2036, and a July 2026 median of January 2033, appear only in search snippets and a secondary page.", "source": "https://aitoolsreview.co.uk/insights/agi-timeline-predictions-2026", "year": 2026, "verified": false},
+    {"who": "Metaculus community", "claim": "'Five years after AGI' series: humans extinct 1% (169 forecasters); a World War III 4% (66); world real GDP growth 6.03% a year (35); 6.47% of people in extreme poverty (35); biological population 8.78 billion (41).", "source": "https://www.metaculus.com/questions/embed/26244/", "year": 2026, "verified": true},
+    {"who": "Metaculus community", "claim": "Humans extinct before 2100: 2.5% (1.7k). A 10% population fall in five years by 2100: 40% (432). If a global catastrophe, due to AI: 43% (483). If an AI catastrophe, a 95% fall: 25% (345). AI malfunction with 1,000 deaths or $200 billion before 2032: 72% (55).", "source": "https://www.metaculus.com/questions/embed/2513/", "year": 2026, "verified": true},
+    {"who": "Ege Erdil", "claim": "26 Apr 2025: 'my own median timelines of ~20 years until full automation of remote work'; ten years gets 'around 30% chance'; about 10% that algorithmic progress accelerates tenfold.", "source": "https://epoch.ai/gradient-updates/the-case-for-multi-decade-ai-timelines", "year": 2025, "verified": true},
+    {"who": "Ege Erdil and Tamay Besiroglu", "claim": "17 Apr 2025, on a drop-in remote worker: Erdil, 'Maybe for me, that would be around 2045'; Besiroglu, 'Just shade Ege's predictions by five years or by 20% or something.'", "source": "https://www.dwarkesh.com/p/ege-tamay", "year": 2025, "verified": true},
+    {"who": "Tamay Besiroglu", "claim": "November 2026, on the short-timeline updates: 'it'll be clear in a few years that this didn't happen'. Quoted by Gabe Wigutow; original not read.", "source": "https://www.lesswrong.com/posts/x64cRHmmy7z2ds5HQ/don-t-burn-the-boats-for-slower-worlds", "year": 2026, "verified": false},
+    {"who": "Epoch AI (GATE authors)", "claim": "GATE, 21 Mar 2025: the model 'consistently projects that the global economy can marshal enough effective compute to automate most tasks within two decades', with gains 'over roughly a decade'. 'We don't recommend interpreting the model outcomes as precise quantitative predictions.'", "source": "https://epoch.ai/blog/announcing-gate", "year": 2025, "verified": true},
+    {"who": "Epoch AI", "claim": "No staff-wide timeline forecast found for 2026. Epoch's October 2026 brief is reported as finding that current models 'cannot yet replace workers, at least not at Epoch' (search snippet).", "source": "https://epochai.substack.com/p/the-epoch-brief-october-23-2026", "year": 2026, "verified": false},
+    {"who": "Samotsvety", "claim": "24 Jan 2023, eight forecasters: 31% AGI by 2030, 63% by 2050, 81% by 2100; AGI defined by an adversarial Turing test. No later update found.", "source": "https://forum.effectivealtruism.org/posts/ByBBqwRXWqX5m9erL/update-to-samotsvety-agi-timelines", "year": 2023, "verified": true},
+    {"who": "Samotsvety", "claim": "9 Sep 2022, eleven forecasters: 38% for existential catastrophe from AI conditional on AGI by 2070 (range 4 to 98%; 23% among the five not previously highly engaged with effective altruism); 25% for misaligned AI takeover by 2100.", "source": "https://www.lesswrong.com/posts/YMsD7GA7eTg2BafQd/samotsvety-s-ai-risk-forecasts", "year": 2022, "verified": true},
+    {"who": "AI Impacts (Grace et al.), ESPAI 2024", "claim": "1,580 researchers, December 2024: HLMI 50% year 2042, down from 2047 (2023), 2059 (2022) and 2061 (2016). Extinction or similarly severe disempowerment: mean 18.2%, median 10% (2023: 16.5% and 5%); 51% give at least 10%.", "source": "https://aiimpacts.org/wp-content/uploads/2026/09/ESPAI2024.pdf", "year": 2026, "verified": true},
+    {"who": "AI Impacts (Grace et al.), ESPAI 2023", "claim": "2,778 researchers, October 2023: extinction or severe disempowerment from future AI advances, median 5% and mean 16.2%; from human inability to control AI, median 10% and mean 19.4%. Extremely bad long-run outcome of HLMI: median 5%.", "source": "https://arxiv.org/abs/2401.02843", "year": 2024, "verified": true},
+    {"who": "Forecasting Research Institute, XPT", "claim": "Forecasts of 2022, medians. AI extinction by 2030, 2050, 2100: superforecasters 0.0001%, 0.03%, 0.38%; domain experts 0.02%, 1.1%, 3%. AI catastrophe (more than 10% of humans die within five years): superforecasters 0.01%, 0.73%, 2.13%; domain experts 0.35%, 5%, 12%.", "source": "https://forum.effectivealtruism.org/posts/K2xQrrXn5ZSgtntuT/what-do-xpt-forecasts-tell-us-about-ai-risk-1", "year": 2023, "verified": true},
+    {"who": "Forecasting Research Institute, XPT", "claim": "'XPT superforecasters more than quadruple their forecasts for AI extinction risk by 2100 if conditioned on AGI or TAI by 2070.' Scott Alexander reports the conditional figure as 1%, which is less than four times 0.38%; the table that would settle it was not opened.", "source": "https://forum.effectivealtruism.org/posts/K2xQrrXn5ZSgtntuT/what-do-xpt-forecasts-tell-us-about-ai-risk-1", "year": 2023, "verified": true},
+    {"who": "Forecasting Research Institute", "claim": "2 Sep 2025 retrospective on the XPT: 'superforecasters assigned an average probability of just 9.7% to the observed AI progress outcomes', against 24.6% for domain experts.", "source": "https://forecastingresearch.substack.com/p/what-did-forecasters-get-right-and", "year": 2025, "verified": true},
+    {"who": "Forecasting Research Institute", "claim": "23 Sep 2026: 'forecasters should expect much faster AI progress, faster AI adoption, and much larger AI impacts going forward.'", "source": "https://forecastingresearch.substack.com/p/ai-progress-forecasts-accuracy", "year": 2026, "verified": true},
+    {"who": "Forecasting Research Institute, adversarial collaboration", "claim": "Existential catastrophe due to AI by 2100, end of the exercise: median sceptic 0.12%, median concerned participant 20%.", "source": "https://www.lesswrong.com/posts/94K6pskgqBmuxsJLx/results-from-an-adversarial-collaboration-on-ai-risk-fri", "year": 2024, "verified": true},
+    {"who": "Forecasting Research Institute, LEAP Wave 8", "claim": "April to May 2026: median expert and median superforecaster each give 80% that AGI (90th-percentile professional in every non-physical occupation, at up to 5x human cost) exists before 2100; conditional median year 2050 (experts), 2047 (superforecasters).", "source": "https://forecastingresearch.substack.com/p/leap-wave-8-ai-timelines", "year": 2026, "verified": true},
+    {"who": "Forecasting Research Institute, LEAP Wave 9", "claim": "May to June 2026, median expert: AI-related catastrophe (more than 10% die in five years) 0.08% by 2030, 1% by 2050, 2% by 2100 under slow progress; 1%, 5%, 10% under rapid progress. AI-driven event with 50 deaths or $100 billion by 2050: experts 62%, superforecasters 70%.", "source": "https://forecastingresearch.substack.com/p/forecasting-major-risks-from-ai", "year": 2026, "verified": true},
+    {"who": "Good Judgment superforecasters (for Open Philanthropy)", "claim": "May 2023 medians: AGI by 2070 40%; existential catastrophe from power-seeking AI by 2070 1%; existential catastrophe from out-of-control AGI by 2200, conditional on AGI by 2070, 6%.", "source": "https://www.lesswrong.com/posts/voABShdmY6A9hMFnG/superforecasting-the-premises-in-is-power-seeking-ai-an", "year": 2023, "verified": true},
+    {"who": "AI Digest 2025 forecasting survey (written up by Anson Ho, Epoch)", "claim": "421 self-selected forecasters: 'Half of them expected HLMI to be developed by 2030, and 90% of them expected it by 2040.'", "source": "https://epoch.ai/gradient-updates/how-well-did-forecasters-predict-2025-ai-progress", "year": 2026, "verified": true},
+    {"who": "Dario Amodei (claim)", "claim": "October 2024, on powerful AI: 'I think it could come as early as 2026, though there are also ways it could take much longer.'", "source": "https://www.darioamodei.com/essay/machines-of-loving-grace", "year": 2024, "verified": true},
+    {"who": "Dario Amodei (claim)", "claim": "11 Feb 2025: 'Possibly by 2026 or 2027 (and almost certainly no later than 2030), the capabilities of AI systems will be best thought of as akin to an entirely new state populated by highly intelligent people'.", "source": "https://www.anthropic.com/news/paris-ai-summit", "year": 2025, "verified": true},
+    {"who": "Dario Amodei (claim)", "claim": "January 2026: 'powerful AI could be as little as 1-2 years away, although it could also be considerably further out'.", "source": "https://www.darioamodei.com/essay/the-adolescence-of-technology", "year": 2026, "verified": true},
+    {"who": "Dario Amodei (claim)", "claim": "13 Feb 2026: 'within ten years we'll get to what I call a country of geniuses in a data center, I'm at 90% on that'; 'I have a hunch that we're going to get there within a year or two.' The near end has slid about a year since 2024.", "source": "https://www.dwarkesh.com/p/dario-amodei-2", "year": 2026, "verified": true},
+    {"who": "Sam Altman (claim)", "claim": "29 Oct 2025: OpenAI's internal goals are 'an automated AI research intern by September of 2026' and 'a true automated AI researcher by March of 2028'. In September 2026 OpenAI declared the intern goal met. Read in press reports; the originals refused to load.", "source": "https://x.com/sama/status/1983584366547829073", "year": 2025, "verified": false},
+    {"who": "Sam Altman (claim)", "claim": "19 Feb 2026, India AI Impact Summit: 'only a couple of years away from early versions of true superintelligence'. Press reports; wording varies between outlets and no transcript was opened.", "source": "MediaNama, 21 Feb 2026, and DQ India, 19 Feb 2026; exact URLs not recorded", "year": 2026, "verified": false},
+    {"who": "Demis Hassabis (claim)", "claim": "20 Apr 2025, on AGI: 'In the next five to ten years, I think.' On Lex Fridman's podcast later in 2025: '50% chance by in the next five years, so by 2030 let's say' (https://lexfridman.com/demis-hassabis-2-transcript). His AGI means all human cognitive capabilities, a higher bar than the brief's.", "source": "https://www.cbsnews.com/news/artificial-intelligence-google-deepmind-ceo-demis-hassabis-60-minutes-transcript/", "year": 2025, "verified": true},
+    {"who": "Demis Hassabis (claim)", "claim": "14 Jul 2026: AGI 'is probably only a few short years away'. He has moved earlier since 2025.", "source": "https://demishassabis.substack.com/p/a-framework-for-frontier-ai-and-the-dawning-of-a-new-age", "year": 2026, "verified": true},
+    {"who": "Demis Hassabis (claim)", "claim": "26 May 2026: 'around 2030, plus or minus a year, I think is a reasonable estimate'. Axios refused to load; read as quoted by Digit.", "source": "Axios, 26 May 2026, as quoted by Digit; exact URL not recorded", "year": 2026, "verified": false},
+    {"who": "Arvind Narayanan and Sayash Kapoor", "claim": "No dates or probabilities: 'We have not tried to quantify probabilities'. 'Transformative economic and societal impacts will be slow (on the timescale of decades)'; 'Diffusion occurs over decades, not years.' Nov 2025: they 'do not expect strong AGI to arrive anytime soon'.", "source": "https://knightcolumbia.org/content/ai-as-normal-technology", "year": 2025, "verified": true},
+    {"who": "Yann LeCun", "claim": "22 Jan 2026: human-level AI is 'not going to happen next year or two years from now'; 'It's going to take a while.' No date.", "source": "https://www.technologyreview.com/2026/01/22/1131661/yann-lecuns-new-venture-ami-labs/", "year": 2026, "verified": true},
+    {"who": "Andrej Karpathy", "claim": "17 Oct 2025, on agents: 'It will take about a decade to work through all of those issues.' No 2026 revision found.", "source": "https://www.dwarkesh.com/p/andrej-karpathy", "year": 2025, "verified": true},
+    {"who": "Robin Hanson", "claim": "22 Dec 2023: 'my median-estimate date for the creation of a human-level AI is roughly 2150'; 'I'm pretty sure it won't be in the next thirty years.' Nothing later found.", "source": "https://www.theblaze.com/return/when-will-computers-be-smarter-than-humans-return-asked-top-ai-experts-robin-hanson", "year": 2023, "verified": true},
+    {"who": "Rodney Brooks", "claim": "1 Jan 2026 scorecard: keeps 2018 predictions of a dog-level robot 'no earlier than 2048' and six-year-old-level understanding 'not in my lifetime', defined as not before 2050. Proxy milestones, below the brief's AGI.", "source": "https://rodneybrooks.com/predictions-scorecard-2026-january-01/", "year": 2026, "verified": true},
+    {"who": "Gary Marcus", "claim": "20 Dec 2025: 'We won't get to AGI in 2026 (or 7).' No probability stated.", "source": "https://garymarcus.substack.com/p/six-or-seven-predictions-for-ai-2026", "year": 2025, "verified": true},
+    {"who": "AAAI 2025 Presidential Panel", "claim": "76% of 475 surveyed researchers rated it unlikely or very unlikely that scaling current approaches yields AGI. Percentage read in a press report; the report PDF would not parse.", "source": "The Decoder, 14 Mar 2025, reporting the AAAI panel report; exact URL not recorded", "year": 2025, "verified": false},
+    {"who": "Dwarkesh Patel", "claim": "Moved from long to short. June 2025: 50/50 dates of 2028 for doing a small business's taxes end to end and 2032 for human-like on-the-job learning. 13 Nov 2026: median 2028 for automated researchers as good as the best humans, and AIs 'at least as good as the best human experts in every field' by 2030.", "source": "https://www.dwarkesh.com/p/rsi", "year": 2026, "verified": true},
+    {"who": "Paul Christiano", "claim": "November 2026: 'more like a 10% risk than a 1% risk over the next year' of AI takeover; 'maybe a 1/3 chance' of superintelligence within a year absent a slowdown; 'something like a coin flip' within three years if built as fast as possible. Read in The Next Web's report of his Hinton Lecture and Dwarkesh interview.", "source": "https://thenextweb.com/news/paul-christiano-ai-takeover-hinton-lectures-openai-board", "year": 2026, "verified": false},
+    {"who": "Paul Christiano", "claim": "27 Apr 2023: probability of an AI takeover 22%; that most humans die within 10 years of building powerful AI 20%; that humanity has irreversibly messed up its future within 10 years of powerful AI 46%.", "source": "https://www.lesswrong.com/posts/xWMqsvHapP3nwdSW8/my-views-on-doom", "year": 2023, "verified": true},
+    {"who": "Zvi Mowshowitz", "claim": "18 Nov 2026: 'I believe an SAR in 2027 is under 50% to happen, but not so far under 50%'; 'I worry that the updates are too large'.", "source": "https://thezvi.substack.com/p/quickly-theres-no-time", "year": 2026, "verified": true},
+    {"who": "Zvi Mowshowitz", "claim": "Probability of doom: 'current (as of 1/1/24) 60%'; his market on whether it would fall substantially resolved no a year later.", "source": "https://manifold.markets/ZviMowshowitz/will-zvis-pdoom-go-down-substantial", "year": 2024, "verified": true},
+    {"who": "Rob Wiblin, 80,000 Hours", "claim": "Recorded 3 Jul 2026: his AGI timelines 'shortened by something like one year as a result of everything we've seen in 2026'; fully automated AI R&D in 2028 'feels plausible'; 'a very real chance' of a slower takeoff 'that takes until the mid-2030s'.", "source": "https://80000hours.org/podcast/episodes/2026-agi-timelines/", "year": 2026, "verified": true},
+    {"who": "Toby Ord", "claim": "November 2026 critique, as reported by Gabe Wigutow: METR's 1.9x speed-up shrinks to 1.4x after allowing for a one-time jump from Mythos Preview's pretraining. Original not read.", "source": "https://www.lesswrong.com/posts/x64cRHmmy7z2ds5HQ/don-t-burn-the-boats-for-slower-worlds", "year": 2026, "verified": false},
+    {"who": "Tom Davidson", "claim": "23 Jan 2023: 'probably just a few years (~3 years) from 20%-AI to 100%-AI'; about 10% under 3 months, 25% under 1 year, 50% under 3 years, 80% under 10 years. AGI to superintelligence: 'My best guess is that the time between these milestones is less than 1 year', absent a choice to go slower.", "source": "https://www.lesswrong.com/posts/Gc9FGtdXhK9sCSEYu/what-a-compute-centric-framework-says-about-ai-takeoff", "year": 2023, "verified": true},
+    {"who": "Tom Davidson and Tom Houlden, Forethought", "claim": "4 Aug 2025: a software intelligence explosion 'will probably (~60%) compress >3 years of AI progress into <1 year but is somewhat unlikely (~20%) to compress >10 years into <1 year'.", "source": "https://www.forethought.org/research/how-quick-and-big-would-a-software-intelligence-explosion-be", "year": 2025, "verified": true},
+    {"who": "Will MacAskill and Fin Moorhouse, Forethought", "claim": "11 Mar 2025: 'a century of technological progress in a decade - or far more - is more likely than not'; AI research effort reaching parity with human research labour 'within the next two decades' seems likely.", "source": "https://www.forethought.org/research/preparing-for-the-intelligence-explosion", "year": 2025, "verified": true},
+    {"who": "Daniel Kokotajlo and Eli Lifland", "claim": "AI 2027 takeoff forecast, April 2025: superhuman coder to SAR 0.3 years; SAR to superintelligent AI researcher 0.3 years (80% CI 0.04 to 56); then to ASI 0.16 years (80% CI 0.01 to over 100). Superhuman coder to ASI: median about a year.", "source": "https://ai-2027.com/research/takeoff-forecast", "year": 2025, "verified": true},
+    {"who": "Eli Lifland", "claim": "31 Dec 2025, all-things-considered: automated coder to ASI in under 1 year 30%, in under 3 years 60%. The model 'still puts 38% probability of takeoff as fast as AI 2027's median'.", "source": "https://blog.aifutures.org/p/ai-futures-model-dec-2025-update", "year": 2025, "verified": true},
+    {"who": "Leopold Aschenbrenner", "claim": "June 2024: 'we'd go from AGI to superintelligence very quickly, perhaps in less than one year'; 'The intelligence explosion and the immediate post-superintelligence period will be one of the most volatile, tense, dangerous, and wildest periods ever in human history.'", "source": "https://situational-awareness.ai/from-agi-to-superintelligence/", "year": 2024, "verified": true},
+    {"who": "Ege Erdil and Matthew Barnett", "claim": "21 Mar 2025: 'a software-only or software-biased singularity should be treated as an unlikely outcome'; faster growth 'will likely only occur after several years or decades of increasingly widespread and disruptive automation'.", "source": "https://epoch.ai/gradient-updates/most-ai-value-will-come-from-broad-automation-not-from-r-d", "year": 2025, "verified": true},
+    {"who": "Robin Hanson", "claim": "3 Mar 2023: the world economy 'is likely to enter a transition that lasts roughly a decade, after which it may double every few months or faster', at some point in the next few centuries.", "source": "https://www.overcomingbias.com/p/ai-risk-again", "year": 2023, "verified": true},
+    {"who": "80,000 Hours, summarising Ajeya Cotra", "claim": "Episode recorded 20 Oct 2025; the page summary says 'Ajeya thinks there's maybe 12 months from AI R&D automation to uncontrollable superintelligence'. The summary's words, not a quotation of hers.", "source": "https://80000hours.org/podcast/episodes/ajeya-cotra-transformative-ai-crunch-time/", "year": 2026, "verified": true},
+    {"who": "AI Futures Project (AI 2027 endings)", "claim": "Race ending: about three years after SAR, 'in mid-2030, the AI releases a dozen quiet-spreading biological weapons in major cities'. Slowdown ending: superintelligence in April 2028, sections headed '2029: Transformation' and '2030: Peaceful Protests'. In August 2027 the US asks the Pentagon 'to draw up a plan for kinetic attacks on Chinese datacenters'.", "source": "https://ai-2027.com/race", "year": 2025, "verified": true},
+    {"who": "Dan Hendrycks, Eric Schmidt and Alexandr Wang", "claim": "March 2025: mutual assured AI malfunction 'already describes the strategic picture AI superpowers find themselves in'; states 'will act to disable threatening AI projects' before a rival has superintelligence.", "source": "https://www.nationalsecurity.ai/chapter/deterrence-with-mutual-assured-ai-malfunction-maim", "year": 2025, "verified": true},
+    {"who": "RAND (Burdette and Demelash)", "claim": "30 Sep 2025, abstract: 'in absolute terms, the probability of war is low, but preventive attacks appear relatively more likely to occur in an attempt to preserve a monopoly on AGI than in an attempt to prevent one'.", "source": "https://www.rand.org/pubs/perspectives/PEA3691-13.html", "year": 2025, "verified": true},
+    {"who": "Anthropic (safety determination)", "claim": "22 May 2025: ASL-3 protections switched on because 'clearly ruling out ASL-3 risks is not possible for Claude Opus 4', though it had 'not yet determined' that the model passed the threshold. A misuse threshold approached well before AGI.", "source": "https://www.anthropic.com/news/activating-asl3-protections", "year": 2025, "verified": true},
+    {"who": "OpenAI (safety determinations)", "claim": "17 Jul 2025: ChatGPT Agent treated 'as High capability in the Biological and Chemical domain'. 9 Jul 2026: GPT-5.6 rated 'High in Cybersecurity, and below High in AI Self-Improvement' (https://deploymentsafety.openai.com/gpt-5-6).", "source": "https://deploymentsafety.openai.com/chatgpt-agent", "year": 2025, "verified": true},
+    {"who": "Anthropic Frontier Red Team", "claim": "7 Apr 2026: Claude Mythos Preview is 'capable of identifying and then exploiting zero-day vulnerabilities in every major operating system'; 'the transitional period may be tumultuous regardless'. Not made generally available.", "source": "https://www.anthropic.com/research/mythos-preview", "year": 2026, "verified": true},
+    {"who": "Dario Amodei", "claim": "Jan 2026: LLMs 'may already be providing substantial uplift' to bioweapon attempts, 'perhaps doubling or tripling the likelihood of success'; 'AI could displace half of all entry-level white collar jobs in the next 1-5 years'.", "source": "https://www.darioamodei.com/essay/the-adolescence-of-technology", "year": 2026, "verified": true},
+    {"who": "Tom Davidson, Lukas Finnveden and Rose Hadshar, Forethought", "claim": "15 Apr 2025: 'AI capabilities are currently too limited to significantly assist with coups'; mitigations 'must be in place by the time AI systems can meaningfully assist with coups'. No date or duration.", "source": "https://www.forethought.org/research/ai-enabled-coups-how-a-small-group-could-use-ai-to-seize-power", "year": 2025, "verified": true},
+    {"who": "Daniel Kokotajlo", "claim": "3 Apr 2025: 'my P(doom) is sort of infamously high, like 70%'. Doom is not defined and the figure is not conditional. On the 80,000 Hours podcast recorded in July 2026 he called AIs turning on humans 'more likely than not under current conditions' (episode URL not recorded).", "source": "https://www.dwarkesh.com/p/scott-daniel", "year": 2025, "verified": true},
+    {"who": "Toby Ord", "claim": "'1 in 10 for Unaligned AI': existential catastrophe in the next 100 years, from The Precipice (2020). In July 2024: 'the story on Pandemics and AI is mixed - lots of changes, but no clear direction for the overall risk.'", "source": "https://forum.effectivealtruism.org/posts/iKLLSYHvnhgcpoBxH/the-precipice-revisited", "year": 2024, "verified": true},
+    {"who": "Toby Ord", "claim": "2020, the same estimate as a conditional: 'about a 50% chance that we create something that's more intelligent than humanity this century. And then there's only an 80% chance that we manage to survive that transition'. 'If you put that together, you get a 10% chance'. So 20% given AGI.", "source": "https://80000hours.org/podcast/episodes/toby-ord-the-precipice-existential-risk-future-humanity/", "year": 2020, "verified": true},
+    {"who": "Joe Carlsmith", "claim": "Existential catastrophe from power-seeking AI by 2070: about 5% (2021), 'now at >10%' (May 2022 update). No later figure found.", "source": "https://arxiv.org/abs/2206.13353", "year": 2022, "verified": true},
+    {"who": "Carl Shulman", "claim": "26 Jun 2023, on forcible AI takeover: 'depending on the day I might say one in four or one in five'.", "source": "https://www.dwarkesh.com/p/carl-shulman-2", "year": 2023, "verified": true},
+    {"who": "Scott Alexander", "claim": "3 Apr 2025, on his probability of doom: 'I'm more like 20%.' On Astral Codex Ten, 14 Mar 2023, he had said 'probably around 33%'.", "source": "https://www.dwarkesh.com/p/scott-daniel", "year": 2025, "verified": true},
+    {"who": "Eliezer Yudkowsky", "claim": "Gives no number and rejects the exercise. 'The most likely result of building a superhumanly smart AI ... is that literally everyone on Earth will die' (TIME, 29 Mar 2023).", "source": "https://time.com/6266923/ai-eliezer-yudkowsky-open-letter-not-enough/", "year": 2023, "verified": true},
+    {"who": "Dario Amodei", "claim": "17 Sep 2025: a 25% chance that things go 'really, really badly'. Press report of a live event; not only existential outcomes.", "source": "Axios AI+ DC Summit, 17 Sep 2025, as reported by Business Insider (via Yahoo), 18 Sep 2025; exact URL not recorded", "year": 2025, "verified": false},
+    {"who": "Geoffrey Hinton", "claim": "December 2024: '10% to 20%' that AI leads to human extinction within three decades. Press report of a radio interview.", "source": "https://www.irishexaminer.com/world/arid-41544136.html", "year": 2024, "verified": false},
+    {"who": "Yoshua Bengio", "claim": "15 Jul 2023: 'around, like, 20 per cent probability that it turns out catastrophic'.", "source": "https://www.abc.net.au/news/2023-07-15/whats-your-pdoom-ai-researchers-worry-catastrophe/102591340", "year": 2023, "verified": true},
+    {"who": "Arvind Narayanan and Sayash Kapoor", "claim": "26 Jul 2024: 'AI x-risk forecasts are far too unreliable to be useful for policy, and in fact highly misleading.' They give no figure of their own.", "source": "https://www.normaltech.ai/p/ai-existential-risk-probabilities", "year": 2024, "verified": true},
+    {"who": "Ryan Greenblatt", "claim": "23 Sep 2025: conditional on AI takeover, 'literal human extinction is around 25% likely', and about half of people now living die in expectation.", "source": "https://blog.redwoodresearch.org/p/notes-on-fatalities-from-ai-takeover", "year": 2025, "verified": true}
+  ],
+  "blockedSources": [
+    "https://www.metaculus.com/questions/5121/ and /3479/ and the API (HTTP 403): the community quartiles, full distribution, history and resolution criteria. Only the embed pages loaded, which show the estimate and forecaster count.",
+    "https://web.archive.org and https://archive.ph (refused by the fetch tool): archived Metaculus pages.",
+    "AI Futures Project forecast tables and charts in the Q1, Q2.5 and Q3.5 2026 posts (images) and https://www.aifuturesmodel.com/forecast/ pages (rendered by script): each author's full distribution by year, and the August 2026 medians at source.",
+    "https://www.lesswrong.com/posts/f9PajMLmBYzmWzyDv/ (body truncated): the full author list of the Q3.5 post; two authors are known to me only as Thomas and Lukas.",
+    "https://www.forbes.com/sites/anishasircar/2026/11/12/ (HTTP 403): press account of the Q3.5 update.",
+    "https://x.com (HTTP 402): METR's post on Claude Mythos Preview, Sam Altman's October 2025 post, and the November 2026 posts by Lifland, Cotra, Besiroglu and Ord.",
+    "METR's per-model data file behind https://metr.org/time-horizons/: time horizons for models released after January 2026.",
+    "https://forum.effectivealtruism.org (HTTP 429; a mirror was used) and https://samotsvety.org (connection refused; crossposts were used).",
+    "The XPT full report PDF (over the size limit): the table of forecasts conditional on AGI by 2070.",
+    "https://goodjudgment.com (HTTP 403): the superforecaster report for Open Philanthropy, beyond the three figures Carlsmith quotes.",
+    "https://openai.com (HTTP 403) and https://www.axios.com (HTTP 403): OpenAI's September 2026 research-intern post; Hassabis's May 2026 and Amodei's September 2025 remarks.",
+    "The Claude Mythos Preview system card PDF and the AAAI 2025 panel report PDF (not parseable).",
+    "https://www.planned-obsolescence.org/p/six-milestones-for-ai-automation (dates only in a chart): Cotra's April 2026 medians at source.",
+    "https://www.globalriskodds.com/agi (rendered by script): a dashboard combining AGI markets."
+  ],
+  "openQuestions": [
+    "The short preset rests on a nine-day-old update that moved its authors' medians by up to 19 months and depends on evidence METR could not publish. Re-read the AI Futures Project and Metaculus before publication.",
+    "AI Futures Project forecasts assume no deliberate slowdown. The model needs an unconditional curve; I shaded by a few points without a source for how much.",
+    "Metaculus strong-AGI quartiles are unverified. Someone with a logged-in session should read the distribution for questions 5121 and 3479.",
+    "LEAP Wave 8 does not make clear whether its 25th and 75th percentile years are conditional on AGI before 2100.",
+    "shareOfRiskBeforeAGI depends on the timeline (3% to 50% across presets). The model should compute it from the 'now' rates and the reader's timeline, not take a constant.",
+    "Risk inside the transition is front-loaded in fast-takeoff views (most within one to three years of AGI) and flat in slow-diffusion views. A single five-year rate hides this.",
+    "pExistentialGivenAGI probably rises as timelines shorten (Metaculus q12840 shows 30% for arrival in the 2030s against 11% for 2060 to 2099); the model treats it as independent of the timeline.",
+    "Several named views have no published number: Cotra's current timeline, Yudkowsky, LeCun, Narayanan and Kapoor, Epoch staff as a group."
+  ]
+}

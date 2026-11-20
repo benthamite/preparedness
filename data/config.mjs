@@ -133,9 +133,82 @@ export default {
     bankingCrisis: { label: 'Bank freeze or currency crisis', from: 'tail-finance-unrest' },
     civilUnrest: { label: 'Serious unrest', from: 'tail-finance-unrest' },
 
+    // Hazards added by the AI research. Their probabilities come from it;
+    // their windows are the researchers' guesses, set out in the notes of
+    // research/ai/ai-cyber.json and ai-war.json.
+    cyberOutage: {
+      label: 'Blackout from an attack or software failure', aiBase: true,
+      definition: 'Grid power out for 1 to 14 days across a metropolitan region or larger because of a cyberattack, sabotage, or a failure of software or AI-run operations.',
+      profile: {
+        windows: {
+          power: { pOccur: 1, days: { p50: 2, p90: 6, p99: 14 } },
+          water: { pOccur: 0.25, days: { p50: 1, p90: 3, p99: 8 }, shareTreatable: 0.8 },
+          comms: { pOccur: 0.6, days: { p50: 1, p90: 4, p99: 12 } },
+          payments: { pOccur: 0.9, days: { p50: 2, p90: 6, p99: 14 } },
+          food: { pOccur: 0.1, days: { p50: 1, p90: 3, p99: 7 } },
+          sanitation: { pOccur: 0.1, days: { p50: 1, p90: 4, p99: 10 } },
+        },
+        coldShare: 0.4, hotShare: 0.25,
+        leave: { feasible: 0.85, earliestDay: 1, fixedUsdPerHousehold: 300, usdPerPersonDay: 45 },
+        warningDays: 0, lateBuy: { staple: 0, specialty: 0 },
+        exposures: [
+          { channel: 'co', micromortsPerPerson: guess(0.03, 0.15, 0.6, 'As for a severe storm (hazards-ordinary.json): improvised power and cooking.') },
+          { channel: 'fire', micromortsPerPerson: guess(0.02, 0.1, 0.4, 'As for a severe storm (hazards-ordinary.json): candles and improvised cooking.') },
+        ],
+      },
+    },
+    paymentsOutage: {
+      label: 'Payment systems down', aiBase: true,
+      definition: 'For at least a day the household cannot pay by card, use ATMs or reach its bank, because of an attack on or failure of banks, card networks or the systems between them, while shops stay open.',
+      profile: {
+        windows: { payments: { pOccur: 1, days: { p50: 2, p90: 7, p99: 30 } } },
+        leave: { feasible: 0, earliestDay: 0, fixedUsdPerHousehold: 0, usdPerPersonDay: 0 },
+        warningDays: 0, lateBuy: { staple: 0, specialty: 0 },
+      },
+    },
+    commsOutage: {
+      label: 'Mobile and internet down', aiBase: true,
+      definition: 'Mobile and home internet unusable for at least a day for a national operator or a metropolitan region, because of an attack or an AI-caused failure.',
+      profile: {
+        windows: {
+          comms: { pOccur: 1, days: { p50: 1.5, p90: 5, p99: 14 } },
+          payments: { pOccur: 0.3, days: { p50: 1, p90: 3, p99: 7 } },
+          emergencyCare: { pOccur: 0.3, days: { p50: 1, p90: 2, p99: 5 } },
+        },
+        leave: { feasible: 0, earliestDay: 0, fixedUsdPerHousehold: 0, usdPerPersonDay: 0 },
+        warningDays: 0, lateBuy: { staple: 0, specialty: 0 },
+      },
+    },
+    greatPowerWar: {
+      label: 'War between great powers, short of nuclear', aiBase: true,
+      definition: 'A conventional war between the United States and China, or a Russia–NATO war of similar scale, that does not go nuclear. Its financial effects are not counted here: nothing on the list addresses them.',
+      profile: {
+        windows: {
+          power: { pOccur: 0.2, days: { p50: 2, p90: 10, p99: 30 } },
+          water: { pOccur: 0.07, days: { p50: 1, p90: 3, p99: 7 }, shareTreatable: 0.8 },
+          comms: { pOccur: 0.2, days: { p50: 1, p90: 3, p99: 10 } },
+          payments: { pOccur: 0.15, days: { p50: 2, p90: 7, p99: 14 } },
+          medication: { pOccur: 0.15, days: { p50: 14, p90: 60, p99: 120 } },
+        },
+        coldShare: 0.3, hotShare: 0.25,
+        leave: { feasible: 0, earliestDay: 0, fixedUsdPerHousehold: 0, usdPerPersonDay: 0 },
+        warningDays: 30, lateBuy: { staple: 0.8, specialty: 0.3 },
+        byLocation: {
+          buenosAires: {
+            windows: {
+              medication: { pOccur: 0.1, days: { p50: 14, p90: 60, p99: 120 } },
+              payments: { pOccur: 0.15, days: { p50: 5, p90: 10, p99: 20 } },
+            },
+            coldShare: 0, hotShare: 0,
+          },
+        },
+      },
+    },
+
     // Everyday risks, as yearly expectations, so that ordinary safety items
     // compete on the same scale. Baselines are for a home without the item.
     houseFire: {
+      everyday: true,
       label: 'House fire (everyday)',
       definition: 'The yearly risk of death and loss from fire at home, for a home with no working smoke alarm.',
       profile: (R, T) => ({
@@ -145,6 +218,7 @@ export default {
       }),
     },
     coIncident: {
+      everyday: true,
       label: 'Carbon monoxide at home (everyday)',
       definition: 'The yearly risk of carbon monoxide poisoning at home from appliances, heaters, engines and vehicles, for a home with fuel-burning equipment and no alarm.',
       profile: (R, T) => ({
@@ -154,6 +228,7 @@ export default {
       }),
     },
     homeMedicalEmergency: {
+      everyday: true,
       label: 'Medical emergency at home (everyday)',
       definition: 'The yearly risk of death from an emergency at home that is decided before the ambulance arrives: mostly cardiac arrest.',
       profile: (R, T) => ({
@@ -162,6 +237,7 @@ export default {
       }),
     },
     seasonalIllness: {
+      everyday: true,
       label: 'Seasonal respiratory infection (everyday)',
       definition: 'The yearly deaths from influenza, COVID-19 and similar infections that routine vaccination averts.',
       profile: () => ({
@@ -170,12 +246,31 @@ export default {
       }),
     },
     violentCrime: {
+      everyday: true,
       label: 'Burglary and assault at home (everyday)',
       definition: 'The yearly risk of death and loss from burglary and assault at home.',
       profile: (R, T) => ({
         probability: { all: 1 }, windows: {},
         exposures: [{ channel: 'violence', micromortsPerPerson: T(R.channels.violence.everydayAnnualMicromortsPerPerson), financialUsdPerHousehold: T(R.channels.violence.everydayAnnualUsdPerHousehold) }],
       }),
+    },
+  },
+
+  // The reader's AI timeline. Presets are the timelines researcher's, built
+  // on the named sources (research/ai/ai-timelines.md).
+  ai: {
+    startYear: 2027,
+    horizonYears: 5,
+    timelines: {
+      short: { from: 'preset-short', label: 'Short: most likely by 2028 (AI Futures Project, November 2026)' },
+      middle: { from: 'preset-middle', label: 'Middle: around 2030 (Metaculus community)' },
+      long: { from: 'preset-long', label: 'Long: the 2040s (forecasting panels, researcher surveys)' },
+      never: { from: 'preset-not-this-century', label: 'Not this century' },
+    },
+    // Rates the researchers gave for hazards the model does not carry.
+    unused: {
+      cyberSupplyShock: 'Its main effect is on motor fuel, for which the model has no window.',
+      incomeShock: 'Nothing on the list addresses a lasting fall in earnings.',
     },
   },
 

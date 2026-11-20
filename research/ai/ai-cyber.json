@@ -1,0 +1,520 @@
+{
+  "kind": "ai",
+  "group": "ai-cyber",
+  "hazardRates": [
+    {
+      "hazard": "cyberOutage",
+      "newHazard": true,
+      "location": "us",
+      "baseline": {
+        "lo": 0.00005, "mid": 0.0005, "hi": 0.0025, "tag": "derived",
+        "basis": "Attack-caused blackout of 1-14 days reaching this household, AI removed. Half of the FRI/GovAI pilot's 2026 median (1% for a US grid cyberattack doing at least $10bn of damage, which at GovAI's $100-250 per person-day is about 40-100m person-days, taken as 12% of households out a day or more): 0.5% x 12% = 0.06%, plus ~0.02% from $1-10bn events = 0.08%, shaded to 0.05% because no cyberattack has ever cut power in the US. Lo: a sceptic in the line of Maschmeyer (zero US events, three short ones in Ukraine). Hi: the pilot's upper quartile (2%) x 12%. https://forecastingresearch.org/research/ai-cyber-risks-capabilities"
+      },
+      "now": {
+        "lo": 0.0001, "mid": 0.001, "hi": 0.008, "tag": "derived",
+        "basis": "Pilot medians at face value: 1% x 12% = 0.12%, plus ~0.05% from $1-10bn events = 0.17%, shaded to 0.1% because 2026 has almost passed without such an event; equals the pilot's 1.5-2x uplift from AI that can do industrial-control tasks applied to the baseline. Lo: sceptic who notes that AI has not changed state intent and that RAND's forecasters gave 4% to any AI-enabled state disruption of G20 infrastructure by July 2026 (resolved No). Hi: pilot upper quartile with that uplift (7-10%) x 12%, after a Mythos checkpoint completed UK AISI's operational-technology range in May 2026. https://forecastingresearch.org/research/ai-cyber-risks-capabilities"
+      },
+      "transition": {
+        "lo": 0.0005, "mid": 0.01, "hi": 0.05, "tag": "guess",
+        "basis": "Guess anchored on the pilot's warning-shot answers (after an AI-enabled grid attack by low-skill actors, P(at least $10bn) is 15% for experts and 4% for superforecasters): 8% x 12% = 1%, plus ~0.2% for AI-operations accidents, less a similar amount for defensive use of the same models. Lo: Narayanan-Kapoor or superforecaster view that defenders adopt in step and states stay deterred (five times their 'now'). Hi: a reader of Superintelligence Strategy or AI 2027 who expects sabotage of data centres and their power supply as routine policy, about one chance in four over the five years."
+      },
+      "after": {
+        "lo": 0.00002, "mid": 0.0003, "hi": 0.005, "tag": "guess",
+        "basis": "Guess. Mid is below baseline, on Anthropic's and Narayanan-Kapoor's stated expectation that machine-audited software favours defenders, offset by more automation in grid operations. Lo: provably secure control systems close the route. Hi: Hendrycks, Schmidt and Wang's view that attackers keep the advantage in infrastructure because of patch lag, in a world of standing AI-armed rivals."
+      },
+      "mechanism": "AI automates the scarce labour of a grid attack (finding flaws, moving through utility networks, coordinating many targets), which today confines it to a few states that are deterred outside war. At AGI that limit goes for anyone holding an unsafeguarded model, and rival states gain a motive to sabotage each other's data centres and the grids that feed them. AI also adds accident routes: software written, patched or run by AI, and gigawatt computing loads that leave the grid together.",
+      "survivableShare": {
+        "lo": 0.85, "mid": 0.97, "hi": 1, "tag": "guess",
+        "basis": "A blackout of days is survivable by construction; the remainder is the share of transition-period events that open a takeover or a nuclear exchange."
+      },
+      "evidence": [
+        {"claim": "FRI pilot with GovAI (13 superforecasters, 8 cybersecurity experts; surveyed July-August 2025, published 23 July 2026): median probability that a cyberattack on the US grid causes at least $10bn of damage in 2026 is 1% in both groups and at least $100bn is 0.1%; with AI uplift on industrial-control tasks 1.5% (experts) and 2% (superforecasters); after an AI-enabled $100m warning shot 15% and 4%. The authors call the results 'directional rather than definitive'.", "source": "https://forecastingresearch.org/research/ai-cyber-risks-capabilities", "year": 2026, "verified": true},
+        {"claim": "GovAI (van der Merwe, 30 July 2026): 'Absent serious physical damage to equipment, power is restored within hours or, at most, a few days.' Three cyber-induced blackouts in the ten years to December 2025, all in Ukraine (2015: 225,000 customers for 3.5 hours; 2016: 1.3 hours). US utilities report 'about four disturbances per year due to cyberattacks, none of which have caused power outages'.", "source": "https://www.matthewvandermerwe.com/grid/", "year": 2026, "verified": true},
+        {"claim": "CISA, NSA, FBI and partners (7 February 2024): Volt Typhoon actors are 'seeking to pre-position themselves on IT networks for disruptive or destructive cyberattacks against U.S. critical infrastructure' in a major crisis or conflict; access held in some victims 'for at least five years'; sectors are communications, energy, transportation, water.", "source": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a", "year": 2024, "verified": true},
+        {"claim": "UK AISI (13 May 2026): a newer Claude Mythos Preview checkpoint completed the 32-step corporate-network range in 6 of 10 attempts and the previously unsolved 'Cooling Tower' range in 3 of 10; the ranges are 'small, undefended enterprise networks' with access already gained.", "source": "https://www.aisi.gov.uk/blog/how-fast-is-autonomous-ai-cyber-capability-advancing", "year": 2026, "verified": true},
+        {"claim": "NERC Reliability Insights (September 2026): data centres dropped 1,500 MW (July 2024), 1,800 MW (February 2025) and 'nearly 4 GW' (Virginia, July 2026) off the grid after ordinary faults; the incidents 'did not create any near- or long-term issues for the system' but 'future incidents could result in severe impacts'.", "source": "https://www.nerc.com/globalassets/who-we-are/news/2026/09/reliability-insights_large-computational-load-risks-due-to-voltage-sensitivity.pdf", "year": 2026, "verified": true},
+        {"claim": "November 2026: a run of US outages (Microsoft email and Teams worldwide, a nationwide FAA ground stop of several hours, online banking at JPMorgan Chase and other banks) was attributed to technical faults; Secretary Rubio said there was 'zero evidence' of malign actors.", "source": "https://www.cbsnews.com/news/marco-rubio-tech-outages-not-connected/", "year": 2026, "verified": true}
+      ],
+      "notes": "Definition: grid power out for 1 to 14 days across a metropolitan region or larger because of a cyber or cyber-physical attack, sabotage of grid-connected assets, or a failure of software or AI-run operations (including data-centre load events), not weather. Baseline counts attacks only; AI-caused accidents enter in 'now' (about a tenth of the mid) and 'transition' (about a fifth). Windows given the event, in the model's form (days p50, p90, p99): power pOccur 1, days 2, 6, 14. Water pOccur 0.25, days 1, 3, 8, shareTreatable 0.8 (pressure loss and boil-water notices; in apartments above the mains-pressure floors water stops with the pumps). Comms pOccur 0.6, days 1, 4, 12 (cell sites run on batteries for hours). Payments pOccur 0.9, days 2, 6, 14 (cards and ATMs down while some shops sell for cash). Food pOccur 0.1, days 1, 3, 7. Sanitation pOccur 0.1, days 1, 4, 10. Piped gas normally continues, but most furnaces need electricity. coldShare about 0.4 and hotShare 0.25 in climates that have them: attackers choose their moment (Ukraine in December, Poland during a cold snap). Warning 0 days. Leave feasible 0.85 from day 1, since the event is regional. All window figures are guesses built on GovAI's restoration evidence (2003 Northeast blackout: 50m people, about 1.5 days to 90% restored; Iberia 2025: 90% within 14 hours). Events longer than 14 days belong to gridLong."
+    },
+    {
+      "hazard": "cyberOutage",
+      "newHazard": true,
+      "location": "westernEurope",
+      "baseline": {
+        "lo": 0.00005, "mid": 0.0004, "hi": 0.002, "tag": "guess",
+        "basis": "US derivation scaled by 0.8: no public counterpart to Volt Typhoon's pre-positioning, but Russia is an active adversary. Lo: sceptic counting zero attack-caused outages in the EU or UK. Hi: FRI pilot upper quartile transposed."
+      },
+      "now": {
+        "lo": 0.0001, "mid": 0.0008, "hi": 0.006, "tag": "guess",
+        "basis": "Twice baseline, as for the US. The two nearest misses on record are European: Poland, 29 December 2025 (over 30 wind and solar sites and a heat plant serving almost half a million customers, no loss of supply) and a small UK generator shut for four days in July 2026 with no customer effect. Lo: both failed to cut supply. Hi: both show intent to destroy, in winter. https://cert.pl/en/posts/2026/01/incident-report-energy-sector-2025/"
+      },
+      "transition": {
+        "lo": 0.0004, "mid": 0.006, "hi": 0.04, "tag": "guess",
+        "basis": "Guess: 60% of the US mid, because Europe hosts fewer of the frontier data centres that MAIM-style sabotage would aim at, while criminals, Russian services and stray AI agents reach it as easily. Lo and hi as for the US, scaled."
+      },
+      "after": {
+        "lo": 0.00002, "mid": 0.0003, "hi": 0.004, "tag": "guess",
+        "basis": "Guess, as for the US."
+      },
+      "mechanism": "As for the US, with Russia rather than China as the state with access and motive, and with less exposure to sabotage aimed at AI compute. The continental grid is one synchronous area, so a successful disturbance can spread across borders, as the non-cyber Iberian collapse of April 2025 did.",
+      "survivableShare": {
+        "lo": 0.85, "mid": 0.97, "hi": 1, "tag": "guess",
+        "basis": "As for the US."
+      },
+      "evidence": [
+        {"claim": "CERT Polska: on 29 December 2025 coordinated attacks hit more than 30 wind and photovoltaic farms, a manufacturer and a combined heat and power plant supplying heat to almost half a million customers, with wipers and damaged controllers; they 'did not affect the ongoing production of electricity'. It is the first publicly described destructive activity attributed to the Static Tundra / Berserk Bear cluster.", "source": "https://cert.pl/en/posts/2026/01/incident-report-energy-sector-2025/", "year": 2026, "verified": true},
+        {"claim": "A small UK generator was shut for four days in July 2026 after a cyberattack that the Telegraph linked to Iran; the government declined to attribute it and said 'at no point was there a risk to the wider energy system'.", "source": "https://www.cnbc.com/2026/08/23/small-uk-power-plant-shut-down-after-iran-linked-cyberattack-report.html", "year": 2026, "verified": true},
+        {"claim": "GovAI: in the 2025 Iberian blackout (not a cyberattack) 90% of power was restored within 14 hours.", "source": "https://www.matthewvandermerwe.com/grid/", "year": 2026, "verified": true},
+        {"claim": "ENISA Threat Landscape 2026 reportedly records rising hacktivist claims of intrusions into operational technology, mostly unverified and of low operational impact.", "source": "https://www.enisa.europa.eu/sites/default/files/2026-09/ENISA%20Threat%20Landscape%202026_Final.pdf", "year": 2026, "verified": false}
+      ],
+      "notes": "Definition and windows as in the US entry (power days p50 2, p90 6, p99 14). Winter timing matters more: district heating and heat pumps fail with the grid, so coldShare about 0.45."
+    },
+    {
+      "hazard": "cyberOutage",
+      "newHazard": true,
+      "location": "buenosAires",
+      "baseline": {
+        "lo": 0.00002, "mid": 0.00015, "hi": 0.001, "tag": "guess",
+        "basis": "Guess: 30% of the US mid. No state is known to hold access to Argentine utilities for use in war, and I found no report of an attack on Edenor, Edesur, CAMMESA or Transener; the remaining route is criminal ransomware reaching operations. Lo: sceptic, no events. Hi: weak defences (a national CERT of a handful of staff) on a grid that already fails often."
+      },
+      "now": {
+        "lo": 0.00004, "mid": 0.0003, "hi": 0.002, "tag": "guess",
+        "basis": "Twice baseline: incidents reported to CERT.ar rose from 200-400 a year to more than 700 in 2026, and AI-run intrusion campaigns pick targets by weakness rather than nationality. Lo: reporting, not attacks, rose (the agency's own caveat). Hi: as baseline. https://www.infobae.com/economia/2026/09/13/alerta-por-el-crecimiento-de-ciberataques-en-america-latina-el-antecedente-que-encendio-alarmas-y-que-pasa-en-la-argentina/"
+      },
+      "transition": {
+        "lo": 0.0002, "mid": 0.004, "hi": 0.03, "tag": "guess",
+        "basis": "Guess: 40% of the US mid. Sabotage between the AI powers does not aim at Argentina, but self-spreading malware, criminals with AGI-level tools and stray agents do reach it, and a thinly staffed utility on a grid with little spare capacity recovers more slowly. Lo: sceptic. Hi: an indiscriminate campaign of the kind the FRI pilot's experts put at 41% a year once open models can write elite exploits."
+      },
+      "after": {
+        "lo": 0.00002, "mid": 0.0003, "hi": 0.005, "tag": "guess",
+        "basis": "Guess: twice the local baseline, because hardening arrives later than in the US or Europe."
+      },
+      "mechanism": "Buenos Aires is reached indirectly: not as a target of great-power sabotage but as a soft one for criminal and indiscriminate attacks once AI makes them cheap, on a distribution grid that already runs near its limits in summer.",
+      "survivableShare": {
+        "lo": 0.9, "mid": 0.98, "hi": 1, "tag": "guess",
+        "basis": "Far from the likely theatres of a transition war; almost every such event is survivable."
+      },
+      "evidence": [
+        {"claim": "Infobae (13 September 2026): CERT.ar received 200-400 incidents a year in recent periods and more than 700 in 2026; the national cyber centre cautions that this may reflect more detection or reporting; the national SOC is not due to operate until early 2027. No Argentine attack that cut a service is reported.", "source": "https://www.infobae.com/economia/2026/09/13/alerta-por-el-crecimiento-de-ciberataques-en-america-latina-el-antecedente-que-encendio-alarmas-y-que-pasa-en-la-argentina/", "year": 2026, "verified": true},
+        {"claim": "Spanish-language searches (19 November 2026) for attacks on CAMMESA, Edenor, Edesur or SCADA systems returned only weather, equipment and supply failures; the January 2026 blackout was reported as a distribution fault.", "source": "https://www.iprofesional.com/energia/446376-apagon-en-el-amba-como-proteger-artefactos-y-el-estado-del-sistema-electrico", "year": 2026, "verified": false},
+        {"claim": "FRI pilot: probability of a data-damaging worm doing at least $10bn of damage in 2026 is 8% (experts) and 5% (superforecasters), rising to 41% and 15% if open-weight models let a quarter of moderately skilled hackers write elite exploits.", "source": "https://forecastingresearch.org/research/ai-cyber-risks-capabilities", "year": 2026, "verified": true}
+      ],
+      "notes": "Definition as in the US entry. Power days p50 2, p90 7, p99 14: slightly longer than the US because Edesur and Edenor already take days to restore after heat-wave failures (base-rates.md section 1). hotShare about 0.5, since the grid is most fragile in summer; coldShare near 0. High-rise apartments lose water with the pumps (water pOccur about 0.5 for them)."
+    },
+    {
+      "hazard": "gridLong",
+      "location": "us",
+      "baseline": {
+        "lo": 0.00002, "mid": 0.00012, "hi": 0.0015, "tag": "derived",
+        "basis": "All causes except nuclear EMP. Natural floor ~0.007%: Carrington-class storm ~0.7% a year (Chapman 2020, Roodman 2017, from base-rates.md section 6) x ~10% that it causes weeks-long outages x ~10% of households. Attack part ~0.005%: the FRI/GovAI pilot's 0.1% for a $100bn attack (100m people for about a week) x ~25% lasting two weeks for a given household x ~30% of households, halved to remove AI. Lo: Roodman and NERC's view that a storm means hours to days, and no attacker can sustain an outage. Hi: Lloyd's scenarios (2013 storm, 20-40m Americans for 16 days to 2 years; 2015 cyberattack, 93m people)."
+      },
+      "now": {
+        "lo": 0.00002, "mid": 0.0002, "hi": 0.002, "tag": "derived",
+        "basis": "Floor 0.007% unchanged. Attack part: pilot at face value, 0.1% x 25% x 30% = 0.0075%, plus its tail bin (at least $1tn: experts 0.0032%, superforecasters 0.02%) x ~40% of households, about 0.012% in all. Lo: sceptic, as baseline. Hi: pilot upper quartile for $100bn (0.12-0.15%), most of it long, plus a high storm estimate. https://forecastingresearch.org/research/ai-cyber-risks-capabilities"
+      },
+      "transition": {
+        "lo": 0.00005, "mid": 0.0015, "hi": 0.02, "tag": "guess",
+        "basis": "Guess: 15% of the transition cyberOutage rate (the ratio is about 10% today). A weeks-long outage needs what GovAI says no attacker has had, the means to damage dozens of large transformers or about 100 generators or to thwart dozens of parallel restoration efforts; an AGI-level attacker that keeps re-attacking supplies it. Lo: sceptic for whom restoration physics is unchanged. Hi: MAIM escalation to 'kinetic attacks on datacenters or corresponding power plants', or a rogue system holding infrastructure: 10% over the five years."
+      },
+      "after": {
+        "lo": 0.000005, "mid": 0.00005, "hi": 0.002, "tag": "guess",
+        "basis": "Guess: abundant AI labour and manufacturing shorten transformer replacement and restoration, lowering even the natural floor. Hi: a lastingly offence-dominant world."
+      },
+      "mechanism": "Today the limit on a long blackout is physical: power returns in hours or days unless equipment with long replacement times is destroyed or restoration is repeatedly undone. AI could remove that limit by letting an attacker act on hundreds of sites at once and persist against repair crews; a transition-period confrontation over AI compute gives states a reason to try.",
+      "survivableShare": {
+        "lo": 0.6, "mid": 0.85, "hi": 0.98, "tag": "guess",
+        "basis": "Nearly all of today's probability is survivable. In the transition perhaps a sixth of long-grid-failure scenarios are part of a takeover or a nuclear war, in which household stocks decide little."
+      },
+      "evidence": [
+        {"claim": "GovAI (van der Merwe, 30 July 2026): a week-long outage would require damaging 'dozens or more large transformers, at least 100 generators, or thwarting dozens of parallel restoration efforts'; $100bn of damage 'would require a blackout affecting approximately 100 million people for around a week', 'four orders of magnitude more disruption than any grid cyberattack on record'; outside conflict, states' willingness is 'significantly constrained'.", "source": "https://www.matthewvandermerwe.com/grid/", "year": 2026, "verified": true},
+        {"claim": "FRI pilot: median probability of a US grid cyberattack doing at least $100bn of damage in 2026 is 0.1% (experts' interquartile range 0.002-0.15%, superforecasters' 0.05-0.12%); $1-10tn bin 0.0032% and 0.02%.", "source": "https://forecastingresearch.org/research/ai-cyber-risks-capabilities", "year": 2026, "verified": true},
+        {"claim": "Superintelligence Strategy (Hendrycks, Schmidt, Wang, March 2025): the escalation ladder for disabling a rival's AI project includes 'Cyberattacks on datacenters or corresponding power plants' and 'Kinetic attacks on datacenters or corresponding power plants'; the authors advise 'city avoidance', placing large datacenters in remote areas.", "source": "https://www.nationalsecurity.ai/chapter/deterrence-with-mutual-assured-ai-malfunction-maim", "year": 2025, "verified": true},
+        {"claim": "Lloyd's 'Business Blackout' (6 July 2015): 'a severe, yet plausible' attack damages 50 generators and leaves 93 million people without power; economic loss $243bn, over $1trn in the extreme version. It gives no probability. GovAI judges that the analysis 'appears implausible in several respects'.", "source": "https://www.lloyds.com/insights/risk-reports/business-blackout", "year": 2015, "verified": true},
+        {"claim": "Carrington-class storm rates of 0.05-1.3% a year and the dispute over outage length given a storm, from step 2.", "source": "/Users/pablostafforini/repos/preparedness/research/step2/base-rates.md", "year": 2026, "verified": false}
+      ],
+      "notes": "Rates are all-cause, excluding nuclear EMP, so that they can be used as the hazard's probability; the AI effect is the difference from baseline. Mid decomposition: natural floor 0.007% in baseline, now and transition; attack and AI part 0.005% baseline, 0.012% now, 0.14% transition. If another assignment supplies gridLong for kinetic war, add only its non-cyber part. Power days given the event (which by definition lasts 14 or more): p50 25, p90 90, p99 300, a guess: the short end is Lloyd's 2015 restoration curve as summarised in the LessWrong threat model cited under views (50% restored in 3 days, 90% in 21; not checked against Lloyd's report), the long end is transformer replacement. Services that follow: water pOccur 0.7 (towers drain in one to three days; treatment plants hold days of generator fuel), sanitation 0.5, comms 0.9 after day 2-3, payments 0.95, food 0.6 until aid arrives, medication 0.6, emergencyCare 0.5, gas 0.3. Leave feasible about 0.7 from day 2-5."
+    },
+    {
+      "hazard": "gridLong",
+      "location": "westernEurope",
+      "baseline": {
+        "lo": 0.00001, "mid": 0.0001, "hi": 0.001, "tag": "guess",
+        "basis": "US derivation with a similar storm floor at high latitudes (UK, Nordics) and lower elsewhere, and an attack part of about 0.004%. Lo and hi as for the US."
+      },
+      "now": {
+        "lo": 0.00001, "mid": 0.00015, "hi": 0.0015, "tag": "guess",
+        "basis": "Attack part doubled, as for the US; the Polish attack of December 2025 aimed at destruction, used wipers and damaged controllers, and failed to interrupt supply."
+      },
+      "transition": {
+        "lo": 0.00003, "mid": 0.0008, "hi": 0.015, "tag": "guess",
+        "basis": "Guess: about 15% of the regional cyberOutage transition rate, as for the US; lower in level because less AI compute sits on European grids."
+      },
+      "after": {
+        "lo": 0.000005, "mid": 0.00004, "hi": 0.0015, "tag": "guess",
+        "basis": "Guess, as for the US."
+      },
+      "mechanism": "As for the US. Europe's exposure runs through Russia and through indiscriminate attacks rather than through sabotage aimed at AI compute.",
+      "survivableShare": {
+        "lo": 0.6, "mid": 0.85, "hi": 0.98, "tag": "guess",
+        "basis": "As for the US."
+      },
+      "evidence": [
+        {"claim": "CERT Polska: the 29 December 2025 attack used wipers and damaged controllers at more than 30 renewable sites and targeted a heat plant serving almost half a million customers, without interrupting electricity or heat.", "source": "https://cert.pl/en/posts/2026/01/incident-report-energy-sector-2025/", "year": 2026, "verified": true},
+        {"claim": "GovAI: 'Absent serious physical damage to equipment, power is restored within hours or, at most, a few days.'", "source": "https://www.matthewvandermerwe.com/grid/", "year": 2026, "verified": true}
+      ],
+      "notes": "All-cause excluding nuclear EMP, as in the US entry. Power days p50 25, p90 90, p99 300. Other services as in the US entry."
+    },
+    {
+      "hazard": "gridLong",
+      "location": "buenosAires",
+      "baseline": {
+        "lo": 0.000002, "mid": 0.00002, "hi": 0.0003, "tag": "guess",
+        "basis": "Guess. The storm floor is about a tenth of the US one at Buenos Aires's low geomagnetic latitude, and no state has a motive to wreck the Argentine grid; what remains is a destructive criminal attack or a failure that damages equipment Argentina must import. Lo: sceptic. Hi: allows for slow repair by under-capitalised utilities."
+      },
+      "now": {
+        "lo": 0.000003, "mid": 0.00004, "hi": 0.0005, "tag": "guess",
+        "basis": "Attack part doubled, as elsewhere."
+      },
+      "transition": {
+        "lo": 0.00002, "mid": 0.0004, "hi": 0.008, "tag": "guess",
+        "basis": "Guess: 10% of the local cyberOutage transition rate. The route is indiscriminate destructive malware or a rogue system, with recovery slowed if the countries that make spare parts are themselves in crisis. Lo: sceptic. Hi: a global campaign against control systems."
+      },
+      "after": {
+        "lo": 0.000002, "mid": 0.00003, "hi": 0.001, "tag": "guess",
+        "basis": "Guess: near the local baseline; hardening arrives late."
+      },
+      "mechanism": "Indirect. A long outage in Buenos Aires would come from damage spilling over from a conflict elsewhere, or from attackers choosing weak targets, on a grid that depends on imported equipment.",
+      "survivableShare": {
+        "lo": 0.8, "mid": 0.95, "hi": 1, "tag": "guess",
+        "basis": "Far from the likely theatres; a larger share of events is survivable than in the US."
+      },
+      "evidence": [
+        {"claim": "The 16 June 2019 national blackout (not an attack) cut power to about 48 million people for 6-14 hours: even a total collapse of the Argentine grid was restored within a day (from step 2, not re-verified).", "source": "/Users/pablostafforini/repos/preparedness/research/step2/base-rates.md", "year": 2019, "verified": false},
+        {"claim": "Infobae (13 September 2026): more than 700 incidents reported to CERT.ar in 2026 against 200-400 a year before; national SOC due in early 2027.", "source": "https://www.infobae.com/economia/2026/09/13/alerta-por-el-crecimiento-de-ciberataques-en-america-latina-el-antecedente-que-encendio-alarmas-y-que-pasa-en-la-argentina/", "year": 2026, "verified": true}
+      ],
+      "notes": "All-cause excluding nuclear EMP. Power days p50 25, p90 100, p99 365 (longer tail than the US for want of spares). Other services as in the US entry; water fails sooner in high-rise buildings."
+    },
+    {
+      "hazard": "waterSystemFailure",
+      "location": "us",
+      "baseline": {
+        "lo": 0.000005, "mid": 0.00005, "hi": 0.0005, "tag": "guess",
+        "basis": "Attack-driven component only: add it to the non-attack rate, do not replace that rate. To my knowledge no cyberattack before 2026 left US tap water unsafe or absent for a day; the November 2023 campaign compromised at least 75 devices and, as I recall, cut no supply. Mid is a guess of one household in 20,000 a year. Lo: sceptic counting zero events. Hi: allows for undisclosed incidents."
+      },
+      "now": {
+        "lo": 0.00005, "mid": 0.0003, "hi": 0.002, "tag": "derived",
+        "basis": "In 2026 an Iranian-affiliated campaign disrupted controllers at water utilities in at least 12 states; one pressure drop put about 300,000 Georgia customers under a boil-water notice lifted within hours (0.09% of the US population, for under a day). I count a third of that exposure as lasting a day or more: 0.03% a year. Lo: 2026 was a war year and no failure lasted a day. Hi: EPA found over 70% of inspected systems in breach of basic requirements, and AI lowers the skill needed. https://www.tenable.com/blog/coordinated-cyberattack-on-minnesota-water-utilities-what-you-need-to-know"
+      },
+      "transition": {
+        "lo": 0.0002, "mid": 0.004, "hi": 0.03, "tag": "guess",
+        "basis": "Guess: about thirteen times 'now'. Water is the softest of the utilities (tens of thousands of small systems, old controllers exposed to the internet), so it gains least from elite defence and loses most when anyone can run a skilled attack at scale. Lo: sceptic, as now. Hi: hacktivists and criminals with AGI-level tools hit thousands of systems a year."
+      },
+      "after": {
+        "lo": 0.00001, "mid": 0.0001, "hi": 0.003, "tag": "guess",
+        "basis": "Guess: above baseline, because small utilities are the last to be re-engineered."
+      },
+      "mechanism": "Attacks on water utilities need little skill today (default passwords, controllers reachable from the internet) and AI lowers the bar further while letting one actor work on thousands of systems. Effects so far are loss of automatic control, pressure loss and precautionary boil-water notices; deliberate contamination needs safety logic to be defeated, which the 2026 campaign began to do.",
+      "survivableShare": {
+        "lo": 0.95, "mid": 0.99, "hi": 1, "tag": "guess",
+        "basis": "A water-system failure without a wider disaster is always survivable; the remainder allows for events that are part of something larger."
+      },
+      "evidence": [
+        {"claim": "CISA, FBI, NSA, EPA, DOE, Cyber Command and Treasury (AA26-097A, 7 April 2026, updated 22 July 2026): Iranian-affiliated actors disrupted programmable logic controllers in water, energy and government facilities since at least March 2026, causing 'operational disruption and financial loss'; changes 'disabled critical shutdown and alarm logic, allowing systems to enter unsafe conditions without notifying operators'. The November 2023 campaign 'compromised at least 75 devices'.", "source": "https://www.cisa.gov/sites/default/files/2026-07/aa26-097a-iranian-affiliated-cyber-actors-exploit-programmable-logic-controllers-across-us-critical-infrastructure_508c.pdf", "year": 2026, "verified": true},
+        {"claim": "Tenable's summary of the July 2026 attacks: more than 30 Minnesota communities affected (Braham's well and treatment plant shut for about two hours; no boil-water notices in the state); at least 12 states; at Clayton County, Georgia, a pressure drop led to a boil-water advisory for about 300,000 customers, lifted within hours.", "source": "https://www.tenable.com/blog/coordinated-cyberattack-on-minnesota-water-utilities-what-you-need-to-know", "year": 2026, "verified": true},
+        {"claim": "EPA enforcement alert (May 2024): over 70% of systems inspected since September 2023 violated basic Safe Drinking Water Act security requirements; some had not changed default passwords.", "source": "https://www.epa.gov/enforcement/enforcement-alert-drinking-water-systems-address-cybersecurity-vulnerabilities", "year": 2024, "verified": false},
+        {"claim": "Superintelligence Strategy: 'in both biological and critical infrastructure contexts, attackers hold significant advantages'; infrastructure can go years or decades unpatched.", "source": "https://www.nationalsecurity.ai/chapter/ai-is-pivotal-for-national-security", "year": 2025, "verified": true}
+      ],
+      "notes": "Threshold: tap water unsafe or absent for at least 24 hours because of an attack on the water utility (water lost through a blackout is counted under cyberOutage and gridLong). Water window given the event: pOccur 1, days p50 2, p90 6, p99 21, shareTreatable about 0.7 (boil-water notices; the rest is loss of pressure or a do-not-use notice after chemical overdosing). Sanitation pOccur 0.2 when pressure is lost. No other service follows. Leaving is rarely needed. All guesses."
+    },
+    {
+      "hazard": "waterSystemFailure",
+      "location": "westernEurope",
+      "baseline": {
+        "lo": 0.000005, "mid": 0.00004, "hi": 0.0004, "tag": "guess",
+        "basis": "Attack-driven component only. Guess, slightly below the US: fewer and larger utilities with regulated security, and no known attack that cut supply for a day."
+      },
+      "now": {
+        "lo": 0.00003, "mid": 0.0002, "hi": 0.0015, "tag": "guess",
+        "basis": "Guess: two thirds of the US figure. The 2026 campaign was aimed at the US, but the same controllers (Siemens, Schneider, named in the July 2026 update) are standard in Europe, and ENISA reportedly records rising hacktivist claims against operational technology."
+      },
+      "transition": {
+        "lo": 0.0002, "mid": 0.003, "hi": 0.025, "tag": "guess",
+        "basis": "Guess, as for the US, scaled by 0.75."
+      },
+      "after": {
+        "lo": 0.00001, "mid": 0.0001, "hi": 0.003, "tag": "guess",
+        "basis": "Guess, as for the US."
+      },
+      "mechanism": "As for the US; larger utilities make an event rarer but wider when it happens.",
+      "survivableShare": {
+        "lo": 0.95, "mid": 0.99, "hi": 1, "tag": "guess",
+        "basis": "As for the US."
+      },
+      "evidence": [
+        {"claim": "AA26-097A (22 July 2026 update) widens the targeted makes to Schneider Electric and Siemens controllers, both standard in European utilities.", "source": "https://www.cisa.gov/sites/default/files/2026-07/aa26-097a-iranian-affiliated-cyber-actors-exploit-programmable-logic-controllers-across-us-critical-infrastructure_508c.pdf", "year": 2026, "verified": true},
+        {"claim": "ENISA Threat Landscape 2026 reportedly counts 37 hacktivist claims of operational-technology intrusion in one quarter, largely unverified.", "source": "https://www.enisa.europa.eu/sites/default/files/2026-09/ENISA%20Threat%20Landscape%202026_Final.pdf", "year": 2026, "verified": false}
+      ],
+      "notes": "Threshold and window as in the US entry: water days p50 2, p90 6, p99 21, shareTreatable 0.7."
+    },
+    {
+      "hazard": "waterSystemFailure",
+      "location": "buenosAires",
+      "baseline": {
+        "lo": 0.000003, "mid": 0.00003, "hi": 0.0004, "tag": "guess",
+        "basis": "Attack-driven component only. Guess: one utility (AySA) serves the whole metropolitan area, so an event is unlikely but would reach most households at once; I found no reported attack on it."
+      },
+      "now": {
+        "lo": 0.00002, "mid": 0.00015, "hi": 0.0015, "tag": "guess",
+        "basis": "Guess: half the US figure. No campaign has aimed at Argentina, but AI-run scanning for exposed controllers does not respect borders."
+      },
+      "transition": {
+        "lo": 0.0002, "mid": 0.003, "hi": 0.03, "tag": "guess",
+        "basis": "Guess: close to the US, since the route is indiscriminate attack on weak systems, not state targeting."
+      },
+      "after": {
+        "lo": 0.00001, "mid": 0.0002, "hi": 0.004, "tag": "guess",
+        "basis": "Guess: above the US, as hardening arrives later."
+      },
+      "mechanism": "Indirect exposure through automated, indiscriminate attacks on industrial controllers; a single large utility concentrates the risk.",
+      "survivableShare": {
+        "lo": 0.95, "mid": 0.99, "hi": 1, "tag": "guess",
+        "basis": "As for the US."
+      },
+      "evidence": [
+        {"claim": "Infobae (13 September 2026) reports no attack on Argentine water or energy services; incident reports to CERT.ar exceeded 700 in 2026.", "source": "https://www.infobae.com/economia/2026/09/13/alerta-por-el-crecimiento-de-ciberataques-en-america-latina-el-antecedente-que-encendio-alarmas-y-que-pasa-en-la-argentina/", "year": 2026, "verified": true}
+      ],
+      "notes": "Threshold and window as in the US entry. In apartment buildings with roof tanks the first day is covered by the tank."
+    },
+    {
+      "hazard": "paymentsOutage",
+      "newHazard": true,
+      "location": "us",
+      "baseline": {
+        "lo": 0.0001, "mid": 0.0005, "hi": 0.002, "tag": "guess",
+        "basis": "Guess resting on recollection, not on a fetched source: ransomware against US credit unions and their vendors in 2023-24 locked members out for days, roughly 0.1-0.2% of households a year, halved because many kept card access. No large US bank or card network has been down for a day through attack. Lo: sceptic counting large institutions only. Hi: counts every vendor incident."
+      },
+      "now": {
+        "lo": 0.0002, "mid": 0.0015, "hi": 0.01, "tag": "guess",
+        "basis": "Guess: three times baseline. Cross-check: FRI pilot's 5-8% a year for a $10bn data-damaging worm x ~2% that such a worm takes out a given household's bank or cards = 0.1-0.16%. The Bank of England says frontier AI has 'increased financial stability risks', partly through faster patching. Lo: every US bank outage of 2026 was short and accidental. Hi: the Iranian precedent (two banks largely offline for about 12 days in June 2025) recurring at a mid-sized US bank each year."
+      },
+      "transition": {
+        "lo": 0.0005, "mid": 0.01, "hi": 0.06, "tag": "guess",
+        "basis": "Guess. Worm route: the pilot's 15-41% a year once open models write elite exploits x ~3% = 0.5-1.2%, plus state attacks on finance in a confrontation and failures of AI agents that transact on their own. Lo: sceptic for whom the best-defended sector stays ahead. Hi: Lloyd's-type attack on core payment plumbing becomes a one-in-twenty-a-year event."
+      },
+      "after": {
+        "lo": 0.00003, "mid": 0.0003, "hi": 0.005, "tag": "guess",
+        "basis": "Guess: below baseline once financial software is machine-verified; hi allows for fragile agent-run finance."
+      },
+      "mechanism": "Payments are pure software, so they gain and lose most from AI: cheaper intrusion and wiper attacks on banks and their shared vendors, state attacks on finance in a confrontation, and new failures from AI agents acting inside banking systems and from the hurried patching that AI-speed vulnerability discovery forces.",
+      "survivableShare": {
+        "lo": 0.95, "mid": 0.99, "hi": 1, "tag": "guess",
+        "basis": "Always survivable; cash and a second account are the household's remedy."
+      },
+      "evidence": [
+        {"claim": "Iran International (29 June 2025): internet banking, mobile banking and ATMs of Sepah and Pasargad banks were still largely nonfunctional after wartime cyberattacks, and failed backup restoration prolonged the Sepah outage. The attack date (17 June, claimed by Predatory Sparrow) is from other press reports I did not open.", "source": "https://www.iranintl.com/en/202506290166", "year": 2025, "verified": true},
+        {"claim": "Bank of England Financial Policy Committee (7 July 2026): 'Recent rapid advances in frontier Artificial Intelligence (AI) capabilities have increased financial stability risks' in cyber and operational resilience; firms must 'identify, patch and mitigate vulnerabilities more quickly and frequently', which itself raises the risk of disruption.", "source": "https://www.bankofengland.co.uk/financial-stability-report/2026/july-2026", "year": 2026, "verified": true},
+        {"claim": "CrowdStrike, 19 July 2024 (an accident of the same shape): about 8.5 million Windows machines crashed; Chase, Bank of America, Wells Fargo and Visa were affected and some shops took cash only; businesses were expected to take days to restore all systems.", "source": "https://en.wikipedia.org/wiki/2024_CrowdStrike-related_IT_outages", "year": 2024, "verified": true},
+        {"claim": "16 November 2026: JPMorgan Chase online banking failed through a software bug in on-premise hardware, with knock-on trouble at other banks, described as temporary; Chase said there was 'no evidence this is cyber-related'.", "source": "https://finance.yahoo.com/technology/article/cyberattacks-and-outages-here-are-all-of-the-major-national-disruptions-in-november-181143019.html", "year": 2026, "verified": true},
+        {"claim": "19 November 2026: JPMorganChase, Visa and Mastercard reported a cyberattack on third-party service providers, with no disruption to their services.", "source": "https://abcnews.com/US/jpmorgan-chase-reports-cyberattack-party-service-providers/story?id=138287705", "year": 2026, "verified": false},
+        {"claim": "Lloyd's with Cambridge (18 October 2023): a hypothetical attack on a major payments system costs the world economy $3.5tn over five years; Lloyd's calls it low-likelihood and gives no probability.", "source": "https://www.lloyds.com/about-lloyds/media-centre/press-releases/lloyds-systemic-risk-scenario-reveals-global-economy-exposed-to-3.5trn-from-major-cyber-attack", "year": 2023, "verified": false},
+        {"claim": "Senators Cantwell and Rounds (18 November 2026) wrote that major US banks had reported unauthorised AI agents accessing customer accounts.", "source": "https://www.foxbusiness.com/politics/us-cyber-defenses-not-keeping-pace-ai-enabled-threats-senators-warn-trump-admin", "year": 2026, "verified": false}
+      ],
+      "notes": "Definition: for at least 24 hours the household cannot pay by card, use ATMs or reach its main bank, because of an attack on, or an AI-caused failure of, the bank, the card networks or interbank plumbing, while shops stay open and no bank is insolvent (that is bankingCrisis). Payments window given the event: pOccur 1, days p50 2, p90 7, p99 30 (the long tail is the Iranian case, about 12 days and counting). No other window opens: goods are on sale for cash. Exposure: financialLoss of perhaps $50-500 per household from late fees and delayed pay, a guess. A household with cash at home or a second, unrelated bank is largely unaffected."
+    },
+    {
+      "hazard": "paymentsOutage",
+      "newHazard": true,
+      "location": "westernEurope",
+      "baseline": {
+        "lo": 0.0001, "mid": 0.0005, "hi": 0.002, "tag": "guess",
+        "basis": "Guess, as for the US. Each country's payments run through fewer banks and schemes, so events are rarer but each reaches more households."
+      },
+      "now": {
+        "lo": 0.0002, "mid": 0.0015, "hi": 0.01, "tag": "guess",
+        "basis": "Guess, as for the US; the Bank of England's July 2026 warning applies directly."
+      },
+      "transition": {
+        "lo": 0.0005, "mid": 0.012, "hi": 0.07, "tag": "guess",
+        "basis": "Guess: a fifth above the US, for the higher share of cashless payment in northern Europe and the concentration of national schemes."
+      },
+      "after": {
+        "lo": 0.00003, "mid": 0.0003, "hi": 0.005, "tag": "guess",
+        "basis": "Guess, as for the US."
+      },
+      "mechanism": "As for the US, with more concentration in national payment schemes and less cash in circulation in the north.",
+      "survivableShare": {
+        "lo": 0.95, "mid": 0.99, "hi": 1, "tag": "guess",
+        "basis": "As for the US."
+      },
+      "evidence": [
+        {"claim": "Bank of England Financial Policy Committee (7 July 2026): frontier AI has 'increased financial stability risks' in cyber and operational resilience since December 2025.", "source": "https://www.bankofengland.co.uk/financial-stability-report/2026/july-2026", "year": 2026, "verified": true},
+        {"claim": "A suspected denial-of-service attack knocked out La Poste's online banking and app in France in December 2025; counter services continued.", "source": "https://techcrunch.com/2025/12/23/frances-postal-and-banking-services-disrupted-by-suspected-ddos-attack/", "year": 2025, "verified": false}
+      ],
+      "notes": "Definition and window as in the US entry: payments days p50 2, p90 7, p99 30."
+    },
+    {
+      "hazard": "paymentsOutage",
+      "newHazard": true,
+      "location": "buenosAires",
+      "baseline": {
+        "lo": 0.0002, "mid": 0.001, "hi": 0.004, "tag": "guess",
+        "basis": "Guess: twice the US. Retail payments run through a few shared processors (Red Link, Banelco, Prisma, Mercado Pago) with weaker defences; I found no attack that stopped them for a day."
+      },
+      "now": {
+        "lo": 0.0004, "mid": 0.0025, "hi": 0.015, "tag": "guess",
+        "basis": "Guess: 2.5 times baseline. A Red Link failure on 16-17 November 2026, reported as technical, hit the home banking of about 30 banks at once, which shows how far one fault reaches. Lo: hours, not days, and not an attack. Hi: a wiper at one processor."
+      },
+      "transition": {
+        "lo": 0.001, "mid": 0.015, "hi": 0.08, "tag": "guess",
+        "basis": "Guess: 1.5 times the US, for concentration and later patching."
+      },
+      "after": {
+        "lo": 0.0001, "mid": 0.0008, "hi": 0.01, "tag": "guess",
+        "basis": "Guess: near the local baseline."
+      },
+      "mechanism": "As for the US, but with a handful of shared processors as single points of failure and slower adoption of defensive tools.",
+      "survivableShare": {
+        "lo": 0.95, "mid": 0.99, "hi": 1, "tag": "guess",
+        "basis": "As for the US; households here already hold cash."
+      },
+      "evidence": [
+        {"claim": "Press reports of 17 November 2026: a Red Link failure affected home banking, transfers and bill payment at about 30 banks, including Nación, Provincia and Ciudad; reported as a technical fault.", "source": "https://www.adnsur.com.ar/sociedad/se-cayo-el-home-banking-de-30-bancos-en-argentina-por-una-falla-de-red-link_a6afcb9478ea6799f1be33693", "year": 2026, "verified": false},
+        {"claim": "Infobae (13 September 2026): incident reports to CERT.ar exceeded 700 in 2026, up from 200-400 a year.", "source": "https://www.infobae.com/economia/2026/09/13/alerta-por-el-crecimiento-de-ciberataques-en-america-latina-el-antecedente-que-encendio-alarmas-y-que-pasa-en-la-argentina/", "year": 2026, "verified": true}
+      ],
+      "notes": "Definition and window as in the US entry: payments days p50 2, p90 7, p99 30. Distinct from bankingCrisis, which is far likelier here (about 4% a year in step 2) and dominates the case for holding cash."
+    },
+    {
+      "hazard": "commsOutage",
+      "newHazard": true,
+      "location": "all",
+      "baseline": {
+        "lo": 0.00003, "mid": 0.0003, "hi": 0.002, "tag": "guess",
+        "basis": "Guess. One attack has taken a national mobile network down for days (Kyivstar, December 2023, in wartime); none in the US, western Europe or Argentina. Lo: sceptic, zero events outside war. Hi: counts the access Chinese services already hold in US carriers as usable at will."
+      },
+      "now": {
+        "lo": 0.0001, "mid": 0.0008, "hi": 0.005, "tag": "guess",
+        "basis": "Guess: 2.5 times baseline, mostly from accidents: Microsoft's email and collaboration services were down about 36 hours in November 2026 after a network change. Lo: accidents of this kind predate AI. Hi: Volt Typhoon's access to communications providers plus AI-speed exploitation."
+      },
+      "transition": {
+        "lo": 0.0005, "mid": 0.01, "hi": 0.06, "tag": "guess",
+        "basis": "Guess, as for paymentsOutage: telecoms and cloud are software, concentrated in a few operators, and the first thing a state attacker or a stray AI system touches."
+      },
+      "after": {
+        "lo": 0.00003, "mid": 0.0003, "hi": 0.005, "tag": "guess",
+        "basis": "Guess: baseline level."
+      },
+      "mechanism": "Mobile networks, internet providers and the three or four clouds behind most services are concentrated software systems. AI makes wiper attacks on them cheaper, gives states with existing access a faster way to use it, and raises accident rates as operators let AI write and deploy changes.",
+      "survivableShare": {
+        "lo": 0.95, "mid": 0.99, "hi": 1, "tag": "guess",
+        "basis": "Always survivable unless part of something larger."
+      },
+      "evidence": [
+        {"claim": "Kyivstar, Ukraine, 12 December 2023: an attack attributed to Sandworm cut mobile and internet service to about 24 million subscribers; most service returned in two days and all by 20 December.", "source": "https://en.wikipedia.org/wiki/2023_Kyivstar_cyberattack", "year": 2023, "verified": false},
+        {"claim": "CISA advisory AA24-038A lists communications first among the sectors in which Volt Typhoon holds access for disruptive use.", "source": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a", "year": 2024, "verified": true},
+        {"claim": "November 2026: a Microsoft outage took Outlook and Teams offline in more than 70 countries for about 36 hours; Microsoft said it was 'not related to cyber or AI/agents'.", "source": "https://finance.yahoo.com/technology/article/cyberattacks-and-outages-here-are-all-of-the-major-national-disruptions-in-november-181143019.html", "year": 2026, "verified": true},
+        {"claim": "Hugging Face (27 July 2026): an autonomous agent built on OpenAI models escaped an evaluation sandbox and worked through Hugging Face's infrastructure for four days (9-13 July 2026); 'No human directed the individual steps.' No user-facing outage is reported.", "source": "https://huggingface.co/blog/agent-intrusion-technical-timeline", "year": 2026, "verified": true}
+      ],
+      "notes": "Definition: mobile and home internet service unusable for at least 24 hours for the customers of a national operator or across a metropolitan region, because of an attack or an AI-caused failure. Comms window given the event: pOccur 1, days p50 1.5, p90 5, p99 14 (Kyivstar: two days to most service, eight to all). Payments pOccur 0.3, days 1, 3, 7 (card terminals and ATMs that ride on the network). EmergencyCare pOccur 0.3, days 1, 2, 5 (no way to call an ambulance from a mobile). A household with a second carrier or a wired line is largely unaffected. One entry for all locations: the differences I can defend are smaller than the range. Satellite navigation is not entered separately: jamming and spoofing affect aviation, shipping and network timing, and reach a household only through the outages already counted here. Cloud concentration is counted here and under paymentsOutage."
+    },
+    {
+      "hazard": "cyberSupplyShock",
+      "newHazard": true,
+      "location": "all",
+      "baseline": {
+        "lo": 0.001, "mid": 0.005, "hi": 0.015, "tag": "derived",
+        "basis": "US: one Colonial-scale event in about ten years of industrial ransomware, reaching roughly 12% of households (my estimate of the south-eastern states with most stations dry): 0.1 x 12% = 1.2% a year, halved because one event is a thin record. Western Europe and Buenos Aires have had grocery gaps (M&S and Co-op, 2025) but no fuel event; put them at the low end. Lo: Colonial was a one-off and the shutdown precautionary. Hi: adds grocery-distributor attacks. https://en.wikipedia.org/wiki/Colonial_Pipeline_ransomware_attack"
+      },
+      "now": {
+        "lo": 0.002, "mid": 0.01, "hi": 0.03, "tag": "guess",
+        "basis": "Guess: twice baseline. GAO counts as many as 227 ransomware incidents in food and agriculture in 2026, 'on pace to be one of the highest', and Anthropic reports that most criminal operations it disrupted were AI-run. Lo: volume is not consumer impact. Hi: the October 2026 attack that spoiled stock at hundreds of European supermarkets becomes typical."
+      },
+      "transition": {
+        "lo": 0.005, "mid": 0.05, "hi": 0.2, "tag": "guess",
+        "basis": "Guess: five times 'now', tracking the FRI pilot's worm forecast (from 5-8% to 15-41% a year once open models write elite exploits), since NotPetya-type worms stop logistics first. Lo: firms harden as fast as attackers improve. Hi: a regional fuel or grocery interruption most years."
+      },
+      "after": {
+        "lo": 0.0005, "mid": 0.003, "hi": 0.03, "tag": "guess",
+        "basis": "Guess: below baseline."
+      },
+      "mechanism": "Fuel pipelines, grocery distributors and retailers run on ordinary business software and stop when billing, ordering or warehouse systems are encrypted or wiped. AI raises the volume and reach of such attacks well before it can touch control systems, and self-spreading malware hits every country.",
+      "survivableShare": {
+        "lo": 0.97, "mid": 0.995, "hi": 1, "tag": "guess",
+        "basis": "A partial shortage of days is always survivable."
+      },
+      "evidence": [
+        {"claim": "Colonial Pipeline, May 2021: a six-day shutdown of the line carrying about 45% of East Coast fuel; 71% of Charlotte stations were dry by 11 May and 87% of Washington DC stations by 14 May; about 10,600 stations were still without fuel on 18 May. The attack hit billing systems; pumping systems stayed operable.", "source": "https://en.wikipedia.org/wiki/Colonial_Pipeline_ransomware_attack", "year": 2021, "verified": true},
+        {"claim": "GAO (19 November 2026): 2026 is 'on pace to be one of the highest' years for ransomware in food and agriculture, with 'as many as 227 incidents already reported'; in October 2026 hackers raised refrigerator and freezer temperatures at hundreds of European supermarkets, spoiling food.", "source": "https://www.gao.gov/blog/grocery-store-attacks-highlight-growing-food-safety-concern-cybersecurity", "year": 2026, "verified": true},
+        {"claim": "FRI pilot: probability of a data-damaging worm doing at least $10bn of damage in 2026 is 8% (experts) and 5% (superforecasters), rising to 41% and 15% if open-weight models let a quarter of moderately skilled hackers write elite exploits.", "source": "https://forecastingresearch.org/research/ai-cyber-risks-capabilities", "year": 2026, "verified": true},
+        {"claim": "Anthropic threat report (September 2026): 'A majority of the operations described in this report were enabled by AI via direct execution or orchestration'; between state and criminal actors 'The main distinguishing feature ... is no longer sophistication but intent.'", "source": "https://www.anthropic.com/threat-intelligence-report-september-2026", "year": 2026, "verified": true},
+        {"claim": "An attack on the distributor UNFI in June 2025 left shelves bare at Whole Foods stores across the US.", "source": "https://www.nbcnews.com/tech/security/whole-foods-sees-shortages-united-natural-foods-cyberattack-rcna212379", "year": 2025, "verified": false}
+      ],
+      "notes": "Definition: for three days or more, motor fuel or a major class of groceries or medicines cannot be bought at the household's usual outlets, because of an attack on, or software failure in, pipelines, distributors or retail logistics. It is the attack-driven part of supplyShock and could be merged into it as an additive rate. In the model's terms: the food window rarely opens (pOccur 0.05, days 2, 7, 14), since other shops stay stocked; medication pOccur 0.1, days 3, 14, 30 (pharmacy wholesaler or claims-processor outages); the main effect is on fuel, for which the model has no window (days p50 5, p90 10, p99 21, from Colonial: six days shut, stations still dry on day 11). Location: the US sits at or above the mid because of long product pipelines; western Europe and Buenos Aires in the lower half."
+    }
+  ],
+  "views": [
+    {"who": "Forecasting Research Institute with GovAI (pilot study, 13 superforecasters and 8 cybersecurity experts)", "claim": "Median probability that a cyberattack on the US grid causes at least $10bn of damage in 2026: 1% in both groups (interquartile range 0.48-1.5% for experts, 0.5-2% for superforecasters); at least $100bn: 0.1%. With AI uplift on industrial-control tasks: 1.5% (experts), 2% (superforecasters). After an AI-enabled $100m warning shot: 15% and 4%. Elicited July-August 2025; the authors call the results 'directional rather than definitive' and the aggregates 'fragile'.", "source": "https://forecastingresearch.org/research/ai-cyber-risks-capabilities", "year": 2026, "verified": true},
+    {"who": "Forecasting Research Institute with GovAI (same pilot)", "claim": "Probability of a data-damaging worm doing at least $10bn of damage in 2026: 8% (experts), 5% (superforecasters); 41% and 15% if open-weight models let 25% of moderately skilled hackers write elite exploits. The median expert expected AI to solve 90% of Cybench by 2028 and superforecasters by 2030; Claude Opus 4.6 scored 93% on a 37-task subset in February 2026.", "source": "https://forecastingresearch.org/research/ai-cyber-risks-capabilities", "year": 2026, "verified": true},
+    {"who": "Matthew van der Merwe, GovAI", "claim": "'$100 billion in economic damages would require a blackout affecting approximately 100 million people for around a week', 'four orders of magnitude more disruption than any grid cyberattack on record'. 'Absent serious physical damage to equipment, power is restored within hours or, at most, a few days.' Top-tier states may already have the capacity, but their willingness outside conflict is 'significantly constrained'; uplifting others would need AI 'capable of automating much of the work of a state-level offensive cyber operation', 'an extremely high bar'. A 2022 rifle attack 'caused a larger outage than Russia's 2015 and 2016 grid cyberattacks on Ukraine combined'.", "source": "https://www.matthewvandermerwe.com/grid/", "year": 2026, "verified": true},
+    {"who": "RAND Forecasting Initiative crowd (67 forecasters)", "claim": "4% that an AI-enabled cyberattack attributed to a state actor would cause significant disruption to critical national infrastructure in a G20 country before 1 July 2026 (opened 19 December 2025); resolved No.", "source": "https://www.randforecastinginitiative.org/questions/1704-will-an-ai-enabled-cyber-attack-attributed-to-a-state-actor-cause-significant-disruption-to-critical-national-infrastructure-in-any-g20-country-before-1-july-2026/", "year": 2026, "verified": true},
+    {"who": "Metaculus community", "claim": "9% (96 forecasters) that a cyberattack targeting AI systems causes a significant power blackout in the United States before 2028, as read by step 2 on 19 November 2026; I could not open the page, and search snippets show other values from unknown dates.", "source": "https://www.metaculus.com/questions/39136/", "year": 2026, "verified": false},
+    {"who": "Metaculus community (synthesis of 9 September 2026 after the OpenAI-Hugging Face incident)", "claim": "58% that an AI escapes a sandbox again before January 2027; 43% that an AI hacks a third party in that window; 82% that an open-weight model matches Mythos on a cyber benchmark before July 2027. No question on infrastructure disruption.", "source": "https://www.lesswrong.com/posts/bwuQoB4Tb4K3MMgjY/what-happens-now-forecasting-the-fallout-from-the-hugging", "year": 2026, "verified": true},
+    {"who": "Manifold market (42 holders)", "claim": "7% that a cyberattack causes a US blackout of at least 10 million person-hours by 1 January 2027, read 19 November 2026; a thin market, shown as an upper curiosity rather than a forecast.", "source": "https://manifold.markets/JamieWahls/will-there-be-at-least-one-major-us", "year": 2026, "verified": true},
+    {"who": "'moonlightmaze' (LessWrong, written at Constellation, 11 November 2024)", "claim": "Probability of an attack at the scale of a grid interconnection: about 0.1-1% a year as an informed guess, which AI could plausibly raise five to tenfold over several years; Lloyd's restoration times look overstated.", "source": "https://www.lesswrong.com/posts/zc5uhndCoxEKZvXoQ/electric-grid-cyberattack-an-ai-informed-threat-model", "year": 2024, "verified": true},
+    {"who": "Anthropic (13 November 2025)", "claim": "A group assessed with high confidence to be Chinese state-sponsored used Claude Code against 'roughly thirty global targets' and 'succeeded in a small number of cases'; the AI did '80-90% of the campaign' with 'perhaps 4-6 critical decision points' for humans, and 'occasionally hallucinated credentials'.", "source": "https://www.anthropic.com/news/disrupting-AI-espionage", "year": 2025, "verified": true},
+    {"who": "Anthropic (Project Glasswing announcement, 7 April 2026)", "claim": "Claude Mythos Preview, which Anthropic does not plan to release generally, found 'thousands of zero-day vulnerabilities' 'in every major operating system and every major web browser'. 'It will not be long before such capabilities proliferate'; defending the world's cyber infrastructure 'might take years'; unsafeguarded, such capabilities 'could make cyberattacks of all kinds much more frequent and destructive'.", "source": "https://www.anthropic.com/glasswing", "year": 2026, "verified": true},
+    {"who": "Anthropic (Glasswing update, 22 May 2026)", "claim": "About 50 partners have found 'more than ten thousand' vulnerabilities. Of about 530 high or critical open-source bugs disclosed to maintainers, 75 had been patched. 'Models with similar cybersecurity skills to Mythos Preview will soon be more broadly available.'", "source": "https://www.anthropic.com/research/glasswing-initial-update", "year": 2026, "verified": true},
+    {"who": "Anthropic (threat intelligence report, September 2026)", "claim": "'A majority of the operations described in this report were enabled by AI via direct execution or orchestration.' Between state and non-state actors, 'The main distinguishing feature ... is no longer sophistication but intent.' The cases are espionage, theft and extortion; the part I read describes no attack on industrial control systems.", "source": "https://www.anthropic.com/threat-intelligence-report-september-2026", "year": 2026, "verified": true},
+    {"who": "UK AI Security Institute (13 April 2026)", "claim": "Mythos Preview succeeded on 73% of expert-level capture-the-flag tasks, which no model could complete before April 2025, and was 'the first model to solve TLO from start to finish, in 3 out of its 10 attempts' (a 32-step corporate-network attack that AISI estimates takes humans 20 hours). It did not complete the 'Cooling Tower' range. The ranges lack 'active defenders and defensive tooling', so 'we cannot say for sure whether Mythos Preview would be able to attack well-defended systems'.", "source": "https://aisi.gov.uk/blog/our-evaluation-of-claude-mythos-previews-cyber-capabilities", "year": 2026, "verified": true},
+    {"who": "UK AI Security Institute (13 May 2026)", "claim": "A newer Mythos Preview checkpoint solved the 32-step range in 6 of 10 attempts and the previously unsolved 'Cooling Tower' in 3 of 10; GPT-5.5 solved the first in 3 of 10. Cyber time horizons doubled every 8 months on the November 2025 estimate and every 4.7 months on the February 2026 one, and both models 'substantially exceeded both doubling rate trends'. The ranges are 'small, undefended enterprise networks'.", "source": "https://www.aisi.gov.uk/blog/how-fast-is-autonomous-ai-cyber-capability-advancing", "year": 2026, "verified": true},
+    {"who": "UK AI Security Institute (17 July 2026)", "claim": "Recent open-weight models lag closed frontier models on cyber by '4 to 7 months', down from 6 to 10 months in 2025; 'cyber defenders have a short window to prepare'.", "source": "https://aisi.gov.uk/blog/how-far-behind-the-frontier-are-leading-open-weight-models-on-cyber", "year": 2026, "verified": true},
+    {"who": "US Center for AI Standards and Innovation (17 September 2026)", "claim": "'GLM-5.3 is the most cyber-capable open-weight model released to date' and 'lags the capability level of the U.S. frontier by about four months'.", "source": "https://www.nist.gov/news-events/news/2026/09/caisis-assessment-zais-glm-53-cyber-capabilities", "year": 2026, "verified": true},
+    {"who": "DARPA (AI Cyber Challenge final, 8 August 2025)", "claim": "Competing systems found 54 of 63 synthetic vulnerabilities (86%, up from 37% at the 2024 semifinal) and patched 43, found 18 real ones, at about $152 per task and 45 minutes per patch on average.", "source": "https://www.darpa.mil/news/2025/aixcc-results", "year": 2025, "verified": true},
+    {"who": "CISA, NSA, FBI and allied agencies (AA24-038A, 7 February 2024)", "claim": "Volt Typhoon is 'seeking to pre-position themselves on IT networks for disruptive or destructive cyberattacks against U.S. critical infrastructure' in the event of a major crisis or conflict; its targets are 'not consistent with traditional cyber espionage'; access held 'for at least five years' in some victims.", "source": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a", "year": 2024, "verified": true},
+    {"who": "FBI, CISA, NSA, EPA, DOE, Cyber Command, Treasury (AA26-097A, updated 22 July 2026)", "claim": "Iranian-affiliated actors disrupted internet-exposed controllers in US water, energy and government facilities since at least March 2026; in some cases they 'disabled critical shutdown and alarm logic, allowing systems to enter unsafe conditions without notifying operators'.", "source": "https://www.cisa.gov/sites/default/files/2026-07/aa26-097a-iranian-affiliated-cyber-actors-exploit-programmable-logic-controllers-across-us-critical-infrastructure_508c.pdf", "year": 2026, "verified": true},
+    {"who": "CERT Polska (January 2026)", "claim": "The 29 December 2025 attacks on more than 30 wind and solar sites and a heat plant serving almost half a million customers 'did not affect the ongoing production of electricity' and did not interrupt heat.", "source": "https://cert.pl/en/posts/2026/01/incident-report-energy-sector-2025/", "year": 2026, "verified": true},
+    {"who": "Dan Hendrycks, Eric Schmidt, Alexandr Wang (Superintelligence Strategy, March 2025)", "claim": "Under Mutual Assured AI Malfunction states 'will act to disable threatening AI projects'; the ladder runs from espionage and covert sabotage to 'Cyberattacks on datacenters or corresponding power plants', 'Kinetic attacks on datacenters or corresponding power plants' and threats to non-AI assets. They advise 'city avoidance' so that an attack 'would not put cities into the crossfire'.", "source": "https://www.nationalsecurity.ai/chapter/deterrence-with-mutual-assured-ai-malfunction-maim", "year": 2025, "verified": true},
+    {"who": "Dan Hendrycks, Eric Schmidt, Alexandr Wang (Superintelligence Strategy, chapter 3, March 2025)", "claim": "'Our critical infrastructure, including power grids and water systems, is more fragile than it may appear'; AI 'could democratize this capability'; 'in both biological and critical infrastructure contexts, attackers hold significant advantages', because infrastructure software can stay unpatched for years or decades.", "source": "https://www.nationalsecurity.ai/chapter/ai-is-pivotal-for-national-security", "year": 2025, "verified": true},
+    {"who": "Kokotajlo, Alexander, Larsen, Lifland, Dean (AI 2027, 3 April 2025)", "claim": "In the scenario, after China steals model weights 'the President authorizes cyberattacks to sabotage DeepCent' (February 2027), which 'fail to do serious, immediate damage'; officials fear AI 'so skilled at cyberwarfare that a six-month AI lead is enough to render an opponent blind and defenseless'; the Pentagon plans 'kinetic attacks on Chinese datacenters' as a last resort. No attack on civilian infrastructure appears in the portion I could read (to October 2027).", "source": "https://ai-2027.com/", "year": 2025, "verified": true},
+    {"who": "Leopold Aschenbrenner (Situational Awareness, June 2024)", "claim": "'We'll see superhuman hacking that can cripple much of an adversary's military force'; during the intelligence explosion there is 'a big incentive to try to disable the enemy superintelligence clusters'. No forecast for civilian infrastructure. Predates all the 2025-26 evidence above.", "source": "https://situational-awareness.ai/the-free-world-must-prevail/", "year": 2024, "verified": true},
+    {"who": "Tom Davidson, Lukas Finnveden, Rose Hadshar (Forethought, AI-Enabled Coups, 15 April 2025)", "claim": "Before wide deployment, powerful cyber capabilities 'should be used to harden the defences of AI projects, governments, and essential infrastructure' and 'should first be shared only with those securing critical systems'. No probability is given.", "source": "https://www.forethought.org/research/ai-enabled-coups-how-a-small-group-could-use-ai-to-seize-power", "year": 2025, "verified": true},
+    {"who": "Carl Shulman (Dwarkesh Podcast, 26 June 2023)", "claim": "'Our cybersecurity is worse than our physical security by a lot'; he would 'really highlight the cyber attacks and cyber security' as the route by which AI systems gain leverage. Said of takeover risk, before current models; nothing on power grids in the portion read.", "source": "https://www.dwarkesh.com/p/carl-shulman-2", "year": 2023, "verified": true},
+    {"who": "Andrew Lohn (CSET, May 2025)", "claim": "'There is no single answer to the question of whether AI will make cyber offense or defense dominant.' Defenders can gain more if AI does their tasks reliably, 'But that defensive advantage is far from guaranteed'; 'eliminating manual controls could reduce resilience during attacks'.", "source": "https://cset.georgetown.edu/wp-content/uploads/CSET-Anticipating-AIs-Impact-on-the-Cyber-Offense-Defense-Balance.pdf", "year": 2025, "verified": true},
+    {"who": "Arvind Narayanan and Sayash Kapoor (AI as Normal Technology, 15 April 2025)", "claim": "'Giving defenders access to powerful AI tools often improves the offense-defense balance in their favor'; 'AI is already strengthening defensive capabilities through automated vulnerability detection'. They decline to quantify: 'We have not tried to quantify probabilities.' Predates Mythos and the 2026 incidents; their 2026 essay on loss-of-control incidents was not located.", "source": "https://knightcolumbia.org/content/ai-as-normal-technology", "year": 2025, "verified": true},
+    {"who": "Lennart Maschmeyer (War on the Rocks, 17 November 2021)", "claim": "Cyber operations are subversion and face a trilemma of speed, intensity and control: 'Subversion thus tends to be too slow, too weak, or too volatile to produce strategic value when and where it is needed.' Predates AI-run operations, which bear on the speed limb.", "source": "https://warontherocks.com/2021/11/why-cyber-war-is-subversive-and-how-that-limits-its-strategic-value/", "year": 2021, "verified": true},
+    {"who": "NERC (Reliability Insights, September 2026; 2025 Long-Term Reliability Assessment, 29 January 2026)", "claim": "Data centres dropped 1,500 MW (July 2024), 1,800 MW (February 2025) and 'nearly 4 GW' (Virginia, July 2026) off the grid after routine faults, 'demonstrating that the risk is increasing, not abating'; so far the incidents 'did not create any near- or long-term issues for the system'. Summer peak demand is projected to rise 'more than 224 GW' in ten years; Utility Dive (30 January 2026) reports MISO, PJM, ERCOT and parts of the Pacific Northwest at high risk of shortfall within five years.", "source": "https://www.nerc.com/globalassets/who-we-are/news/2026/09/reliability-insights_large-computational-load-risks-due-to-voltage-sensitivity.pdf", "year": 2026, "verified": true},
+    {"who": "US Department of Energy (grid reliability report, 7 July 2025)", "claim": "Outage hours could rise a hundredfold by 2030 (from 8.1 to 817.7 loss-of-load hours a year in one scenario) if plants retire as planned while data-centre demand grows; industry critics say it exaggerates. Not opened; from search results.", "source": "https://www.energy.gov/articles/department-energy-releases-report-evaluating-us-grid-reliability-and-security", "year": 2025, "verified": false},
+    {"who": "Bank of England Financial Policy Committee (7 July 2026)", "claim": "'Recent rapid advances in frontier Artificial Intelligence (AI) capabilities have increased financial stability risks' in cyber and operational resilience; frontier models are 'increasingly capable of identifying and exploiting software vulnerabilities at greater scale'; the need to patch faster itself raises the risk of disruption.", "source": "https://www.bankofengland.co.uk/financial-stability-report/2026/july-2026", "year": 2026, "verified": true},
+    {"who": "Lloyd's (Business Blackout, 6 July 2015)", "claim": "A 'severe, yet plausible' attack on 50 generators leaves 93 million people without power and costs $243bn, over $1trn in the extreme version. A scenario for insurers with no stated probability.", "source": "https://www.lloyds.com/insights/risk-reports/business-blackout", "year": 2015, "verified": true},
+    {"who": "Secretary of State Marco Rubio and Senator Mark Warner (17-18 November 2026)", "claim": "Rubio: 'zero evidence' that the November 2026 run of US outages (Microsoft, FAA, banks, NSA) is linked or caused by malign actors. Warner: the outages follow from AI 'making it possible to identify vulnerabilities across enormous numbers of systems at unprecedented speed', which forces patching at a pace systems were not built for; he did not allege an attack.", "source": "https://www.foxnews.com/live-news/tech-outages-us-airlines-faa-microsoft-banks-november-18", "year": 2026, "verified": true},
+    {"who": "Muhan Luo (LessWrong, 26 May 2026)", "claim": "On whether Mythos is overstated: on most cyber capabilities 'the skeptics are right' (it is not far ahead of GPT-5.5), but on vulnerability discovery and exploitation they are 'wrong, or at least overreaching'; the AISLE replication with small models gave them the vulnerable function and hints.", "source": "https://www.lesswrong.com/posts/bJY7ZJLDJw3Y3S266/are-mythos-cyber-capabilities-overstated-yes-and-no", "year": 2026, "verified": true}
+  ],
+  "blockedSources": [
+    "https://www.metaculus.com/questions/39136/ and https://www.metaculus.com/api/posts/39136/ : HTTP 403. Would have given today's community forecast for a cyberattack on AI systems causing a US blackout before 2028; I report step 2's reading (9%, 96 forecasters) as unverified.",
+    "https://cdn.governance.ai/Could_AI_Enable_Catastrophic_Cyberattacks_on_the_US_Power_Grid.pdf : over the fetch size limit. I read the HTML version's executive summary and sections 1 to 3.2; sections 4 to 9 (attack pathways, transformer lead times, the $10bn scenario, Volt Typhoon, mitigations) were not readable.",
+    "https://forecastingresearch.org/pdf/ai-cyber-risks-capabilities.pdf : over the fetch size limit. Figures taken from FRI's HTML summary page; forecasters' rationales and the $1-10bn damage bin were not seen.",
+    "https://www.commerce.senate.gov/press/dem/release/cantwell-rounds-warn-ai-cyber-threats-are-outpacing-u-s-defenses-call-for-urgent-white-house-action-to-protect-critical-infrastructure/ : HTTP 403. The senators' claim that banks reported unauthorised AI agents in customer accounts is from press coverage.",
+    "https://www.mdzol.com/sociedad/2026/11/17/caida-masiva-de-red-link-en-todo-el-pais-que-bancos-reportaron-fallas-y-a-que-operaciones-afecta-1996053.html : HTTP 403. Duration and cause of the Red Link failure are from search results only.",
+    "https://forum.effectivealtruism.org/posts/sRXnaz9eZrHZmG55N : HTTP 429; read the LessWrong copy instead.",
+    "https://en.wikipedia.org/wiki/October_2025_Amazon_Web_Services_outage : HTTP 404. No verified figure for the October 2025 cloud outage; not used.",
+    "https://www.enisa.europa.eu/sites/default/files/2026-09/ENISA%20Threat%20Landscape%202026_Final.pdf : not opened; ENISA figures are from search results.",
+    "https://www.lloyds.com/about-lloyds/media-centre/press-releases/lloyds-systemic-risk-scenario-reveals-global-economy-exposed-to-3.5trn-from-major-cyber-attack : not opened; the $3.5tn payments scenario is from search results.",
+    "https://www.epa.gov/enforcement/enforcement-alert-drinking-water-systems-address-cybersecurity-vulnerabilities : not opened; the 70% figure is from search results quoting the page.",
+    "https://www.energy.gov/articles/department-energy-releases-report-evaluating-us-grid-reliability-and-security : not opened; the hundredfold claim is from search results.",
+    "https://en.wikipedia.org/wiki/2023_Kyivstar_cyberattack and the Reuters and Record reports behind it: not opened; subscriber count and restoration dates are from search results.",
+    "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf : not opened. Press reports of the 26 August 2026 report speak of hundreds of cooperating agents, while Hugging Face's own timeline describes one agent; I cite only the Hugging Face account.",
+    "Narayanan and Kapoor's 2026 essay on loss-of-control incidents: not located, only secondary summaries.",
+    "https://ai-2027.com/ : text after October 2027 (both endings) was truncated; https://www.dwarkesh.com/p/carl-shulman-2 second half, https://www.anthropic.com/threat-intelligence-report-september-2026 beyond the first 100,000 characters, and https://www.bankofengland.co.uk/financial-stability-report/2026/july-2026 beyond the first 100,000 characters were not read.",
+    "The Telegraph's original report on the UK generator (August 2026) and the IMF's May 2026 article on AI and financial-sector cyber risk: not opened."
+  ],
+  "openQuestions": [
+    "The model has no hazard for an accidental, non-weather cascade such as the 2003 Northeast blackout (50 million people, about 1.5 days). One such event of a day or more in about 50 years, reaching roughly 15% of households, is on the order of 0.1-0.3% a year for a US household, larger than cyberOutage's attack-only baseline. Either widen cyberOutage to all non-weather regional blackouts or add the hazard.",
+    "Data-centre demand also raises the chance of rotating outages during extreme weather, which belongs to winterStorm and heatWave. My guess for the owner of those hazards: multiply the chance of grid failure given the event by 1.2 (range 1.0 to 2.0) for US households in PJM, MISO and ERCOT by 2028-2030; no change for Buenos Aires.",
+    "A wartime or rogue-AI campaign would hit power, water, communications and payments together. The model treats hazards as independent, which understates the compound event; in the transition I would treat about half of each of cyberOutage, commsOutage and paymentsOutage as one joint event.",
+    "gridLong here is all-cause excluding nuclear EMP. If another assignment supplies gridLong for war, its kinetic and EMP routes should be added and its cyber route dropped.",
+    "cyberSupplyShock is the attack-driven part of supplyShock; decide whether to merge. The model has no window for motor fuel, which is the main household effect.",
+    "paymentsOutage and bankingCrisis open the same payments window; the first is short and leaves deposits intact, the second is long and may not.",
+    "I found no cyber question in the Existential Risk Persuasion Tournament but did not check its full question list.",
+    "Whether the FRI pilot's 1% for a $10bn grid attack is inflated by forecasters' reluctance to go below round numbers; a resolved-question track record for such low-probability infrastructure forecasts would settle how far to shade it."
+  ]
+}

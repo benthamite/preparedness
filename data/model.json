@@ -1,5 +1,798 @@
 {
  "version": "2026-11-19",
+ "ai": {
+  "startYear": 2027,
+  "horizonYears": 5,
+  "transitionYears": 5,
+  "pExistential": [
+   0.01,
+   0.2,
+   0.8
+  ],
+  "timelines": {
+   "short": {
+    "label": "Short: most likely by 2028 (AI Futures Project, November 2026)",
+    "source": "https://blog.aifutures.org/p/q35-timelines-update-looks-like-the",
+    "cumulative": [
+     {
+      "year": 2027,
+      "p": 0.6
+     },
+     {
+      "year": 2028,
+      "p": 0.78
+     },
+     {
+      "year": 2030,
+      "p": 0.86
+     },
+     {
+      "year": 2035,
+      "p": 0.91
+     },
+     {
+      "year": 2040,
+      "p": 0.93
+     },
+     {
+      "year": 2050,
+      "p": 0.95
+     },
+     {
+      "year": 2100,
+      "p": 0.97
+     }
+    ]
+   },
+   "middle": {
+    "label": "Middle: around 2030 (Metaculus community)",
+    "source": "https://www.metaculus.com/questions/5121/date-of-artificial-general-intelligence/",
+    "cumulative": [
+     {
+      "year": 2027,
+      "p": 0.22
+     },
+     {
+      "year": 2028,
+      "p": 0.34
+     },
+     {
+      "year": 2030,
+      "p": 0.52
+     },
+     {
+      "year": 2035,
+      "p": 0.74
+     },
+     {
+      "year": 2040,
+      "p": 0.83
+     },
+     {
+      "year": 2050,
+      "p": 0.9
+     },
+     {
+      "year": 2100,
+      "p": 0.96
+     }
+    ]
+   },
+   "long": {
+    "label": "Long: the 2040s (forecasting panels, researcher surveys)",
+    "source": "https://forecastingresearch.substack.com/p/leap-wave-8-ai-timelines",
+    "cumulative": [
+     {
+      "year": 2027,
+      "p": 0.02
+     },
+     {
+      "year": 2028,
+      "p": 0.04
+     },
+     {
+      "year": 2030,
+      "p": 0.08
+     },
+     {
+      "year": 2035,
+      "p": 0.22
+     },
+     {
+      "year": 2040,
+      "p": 0.35
+     },
+     {
+      "year": 2050,
+      "p": 0.52
+     },
+     {
+      "year": 2100,
+      "p": 0.82
+     }
+    ]
+   },
+   "never": {
+    "label": "Not this century",
+    "source": "https://www.theblaze.com/return/when-will-computers-be-smarter-than-humans-return-asked-top-ai-experts-robin-hanson",
+    "cumulative": [
+     {
+      "year": 2027,
+      "p": 0.001
+     },
+     {
+      "year": 2028,
+      "p": 0.002
+     },
+     {
+      "year": 2030,
+      "p": 0.005
+     },
+     {
+      "year": 2035,
+      "p": 0.015
+     },
+     {
+      "year": 2040,
+      "p": 0.03
+     },
+     {
+      "year": 2050,
+      "p": 0.07
+     },
+     {
+      "year": 2100,
+      "p": 0.3
+     }
+    ]
+   }
+  },
+  "hazards": {
+   "pandemicModerate": {
+    "all": {
+     "baseline": [
+      0.006,
+      0.02,
+      0.035
+     ],
+     "now": [
+      0.007,
+      0.022,
+      0.04
+     ],
+     "transition": [
+      0.008,
+      0.028,
+      0.08
+     ],
+     "after": [
+      0.0005,
+      0.005,
+      0.03
+     ],
+     "survivable": 0.99
+    }
+   },
+   "pandemicSevere": {
+    "all": {
+     "baseline": [
+      0.0006,
+      0.003,
+      0.01
+     ],
+     "now": [
+      0.001,
+      0.0045,
+      0.015
+     ],
+     "transition": [
+      0.002,
+      0.015,
+      0.1
+     ],
+     "after": [
+      0.00005,
+      0.001,
+      0.02
+     ],
+     "survivable": 0.85
+    }
+   },
+   "cyberOutage": {
+    "us": {
+     "baseline": [
+      0.00005,
+      0.0005,
+      0.0025
+     ],
+     "now": [
+      0.0001,
+      0.001,
+      0.008
+     ],
+     "transition": [
+      0.0005,
+      0.01,
+      0.05
+     ],
+     "after": [
+      0.00002,
+      0.0003,
+      0.005
+     ],
+     "survivable": 0.97
+    },
+    "westernEurope": {
+     "baseline": [
+      0.00005,
+      0.0004,
+      0.002
+     ],
+     "now": [
+      0.0001,
+      0.0008,
+      0.006
+     ],
+     "transition": [
+      0.0004,
+      0.006,
+      0.04
+     ],
+     "after": [
+      0.00002,
+      0.0003,
+      0.004
+     ],
+     "survivable": 0.97
+    },
+    "buenosAires": {
+     "baseline": [
+      0.00002,
+      0.00015,
+      0.001
+     ],
+     "now": [
+      0.00004,
+      0.0003,
+      0.002
+     ],
+     "transition": [
+      0.0002,
+      0.004,
+      0.03
+     ],
+     "after": [
+      0.00002,
+      0.0003,
+      0.005
+     ],
+     "survivable": 0.98
+    }
+   },
+   "gridLong": {
+    "us": {
+     "baseline": [
+      0.00002,
+      0.00012,
+      0.0015
+     ],
+     "now": [
+      0.00002,
+      0.0002,
+      0.002
+     ],
+     "transition": [
+      0.00005,
+      0.0015,
+      0.02
+     ],
+     "after": [
+      0.000005,
+      0.00005,
+      0.002
+     ],
+     "survivable": 0.85
+    },
+    "westernEurope": {
+     "baseline": [
+      0.00001,
+      0.0001,
+      0.001
+     ],
+     "now": [
+      0.00001,
+      0.00015,
+      0.0015
+     ],
+     "transition": [
+      0.00003,
+      0.0008,
+      0.015
+     ],
+     "after": [
+      0.000005,
+      0.00004,
+      0.0015
+     ],
+     "survivable": 0.85
+    },
+    "buenosAires": {
+     "baseline": [
+      0.000002,
+      0.00002,
+      0.0003
+     ],
+     "now": [
+      0.000003,
+      0.00004,
+      0.0005
+     ],
+     "transition": [
+      0.00002,
+      0.0004,
+      0.008
+     ],
+     "after": [
+      0.000002,
+      0.00003,
+      0.001
+     ],
+     "survivable": 0.95
+    }
+   },
+   "waterSystemFailure": {
+    "us": {
+     "baseline": [
+      0.000005,
+      0.00005,
+      0.0005
+     ],
+     "now": [
+      0.00005,
+      0.0003,
+      0.002
+     ],
+     "transition": [
+      0.0002,
+      0.004,
+      0.03
+     ],
+     "after": [
+      0.00001,
+      0.0001,
+      0.003
+     ],
+     "survivable": 0.99
+    },
+    "westernEurope": {
+     "baseline": [
+      0.000005,
+      0.00004,
+      0.0004
+     ],
+     "now": [
+      0.00003,
+      0.0002,
+      0.0015
+     ],
+     "transition": [
+      0.0002,
+      0.003,
+      0.025
+     ],
+     "after": [
+      0.00001,
+      0.0001,
+      0.003
+     ],
+     "survivable": 0.99
+    },
+    "buenosAires": {
+     "baseline": [
+      0.000003,
+      0.00003,
+      0.0004
+     ],
+     "now": [
+      0.00002,
+      0.00015,
+      0.0015
+     ],
+     "transition": [
+      0.0002,
+      0.003,
+      0.03
+     ],
+     "after": [
+      0.00001,
+      0.0002,
+      0.004
+     ],
+     "survivable": 0.99
+    }
+   },
+   "paymentsOutage": {
+    "us": {
+     "baseline": [
+      0.0001,
+      0.0005,
+      0.002
+     ],
+     "now": [
+      0.0002,
+      0.0015,
+      0.01
+     ],
+     "transition": [
+      0.0005,
+      0.01,
+      0.06
+     ],
+     "after": [
+      0.00003,
+      0.0003,
+      0.005
+     ],
+     "survivable": 0.99
+    },
+    "westernEurope": {
+     "baseline": [
+      0.0001,
+      0.0005,
+      0.002
+     ],
+     "now": [
+      0.0002,
+      0.0015,
+      0.01
+     ],
+     "transition": [
+      0.0005,
+      0.012,
+      0.07
+     ],
+     "after": [
+      0.00003,
+      0.0003,
+      0.005
+     ],
+     "survivable": 0.99
+    },
+    "buenosAires": {
+     "baseline": [
+      0.0002,
+      0.001,
+      0.004
+     ],
+     "now": [
+      0.0004,
+      0.0025,
+      0.015
+     ],
+     "transition": [
+      0.001,
+      0.015,
+      0.08
+     ],
+     "after": [
+      0.0001,
+      0.0008,
+      0.01
+     ],
+     "survivable": 0.99
+    }
+   },
+   "commsOutage": {
+    "all": {
+     "baseline": [
+      0.00003,
+      0.0003,
+      0.002
+     ],
+     "now": [
+      0.0001,
+      0.0008,
+      0.005
+     ],
+     "transition": [
+      0.0005,
+      0.01,
+      0.06
+     ],
+     "after": [
+      0.00003,
+      0.0003,
+      0.005
+     ],
+     "survivable": 0.99
+    }
+   },
+   "greatPowerWar": {
+    "us": {
+     "baseline": [
+      0.004,
+      0.015,
+      0.035
+     ],
+     "now": [
+      0.004,
+      0.016,
+      0.035
+     ],
+     "transition": [
+      0.006,
+      0.04,
+      0.12
+     ],
+     "after": [
+      0.001,
+      0.005,
+      0.025
+     ],
+     "survivable": 0.97
+    },
+    "westernEurope": {
+     "baseline": [
+      0.005,
+      0.018,
+      0.04
+     ],
+     "now": [
+      0.005,
+      0.019,
+      0.04
+     ],
+     "transition": [
+      0.007,
+      0.042,
+      0.12
+     ],
+     "after": [
+      0.001,
+      0.005,
+      0.025
+     ],
+     "survivable": 0.97
+    },
+    "buenosAires": {
+     "baseline": [
+      0.003,
+      0.011,
+      0.028
+     ],
+     "now": [
+      0.003,
+      0.012,
+      0.028
+     ],
+     "transition": [
+      0.004,
+      0.031,
+      0.09
+     ],
+     "after": [
+      0.0008,
+      0.004,
+      0.02
+     ],
+     "survivable": 0.99
+    }
+   },
+   "nuclearNear": {
+    "us": {
+     "baseline": [
+      0.00005,
+      0.0004,
+      0.0015
+     ],
+     "now": [
+      0.00005,
+      0.00045,
+      0.0017
+     ],
+     "transition": [
+      0.00006,
+      0.001,
+      0.006
+     ],
+     "after": [
+      0.00002,
+      0.0002,
+      0.002
+     ],
+     "survivable": 0.6
+    },
+    "westernEurope": {
+     "baseline": [
+      0.00005,
+      0.0004,
+      0.0015
+     ],
+     "now": [
+      0.00005,
+      0.00045,
+      0.0017
+     ],
+     "transition": [
+      0.00006,
+      0.0008,
+      0.005
+     ],
+     "after": [
+      0.00002,
+      0.0002,
+      0.002
+     ],
+     "survivable": 0.6
+    },
+    "buenosAires": {
+     "baseline": [
+      0,
+      0.000005,
+      0.00005
+     ],
+     "now": [
+      0,
+      0.000005,
+      0.00005
+     ],
+     "transition": [
+      0,
+      0.00001,
+      0.0002
+     ],
+     "after": [
+      0,
+      0.000005,
+      0.0001
+     ],
+     "survivable": 0.8
+    }
+   },
+   "nuclearFar": {
+    "us": {
+     "baseline": [
+      0.0015,
+      0.0055,
+      0.015
+     ],
+     "now": [
+      0.0015,
+      0.006,
+      0.016
+     ],
+     "transition": [
+      0.0017,
+      0.012,
+      0.05
+     ],
+     "after": [
+      0.0003,
+      0.003,
+      0.015
+     ],
+     "survivable": 0.9
+    },
+    "westernEurope": {
+     "baseline": [
+      0.0015,
+      0.0065,
+      0.018
+     ],
+     "now": [
+      0.0015,
+      0.007,
+      0.019
+     ],
+     "transition": [
+      0.0017,
+      0.013,
+      0.055
+     ],
+     "after": [
+      0.0003,
+      0.003,
+      0.016
+     ],
+     "survivable": 0.9
+    },
+    "buenosAires": {
+     "baseline": [
+      0.001,
+      0.004,
+      0.012
+     ],
+     "now": [
+      0.001,
+      0.0045,
+      0.013
+     ],
+     "transition": [
+      0.0012,
+      0.01,
+      0.04
+     ],
+     "after": [
+      0.0002,
+      0.002,
+      0.012
+     ],
+     "survivable": 0.92
+    }
+   },
+   "civilUnrest": {
+    "us": {
+     "baseline": [
+      0.003,
+      0.007,
+      0.017
+     ],
+     "now": [
+      0.003,
+      0.008,
+      0.02
+     ],
+     "transition": [
+      0.004,
+      0.02,
+      0.08
+     ],
+     "after": [
+      0.001,
+      0.006,
+      0.04
+     ],
+     "survivable": 0.95
+    },
+    "westernEurope": {
+     "baseline": [
+      0.002,
+      0.006,
+      0.015
+     ],
+     "now": [
+      0.002,
+      0.0065,
+      0.017
+     ],
+     "transition": [
+      0.003,
+      0.015,
+      0.06
+     ],
+     "after": [
+      0.001,
+      0.005,
+      0.035
+     ],
+     "survivable": 0.97
+    },
+    "buenosAires": {
+     "baseline": [
+      0.008,
+      0.02,
+      0.05
+     ],
+     "now": [
+      0.008,
+      0.021,
+      0.05
+     ],
+     "transition": [
+      0.01,
+      0.04,
+      0.12
+     ],
+     "after": [
+      0.004,
+      0.018,
+      0.08
+     ],
+     "survivable": 0.98
+    }
+   }
+  }
+ },
  "locations": {
   "us": {
    "label": "United States",
@@ -138,7 +931,7 @@
     "mid": 15,
     "hi": 26,
     "tag": "guess",
-    "basis": "HHS method applied to European wages. Median gross hourly earnings 2022: EU EUR 14.9, Germany 19.4, Netherlands 19.0 (Eurostat Structure of Earnings Survey, https://ec.europa.eu/eurostat/statistics-explained/index.php/Earnings_statistics; search snippet); with France about 16.5, UK about 18, Italy 13, Spain 11 (recalled) the population-weighted Western European median is about EUR 16.4. Plus about 17% nominal growth to 2026 = 19.2; less about 29% income tax and employee contributions = 13.6; x 1.15 USD per EUR (assumed) = $15.6. Lo is half of that."
+    "basis": "HHS method applied to European wages. Median gross hourly earnings 2022: EU EUR 14.9, Germany 19.4, Netherlands 19.0 (Eurostat Structure of Earnings Survey, https://ec.europa.eu/eurostat/statistics-explained/index.php/Earnings_statistics; search snippet); with France about 16.5, UK about 18, Italy 13, Spain 11 (recalled) the population-weighted Western European median is about EUR 16.4. Plus about 17% nominal growth to 2026 = 19.2; less about 29% income tax and employee contributions = 13.6; x 1.15 USD per EUR (assumed) = $15.7. Lo is half of that."
    },
    "buenosAires": {
     "lo": 2.5,
@@ -168,7 +961,7 @@
     "mid": 0.02,
     "hi": 0.1,
     "tag": "guess",
-    "basis": "US single-family rent about $1.2 per sq ft a month (about $2,200 for 1,800 sq ft; recalled) = $155 per square metre a year. Garage or unfinished basement space is valued at about 30% of living space: $47 per square metre a year, or 47 / 900 = $0.052 per litre-year on average. Houses usually have slack, so the marginal litre is worth about 40% of that: $0.02. Hi is living-space value at 60%; lo is a house with empty basement."
+    "basis": "US single-family rent about $1.2 per sq ft a month (about $2,200 for 1,800 sq ft; recalled) = $158 per square metre a year. Garage or unfinished basement space is valued at about 30% of living space: $47 per square metre a year, or 47 / 900 = $0.052 per litre-year on average. Houses usually have slack, so the marginal litre is worth about 40% of that: $0.02. Hi is living-space value at 60%; lo is a house with empty basement."
    }
   },
   "priceIndex": {
@@ -7840,6 +8633,2372 @@
     }
    }
   },
+  "nuclearNear": {
+   "label": "Nuclear war reaching your region",
+   "definition": "Nuclear weapons detonate on the household's own country in a large-scale attack (roughly 100 warheads or more), or in a smaller attack that puts the home inside a damaged area or under a fallout plume, and everyone in the household is alive one hour after the first detonation. In a large-scale attack every surviving household in the country counts, whether or not fallout reaches it, because power, supply and medical care fail nationally; the fallout exposure is therefore a mean over households, most of which receive little dose.",
+   "tickBox": null,
+   "probability": {
+    "us": {
+     "forecast": {
+      "lo": 0.0001,
+      "mid": 0.0006,
+      "hi": 0.0025,
+      "tag": "derived",
+      "basis": "Large-scale attack on the US 0.07%/yr x alive after the first hour 0.88 = 0.062%, plus under 0.001% for limited strikes. The 0.07% sits between the tournament superforecasters' 0.06%/yr for a nuclear catastrophe (https://forum-bots.effectivealtruism.org/posts/YyBoSSaWpNacLnCji), Samotsvety's London-hit rate blended over calm and crisis years (0.07%) and Rodriguez's 0.38%/yr US-Russia exchange x 0.2-0.3 for escalation to the homeland.",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.0006,
+      "mid": 0.0022,
+      "hi": 0.008,
+      "tag": "derived",
+      "basis": "Large-scale attack 0.25%/yr x 0.88. The 0.25% is Rodriguez's 0.38%/yr for any US-Russia exchange (https://rethinkpriorities.org/research-area/how-likely-is-a-nuclear-exchange-between-the-us-and-russia/) x about 0.5 for escalation, plus China and North Korea; Barrett et al.'s 0.9%/yr for inadvertent US-Russia war (90% interval 0.02-7%) sets the upper bound.",
+      "max": 1
+     }
+    },
+    "westernEurope": {
+     "forecast": {
+      "lo": 0.00008,
+      "mid": 0.0005,
+      "hi": 0.002,
+      "tag": "derived",
+      "basis": "Large-scale attack on Western Europe 0.07%/yr x 0.85 of the population in attacked or immediately downwind countries x 0.82 alive after the first hour = 0.049%. Samotsvety (https://forum-bots.effectivealtruism.org/posts/2nDTrDPZJBEerZGrk): London hit 0.36% in the year from October 2022; about 0.03%/yr without a crisis (0.132% x 23%).",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.0005,
+      "mid": 0.0017,
+      "hi": 0.007,
+      "tag": "derived",
+      "basis": "0.25%/yr x 0.85 x 0.82, the same pessimistic war rate as for the United States; Samotsvety's March 2022 crisis-level figure for London alone was 0.8%/yr x 18% = 0.14%/yr.",
+      "max": 1
+     }
+    },
+    "buenosAires": {
+     "forecast": {
+      "lo": 0,
+      "mid": 0.000001,
+      "hi": 0.00002,
+      "tag": "guess",
+      "basis": "No nuclear-armed state has a reason to strike Argentina and fallout from Northern Hemisphere wars reaches the south only as trace global fallout. One in a million a year stands for accidents and scenarios nobody has listed.",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0,
+      "mid": 0.000003,
+      "hi": 0.00005,
+      "tag": "guess",
+      "basis": "Three times the forecast figure; still negligible beside nuclearFar.",
+      "max": 1
+     }
+    }
+   },
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.8,
+      "mid": 0.95,
+      "hi": 0.99,
+      "tag": "guess",
+      "basis": "Hundreds of detonations, high-altitude pulse and loss of fuel and staff take the grid down nearly everywhere; hydro-fed islands may hold.",
+      "max": 1
+     },
+     "days": {
+      "p50": 60,
+      "p90": 400,
+      "p99": 1500
+     },
+     "tag": "guess",
+     "basis": "No modern study gives restoration times after a nuclear attack. US EMP Commission 2008: restoration of some damage 'certainly months and in some instances years'; irreparably damaged large transformers take one to two years plus backlog (http://www.empcommission.org/docs/A2473-EMP_Commission-7MB.pdf)."
+    },
+    "gas": {
+     "pOccur": {
+      "lo": 0.6,
+      "mid": 0.85,
+      "hi": 0.97,
+      "tag": "guess",
+      "basis": "Pipeline compression, control and production depend on power and staff.",
+      "max": 1
+     },
+     "days": {
+      "p50": 60,
+      "p90": 400,
+      "p99": 1500
+     },
+     "tag": "guess",
+     "basis": "Assumed to follow the grid."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.7,
+      "mid": 0.9,
+      "hi": 0.98,
+      "tag": "guess",
+      "basis": "Treatment and pumping stop with power; OTA 1979 notes water pressure gone in damaged areas.",
+      "max": 1
+     },
+     "days": {
+      "p50": 30,
+      "p90": 150,
+      "p99": 600
+     },
+     "tag": "guess",
+     "basis": "Net of relief: tankers and organised wells reach most survivors within weeks, taps take as long as the grid. No data; wide range intended.",
+     "shareTreatable": {
+      "lo": 0.7,
+      "mid": 0.9,
+      "hi": 0.97,
+      "tag": "guess",
+      "basis": "Rivers, rain, wells and standing water in pipes and tanks remain obtainable and can be filtered and disinfected; the exception is the first days inside a fallout zone, when fetching it costs dose.",
+      "max": 1
+     }
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.6,
+      "mid": 0.85,
+      "hi": 0.97,
+      "tag": "guess",
+      "basis": "Shops hold one to three days of food and regional warehouses about a month for their area (EMP Commission 2008); distribution needs fuel, power and payment systems.",
+      "max": 1
+     },
+     "days": {
+      "p50": 21,
+      "p90": 90,
+      "p99": 365
+     },
+     "tag": "guess",
+     "basis": "Net of relief: with nine in ten people and most grain stocks surviving, I assume some rationed distribution within two to six weeks for most households; in the worst tenth nothing organised for three months or more. A guess with no data behind it."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.8,
+      "mid": 0.95,
+      "hi": 0.99,
+      "tag": "guess",
+      "basis": "Pharmacies shut and the supply chain is long and import-dependent.",
+      "max": 1
+     },
+     "days": {
+      "p50": 90,
+      "p90": 400,
+      "p99": 1100
+     },
+     "tag": "guess",
+     "basis": "Longer than food because drugs cannot be improvised or sourced locally."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.85,
+      "mid": 0.95,
+      "hi": 0.99,
+      "tag": "guess",
+      "basis": "Surviving hospitals are swamped: OTA 1979 expects injuries about equal to fatalities.",
+      "max": 1
+     },
+     "days": {
+      "p50": 45,
+      "p90": 300,
+      "p99": 1000
+     },
+     "tag": "guess",
+     "basis": "Until hospitals have power, supplies and staff again."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.8,
+      "mid": 0.95,
+      "hi": 0.99,
+      "tag": "guess",
+      "basis": "Card networks and banks need power and communications; OTA 1979 expects 'large credit, monetary, contractual, and legal problems'.",
+      "max": 1
+     },
+     "days": {
+      "p50": 45,
+      "p90": 300,
+      "p99": 1000
+     },
+     "tag": "guess",
+     "basis": "Follows power and communications. Whether notes keep their value is a separate, open question."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.8,
+      "mid": 0.95,
+      "hi": 0.99,
+      "tag": "guess",
+      "basis": "Telecom sites carry 4 to 72 hours of backup power (EMP Commission 2008); broadcast radio is the service most likely to survive.",
+      "max": 1
+     },
+     "days": {
+      "p50": 30,
+      "p90": 200,
+      "p99": 800
+     },
+     "tag": "guess",
+     "basis": "Counted from loss of service. Mobile and internet return with regional power; no data."
+    },
+    "sanitation": {
+     "pOccur": {
+      "lo": 0.55,
+      "mid": 0.8,
+      "hi": 0.95,
+      "tag": "guess",
+      "basis": "No water to flush for most; sewage pumping stops. About 70% of these days are lack of flush water, which hauled water cures.",
+      "max": 1
+     },
+     "days": {
+      "p50": 30,
+      "p90": 200,
+      "p99": 800
+     },
+     "tag": "guess",
+     "basis": "Follows water and power."
+    },
+    "displacement": {
+     "pOccur": {
+      "lo": 0.08,
+      "mid": 0.2,
+      "hi": 0.45,
+      "tag": "guess",
+      "basis": "Homes damaged by blast or fire at the edge of struck areas, and homes where the fallout dose rate stays too high to live in after the shelter period.",
+      "max": 1
+     },
+     "days": {
+      "p50": 120,
+      "p90": 1500,
+      "p99": 6000
+     },
+     "tag": "guess",
+     "basis": "Many never return."
+    }
+   },
+   "coldShare": {
+    "lo": 0.4,
+    "mid": 0.6,
+    "hi": 0.85,
+    "tag": "derived",
+    "basis": "A 60-day median window overlaps a 120-day cold season with probability (120 + 60) / 365 = 0.49; longer windows and any soot-driven cooling raise it.",
+    "max": 1
+   },
+   "hotShare": {
+    "lo": 0.2,
+    "mid": 0.4,
+    "hi": 0.6,
+    "tag": "derived",
+    "basis": "(90 + 60) / 365 = 0.41 for a 90-day hot season; cooling from soot would lower it, longer windows raise it.",
+    "max": 1
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.03,
+     "mid": 0.12,
+     "hi": 0.35,
+     "tag": "guess",
+     "basis": "After a large-scale attack there is almost nowhere unaffected within reach: no fuel sales, no flights, borders shut. Feasible mainly in limited attacks and for households with a full tank near an untouched border.",
+     "max": 1
+    },
+    "earliestDay": {
+     "lo": 1,
+     "mid": 4,
+     "hi": 14,
+     "tag": "derived",
+     "basis": "Dose rate falls as t^-1.2: about 1% of the one-hour rate at two days and 0.1% at two weeks, so travel becomes tolerable after one to three days outside the heaviest plumes and one to two weeks inside them."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 800,
+     "mid": 3000,
+     "hi": 15000,
+     "tag": "guess",
+     "basis": "A journey of 1,000 km or more with scarce fuel bought at crisis prices, and abandoned possessions."
+    },
+    "usdPerPersonDay": {
+     "lo": 20,
+     "mid": 60,
+     "hi": 200,
+     "tag": "guess",
+     "basis": "Lodging and food as a displaced person in a place itself short of supplies."
+    }
+   },
+   "warningDays": 3,
+   "lateBuy": {
+    "staple": {
+     "lo": 0.1,
+     "mid": 0.35,
+     "hi": 0.65,
+     "tag": "guess",
+     "basis": "About 0.6 that there is usable warning x 0.6 that shops still hold food and water during the scare.",
+     "max": 1
+    },
+    "specialty": {
+     "lo": 0.01,
+     "mid": 0.05,
+     "hi": 0.2,
+     "tag": "guess",
+     "basis": "Potassium iodide, respirators, radios and meters sold out within days in March 2011 and February-March 2022 (recalled).",
+     "max": 1
+    }
+   },
+   "exposures": [
+    {
+     "channel": "fallout",
+     "micromortsPerPerson": {
+      "lo": 1500,
+      "mid": 10000,
+      "hi": 60000,
+      "tag": "derived",
+      "basis": "United States. Philippe et al. (https://www.scientificamerican.com/article/who-would-take-the-brunt-of-an-attack-on-u-s-nuclear-missile-silos/): an 800 kt ground burst on each of 450 silos kills 1.4M by acute radiation on average (0.34-4.6M by day of year) if people shelter four days, twice that without shelter. x 1.3 for typical behaviour = 1.8M, plus about 0.8M from other ground bursts (guess) = 2.6M of 295M survivors = 0.9% acute, or 8,800 micromorts; later cancer adds about 2,400 unweighted (1,000 if weighted 0.4). Taken as 10,000."
+     },
+     "multipliers": {
+      "child": {
+       "mortality": 1.3
+      }
+     }
+    },
+    {
+     "channel": "trauma",
+     "micromortsPerPerson": {
+      "lo": 800,
+      "mid": 6000,
+      "hi": 40000,
+      "tag": "guess",
+      "basis": "OTA 1979: injuries about equal fatalities. 3-20% of first-hour survivors are in light-to-moderate damage zones, about 30% of them seriously hurt, 20-40% of those die without care: 0.2-2.4%, taken as 0.6%."
+     }
+    }
+   ],
+   "durationScale": {
+    "lo": 0.6,
+    "mid": 1,
+    "hi": 1.7,
+    "tag": "guess",
+    "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
+   }
+  },
+  "nuclearFar": {
+   "label": "Nuclear war elsewhere",
+   "definition": "Nuclear weapons kill more than 1,000 people in a war that leaves the household's own country without large-scale attack and its home outside any damaged or fallout area. Event mix for these two locations: about 62% limited use abroad (ten detonations or fewer), 33% regional war with tens to hundreds of detonations (India-Pakistan, Korea, a NATO-Russia exchange confined to another theatre), 5% a larger war that spares the household's country.",
+   "tickBox": null,
+   "probability": {
+    "us": {
+     "forecast": {
+      "lo": 0.002,
+      "mid": 0.006,
+      "hi": 0.018,
+      "tag": "derived",
+      "basis": "Any use killing over 1,000 people 0.7%/yr minus 0.07% for large-scale attack on the US and 0.03% for limited strikes on it. Sources for the 0.7%: tournament 0.49-0.55%, Good Judgment 0.40%, Rodriguez 1.1%, Metaculus 1.8% (https://forum-bots.effectivealtruism.org/posts/YyBoSSaWpNacLnCji).",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.006,
+      "mid": 0.015,
+      "hi": 0.035,
+      "tag": "derived",
+      "basis": "1.8%/yr (Metaculus 34% by 2050) minus 0.25% and 0.05%. The UK National Risk Register 2025 scores a limited nuclear conflict between two other states at 5-25% over its assessment period.",
+      "max": 1
+     }
+    },
+    "westernEurope": {
+     "forecast": {
+      "lo": 0.002,
+      "mid": 0.006,
+      "hi": 0.018,
+      "tag": "derived",
+      "basis": "Same arithmetic as for the United States: 0.7% minus 0.07% and 0.03%.",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.006,
+      "mid": 0.015,
+      "hi": 0.035,
+      "tag": "derived",
+      "basis": "Same arithmetic as for the United States: 1.8% minus 0.25% and 0.05%.",
+      "max": 1
+     }
+    },
+    "buenosAires": {
+     "forecast": {
+      "lo": 0.0025,
+      "mid": 0.007,
+      "hi": 0.02,
+      "tag": "derived",
+      "basis": "Any nuclear use killing over 1,000 people: tournament 0.49-0.55%/yr, Good Judgment 0.40%, Rodriguez 1.1%, Metaculus 1.8%; geometric mean 0.79%, taken as 0.7% (https://forum-bots.effectivealtruism.org/posts/YyBoSSaWpNacLnCji). About 0.1% of it is great-power war.",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.007,
+      "mid": 0.018,
+      "hi": 0.04,
+      "tag": "derived",
+      "basis": "Metaculus 34% by 2050 = 1.8%/yr; about 0.3% of it great-power war (Rodriguez 0.38%/yr for a US-Russia exchange).",
+      "max": 1
+     }
+    }
+   },
+   "windows": {
+    "food": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.04,
+      "hi": 0.12,
+      "tag": "guess",
+      "basis": "Panic buying empties shops for some days in the worst events; in March 2020 toilet paper was out at 70% of US grocers yet food stayed obtainable (base-rates.md).",
+      "max": 1
+     },
+     "days": {
+      "p50": 2,
+      "p90": 7,
+      "p99": 21
+     },
+     "tag": "guess",
+     "basis": "Net of relief. Both regions grow more grain than they eat, so the harm from a soot-driven harvest loss is price, carried on financialLoss, not absence."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.02,
+      "mid": 0.07,
+      "hi": 0.2,
+      "tag": "guess",
+      "basis": "Chance that a given regular drug cannot be had from any pharmacy because its ingredients come from a struck or blockaded country (India and China make most generic ingredients; recalled).",
+      "max": 1
+     },
+     "days": {
+      "p50": 21,
+      "p90": 90,
+      "p99": 365
+     },
+     "tag": "guess",
+     "basis": "Until substitute suppliers or products are found; drug shortages in peacetime commonly run for months."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.005,
+      "mid": 0.02,
+      "hi": 0.08,
+      "tag": "guess",
+      "basis": "Market closures and bank runs in the first days of the worst events; cards normally keep working.",
+      "max": 1
+     },
+     "days": {
+      "p50": 1,
+      "p90": 4,
+      "p99": 14
+     },
+     "tag": "guess",
+     "basis": "Counted only while a household with a card and an account cannot pay at all."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.005,
+      "mid": 0.02,
+      "hi": 0.08,
+      "tag": "guess",
+      "basis": "Satellite losses, cable cuts or cyber spillover in the worst events; no data.",
+      "max": 1
+     },
+     "days": {
+      "p50": 1,
+      "p90": 5,
+      "p99": 30
+     },
+     "tag": "guess",
+     "basis": "Counted from loss of service."
+    }
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0,
+     "mid": 0.02,
+     "hi": 0.1,
+     "tag": "guess",
+     "basis": "The effects are prices, jobs and supply chains, which are global; there is no unaffected place to go.",
+     "max": 1
+    },
+    "earliestDay": {
+     "lo": 0,
+     "mid": 1,
+     "hi": 7,
+     "tag": "guess",
+     "basis": "Not a meaningful option here."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 500,
+     "mid": 3000,
+     "hi": 15000,
+     "tag": "guess",
+     "basis": "International relocation; placeholder."
+    },
+    "usdPerPersonDay": {
+     "lo": 20,
+     "mid": 60,
+     "hi": 200,
+     "tag": "guess",
+     "basis": "Placeholder."
+    }
+   },
+   "warningDays": 3,
+   "lateBuy": {
+    "staple": {
+     "lo": 0.6,
+     "mid": 0.85,
+     "hi": 0.97,
+     "tag": "guess",
+     "basis": "Shops stay open and restock; a few goods run short for days.",
+     "max": 1
+    },
+    "specialty": {
+     "lo": 0.1,
+     "mid": 0.3,
+     "hi": 0.6,
+     "tag": "guess",
+     "basis": "Potassium iodide, respirators and radiation meters sold out within days across Europe and North America in March 2011 and early 2022 (recalled).",
+     "max": 1
+    }
+   },
+   "exposures": [
+    {
+     "channel": "financialLoss",
+     "financialUsdPerHousehold": {
+      "lo": 300,
+      "mid": 3000,
+      "hi": 25000,
+      "tag": "guess",
+      "basis": "0.62 x $700 + 0.33 x $6,000 + 0.05 x $30,000 = $3,900, shaded to $3,000. The $6,000: food bill of $10,000 up 25% for two years ($5,000 over two years, partly offset) plus a 10% chance of losing $20,000 of earnings. No market has priced a nuclear war since 1945."
+     }
+    }
+   ],
+   "durationScale": {
+    "lo": 0.6,
+    "mid": 1,
+    "hi": 1.7,
+    "tag": "guess",
+    "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
+   },
+   "byLocation": {
+    "buenosAires": {
+     "windows": {
+      "food": {
+       "pOccur": {
+        "lo": 0.01,
+        "mid": 0.04,
+        "hi": 0.12,
+        "tag": "guess",
+        "basis": "Argentina grows more than ten times its own calorie needs, and about four times even after a 150 Tg winter if feed and biofuel crops go to people (ORCG and ALLFED 2023). Shops empty only briefly, in panics or when prices are frozen.",
+        "max": 1
+       },
+       "days": {
+        "p50": 3,
+        "p90": 14,
+        "p99": 90
+       },
+       "tag": "guess",
+       "basis": "The long tail is the severe-winter case with policy failure, where the same report says net output barely covers needs and prices would soar. For most households that is a price problem, carried on financialLoss."
+      },
+      "medication": {
+       "pOccur": {
+        "lo": 0.06,
+        "mid": 0.2,
+        "hi": 0.45,
+        "tag": "guess",
+        "basis": "Chance that a given regular drug cannot be had: 0.15 great-power war x 0.7 + 0.30 regional war x 0.3 = 0.2. About 80% of active ingredients are imported, 46% from China and 18% from India (German trade agency, search snippet).",
+        "max": 1
+       },
+       "days": {
+        "p50": 45,
+        "p90": 240,
+        "p99": 900
+       },
+       "tag": "guess",
+       "basis": "Local laboratories formulate most medicines but run out of ingredients; supply returns as trade re-forms. No data."
+      },
+      "payments": {
+       "pOccur": {
+        "lo": 0.05,
+        "mid": 0.14,
+        "hi": 0.35,
+        "tag": "guess",
+        "basis": "0.15 x 0.7 + 0.30 x 0.1 + 0.55 x 0.01 = 0.14: a bank holiday or payment-system stop is likely after a great-power war and possible after a regional one.",
+        "max": 1
+       },
+       "days": {
+        "p50": 4,
+        "p90": 15,
+        "p99": 60
+       },
+       "tag": "guess",
+       "basis": "Counted only while a household with a card and an account cannot pay at all; Argentina's 2001-02 bank holidays ran days at a time (recalled). The larger harm is on financialLoss."
+      },
+      "comms": {
+       "pOccur": {
+        "lo": 0.03,
+        "mid": 0.1,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "Loss of northern data centres, cables and satellites in a great-power war; no data.",
+        "max": 1
+       },
+       "days": {
+        "p50": 3,
+        "p90": 30,
+        "p99": 180
+       },
+       "tag": "guess",
+       "basis": "Counted from loss of service."
+      }
+     },
+     "leave": {
+      "feasible": {
+       "lo": 0,
+       "mid": 0.02,
+       "hi": 0.1,
+       "tag": "guess",
+       "basis": "The effects are global; Buenos Aires is already among the places people would flee to.",
+       "max": 1
+      },
+      "earliestDay": {
+       "lo": 0,
+       "mid": 1,
+       "hi": 7,
+       "tag": "guess",
+       "basis": "Not a meaningful option here."
+      },
+      "fixedUsdPerHousehold": {
+       "lo": 300,
+       "mid": 2000,
+       "hi": 10000,
+       "tag": "guess",
+       "basis": "Placeholder."
+      },
+      "usdPerPersonDay": {
+       "lo": 5,
+       "mid": 40,
+       "hi": 90,
+       "tag": "guess",
+       "basis": "Same as the locations researcher's Buenos Aires figure."
+      }
+     },
+     "warningDays": 3,
+     "lateBuy": {
+      "staple": {
+       "lo": 0.7,
+       "mid": 0.9,
+       "hi": 0.98,
+       "tag": "guess",
+       "basis": "Shops stay open; imported goods run short over months, not days.",
+       "max": 1
+      },
+      "specialty": {
+       "lo": 0.15,
+       "mid": 0.4,
+       "hi": 0.7,
+       "tag": "guess",
+       "basis": "Imported specialty goods are thinly stocked and would not be replenished.",
+       "max": 1
+      }
+     },
+     "exposures": [
+      {
+       "channel": "financialLoss",
+       "financialUsdPerHousehold": {
+        "lo": 300,
+        "mid": 2500,
+        "hi": 20000,
+        "tag": "guess",
+        "basis": "0.55 x $400 + 0.30 x $2,500 + 0.15 x $13,000 = $2,900, shaded to $2,500. Argentine residents hold roughly $220-255 billion in dollar notes and unregistered foreign deposits (INDEC, end-2025, search snippet), about $5,000 a head, very unevenly; what a dollar note is worth after a war that wrecks the United States is unknown."
+       }
+      }
+     ]
+    }
+   }
+  },
+  "gridLong": {
+   "label": "Grid failure for weeks or months",
+   "definition": "Collapse of the transmission grid over a whole country or a region of 10 million people or more, caused by a geomagnetic storm, a cyber or physical attack, an electromagnetic pulse or a cascading technical failure, that leaves the household without grid power for at least 72 hours. Outages confined to the footprint of a storm, hurricane, earthquake or cold wave belong to other hazards; a pulse that is part of a nuclear attack on the country belongs to nuclearNear. About 30% of these events last a week or more and 20% two weeks or more.",
+   "tickBox": null,
+   "probability": {
+    "us": {
+     "forecast": {
+      "lo": 0.00008,
+      "mid": 0.0006,
+      "hi": 0.0035,
+      "tag": "derived",
+      "basis": "Sum of four routes. Storm: 0.4%/yr for a Carrington-class storm x 5% of households out 72 h or more = 0.02%. Attack: 0.2% x 0.25 in the footprint x 0.4 = 0.02%. Cascade needing a black start: 0.3% x 0.07 = 0.02%. Stand-alone pulse 0.005%. The storm factor weights NERC's view (hours to days) above Lloyd's (https://assets.lloyds.com/assets/pdf-solar-storm-risk-to-the-north-american-electric-grid/1/pdf-Solar-Storm-Risk-to-the-North-American-Electric-Grid.pdf).",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.0006,
+      "mid": 0.0025,
+      "hi": 0.01,
+      "tag": "derived",
+      "basis": "Lloyd's view. Storm: 1%/yr (Riley's 12% a decade) x 12% (Lloyd's 20-40M Americans at risk of 16 days to 2 years) = 0.12%. Attack: 0.5%/yr (Lloyd's 2015 puts a 93M-person cyber blackout inside the 1-in-200 benchmark) x 0.28 x 0.5 = 0.07%. Cascade 0.05%, pulse 0.02%. Sum 0.26%.",
+      "max": 1
+     }
+    },
+    "westernEurope": {
+     "forecast": {
+      "lo": 0.00012,
+      "mid": 0.0008,
+      "hi": 0.004,
+      "tag": "derived",
+      "basis": "Great Britain: the National Risk Register 2025 puts total grid failure at 1-5% in five years (0.45%/yr) with full restoration taking up to 7 days; x 0.4 of households out 72 h or more = 0.18%. Continent: national blackouts hit 1.15% of people a year (Italy 2003, Iberia 2025) but ended within a day; 0.05% for the 72-hour tail plus attack. Weighted 17:83 = 0.07%, rounded up. https://assets.publishing.service.gov.uk/media/6787ea8e1124a2c3ceb646bf/National_Risk_Register_2025.pdf",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.0008,
+      "mid": 0.003,
+      "hi": 0.01,
+      "tag": "derived",
+      "basis": "Top of the UK band (1%/yr x 0.5) applied to a fifth of the population, the UK register's 5-25% two-year likelihood class for cyber attacks on infrastructure, and a Lloyd's-type storm outcome at high latitudes; about four times the forecast.",
+      "max": 1
+     }
+    },
+    "buenosAires": {
+     "forecast": {
+      "lo": 0.00015,
+      "mid": 0.001,
+      "hi": 0.005,
+      "tag": "derived",
+      "basis": "Two system-wide collapses in about 25 years (16 June 2019, 48M people, 6-14 h; 1 March 2023, recalled) = 8%/yr, x 0.7-2.3% chance that restoration takes over 72 h (log-normal, median 8 h, sigma 0.9-1.1) = 0.06-0.18%. Storm risk is low at Buenos Aires's magnetic latitude.",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.0008,
+      "mid": 0.003,
+      "hi": 0.012,
+      "tag": "guess",
+      "basis": "A grid run down as Venezuela's was: in March 2019 most of that country lost power for five to seven days and again later in the month (https://en.wikipedia.org/wiki/2019_Venezuelan_blackouts). Three times the forecast.",
+      "max": 1
+     }
+    }
+   },
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 1,
+      "mid": 1,
+      "hi": 1,
+      "tag": "derived",
+      "basis": "True by definition of the event.",
+      "max": 1
+     },
+     "days": {
+      "p50": 6,
+      "p90": 30,
+      "p99": 250
+     },
+     "tag": "derived",
+     "basis": "Mixture. 70% of events have no major equipment damage and end in 3-7 days (UK register: full restoration up to 7 days; Lloyd's 2015: mean 3.8 days, two weeks to 90% restored). 30% need transformers or generators replaced: median 20 days, tenth 120 days or more (Lloyd's 2013: 16 days to 1-2 years; new transformers take 5-16 months; EMP Commission: one to two years). Mixture gives about 6 / 30-44 / 230-290."
+    },
+    "gas": {
+     "pOccur": {
+      "lo": 0.15,
+      "mid": 0.35,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "The UK register lists gas among services lost in a national blackout; many compressors are gas-driven and keep running. Texas 2021 showed gas supply failing when its own facilities lost power.",
+      "max": 1
+     },
+     "days": {
+      "p50": 4,
+      "p90": 20,
+      "p99": 150
+     },
+     "tag": "guess",
+     "basis": "Assumed to return shortly after power."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.4,
+      "mid": 0.65,
+      "hi": 0.85,
+      "tag": "derived",
+      "basis": "TAB 2011: storage and backup power in German water systems are designed 'to bridge supply interruptions lasting just a few hours', generator fuel lasts about five days; Venezuela 2019: about two thirds of people without water wholly or partly. Larger US and UK works have more backup, hence below 1.",
+      "max": 1
+     },
+     "days": {
+      "p50": 4,
+      "p90": 15,
+      "p99": 90
+     },
+     "tag": "guess",
+     "basis": "Starts on day 1-3 and is net of relief: tankers, standpipes and emergency wells (Germany keeps 5,200) cover a growing share after the first week or two, as in Puerto Rico where households averaged 68 days without water against 84 without power.",
+     "shareTreatable": {
+      "lo": 0.75,
+      "mid": 0.9,
+      "hi": 0.97,
+      "tag": "guess",
+      "basis": "Low-pressure or unsafe tap water, rivers, rain, water heaters and tanks stay obtainable on most days and can be boiled or disinfected.",
+      "max": 1
+     }
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.25,
+      "mid": 0.5,
+      "hi": 0.75,
+      "tag": "derived",
+      "basis": "TAB 2011: shelves empty within 2 to 5 days, warehouses stop within 2 days, and shop and household stocks are 'likely to be used up by the end of the first week'. EMP Commission 2008: supermarkets hold 1 to 3 days. So the window opens around day 3-5, in about half of events.",
+      "max": 1
+     },
+     "days": {
+      "p50": 3,
+      "p90": 12,
+      "p99": 60
+     },
+     "tag": "guess",
+     "basis": "Net of relief: cash sales in the first days, then official distribution from warehouses, which hold about a month's food for their area (EMP Commission). No measurement exists for a rich country."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.45,
+      "mid": 0.7,
+      "hi": 0.9,
+      "tag": "derived",
+      "basis": "TAB 2011: after 24 hours most surgeries and pharmacies are shut; drugs grow scarce during the first week; even hospital pharmacies with 14 days of stock cannot meet demand.",
+      "max": 1
+     },
+     "days": {
+      "p50": 5,
+      "p90": 25,
+      "p99": 150
+     },
+     "tag": "guess",
+     "basis": "Starts on day 1 and ends when pharmacies reopen or relief dispensing is organised."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.35,
+      "mid": 0.6,
+      "hi": 0.85,
+      "tag": "derived",
+      "basis": "TAB 2011: marked decline in health care after 24 hours, emergency calls cannot get through, and collapse of medical care is likely by the end of the first week. Emergency generators generally carry under 72 hours of fuel (EMP Commission 2008).",
+      "max": 1
+     },
+     "days": {
+      "p50": 4,
+      "p90": 20,
+      "p99": 120
+     },
+     "tag": "guess",
+     "basis": "Starts on day 1-3. Hospitals get first call on fuel and mobile generators, so this ends before household power returns."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.85,
+      "mid": 0.95,
+      "hi": 0.99,
+      "tag": "derived",
+      "basis": "TAB 2011: card payment and cash machines stop at once and most bank counters close within days. Venezuela 2019: cards unusable in the first days.",
+      "max": 1
+     },
+     "days": {
+      "p50": 5,
+      "p90": 28,
+      "p99": 230
+     },
+     "tag": "guess",
+     "basis": "Nearly as long as the power window; what is on sale is sold for cash."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.85,
+      "mid": 0.95,
+      "hi": 0.99,
+      "tag": "derived",
+      "basis": "Cell sites carry 2-8 hours of battery and telecom sites 4 to 72 hours of backup (TAB 2011; EMP Commission 2008); Venezuela lost 96% of telecom capacity on day 3.",
+      "max": 1
+     },
+     "days": {
+      "p50": 5,
+      "p90": 28,
+      "p99": 230
+     },
+     "tag": "guess",
+     "basis": "Counted from loss of service, about 0.3 to 1 day after the power fails; battery radio keeps working."
+    },
+    "sanitation": {
+     "pOccur": {
+      "lo": 0.3,
+      "mid": 0.55,
+      "hi": 0.8,
+      "tag": "guess",
+      "basis": "TAB 2011: without water toilets cannot be flushed and become blocked. About 70% of these days are lack of flush water, which hauled water cures; 30% are sewer pumping failures.",
+      "max": 1
+     },
+     "days": {
+      "p50": 4,
+      "p90": 15,
+      "p99": 90
+     },
+     "tag": "guess",
+     "basis": "Follows the water window."
+    }
+   },
+   "coldShare": {
+    "lo": 0.25,
+    "mid": 0.4,
+    "hi": 0.6,
+    "tag": "guess",
+    "basis": "A 6-day event overlaps a 110-day cold season with probability 0.32; raised because collapses are likelier at winter peak load (the UK scenario assumes winter; Texas 2021).",
+    "max": 1
+   },
+   "hotShare": {
+    "lo": 0.15,
+    "mid": 0.3,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "(90 + 6) / 365 = 0.26, raised a little for summer-peak collapses (US Northeast, August 2003; Buenos Aires heat waves).",
+    "max": 1
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.2,
+     "mid": 0.5,
+     "hi": 0.75,
+     "tag": "guess",
+     "basis": "United States. An unaffected region usually exists within 300-1,500 km (three separate interconnections; a storm hits high latitudes and coasts hardest) but few fuel stations have backup power (EMP Commission 2008), so reach is what is in the tank. In Texas 2021, 18% of affected people left home.",
+     "max": 1
+    },
+    "earliestDay": {
+     "lo": 0.5,
+     "mid": 2,
+     "hi": 5,
+     "tag": "guess",
+     "basis": "It takes a day or two to learn that restoration will be slow and where the power is on; roads jam on the first day."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 150,
+     "mid": 400,
+     "hi": 1500,
+     "tag": "guess",
+     "basis": "A round trip of 600-1,500 km by car at about $0.45 a km, or bus or air fares for the household."
+    },
+    "usdPerPersonDay": {
+     "lo": 10,
+     "mid": 45,
+     "hi": 95,
+     "tag": "derived",
+     "basis": "The ordinary-hazards researcher's blend: hotel $95 a person a day, relatives or friends $10, mixed 40:60."
+    }
+   },
+   "warningDays": 0.1,
+   "lateBuy": {
+    "staple": {
+     "lo": 0.1,
+     "mid": 0.3,
+     "hi": 0.55,
+     "tag": "guess",
+     "basis": "No useful warning, but for the first day or two some shops sell for cash before shelves empty (TAB 2011: 2 to 5 days).",
+     "max": 1
+    },
+    "specialty": {
+     "lo": 0,
+     "mid": 0.03,
+     "hi": 0.15,
+     "tag": "guess",
+     "basis": "Generators, stoves, fuel and batteries go in the first hours.",
+     "max": 1
+    }
+   },
+   "exposures": [
+    {
+     "channel": "financialLoss",
+     "financialUsdPerHousehold": {
+      "lo": 250,
+      "mid": 1000,
+      "hi": 8000,
+      "tag": "derived",
+      "basis": "The Berkeley Lab survey in prior-art.md: in a 3-day outage 20% of households lose income, $1,157 each, about $77 per household-day. Mean event length about 17 days x $60 a day (more hourly workers idle, partly offset by employers and aid) = $1,000, plus about $200 of refrigerated food, rounded down."
+     }
+    }
+   ],
+   "durationScale": {
+    "lo": 0.6,
+    "mid": 1,
+    "hi": 1.7,
+    "tag": "guess",
+    "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
+   }
+  },
+  "bankingCrisis": {
+   "label": "Bank freeze or currency crisis",
+   "definition": "Within 12 months the household either cannot freely use its bank deposits for three days or more (bank holiday, deposit freeze, withdrawal limits, forced conversion), or holds a currency that loses 30% or more of its value against other major currencies or 25% or more of its domestic purchasing power. Bank failures resolved without loss of access, slower inflation, and exchange controls that leave local-currency deposits usable do not count by themselves.",
+   "tickBox": null,
+   "probability": {
+    "us": {
+     "forecast": {
+      "lo": 0.0003,
+      "mid": 0.002,
+      "hi": 0.01,
+      "tag": "derived",
+      "basis": "No US freeze or one-year currency loss of this size since the bank holiday of March 1933: 0 in 93 years, so the rule of succession gives 1% as an upper end. Advanced economies had 2 deposit freezes in about 1,700 country-years 1970-2017 (0.12% a year), both inside the euro (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf); I take 0.05% for a freeze plus 0.15% for a dollar collapse.",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.004,
+      "mid": 0.015,
+      "hi": 0.04,
+      "tag": "guess",
+      "basis": "Dalio expects a debt 'heart attack' within about five years (https://fortune.com/2026/05/08/ray-dalio-america-national-debt-reshape-economy-heart-attack/) and Rogoff 'some kind of debt crisis, financial repression, inflation, maybe something more dramatic' within 5 to 10 years: about 10% a year for a debt crisis. Both describe 1970s-style inflation, so I take 15% of such crises to reach this threshold.",
+      "max": 1
+     }
+    },
+    "westernEurope": {
+     "forecast": {
+      "lo": 0.0005,
+      "mid": 0.003,
+      "hi": 0.012,
+      "tag": "derived",
+      "basis": "Cyprus 2013 and Greece 2015 are 2 freezes in about 460 euro-area country-years since 1999 (0.43%), or 0.1% a year weighted by the population of western Europe (12 of 430 million people over 27 years). Iceland 2008 is the only currency collapse of this size in the region since 1999. I take 0.3%, between the two (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf).",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.005,
+      "mid": 0.02,
+      "hi": 0.05,
+      "tag": "guess",
+      "basis": "A return of 2010-15 conditions, when 2 of about 17 euro members froze deposits within six years (2% per country-year). Rogoff names the UK, France and Belgium as candidates for a debt crisis (https://247wallst.com/personal-finance/2026/08/29/a-harvard-economist-says-the-debt-reckoning-is-coming-and-names-who-pays-for-it/).",
+      "max": 1
+     }
+    },
+    "buenosAires": {
+     "forecast": {
+      "lo": 0.07,
+      "mid": 0.15,
+      "hi": 0.3,
+      "tag": "derived",
+      "basis": "The peso lost 30% or more against the dollar in 5 of the 35 years since 1992 (2002, 2018, 2019, 2022, 2023; official December averages), 14%, and in 5 of 25 since 2002, 20% (https://en.wikipedia.org/wiki/Historical_exchange_rates_of_Argentine_currency); the IMF database dates 9 crisis onsets in 6 distinct episodes in 1970-2017, 12-19% a year. I take 15%: a fiscal surplus and a unified rate against the 2027 election and country risk of 840-950 points.",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.15,
+      "mid": 0.3,
+      "hi": 0.5,
+      "tag": "derived",
+      "basis": "Since controls began in 2011 the official peso lost 30% or more in 4 of 15 years and 25% or more in 10 of 15, and every presidential election year (2011, 2015, 2019, 2023) brought a devaluation or new controls. Álvarez Agis says the 2027 financial programme 'no cierra' and asks for controls back (https://eleconomista.com.ar/economia/advertencia-alvarez-agis-2027-en-vez-una-corrida-cambiaria-vamos-tener-una-maraton-n99269/amp).",
+      "max": 1
+     }
+    }
+   },
+   "windows": {
+    "payments": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.2,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "About one third of events would be freezes and not currency falls, times a 0.6 chance that a household with a card still meets days of cash-only sellers and empty ATMs. In Greece 2015 and Cyprus 2013 cards kept working in shops.",
+      "max": 1
+     },
+     "days": {
+      "p50": 3,
+      "p90": 8,
+      "p99": 21
+     },
+     "tag": "derived",
+     "basis": "Days on which the household cannot pay, not the length of the controls. Five of six bank holidays in the IMF database lasted 4-8 days and Greece's 21 (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf); the US holiday ran from 6 March 1933 and banks holding 90% of resources were open by 15 March (https://www.federalreservehistory.org/essays/bank-holiday-of-1933)."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.003,
+      "mid": 0.02,
+      "hi": 0.08,
+      "tag": "guess",
+      "basis": "No day without access to food is recorded in Cyprus 2013, Greece 2015 or Iceland 2008, where foreign currency was rationed to food, medicine and oil. The figure allows for shops shutting during a panic.",
+      "max": 1
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "No rich-country case to measure; lengths taken from the one-to-three-day shop closures seen in Argentina."
+    }
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.02,
+     "mid": 0.1,
+     "hi": 0.3,
+     "tag": "guess",
+     "basis": "Leaving does not restore access to money held in home banks, and controls block transfers abroad. It helps only a household that already holds funds outside the country.",
+     "max": 1
+    },
+    "earliestDay": {
+     "lo": 1,
+     "mid": 2,
+     "hi": 7,
+     "tag": "guess",
+     "basis": "Time to arrange travel abroad without normal access to funds."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 500,
+     "mid": 1500,
+     "hi": 5000,
+     "tag": "guess",
+     "basis": "Travel abroad for a household of two or three; not priced."
+    },
+    "usdPerPersonDay": {
+     "lo": 40,
+     "mid": 80,
+     "hi": 200,
+     "tag": "guess",
+     "basis": "Lodging and food abroad beyond normal living costs; not priced."
+    }
+   },
+   "warningDays": 14,
+   "lateBuy": {
+    "staple": {
+     "lo": 0.2,
+     "mid": 0.5,
+     "hi": 0.8,
+     "tag": "guess",
+     "basis": "An alert household could still draw a week or two of cash and buy food in every case but Cyprus. Only a fifth to a quarter of deposits left before the freezes in Argentina (85 to 67 billion) and Greece (about 50 billion euros), mostly large balances, so most households did not act.",
+     "max": 1
+    },
+    "specialty": {
+     "lo": 0.03,
+     "mid": 0.15,
+     "hi": 0.4,
+     "tag": "guess",
+     "basis": "Foreign currency, gold and transfers abroad are rationed first: Iceland restricted currency purchases from 10 October 2008 and Greece barred transfers abroad on the first day.",
+     "max": 1
+    }
+   },
+   "exposures": [
+    {
+     "channel": "financialLoss",
+     "financialUsdPerHousehold": {
+      "lo": 300,
+      "mid": 1600,
+      "hi": 5500,
+      "tag": "guess",
+      "basis": "Reference deposit $20,500 times loss share 8% (1.5-27%). The mid is the mean loss per event."
+     }
+    }
+   ],
+   "durationScale": {
+    "lo": 0.6,
+    "mid": 1,
+    "hi": 1.7,
+    "tag": "guess",
+    "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
+   },
+   "byLocation": {
+    "westernEurope": {
+     "windows": {
+      "payments": {
+       "pOccur": {
+        "lo": 0.05,
+        "mid": 0.2,
+        "hi": 0.5,
+        "tag": "guess",
+        "basis": "Most western European events would be freezes, but in Greece card purchases in shops were exempt and ATMs paid EUR 60 a day, and in Cyprus ATMs paid a daily limit. The window is the days of empty ATMs and cash-only sellers.",
+        "max": 1
+       },
+       "days": {
+        "p50": 3,
+        "p90": 8,
+        "p99": 21
+       },
+       "tag": "derived",
+       "basis": "Greek banks were shut for almost 20 days from 29 June 2015 (https://en.wikipedia.org/wiki/Capital_controls_in_Greece); Cypriot banks shut on 18 March 2013 for 8 days by the IMF's count. Limits then ran to September 2019 in Greece and April 2015 in Cyprus without stopping daily spending."
+      },
+      "food": {
+       "pOccur": {
+        "lo": 0.003,
+        "mid": 0.02,
+        "hi": 0.08,
+        "tag": "guess",
+        "basis": "None recorded in Cyprus, Greece or Iceland; Greece capped import approvals at EUR 20 million a day with priority for medicines and food.",
+        "max": 1
+       },
+       "days": {
+        "p50": 1,
+        "p90": 3,
+        "p99": 10
+       },
+       "tag": "guess",
+       "basis": "No case to measure."
+      }
+     },
+     "leave": {
+      "feasible": {
+       "lo": 0.02,
+       "mid": 0.1,
+       "hi": 0.3,
+       "tag": "guess",
+       "basis": "Leaving does not unfreeze deposits; it helps only a household with funds already abroad.",
+       "max": 1
+      },
+      "earliestDay": {
+       "lo": 1,
+       "mid": 2,
+       "hi": 7,
+       "tag": "guess",
+       "basis": "Time to arrange travel without normal access to funds."
+      },
+      "fixedUsdPerHousehold": {
+       "lo": 300,
+       "mid": 1000,
+       "hi": 4000,
+       "tag": "guess",
+       "basis": "Travel to a neighbouring country; not priced."
+      },
+      "usdPerPersonDay": {
+       "lo": 40,
+       "mid": 80,
+       "hi": 200,
+       "tag": "guess",
+       "basis": "Lodging and food beyond normal living costs; not priced."
+      }
+     },
+     "warningDays": 14,
+     "lateBuy": {
+      "staple": {
+       "lo": 0.2,
+       "mid": 0.5,
+       "hi": 0.8,
+       "tag": "guess",
+       "basis": "Cash could be drawn until the last weekend in Greece and not at all in Cyprus; food stayed on sale in both.",
+       "max": 1
+      },
+      "specialty": {
+       "lo": 0.03,
+       "mid": 0.15,
+       "hi": 0.4,
+       "tag": "guess",
+       "basis": "Transfers abroad and foreign currency were blocked from the first day in both Cyprus and Greece.",
+       "max": 1
+      }
+     },
+     "exposures": [
+      {
+       "channel": "financialLoss",
+       "financialUsdPerHousehold": {
+        "lo": 100,
+        "mid": 900,
+        "hi": 3500,
+        "tag": "guess",
+        "basis": "Reference deposit $10,000 times loss share 9% (1-35%). The mid is the mean loss per event."
+       }
+      }
+     ]
+    },
+    "buenosAires": {
+     "windows": {
+      "payments": {
+       "pOccur": {
+        "lo": 0.03,
+        "mid": 0.1,
+        "hi": 0.3,
+        "tag": "derived",
+        "basis": "Freezes are about one in six Argentine episodes (1989-90 and 2001-02 out of some eleven onsets since 1975), and in 2001-02 debit cards kept working while much of retail took only cash: 0.15 x 0.6.",
+        "max": 1
+       },
+       "days": {
+        "p50": 4,
+        "p90": 8,
+        "p99": 30
+       },
+       "tag": "derived",
+       "basis": "Bank holidays of 4 days from 1 January 1990 and 5 days from 31 December 2001 (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf), and 19-25 April 2002 (from the money-docs file). The limit of 250 pesos a week then ran for a year but covered ordinary spending."
+      },
+      "food": {
+       "pOccur": {
+        "lo": 0.01,
+        "mid": 0.05,
+        "hi": 0.15,
+        "tag": "guess",
+        "basis": "Shops shut for one to three days during re-pricing and looting in mid-1989 and December 2001; those days are also counted under civilUnrest, so this is the remainder. Price controls remove single products, not access to food.",
+        "max": 1
+       },
+       "days": {
+        "p50": 1.5,
+        "p90": 4,
+        "p99": 14
+       },
+       "tag": "guess",
+       "basis": "Length of the looting waves: seven days in December 2001, 35 hours in Córdoba in 2013."
+      },
+      "medication": {
+       "pOccur": {
+        "lo": 0.01,
+        "mid": 0.05,
+        "hi": 0.15,
+        "tag": "guess",
+        "basis": "One clear case in some eleven episodes: in January 2002 wholesalers delivered about 30% of pharmacy orders and diabetics could not find insulin (https://www.pagina12.com.ar/diario/sociedad/3-463-2002-01-04.html). It concerns imported drugs, not all pharmacy access.",
+        "max": 1
+       },
+       "days": {
+        "p50": 7,
+        "p90": 21,
+        "p99": 60
+       },
+       "tag": "guess",
+       "basis": "The 2002 shortage was reported from the first days of January and the government guaranteed insulin from 10 January after a Brazilian donation (search snippet)."
+      }
+     },
+     "leave": {
+      "feasible": {
+       "lo": 0.02,
+       "mid": 0.1,
+       "hi": 0.3,
+       "tag": "guess",
+       "basis": "Leaving does not unfreeze deposits; it helps only a household with funds already abroad, such as an account in Uruguay.",
+       "max": 1
+      },
+      "earliestDay": {
+       "lo": 1,
+       "mid": 2,
+       "hi": 7,
+       "tag": "guess",
+       "basis": "Time to arrange travel without normal access to funds."
+      },
+      "fixedUsdPerHousehold": {
+       "lo": 200,
+       "mid": 600,
+       "hi": 2500,
+       "tag": "guess",
+       "basis": "Ferry or flight to Uruguay for a household; not priced."
+      },
+      "usdPerPersonDay": {
+       "lo": 30,
+       "mid": 60,
+       "hi": 150,
+       "tag": "guess",
+       "basis": "Lodging and food in Uruguay beyond normal living costs; not priced."
+      }
+     },
+     "warningDays": 21,
+     "lateBuy": {
+      "staple": {
+       "lo": 0.3,
+       "mid": 0.6,
+       "hi": 0.85,
+       "tag": "guess",
+       "basis": "Cash and food stayed obtainable up to the announcement in 1989 and 2001, and Argentine households are practised: individuals now buy about 3 billion dollars a month (Álvarez Agis, October 2026).",
+       "max": 1
+      },
+      "specialty": {
+       "lo": 0.1,
+       "mid": 0.3,
+       "hi": 0.6,
+       "tag": "guess",
+       "basis": "Since April 2025 individuals can buy dollars without limit, so an alert household can still convert while the rate is inside the band. Under the 2019-25 controls it could buy USD 200 a month at the official rate (search snippet); beyond that it paid a parallel premium that passed 100% in May 2013 and reached 200% in October 2023.",
+       "max": 1
+      }
+     },
+     "exposures": [
+      {
+       "channel": "financialLoss",
+       "financialUsdPerHousehold": {
+        "lo": 600,
+        "mid": 1600,
+        "hi": 3400,
+        "tag": "guess",
+        "basis": "Reference deposit $4,500 times loss share 35% (15-70%). The mid is the mean loss per event."
+       }
+      }
+     ]
+    }
+   }
+  },
+  "civilUnrest": {
+   "label": "Serious unrest",
+   "definition": "Within 12 months the household's city or district has serious rioting or looting, a riot curfew or state of siege, or disorder sustained over days, or there is armed conflict on home territory. Peaceful mass protest and single clashes confined to a government quarter do not count.",
+   "tickBox": null,
+   "probability": {
+    "us": {
+     "forecast": {
+      "lo": 0.003,
+      "mid": 0.01,
+      "hi": 0.03,
+      "tag": "guess",
+      "basis": "Share of residents living in a city under riot curfew or with serious rioting: about 0.6% a year over 1965-2026 and 1.5% over 2015-2026, nearly all from 2020, when at least 200 cities imposed curfews (https://en.wikipedia.org/wiki/George_Floyd_protests) covering some 60 million people (search snippet). The 1960s and 1992 populations are my estimates.",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.01,
+      "mid": 0.03,
+      "hi": 0.08,
+      "tag": "guess",
+      "basis": "A wave on the scale of 2020 every five to seven years. Verisk Maplecroft ranks the US first among Western democracies and fifth in the world for unrest risk (https://www.insurancejournal.com/news/international/2026/02/17/858246.htm); Dalio put a civil war 'of some sort' at 35-40% (Financial Times, May 2024, search snippet).",
+      "max": 1
+     }
+    },
+    "westernEurope": {
+     "forecast": {
+      "lo": 0.003,
+      "mid": 0.01,
+      "hi": 0.03,
+      "tag": "guess",
+      "basis": "By commune: France about 4% a year (274 towns in 2005, city centres in 2018-19, at least 672 communes in 2023, autumn 2026; my estimate is that these hold 15-35% of the population each time), England about 1% (2011, 2024), other countries about 0.3%; weighted by population, 1% (https://www.publicsenat.fr/actualites/parlementaire/emeutes-de-2023-un-cout-colossal-estime-a-un-milliard-deuros-selon-le-rapport-du-senat).",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.01,
+      "mid": 0.03,
+      "hi": 0.08,
+      "tag": "guess",
+      "basis": "Verisk Maplecroft's gauge of large-scale unrest in Europe is at its highest since 2021 and insurers are capping riot cover (https://www.insurancejournal.com/news/international/2026/11/12/892199.htm). France already runs at about 4% on this measure; I add 0.1% a year for war reaching western Europe.",
+      "max": 1
+     }
+    },
+    "buenosAires": {
+     "forecast": {
+      "lo": 0.015,
+      "mid": 0.04,
+      "hi": 0.1,
+      "tag": "derived",
+      "basis": "Greater Buenos Aires had looting waves or a state of siege in 1989, 2001, 2013 and 2023: four in the 43 years since 1983, 9% a year for the region. The city proper was hit in 2001 (7 of 39 deaths, a state of siege of about 36 hours) and in 1989, 2-5% a year (https://es.wikipedia.org/wiki/Crisis_de_diciembre_de_2001_en_Argentina).",
+      "max": 1
+     },
+     "pessimistic": {
+      "lo": 0.03,
+      "mid": 0.08,
+      "hi": 0.18,
+      "tag": "guess",
+      "basis": "The regional frequency of 9% applied to the household, on the view that a currency break around the 2027 election would bring a December like 2001. No published forecast found.",
+      "max": 1
+     }
+    }
+   },
+   "windows": {
+    "food": {
+     "pOccur": {
+      "lo": 0.02,
+      "mid": 0.08,
+      "hi": 0.25,
+      "tag": "guess",
+      "basis": "Curfews are overnight and shops elsewhere stay open. In 2020 Target cut hours at about 200 of 1,900 stores and Walmart shut hundreds for a day (search snippets); in Los Angeles in 1992 mail delivery stopped and stores burned across the riot area.",
+      "max": 1
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 21
+     },
+     "tag": "guess",
+     "basis": "Riots last 5-8 days (Los Angeles 29 April to 3 May 1992) with shops shut for part of that; the 99th percentile stands for armed conflict."
+    },
+    "displacement": {
+     "pOccur": {
+      "lo": 0.002,
+      "mid": 0.01,
+      "hi": 0.04,
+      "tag": "guess",
+      "basis": "Homes burned are rare: at least 100 families among roughly 3 million households in the affected English boroughs in 2011 (my population estimate), 1,100 buildings in Los Angeles. Most of the figure is the conflict share of 3%, in which a third of households move.",
+      "max": 1
+     },
+     "days": {
+      "p50": 14,
+      "p90": 180,
+      "p99": 730
+     },
+     "tag": "guess",
+     "basis": "Weeks to rehouse after a fire; months to years in armed conflict."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.002,
+      "mid": 0.01,
+      "hi": 0.05,
+      "tag": "guess",
+      "basis": "No general shutdown has been ordered during riots in the US or western Europe; France's president threatened one in 2023 and none was applied (https://en.wikipedia.org/wiki/Nahel_Merzouk_riots). The figure covers local damage and armed conflict.",
+      "max": 1
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 3,
+      "p99": 30
+     },
+     "tag": "guess",
+     "basis": "No case to measure."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.005,
+      "mid": 0.02,
+      "hi": 0.08,
+      "tag": "guess",
+      "basis": "Cards keep working in shops that are open; the window needs ATMs and branches out of use and cash-only sellers.",
+      "max": 1
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 21
+     },
+     "tag": "guess",
+     "basis": "Same length as the food window."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.03,
+      "hi": 0.1,
+      "tag": "guess",
+      "basis": "Pharmacies are looting targets: CVS shut stores in 20 states in 2020 and 16 were damaged in Minneapolis-St Paul (search snippet). Another pharmacy is usually within reach by day.",
+      "max": 1
+     },
+     "days": {
+      "p50": 1,
+      "p90": 4,
+      "p99": 21
+     },
+     "tag": "guess",
+     "basis": "Length of the riot."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.05,
+      "hi": 0.15,
+      "tag": "guess",
+      "basis": "Ambulances and fire crews are delayed or kept out while rioting is active; about 3,600 fires were set in Los Angeles in 1992.",
+      "max": 1
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2,
+      "p99": 14
+     },
+     "tag": "guess",
+     "basis": "Nights of active rioting."
+    }
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.75,
+     "mid": 0.92,
+     "hi": 0.99,
+     "tag": "guess",
+     "basis": "Riots are local and curfews apply at night, so a household can reach relatives or a hotel outside the district by day. Lower in armed conflict.",
+     "max": 1
+    },
+    "earliestDay": {
+     "lo": 0,
+     "mid": 0.5,
+     "hi": 2,
+     "tag": "guess",
+     "basis": "The morning after the first night."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 50,
+     "mid": 200,
+     "hi": 800,
+     "tag": "guess",
+     "basis": "Fuel or tickets to a place outside the city; not priced."
+    },
+    "usdPerPersonDay": {
+     "lo": 15,
+     "mid": 50,
+     "hi": 120,
+     "tag": "guess",
+     "basis": "Hotel shared by the household, or little when staying with relatives; not priced."
+    }
+   },
+   "warningDays": 2,
+   "lateBuy": {
+    "staple": {
+     "lo": 0.6,
+     "mid": 0.85,
+     "hi": 0.97,
+     "tag": "guess",
+     "basis": "Shops outside the affected district, and by day inside it, stay open and stocked; an alert household can buy a week of food and fill prescriptions before nightfall.",
+     "max": 1
+    },
+    "specialty": {
+     "lo": 0.2,
+     "mid": 0.5,
+     "hi": 0.8,
+     "tag": "guess",
+     "basis": "Items people rush for locally sell out; no data.",
+     "max": 1
+    }
+   },
+   "exposures": [
+    {
+     "channel": "violence",
+     "micromortsPerPerson": {
+      "lo": 0.4,
+      "mid": 9,
+      "hi": 90,
+      "tag": "guess",
+      "basis": "Riots, 0.5: 19 deaths among some 60 million under curfew in 2020 (0.3 per million) and 55-63 among the 3.5 million residents of Los Angeles in 1992 (16-18; population recalled), most of them on the street. Armed conflict, 300 (50-3,000) in 3% (0.5-10%) of events, from Northern Ireland in 1972 and Ukraine in 2022 (both recalled). 0.5 + 0.03 x 300."
+     },
+     "multipliers": {
+      "child": {
+       "mortality": 0.5
+      },
+      "age75plus": {
+       "mortality": 0.7
+      },
+      "limitedMobility": {
+       "mortality": 1.5
+      }
+     }
+    },
+    {
+     "channel": "financialLoss",
+     "financialUsdPerHousehold": {
+      "lo": 20,
+      "mid": 450,
+      "hi": 4000,
+      "tag": "guess",
+      "basis": "Riots, about $20: insured losses of $1-2 billion in 2020 are $45-90 per household under curfew, nearly all commercial. Armed conflict, $15,000 of lost income, damage and moving in 3% of events."
+     }
+    }
+   ],
+   "durationScale": {
+    "lo": 0.6,
+    "mid": 1,
+    "hi": 1.7,
+    "tag": "guess",
+    "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
+   },
+   "byLocation": {
+    "westernEurope": {
+     "windows": {
+      "food": {
+       "pOccur": {
+        "lo": 0.01,
+        "mid": 0.05,
+        "hi": 0.2,
+        "tag": "guess",
+        "basis": "More than 1,000 shops were damaged in France in 2023, 2,584 in England in 2011 and at least 3,000 in France in 2026, a small share of all shops; rioting is at night and shops elsewhere stay open.",
+        "max": 1
+       },
+       "days": {
+        "p50": 1,
+        "p90": 3,
+        "p99": 21
+       },
+       "tag": "guess",
+       "basis": "Waves lasted 8 days in 2023, 6 in 2011 and 21 in 2005; the 99th percentile stands for armed conflict."
+      },
+      "displacement": {
+       "pOccur": {
+        "lo": 0.001,
+        "mid": 0.007,
+        "hi": 0.03,
+        "tag": "guess",
+        "basis": "At least 100 families were made homeless in England in 2011. Most of the figure is the conflict share of 2%, in which a third of households move.",
+        "max": 1
+       },
+       "days": {
+        "p50": 14,
+        "p90": 180,
+        "p99": 730
+       },
+       "tag": "guess",
+       "basis": "Weeks to rehouse after a fire; months to years in armed conflict."
+      },
+      "comms": {
+       "pOccur": {
+        "lo": 0.002,
+        "mid": 0.01,
+        "hi": 0.05,
+        "tag": "guess",
+        "basis": "No shutdown was applied in France in 2023 or England in 2011, though both governments discussed one.",
+        "max": 1
+       },
+       "days": {
+        "p50": 0.5,
+        "p90": 3,
+        "p99": 30
+       },
+       "tag": "guess",
+       "basis": "No case to measure."
+      },
+      "payments": {
+       "pOccur": {
+        "lo": 0.005,
+        "mid": 0.03,
+        "hi": 0.1,
+        "tag": "guess",
+        "basis": "366 bank branches were among the shops damaged in France in 2023, so local ATMs fail; cards keep working in open shops.",
+        "max": 1
+       },
+       "days": {
+        "p50": 1,
+        "p90": 3,
+        "p99": 21
+       },
+       "tag": "guess",
+       "basis": "Same length as the food window."
+      },
+      "medication": {
+       "pOccur": {
+        "lo": 0.005,
+        "mid": 0.02,
+        "hi": 0.08,
+        "tag": "guess",
+        "basis": "Pharmacies are among looted shops but another is usually within reach by day.",
+        "max": 1
+       },
+       "days": {
+        "p50": 1,
+        "p90": 4,
+        "p99": 21
+       },
+       "tag": "guess",
+       "basis": "Length of the riot."
+      },
+      "emergencyCare": {
+       "pOccur": {
+        "lo": 0.01,
+        "mid": 0.04,
+        "hi": 0.12,
+        "tag": "guess",
+        "basis": "Fire and ambulance crews are delayed during active rioting; London's fire brigade fought over 100 serious fires in 2011.",
+        "max": 1
+       },
+       "days": {
+        "p50": 0.5,
+        "p90": 2,
+        "p99": 14
+       },
+       "tag": "guess",
+       "basis": "Nights of active rioting."
+      }
+     },
+     "leave": {
+      "feasible": {
+       "lo": 0.8,
+       "mid": 0.94,
+       "hi": 0.99,
+       "tag": "guess",
+       "basis": "Rioting is confined to some districts and to the night; trains and roads out run by day, though France stopped buses and trams at 9 pm in 2023.",
+       "max": 1
+      },
+      "earliestDay": {
+       "lo": 0,
+       "mid": 0.5,
+       "hi": 2,
+       "tag": "guess",
+       "basis": "The morning after the first night."
+      },
+      "fixedUsdPerHousehold": {
+       "lo": 50,
+       "mid": 150,
+       "hi": 600,
+       "tag": "guess",
+       "basis": "Train tickets or fuel; not priced."
+      },
+      "usdPerPersonDay": {
+       "lo": 15,
+       "mid": 50,
+       "hi": 120,
+       "tag": "guess",
+       "basis": "Hotel shared by the household, or little when staying with relatives; not priced."
+      }
+     },
+     "warningDays": 2,
+     "lateBuy": {
+      "staple": {
+       "lo": 0.6,
+       "mid": 0.85,
+       "hi": 0.97,
+       "tag": "guess",
+       "basis": "Shops are open by day and outside the affected districts.",
+       "max": 1
+      },
+      "specialty": {
+       "lo": 0.2,
+       "mid": 0.5,
+       "hi": 0.8,
+       "tag": "guess",
+       "basis": "No data.",
+       "max": 1
+      }
+     },
+     "exposures": [
+      {
+       "channel": "violence",
+       "micromortsPerPerson": {
+        "lo": 0.2,
+        "mid": 6,
+        "hi": 60,
+        "tag": "guess",
+        "basis": "Riots, 0.2: 2 deaths in France in 2023, 3 in 2005, and 5 in England in 2011 among roughly 8 million people in the affected boroughs (my estimate), 0.6 per million. Armed conflict, 300 (50-3,000) in 2% (0.3-8%) of events (recalled anchors). 0.2 + 0.02 x 300."
+       },
+       "multipliers": {
+        "child": {
+         "mortality": 0.5
+        },
+        "age75plus": {
+         "mortality": 0.7
+        },
+        "limitedMobility": {
+         "mortality": 1.5
+        }
+       }
+      },
+      {
+       "channel": "financialLoss",
+       "financialUsdPerHousehold": {
+        "lo": 10,
+        "mid": 250,
+        "hi": 2500,
+        "tag": "guess",
+        "basis": "Riots, about $10: 12,031 vehicles burned in France in 2023 among roughly 11 million households in the 672 communes (my estimate) is 0.1% losing a car, half uninsured for fire. Armed conflict, $12,000 in 2% of events."
+       }
+      }
+     ]
+    },
+    "buenosAires": {
+     "windows": {
+      "food": {
+       "pOccur": {
+        "lo": 0.05,
+        "mid": 0.2,
+        "hi": 0.45,
+        "tag": "guess",
+        "basis": "Looting in Argentina targets food shops and shopkeepers shut in advance: in December 2013 thousands of shops in Greater Buenos Aires closed early, and in August 2023 many in Once and Flores shut on rumours alone (https://chequeado.com/el-explicador/saqueos-en-el-conurbano-que-videos-circularon-y-que-paso-en-cada-municipio/).",
+        "max": 1
+       },
+       "days": {
+        "p50": 1.5,
+        "p90": 4,
+        "p99": 14
+       },
+       "tag": "derived",
+       "basis": "Seven days of looting in December 2001, two to three days in the conurbano in August 2023, 35 hours in Córdoba in 2013 (https://es.wikipedia.org/wiki/Saqueos_en_Argentina_de_2013)."
+      },
+      "displacement": {
+       "pOccur": {
+        "lo": 0.001,
+        "mid": 0.004,
+        "hi": 0.02,
+        "tag": "guess",
+        "basis": "Homes are not the target of looting waves; the figure is mostly the conflict share of 1%.",
+        "max": 1
+       },
+       "days": {
+        "p50": 14,
+        "p90": 120,
+        "p99": 730
+       },
+       "tag": "guess",
+       "basis": "No case to measure."
+      },
+      "comms": {
+       "pOccur": {
+        "lo": 0.001,
+        "mid": 0.005,
+        "hi": 0.03,
+        "tag": "guess",
+        "basis": "No shutdown found in any Argentine episode.",
+        "max": 1
+       },
+       "days": {
+        "p50": 0.5,
+        "p90": 2,
+        "p99": 14
+       },
+       "tag": "guess",
+       "basis": "No case to measure."
+      },
+      "payments": {
+       "pOccur": {
+        "lo": 0.02,
+        "mid": 0.08,
+        "hi": 0.25,
+        "tag": "guess",
+        "basis": "Small shops prefer cash, and banks and ATMs shut where there is rioting; in 2001 the unrest coincided with the withdrawal limit, which is counted under bankingCrisis.",
+        "max": 1
+       },
+       "days": {
+        "p50": 1.5,
+        "p90": 4,
+        "p99": 14
+       },
+       "tag": "guess",
+       "basis": "Same length as the food window."
+      },
+      "medication": {
+       "pOccur": {
+        "lo": 0.01,
+        "mid": 0.04,
+        "hi": 0.12,
+        "tag": "guess",
+        "basis": "Pharmacies shut with other shops for the same days.",
+        "max": 1
+       },
+       "days": {
+        "p50": 1,
+        "p90": 3,
+        "p99": 14
+       },
+       "tag": "guess",
+       "basis": "Length of the looting wave."
+      },
+      "emergencyCare": {
+       "pOccur": {
+        "lo": 0.01,
+        "mid": 0.05,
+        "hi": 0.15,
+        "tag": "guess",
+        "basis": "Ambulances delayed where streets are blocked or police are absent, as in the 2013 police strikes.",
+        "max": 1
+       },
+       "days": {
+        "p50": 0.5,
+        "p90": 2,
+        "p99": 7
+       },
+       "tag": "guess",
+       "basis": "Days of active disorder."
+      }
+     },
+     "leave": {
+      "feasible": {
+       "lo": 0.75,
+       "mid": 0.9,
+       "hi": 0.98,
+       "tag": "guess",
+       "basis": "Looting is confined to some districts; the 2001 state of siege lasted about 36 hours and did not close roads out of the city.",
+       "max": 1
+      },
+      "earliestDay": {
+       "lo": 0,
+       "mid": 0.5,
+       "hi": 2,
+       "tag": "guess",
+       "basis": "The next morning."
+      },
+      "fixedUsdPerHousehold": {
+       "lo": 30,
+       "mid": 100,
+       "hi": 400,
+       "tag": "guess",
+       "basis": "Bus tickets or fuel at local prices; not priced."
+      },
+      "usdPerPersonDay": {
+       "lo": 10,
+       "mid": 30,
+       "hi": 80,
+       "tag": "guess",
+       "basis": "Lodging at local prices, or little when staying with relatives; not priced."
+      }
+     },
+     "warningDays": 3,
+     "lateBuy": {
+      "staple": {
+       "lo": 0.6,
+       "mid": 0.85,
+       "hi": 0.97,
+       "tag": "guess",
+       "basis": "Waves start in other provinces days earlier and shops stay open until rumours reach the neighbourhood.",
+       "max": 1
+      },
+      "specialty": {
+       "lo": 0.2,
+       "mid": 0.5,
+       "hi": 0.8,
+       "tag": "guess",
+       "basis": "No data.",
+       "max": 1
+      }
+     },
+     "exposures": [
+      {
+       "channel": "violence",
+       "micromortsPerPerson": {
+        "lo": 0.3,
+        "mid": 3.5,
+        "hi": 30,
+        "tag": "guess",
+        "basis": "Riots, 0.5: 7 deaths in a city of about 3 million in December 2001 (2.4 per million) and 11 in the province, most of them demonstrators or looters; none in the metropolitan area in 2013 or 2023. Armed conflict, 300 in 1% of events (recalled anchors). 0.5 + 0.01 x 300."
+       },
+       "multipliers": {
+        "child": {
+         "mortality": 0.5
+        },
+        "age75plus": {
+         "mortality": 0.7
+        },
+        "limitedMobility": {
+         "mortality": 1.5
+        }
+       }
+      },
+      {
+       "channel": "financialLoss",
+       "financialUsdPerHousehold": {
+        "lo": 3,
+        "mid": 55,
+        "hi": 600,
+        "tag": "guess",
+        "basis": "Riots, about $5 in lost days of informal work and damage; armed conflict, $5,000 in 1% of events. Shop owners lose far more: 400 million pesos among about 1,000 shops in Córdoba in 2013."
+       }
+      }
+     ]
+    }
+   }
+  },
+  "cyberOutage": {
+   "label": "Blackout from an attack or software failure",
+   "definition": "Grid power out for 1 to 14 days across a metropolitan region or larger because of a cyberattack, sabotage, or a failure of software or AI-run operations.",
+   "tickBox": null,
+   "probability": {
+    "us": {
+     "lo": 0.00005,
+     "mid": 0.0005,
+     "hi": 0.0025,
+     "max": 1,
+     "tag": "derived",
+     "basis": "Attack-caused blackout of 1-14 days reaching this household, AI removed. Half of the FRI/GovAI pilot's 2026 median (1% for a US grid cyberattack doing at least $10bn of damage, which at GovAI's $100-250 per person-day is about 40-100m person-days, taken as 12% of households out a day or more): 0.5% x 12% = 0.06%, plus ~0.02% from $1-10bn events = 0.08%, shaded to 0.05% because no cyberattack has ever cut power in the US. Lo: a sceptic in the line of Maschmeyer (zero US events, three short ones in Ukraine). Hi: the pilot's upper quartile (2%) x 12%. https://forecastingresearch.org/research/ai-cyber-risks-capabilities"
+    },
+    "westernEurope": {
+     "lo": 0.00005,
+     "mid": 0.0004,
+     "hi": 0.002,
+     "max": 1,
+     "tag": "guess",
+     "basis": "US derivation scaled by 0.8: no public counterpart to Volt Typhoon's pre-positioning, but Russia is an active adversary. Lo: sceptic counting zero attack-caused outages in the EU or UK. Hi: FRI pilot upper quartile transposed."
+    },
+    "buenosAires": {
+     "lo": 0.00002,
+     "mid": 0.00015,
+     "hi": 0.001,
+     "max": 1,
+     "tag": "guess",
+     "basis": "Guess: 30% of the US mid. No state is known to hold access to Argentine utilities for use in war, and I found no report of an attack on Edenor, Edesur, CAMMESA or Transener; the remaining route is criminal ransomware reaching operations. Lo: sceptic, no events. Hi: weak defences (a national CERT of a handful of staff) on a grid that already fails often."
+    }
+   },
+   "windows": {
+    "power": {
+     "pOccur": 1,
+     "days": {
+      "p50": 2,
+      "p90": 6,
+      "p99": 14
+     }
+    },
+    "water": {
+     "pOccur": 0.25,
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 8
+     },
+     "shareTreatable": 0.8
+    },
+    "comms": {
+     "pOccur": 0.6,
+     "days": {
+      "p50": 1,
+      "p90": 4,
+      "p99": 12
+     }
+    },
+    "payments": {
+     "pOccur": 0.9,
+     "days": {
+      "p50": 2,
+      "p90": 6,
+      "p99": 14
+     }
+    },
+    "food": {
+     "pOccur": 0.1,
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 7
+     }
+    },
+    "sanitation": {
+     "pOccur": 0.1,
+     "days": {
+      "p50": 1,
+      "p90": 4,
+      "p99": 10
+     }
+    }
+   },
+   "coldShare": 0.4,
+   "hotShare": 0.25,
+   "leave": {
+    "feasible": 0.85,
+    "earliestDay": 1,
+    "fixedUsdPerHousehold": 300,
+    "usdPerPersonDay": 45
+   },
+   "warningDays": 0,
+   "lateBuy": {
+    "staple": 0,
+    "specialty": 0
+   },
+   "exposures": [
+    {
+     "channel": "co",
+     "micromortsPerPerson": {
+      "lo": 0.03,
+      "mid": 0.15,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "As for a severe storm (hazards-ordinary.json): improvised power and cooking."
+     }
+    },
+    {
+     "channel": "fire",
+     "micromortsPerPerson": {
+      "lo": 0.02,
+      "mid": 0.1,
+      "hi": 0.4,
+      "tag": "guess",
+      "basis": "As for a severe storm (hazards-ordinary.json): candles and improvised cooking."
+     }
+    }
+   ],
+   "durationScale": {
+    "lo": 0.6,
+    "mid": 1,
+    "hi": 1.7,
+    "tag": "guess",
+    "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
+   }
+  },
+  "paymentsOutage": {
+   "label": "Payment systems down",
+   "definition": "For at least a day the household cannot pay by card, use ATMs or reach its bank, because of an attack on or failure of banks, card networks or the systems between them, while shops stay open.",
+   "tickBox": null,
+   "probability": {
+    "us": {
+     "lo": 0.0001,
+     "mid": 0.0005,
+     "hi": 0.002,
+     "max": 1,
+     "tag": "guess",
+     "basis": "Guess resting on recollection, not on a fetched source: ransomware against US credit unions and their vendors in 2023-24 locked members out for days, roughly 0.1-0.2% of households a year, halved because many kept card access. No large US bank or card network has been down for a day through attack. Lo: sceptic counting large institutions only. Hi: counts every vendor incident."
+    },
+    "westernEurope": {
+     "lo": 0.0001,
+     "mid": 0.0005,
+     "hi": 0.002,
+     "max": 1,
+     "tag": "guess",
+     "basis": "Guess, as for the US. Each country's payments run through fewer banks and schemes, so events are rarer but each reaches more households."
+    },
+    "buenosAires": {
+     "lo": 0.0002,
+     "mid": 0.001,
+     "hi": 0.004,
+     "max": 1,
+     "tag": "guess",
+     "basis": "Guess: twice the US. Retail payments run through a few shared processors (Red Link, Banelco, Prisma, Mercado Pago) with weaker defences; I found no attack that stopped them for a day."
+    }
+   },
+   "windows": {
+    "payments": {
+     "pOccur": 1,
+     "days": {
+      "p50": 2,
+      "p90": 7,
+      "p99": 30
+     }
+    }
+   },
+   "leave": {
+    "feasible": 0,
+    "earliestDay": 0,
+    "fixedUsdPerHousehold": 0,
+    "usdPerPersonDay": 0
+   },
+   "warningDays": 0,
+   "lateBuy": {
+    "staple": 0,
+    "specialty": 0
+   },
+   "durationScale": {
+    "lo": 0.6,
+    "mid": 1,
+    "hi": 1.7,
+    "tag": "guess",
+    "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
+   }
+  },
+  "commsOutage": {
+   "label": "Mobile and internet down",
+   "definition": "Mobile and home internet unusable for at least a day for a national operator or a metropolitan region, because of an attack or an AI-caused failure.",
+   "tickBox": null,
+   "probability": {
+    "all": {
+     "lo": 0.00003,
+     "mid": 0.0003,
+     "hi": 0.002,
+     "max": 1,
+     "tag": "guess",
+     "basis": "Guess. One attack has taken a national mobile network down for days (Kyivstar, December 2023, in wartime); none in the US, western Europe or Argentina. Lo: sceptic, zero events outside war. Hi: counts the access Chinese services already hold in US carriers as usable at will."
+    }
+   },
+   "windows": {
+    "comms": {
+     "pOccur": 1,
+     "days": {
+      "p50": 1.5,
+      "p90": 5,
+      "p99": 14
+     }
+    },
+    "payments": {
+     "pOccur": 0.3,
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 7
+     }
+    },
+    "emergencyCare": {
+     "pOccur": 0.3,
+     "days": {
+      "p50": 1,
+      "p90": 2,
+      "p99": 5
+     }
+    }
+   },
+   "leave": {
+    "feasible": 0,
+    "earliestDay": 0,
+    "fixedUsdPerHousehold": 0,
+    "usdPerPersonDay": 0
+   },
+   "warningDays": 0,
+   "lateBuy": {
+    "staple": 0,
+    "specialty": 0
+   },
+   "durationScale": {
+    "lo": 0.6,
+    "mid": 1,
+    "hi": 1.7,
+    "tag": "guess",
+    "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
+   }
+  },
+  "greatPowerWar": {
+   "label": "War between great powers, short of nuclear",
+   "definition": "A conventional war between the United States and China, or a Russia–NATO war of similar scale, that does not go nuclear. Its financial effects are not counted here: nothing on the list addresses them.",
+   "tickBox": null,
+   "probability": {
+    "us": {
+     "lo": 0.004,
+     "mid": 0.015,
+     "hi": 0.035,
+     "max": 1,
+     "tag": "derived",
+     "basis": "Onset per year of a US-China or Russia-NATO conventional war that stays non-nuclear, AI's contribution removed: (US-China 1.17% + Russia-NATO 1.0% x 0.5 effect on a US household) x 0.88 non-nuclear. US-China from Metaculus Q8362 (8% before 2035 = 1.0%/yr) and Q11480 x Q11112 (23% x 57% = 13% = 1.7%/yr), less a guessed 10% AI share. Lo: long-peace sceptic near Metaculus Q7452 (0.36%/yr); hi: Clare's upper bound (50% 'in the coming decades', about 2.6%/yr if read as by 2050) plus Europe."
+    },
+    "westernEurope": {
+     "lo": 0.005,
+     "mid": 0.018,
+     "hi": 0.04,
+     "max": 1,
+     "tag": "derived",
+     "basis": "(US-China 1.17% x 0.9 effect + Russia-NATO 1.0% x 1.0) x 0.88 non-nuclear = 1.8%, AI's share removed. Russia-NATO from Metaculus Q8636 (13% by 2035 for a war without the US = 1.7%/yr, 127 forecasters, criteria not read) shaded down toward Q7452 (US-Russia war before 2050: 8% = 0.36%/yr). Lo and hi as for the US entry."
+    },
+    "buenosAires": {
+     "lo": 0.003,
+     "mid": 0.011,
+     "hi": 0.028,
+     "max": 1,
+     "tag": "derived",
+     "basis": "(US-China 1.17% x 0.8 effect + Russia-NATO 1.0% x 0.35) x 0.88 non-nuclear = 1.1%, AI's share removed. The effect factors are guesses: a US-China war cuts Argentina's second-largest trade relationship and sets off a global flight from risk; a European war reaches it mainly through energy and grain prices, as in 2022. Lo and hi as for the US entry, scaled."
+    }
+   },
+   "windows": {
+    "power": {
+     "pOccur": 0.2,
+     "days": {
+      "p50": 2,
+      "p90": 10,
+      "p99": 30
+     }
+    },
+    "water": {
+     "pOccur": 0.07,
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 7
+     },
+     "shareTreatable": 0.8
+    },
+    "comms": {
+     "pOccur": 0.2,
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 10
+     }
+    },
+    "payments": {
+     "pOccur": 0.15,
+     "days": {
+      "p50": 2,
+      "p90": 7,
+      "p99": 14
+     }
+    },
+    "medication": {
+     "pOccur": 0.15,
+     "days": {
+      "p50": 14,
+      "p90": 60,
+      "p99": 120
+     }
+    }
+   },
+   "coldShare": 0.3,
+   "hotShare": 0.25,
+   "leave": {
+    "feasible": 0,
+    "earliestDay": 0,
+    "fixedUsdPerHousehold": 0,
+    "usdPerPersonDay": 0
+   },
+   "warningDays": 30,
+   "lateBuy": {
+    "staple": 0.8,
+    "specialty": 0.3
+   },
+   "byLocation": {
+    "buenosAires": {
+     "windows": {
+      "medication": {
+       "pOccur": 0.1,
+       "days": {
+        "p50": 14,
+        "p90": 60,
+        "p99": 120
+       }
+      },
+      "payments": {
+       "pOccur": 0.15,
+       "days": {
+        "p50": 5,
+        "p90": 10,
+        "p99": 20
+       }
+      }
+     },
+     "coldShare": 0,
+     "hotShare": 0
+    }
+   },
+   "durationScale": {
+    "lo": 0.6,
+    "mid": 1,
+    "hi": 1.7,
+    "tag": "guess",
+    "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
+   }
+  },
   "houseFire": {
    "label": "House fire (everyday)",
    "definition": "The yearly risk of death and loss from fire at home, for a home with no working smoke alarm.",
@@ -7879,7 +11038,8 @@
     "hi": 1.7,
     "tag": "guess",
     "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
-   }
+   },
+   "everyday": true
   },
   "coIncident": {
    "label": "Carbon monoxide at home (everyday)",
@@ -7920,7 +11080,8 @@
     "hi": 1.7,
     "tag": "guess",
     "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
-   }
+   },
+   "everyday": true
   },
   "homeMedicalEmergency": {
    "label": "Medical emergency at home (everyday)",
@@ -7948,7 +11109,8 @@
     "hi": 1.7,
     "tag": "guess",
     "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
-   }
+   },
+   "everyday": true
   },
   "seasonalIllness": {
    "label": "Seasonal respiratory infection (everyday)",
@@ -7976,7 +11138,8 @@
     "hi": 1.7,
     "tag": "guess",
     "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
-   }
+   },
+   "everyday": true
   },
   "violentCrime": {
    "label": "Burglary and assault at home (everyday)",
@@ -8011,7 +11174,8 @@
     "hi": 1.7,
     "tag": "guess",
     "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
-   }
+   },
+   "everyday": true
   }
  },
  "items": [
@@ -13537,7 +16701,8 @@
    "requires": [],
    "conditions": [],
    "bundleWith": [
-    "camp-stove"
+    "camp-stove",
+    "stove-fuel"
    ],
    "effects": [
     {
@@ -13752,7 +16917,8 @@
    "requires": [],
    "conditions": [],
    "bundleWith": [
-    "camp-stove"
+    "camp-stove",
+    "stove-fuel"
    ],
    "effects": [
     {
@@ -14059,6 +17225,10 @@
     "cook"
    ],
    "conditions": [],
+   "bundleWith": [
+    "bulk-staples",
+    "pantry-cook"
+   ],
    "effects": [
     {
      "type": "supply",
@@ -17939,13 +21109,7 @@
     "tag": "guess",
     "basis": "None."
    },
-   "upkeepHoursPerYear": {
-    "lo": 0,
-    "mid": 0,
-    "hi": 0,
-    "tag": "guess",
-    "basis": "None."
-   },
+   "upkeepHoursPerYear": 0.1,
    "upkeepUsdPerYear": {
     "lo": 0,
     "mid": 0,

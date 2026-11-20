@@ -8,7 +8,7 @@
 //
 // Usage: node tools/build-data.mjs [--check]   (--check reports without writing)
 
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import config from '../data/config.mjs';
@@ -58,6 +58,20 @@ for (const [name, d] of Object.entries(files)) {
     for (const p of d.parameters) R.params[p.id] = p;
   }
 }
+
+// ---- the AI research ----
+const aiDir = join(root, 'research', 'ai');
+const AI = { rates: {}, timelines: [], params: {} };
+if (existsSync(aiDir)) {
+  for (const f of readdirSync(aiDir).filter((x) => x.endsWith('.json')).sort()) {
+    const d = JSON.parse(readFileSync(join(aiDir, f), 'utf8'));
+    if (d.kind !== 'ai') continue;
+    for (const r of d.hazardRates || []) (AI.rates[r.hazard] ||= {})[r.location] = { ...r, file: basename(f, '.json') };
+    for (const t of d.timelines || []) AI.timelines.push(t);
+    for (const x of d.parameters || []) AI.params[x.id] = x;
+  }
+}
+const tri = (q) => [q.lo, q.mid, q.hi];
 
 // ---- parameters ----
 const parameters = {};
@@ -157,7 +171,15 @@ for (const [id, spec] of Object.entries(config.hazards)) {
     const locs = [...new Set(h.annualProbability.map((a) => a.location))].filter((l) => l !== 'all' && l !== 'us');
     for (const l of locs) byLocation[l] = profileOf(h);
   }
-  const { from, label, patch, patchByLocation, ...rest } = spec;
+  // A hazard that exists only because of the AI research takes its base
+  // probability from that research's figure with AI's effect removed.
+  if (spec.aiBase) {
+    for (const [l, r] of Object.entries(AI.rates[id] || {})) {
+      probability[l] = { lo: r.baseline.lo, mid: r.baseline.mid, hi: r.baseline.hi, max: 1, tag: r.baseline.tag, basis: r.baseline.basis };
+    }
+    if (!AI.rates[id]) warn(`hazard ${id}: no AI research`);
+  }
+  const { from, label, patch, patchByLocation, aiBase, ...rest } = spec;
   delete rest.profile;
   const profile = typeof spec.profile === 'function' ? spec.profile(R, T) : spec.profile;
   hazards[id] = {
@@ -167,6 +189,7 @@ for (const [id, spec] of Object.entries(config.hazards)) {
     probability: { ...probability, ...(spec.probability || {}) },
     ...(primary ? profileOf(primary) : {}),
     ...(profile || {}),
+    probability: { ...probability, ...(spec.probability || {}), ...((profile && profile.probability) || {}) },
     durationScale: { lo: 0.6, mid: 1, hi: 1.7, tag: 'guess', basis: 'Uncertainty about how long disruptions of this kind last, applied to every window of the hazard.' },
     ...rest,
   };
@@ -254,8 +277,35 @@ for (const id of Object.keys(R.items)) {
   if (!used.has(id) && !dropped.has(id)) warn(`research item ${id} (${R.items[id].file}) is neither used nor dropped`);
 }
 
+// ---- AI timelines and rates ----
+let ai;
+if (config.ai && Object.keys(AI.rates).length) {
+  const param = (id) => { if (!AI.params[id]) { warn(`AI parameter ${id} not found`); return null; } return AI.params[id].value; };
+  const tYears = param('transitionYears');
+  const pX = param('pExistentialGivenAGI');
+  ai = {
+    startYear: config.ai.startYear, horizonYears: config.ai.horizonYears,
+    transitionYears: tYears ? tYears.mid : 5,
+    pExistential: pX ? tri(pX) : undefined,
+    timelines: {}, hazards: {},
+  };
+  for (const [key, spec] of Object.entries(config.ai.timelines)) {
+    const t = AI.timelines.find((x) => x.id === spec.from);
+    if (!t) { warn(`AI timeline ${spec.from} not found`); continue; }
+    ai.timelines[key] = { label: spec.label, source: t.source, cumulative: t.cumulative };
+  }
+  for (const [hz, byLoc] of Object.entries(AI.rates)) {
+    if (!hazards[hz]) { if (!(config.ai.unused || {})[hz]) warn(`AI rates for ${hz} are neither used nor set aside`); continue; }
+    ai.hazards[hz] = {};
+    for (const [l, r] of Object.entries(byLoc)) {
+      ai.hazards[hz][l] = { baseline: tri(r.baseline), now: tri(r.now), transition: tri(r.transition), after: tri(r.after), survivable: r.survivableShare ? r.survivableShare.mid : 1 };
+    }
+  }
+}
+
 const model = {
   version: config.version,
+  ai,
   locations: config.locations,
   outlooks: config.outlooks,
   defaults: config.defaults,

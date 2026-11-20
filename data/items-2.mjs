@@ -36,7 +36,7 @@ export const items = [
     effects: () => [{ type: 'supply', need: 'food', amount: 1 }, isolation([3, 7, 14, 30, 60])],
   },
   {
-    id: 'pantry-cook', from: 'pantry-cook', group: 'Food', requires: [], bundleWith: ['camp-stove'],
+    id: 'pantry-cook', from: 'pantry-cook', group: 'Food', requires: [], bundleWith: ['camp-stove', 'stove-fuel'],
     ladder: [7, 14, 30, 60, 90].map((n) => days(n)),
     effects: () => [{ type: 'supply', need: 'food', amount: 1, pool: 'cook' }, isolation([7, 14, 30, 60, 90])],
   },
@@ -46,7 +46,7 @@ export const items = [
     effects: () => [{ type: 'supply', need: 'food', amount: 1 }],
   },
   {
-    id: 'bulk-staples', from: 'bulk-staples', group: 'Food', requires: [], bundleWith: ['camp-stove'],
+    id: 'bulk-staples', from: 'bulk-staples', group: 'Food', requires: [], bundleWith: ['camp-stove', 'stove-fuel'],
     ladder: [30, 90, 180, 365].map((n) => days(n)),
     effects: () => [{ type: 'supply', need: 'food', amount: 1, pool: 'cook' }, isolation([30, 90, 180, 365])],
   },
@@ -66,7 +66,7 @@ export const items = [
     ],
   },
   {
-    id: 'stove-fuel', from: 'stove-fuel', group: 'Food', requires: ['cook'],
+    id: 'stove-fuel', from: 'stove-fuel', group: 'Food', requires: ['cook'], bundleWith: ['bulk-staples', 'pantry-cook'],
     ladder: [{ label: '12 canisters', units: 12 }, { label: '36 canisters', units: 36 }, { label: '96 canisters', units: 96 }],
     effects: () => [
       { type: 'supply', capability: 'cook', amount: 1.33, perPersonDay: 0.25 },
@@ -254,7 +254,11 @@ export const items = [
   },
   { id: 'helmet', from: 'protective-helmet', group: 'Security', effects: (s, T2) => reduceAll(s, T2) },
   { id: 'door-reinforcement', from: 'door-reinforcement', group: 'Security', ladder: null, effects: (s, T2) => reduceAll(s, T2) },
-  { id: 'discretion', from: 'discretion-about-supplies', group: 'Security', effects: (s, T2) => reduceAll(s, T2) },
+  {
+    // A habit costs attention if not money: six minutes a year, the model's own figure.
+    id: 'discretion', from: 'discretion-about-supplies', group: 'Security', upkeepHoursPerYear: 0.1,
+    effects: (s, T2) => reduceAll(s, T2),
+  },
   { id: 'digital-security', from: 'basic-digital-security', group: 'Security', effects: (s, T2) => reduceAll(s, T2, { on: 'hardship' }) },
 
   // ---- tools ----

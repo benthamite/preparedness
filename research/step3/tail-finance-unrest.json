@@ -1,0 +1,1456 @@
+{
+  "kind": "hazards",
+  "group": "tail-finance-unrest",
+  "hazards": [
+    {
+      "id": "bankingCrisis",
+      "location": "us",
+      "definition": "Within 12 months the household either cannot freely use its bank deposits for three days or more (bank holiday, deposit freeze, withdrawal limits, forced conversion), or holds a currency that loses 30% or more of its value against other major currencies or 25% or more of its domestic purchasing power. Bank failures resolved without loss of access, slower inflation, and exchange controls that leave local-currency deposits usable do not count by themselves.",
+      "annualProbability": [
+        {
+          "location": "us",
+          "outlook": "forecast",
+          "lo": 0.0003,
+          "mid": 0.002,
+          "hi": 0.01,
+          "tag": "derived",
+          "basis": "No US freeze or one-year currency loss of this size since the bank holiday of March 1933: 0 in 93 years, so the rule of succession gives 1% as an upper end. Advanced economies had 2 deposit freezes in about 1,700 country-years 1970-2017 (0.12% a year), both inside the euro (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf); I take 0.05% for a freeze plus 0.15% for a dollar collapse."
+        },
+        {
+          "location": "us",
+          "outlook": "pessimistic",
+          "lo": 0.004,
+          "mid": 0.015,
+          "hi": 0.04,
+          "tag": "guess",
+          "basis": "Dalio expects a debt 'heart attack' within about five years (https://fortune.com/2026/05/08/ray-dalio-america-national-debt-reshape-economy-heart-attack/) and Rogoff 'some kind of debt crisis, financial repression, inflation, maybe something more dramatic' within 5 to 10 years: about 10% a year for a debt crisis. Both describe 1970s-style inflation, so I take 15% of such crises to reach this threshold."
+        }
+      ],
+      "tickBox": null,
+      "windows": {
+        "payments": {
+          "pOccur": {
+            "lo": 0.05,
+            "mid": 0.2,
+            "hi": 0.5,
+            "tag": "guess",
+            "basis": "About one third of events would be freezes and not currency falls, times a 0.6 chance that a household with a card still meets days of cash-only sellers and empty ATMs. In Greece 2015 and Cyprus 2013 cards kept working in shops."
+          },
+          "days": {
+            "p50": 3,
+            "p90": 8,
+            "p99": 21
+          },
+          "tag": "derived",
+          "basis": "Days on which the household cannot pay, not the length of the controls. Five of six bank holidays in the IMF database lasted 4-8 days and Greece's 21 (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf); the US holiday ran from 6 March 1933 and banks holding 90% of resources were open by 15 March (https://www.federalreservehistory.org/essays/bank-holiday-of-1933)."
+        },
+        "food": {
+          "pOccur": {
+            "lo": 0.003,
+            "mid": 0.02,
+            "hi": 0.08,
+            "tag": "guess",
+            "basis": "No day without access to food is recorded in Cyprus 2013, Greece 2015 or Iceland 2008, where foreign currency was rationed to food, medicine and oil. The figure allows for shops shutting during a panic."
+          },
+          "days": {
+            "p50": 1,
+            "p90": 3,
+            "p99": 10
+          },
+          "tag": "guess",
+          "basis": "No rich-country case to measure; lengths taken from the one-to-three-day shop closures seen in Argentina."
+        }
+      },
+      "leave": {
+        "feasible": {
+          "lo": 0.02,
+          "mid": 0.1,
+          "hi": 0.3,
+          "tag": "guess",
+          "basis": "Leaving does not restore access to money held in home banks, and controls block transfers abroad. It helps only a household that already holds funds outside the country."
+        },
+        "earliestDay": {
+          "lo": 1,
+          "mid": 2,
+          "hi": 7,
+          "tag": "guess",
+          "basis": "Time to arrange travel abroad without normal access to funds."
+        },
+        "fixedUsdPerHousehold": {
+          "lo": 500,
+          "mid": 1500,
+          "hi": 5000,
+          "tag": "guess",
+          "basis": "Travel abroad for a household of two or three; not priced."
+        },
+        "usdPerPersonDay": {
+          "lo": 40,
+          "mid": 80,
+          "hi": 200,
+          "tag": "guess",
+          "basis": "Lodging and food abroad beyond normal living costs; not priced."
+        }
+      },
+      "warningDays": {
+        "lo": 0.5,
+        "mid": 14,
+        "hi": 120,
+        "tag": "derived",
+        "basis": "Cyprus 2013: none, the levy was announced with banks shut. Iceland 2008: one to two weeks. Greece 2015: five months of deposit flight. Argentina 2001: deposits fell from 85 to 67 billion between January and November (https://es.wikipedia.org/wiki/Corralito)."
+      },
+      "lateBuy": {
+        "staple": {
+          "lo": 0.2,
+          "mid": 0.5,
+          "hi": 0.8,
+          "tag": "guess",
+          "basis": "An alert household could still draw a week or two of cash and buy food in every case but Cyprus. Only a fifth to a quarter of deposits left before the freezes in Argentina (85 to 67 billion) and Greece (about 50 billion euros), mostly large balances, so most households did not act."
+        },
+        "specialty": {
+          "lo": 0.03,
+          "mid": 0.15,
+          "hi": 0.4,
+          "tag": "guess",
+          "basis": "Foreign currency, gold and transfers abroad are rationed first: Iceland restricted currency purchases from 10 October 2008 and Greece barred transfers abroad on the first day."
+        }
+      },
+      "exposures": [
+        {
+          "channel": "financialLoss",
+          "description": "United States. Loss of real value on a reference deposit of three months of household spending held in dollars at a US bank, net of deposit insurance. Rescale as deposit times lossShare.",
+          "financialUsdPerHousehold": {
+            "lo": 300,
+            "mid": 1600,
+            "hi": 5500,
+            "tag": "guess",
+            "basis": "Reference deposit $20,500 times loss share 8% (1.5-27%). The mid is the mean loss per event."
+          },
+          "referenceDepositUsd": {
+            "lo": 9500,
+            "mid": 20500,
+            "hi": 40000,
+            "tag": "derived",
+            "basis": "Three months of average annual expenditure of $81,905 per consumer unit in 2025; the range is the lowest and highest income fifths ($37,935 and $159,512, the fifths from a search snippet) (https://www.bls.gov/news.release/archives/cesan_10292026.htm)."
+          },
+          "lossShare": {
+            "lo": 0.015,
+            "mid": 0.08,
+            "hi": 0.27,
+            "tag": "guess",
+            "basis": "One third freezes with no loss of principal under the insurance limit, as for small depositors in Cyprus and Greece (1% for delay); two thirds currency falls, of which two in three are external only (about 6% through import prices) and one in three high inflation (about 22% after interest). 0.33 x 1% + 0.67 x 11% = 8%."
+          }
+        }
+      ],
+      "dwellingNotes": "No difference by dwelling. Renters who pay in cash and people paid in cash are hit harder by withdrawal limits.",
+      "evidence": [
+        {
+          "claim": "151 systemic banking crises and 236 currency crises 1970-2017; deposit freezes in 8 episodes; 6 bank holidays, five of 4-8 days and Greece 21 days; all were followed by a freeze.",
+          "source": "https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf",
+          "year": 2018,
+          "verified": true
+        },
+        {
+          "claim": "Share of years in a banking crisis since 1800: United States 13.0%, United Kingdom 9.2%, France 11.5%, Argentina 8.8%. Banking crises since 1945: US 2, UK 4, France 1, Argentina 4. Advanced economies spent 7.0% of years since 1945 in a banking crisis, 1.4 crises each.",
+          "source": "https://www.nber.org/papers/w14587.pdf",
+          "year": 2008,
+          "verified": true
+        },
+        {
+          "claim": "The national bank holiday began on 6 March 1933; on 4 March banks in 37 states were closed or under withdrawal limits; member banks in Federal Reserve cities reopened on 13 March and banks with 90% of resources by 15 March; about 4,000 banks never reopened.",
+          "source": "https://www.federalreservehistory.org/essays/bank-holiday-of-1933",
+          "year": 1933,
+          "verified": true
+        },
+        {
+          "claim": "Dalio, May 2026: 'no heart attack yet'; expects a 1970s-style stagflationary spiral and debts repaid in devalued dollars over about five years; advises up to 15% in gold and crypto.",
+          "source": "https://fortune.com/2026/05/08/ray-dalio-america-national-debt-reshape-economy-heart-attack/",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Rogoff, 28 August 2026: 'I think we will have some kind of debt crisis, financial repression, inflation, maybe something more dramatic'; the threat over the next 5 to 10 years is internal; the UK, France and Belgium may face the same.",
+          "source": "https://247wallst.com/personal-finance/2026/08/29/a-harvard-economist-says-the-debt-reckoning-is-coming-and-names-who-pays-for-it/",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Average annual expenditures of US consumer units were $81,905 in 2025.",
+          "source": "https://www.bls.gov/news.release/archives/cesan_10292026.htm",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Lebanon: banks shut for two weeks after 17 October 2019; dollar withdrawals then restricted without any capital-control law; the pound went from 1,507.5 to about 89,000 per dollar by 2025.",
+          "source": "https://en.wikipedia.org/wiki/Lebanese_liquidity_crisis",
+          "year": 2025,
+          "verified": true
+        }
+      ],
+      "notes": "The reference household is under the $250,000 insurance limit, so bank failure by itself costs it nothing; larger balances are exposed to haircuts (47.5% above EUR 100,000 at Cypriot banks). Loss of income in the recession that accompanies a crisis is outside this entry."
+    },
+    {
+      "id": "bankingCrisis",
+      "location": "westernEurope",
+      "definition": "As for the United States: deposits not freely usable for three days or more, or a currency that loses 30% or more against the dollar, or 25% or more of its purchasing power, within 12 months. Leaving the euro with forced conversion of deposits counts.",
+      "annualProbability": [
+        {
+          "location": "westernEurope",
+          "outlook": "forecast",
+          "lo": 0.0005,
+          "mid": 0.003,
+          "hi": 0.012,
+          "tag": "derived",
+          "basis": "Cyprus 2013 and Greece 2015 are 2 freezes in about 460 euro-area country-years since 1999 (0.43%), or 0.1% a year weighted by the population of western Europe (12 of 430 million people over 27 years). Iceland 2008 is the only currency collapse of this size in the region since 1999. I take 0.3%, between the two (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf)."
+        },
+        {
+          "location": "westernEurope",
+          "outlook": "pessimistic",
+          "lo": 0.005,
+          "mid": 0.02,
+          "hi": 0.05,
+          "tag": "guess",
+          "basis": "A return of 2010-15 conditions, when 2 of about 17 euro members froze deposits within six years (2% per country-year). Rogoff names the UK, France and Belgium as candidates for a debt crisis (https://247wallst.com/personal-finance/2026/08/29/a-harvard-economist-says-the-debt-reckoning-is-coming-and-names-who-pays-for-it/)."
+        }
+      ],
+      "tickBox": null,
+      "windows": {
+        "payments": {
+          "pOccur": {
+            "lo": 0.05,
+            "mid": 0.2,
+            "hi": 0.5,
+            "tag": "guess",
+            "basis": "Most western European events would be freezes, but in Greece card purchases in shops were exempt and ATMs paid EUR 60 a day, and in Cyprus ATMs paid a daily limit. The window is the days of empty ATMs and cash-only sellers."
+          },
+          "days": {
+            "p50": 3,
+            "p90": 8,
+            "p99": 21
+          },
+          "tag": "derived",
+          "basis": "Greek banks were shut for almost 20 days from 29 June 2015 (https://en.wikipedia.org/wiki/Capital_controls_in_Greece); Cypriot banks shut on 18 March 2013 for 8 days by the IMF's count. Limits then ran to September 2019 in Greece and April 2015 in Cyprus without stopping daily spending."
+        },
+        "food": {
+          "pOccur": {
+            "lo": 0.003,
+            "mid": 0.02,
+            "hi": 0.08,
+            "tag": "guess",
+            "basis": "None recorded in Cyprus, Greece or Iceland; Greece capped import approvals at EUR 20 million a day with priority for medicines and food."
+          },
+          "days": {
+            "p50": 1,
+            "p90": 3,
+            "p99": 10
+          },
+          "tag": "guess",
+          "basis": "No case to measure."
+        }
+      },
+      "leave": {
+        "feasible": {
+          "lo": 0.02,
+          "mid": 0.1,
+          "hi": 0.3,
+          "tag": "guess",
+          "basis": "Leaving does not unfreeze deposits; it helps only a household with funds already abroad."
+        },
+        "earliestDay": {
+          "lo": 1,
+          "mid": 2,
+          "hi": 7,
+          "tag": "guess",
+          "basis": "Time to arrange travel without normal access to funds."
+        },
+        "fixedUsdPerHousehold": {
+          "lo": 300,
+          "mid": 1000,
+          "hi": 4000,
+          "tag": "guess",
+          "basis": "Travel to a neighbouring country; not priced."
+        },
+        "usdPerPersonDay": {
+          "lo": 40,
+          "mid": 80,
+          "hi": 200,
+          "tag": "guess",
+          "basis": "Lodging and food beyond normal living costs; not priced."
+        }
+      },
+      "warningDays": {
+        "lo": 0.5,
+        "mid": 14,
+        "hi": 120,
+        "tag": "derived",
+        "basis": "Cyprus: none. Greece: five months between the January 2015 election and the controls of 29 June, during which about 50 billion euros were withdrawn (https://en.wikipedia.org/wiki/Capital_controls_in_Greece). Iceland: about ten days."
+      },
+      "lateBuy": {
+        "staple": {
+          "lo": 0.2,
+          "mid": 0.5,
+          "hi": 0.8,
+          "tag": "guess",
+          "basis": "Cash could be drawn until the last weekend in Greece and not at all in Cyprus; food stayed on sale in both."
+        },
+        "specialty": {
+          "lo": 0.03,
+          "mid": 0.15,
+          "hi": 0.4,
+          "tag": "guess",
+          "basis": "Transfers abroad and foreign currency were blocked from the first day in both Cyprus and Greece."
+        }
+      },
+      "exposures": [
+        {
+          "channel": "financialLoss",
+          "description": "Western Europe. Loss of real value on a reference deposit of three months of household spending in the local currency at a local bank, net of deposit insurance. Rescale as deposit times lossShare.",
+          "financialUsdPerHousehold": {
+            "lo": 100,
+            "mid": 900,
+            "hi": 3500,
+            "tag": "guess",
+            "basis": "Reference deposit $10,000 times loss share 9% (1-35%). The mid is the mean loss per event."
+          },
+          "referenceDepositUsd": {
+            "lo": 6000,
+            "mid": 10000,
+            "hi": 16000,
+            "tag": "derived",
+            "basis": "Household spending of EUR 35,101 a year in Spain in 2025 (https://ine.es/dyngs/Prensa/en/EPF2025.htm) and about EUR 39,100 in Germany in 2024 (press reports of Destatis, search snippet): about EUR 9,300 a quarter, at about $1.10 per euro (search snippet, mid-November 2026)."
+          },
+          "lossShare": {
+            "lo": 0.01,
+            "mid": 0.09,
+            "hi": 0.35,
+            "tag": "guess",
+            "basis": "Half freezes without loss under EUR 100,000 (1%); 15% exit from the euro with conversion (30% in the first year); 35% currency fall or inflation burst (10%; Iceland's inflation peaked at 18.6% with deposit rates of 15-18%). 0.5 + 4.5 + 3.5 = 8.5%."
+          }
+        }
+      ],
+      "dwellingNotes": "No difference by dwelling.",
+      "evidence": [
+        {
+          "claim": "Greece 2015: banks closed almost 20 days; EUR 60 a day at ATMs, later EUR 420 a week; card purchases at Greek shops were not restricted and card use rose from 4.5% to 19.5%; about EUR 50 billion was withdrawn before the controls; controls ended 1 September 2019.",
+          "source": "https://en.wikipedia.org/wiki/Capital_controls_in_Greece",
+          "year": 2019,
+          "verified": true
+        },
+        {
+          "claim": "Cyprus 2013: banks closed from 18 March; no insured deposit of EUR 100,000 or less was affected; 47.5% of deposits above EUR 100,000 were seized.",
+          "source": "https://en.wikipedia.org/wiki/2012%E2%80%932013_Cypriot_financial_crisis",
+          "year": 2013,
+          "verified": true
+        },
+        {
+          "claim": "Cyprus: bank holiday of 8 days from 18 March 2013, freeze from 28 March for 14 months, domestic restrictions removed May 2014 and external ones April 2015.",
+          "source": "https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf",
+          "year": 2018,
+          "verified": true
+        },
+        {
+          "claim": "Iceland 2008: domestic deposits guaranteed in full on 6 October; krona from 91 per euro at end-2007 to 147-178 in January 2009; inflation peaked at 18.6% in January 2009; policy rate 18%; capital controls from 28 November 2008 to 14 March 2017; foreign currency rationed to food, medicine and oil.",
+          "source": "https://en.wikipedia.org/wiki/2008%E2%80%932011_Icelandic_financial_crisis",
+          "year": 2017,
+          "verified": true
+        },
+        {
+          "claim": "Average household expenditure in Spain was EUR 35,101 in 2025.",
+          "source": "https://ine.es/dyngs/Prensa/en/EPF2025.htm",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "The sentix euro break-up index peaked at 73% in July 2012 and stood at 2.4% at its latest reported reading; French public debt was 119.1% of GDP in mid-2026.",
+          "source": "https://www.sentix.de/index.php/en/Database-news/",
+          "year": 2026,
+          "verified": false
+        }
+      ],
+      "notes": "The euro area is more exposed to freezes than countries with their own central bank: both rich-country freezes since 1970 happened when the European Central Bank capped emergency lending. The Cypriot government first proposed a 6.75% levy on insured deposits, which parliament rejected (recalled)."
+    },
+    {
+      "id": "bankingCrisis",
+      "location": "buenosAires",
+      "definition": "As for the United States, with the parallel exchange rate as the measure whenever exchange controls are in force: peso deposits not freely usable for three days or more (corralito, bank holiday, forced conversion or swap into bonds), or a peso that loses 30% or more against the dollar within 12 months. Exchange controls alone, and inflation that deposit interest roughly matches, do not count.",
+      "annualProbability": [
+        {
+          "location": "buenosAires",
+          "outlook": "forecast",
+          "lo": 0.07,
+          "mid": 0.15,
+          "hi": 0.3,
+          "tag": "derived",
+          "basis": "The peso lost 30% or more against the dollar in 5 of the 35 years since 1992 (2002, 2018, 2019, 2022, 2023; official December averages), 14%, and in 5 of 25 since 2002, 20% (https://en.wikipedia.org/wiki/Historical_exchange_rates_of_Argentine_currency); the IMF database dates 9 crisis onsets in 6 distinct episodes in 1970-2017, 12-19% a year. I take 15%: a fiscal surplus and a unified rate against the 2027 election and country risk of 840-950 points."
+        },
+        {
+          "location": "buenosAires",
+          "outlook": "pessimistic",
+          "lo": 0.15,
+          "mid": 0.3,
+          "hi": 0.5,
+          "tag": "derived",
+          "basis": "Since controls began in 2011 the official peso lost 30% or more in 4 of 15 years and 25% or more in 10 of 15, and every presidential election year (2011, 2015, 2019, 2023) brought a devaluation or new controls. Álvarez Agis says the 2027 financial programme 'no cierra' and asks for controls back (https://eleconomista.com.ar/economia/advertencia-alvarez-agis-2027-en-vez-una-corrida-cambiaria-vamos-tener-una-maraton-n99269/amp)."
+        }
+      ],
+      "tickBox": null,
+      "windows": {
+        "payments": {
+          "pOccur": {
+            "lo": 0.03,
+            "mid": 0.1,
+            "hi": 0.3,
+            "tag": "derived",
+            "basis": "Freezes are about one in six Argentine episodes (1989-90 and 2001-02 out of some eleven onsets since 1975), and in 2001-02 debit cards kept working while much of retail took only cash: 0.15 x 0.6."
+          },
+          "days": {
+            "p50": 4,
+            "p90": 8,
+            "p99": 30
+          },
+          "tag": "derived",
+          "basis": "Bank holidays of 4 days from 1 January 1990 and 5 days from 31 December 2001 (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf), and 19-25 April 2002 (from the money-docs file). The limit of 250 pesos a week then ran for a year but covered ordinary spending."
+        },
+        "food": {
+          "pOccur": {
+            "lo": 0.01,
+            "mid": 0.05,
+            "hi": 0.15,
+            "tag": "guess",
+            "basis": "Shops shut for one to three days during re-pricing and looting in mid-1989 and December 2001; those days are also counted under civilUnrest, so this is the remainder. Price controls remove single products, not access to food."
+          },
+          "days": {
+            "p50": 1.5,
+            "p90": 4,
+            "p99": 14
+          },
+          "tag": "guess",
+          "basis": "Length of the looting waves: seven days in December 2001, 35 hours in Córdoba in 2013."
+        },
+        "medication": {
+          "pOccur": {
+            "lo": 0.01,
+            "mid": 0.05,
+            "hi": 0.15,
+            "tag": "guess",
+            "basis": "One clear case in some eleven episodes: in January 2002 wholesalers delivered about 30% of pharmacy orders and diabetics could not find insulin (https://www.pagina12.com.ar/diario/sociedad/3-463-2002-01-04.html). It concerns imported drugs, not all pharmacy access."
+          },
+          "days": {
+            "p50": 7,
+            "p90": 21,
+            "p99": 60
+          },
+          "tag": "guess",
+          "basis": "The 2002 shortage was reported from the first days of January and the government guaranteed insulin from 10 January after a Brazilian donation (search snippet)."
+        }
+      },
+      "leave": {
+        "feasible": {
+          "lo": 0.02,
+          "mid": 0.1,
+          "hi": 0.3,
+          "tag": "guess",
+          "basis": "Leaving does not unfreeze deposits; it helps only a household with funds already abroad, such as an account in Uruguay."
+        },
+        "earliestDay": {
+          "lo": 1,
+          "mid": 2,
+          "hi": 7,
+          "tag": "guess",
+          "basis": "Time to arrange travel without normal access to funds."
+        },
+        "fixedUsdPerHousehold": {
+          "lo": 200,
+          "mid": 600,
+          "hi": 2500,
+          "tag": "guess",
+          "basis": "Ferry or flight to Uruguay for a household; not priced."
+        },
+        "usdPerPersonDay": {
+          "lo": 30,
+          "mid": 60,
+          "hi": 150,
+          "tag": "guess",
+          "basis": "Lodging and food in Uruguay beyond normal living costs; not priced."
+        }
+      },
+      "warningDays": {
+        "lo": 1,
+        "mid": 21,
+        "hi": 180,
+        "tag": "derived",
+        "basis": "The 2001 run lasted from March to November; the August 2019 fall of 35% came overnight after a primary (46.55 to 57.30, then 63); the December 2023 devaluation was expected for weeks. Election calendars give the date in advance (https://www.perfil.com/noticias/columnistas/del-rodrigazo-al-colchon-mas-de-medio-siglo-de-desconfianza-en-el-peso-por-carlos-burgueno.phtml)."
+      },
+      "lateBuy": {
+        "staple": {
+          "lo": 0.3,
+          "mid": 0.6,
+          "hi": 0.85,
+          "tag": "guess",
+          "basis": "Cash and food stayed obtainable up to the announcement in 1989 and 2001, and Argentine households are practised: individuals now buy about 3 billion dollars a month (Álvarez Agis, October 2026)."
+        },
+        "specialty": {
+          "lo": 0.1,
+          "mid": 0.3,
+          "hi": 0.6,
+          "tag": "guess",
+          "basis": "Since April 2025 individuals can buy dollars without limit, so an alert household can still convert while the rate is inside the band. Under the 2019-25 controls it could buy USD 200 a month at the official rate (search snippet); beyond that it paid a parallel premium that passed 100% in May 2013 and reached 200% in October 2023."
+        }
+      },
+      "exposures": [
+        {
+          "channel": "financialLoss",
+          "description": "Buenos Aires. Loss of dollar value on a reference deposit of three months of household spending held in pesos, half in a sight account and half earning the deposit rate, measured against holding the same sum in dollar notes. Rescale as deposit times lossShare.",
+          "financialUsdPerHousehold": {
+            "lo": 600,
+            "mid": 1600,
+            "hi": 3400,
+            "tag": "guess",
+            "basis": "Reference deposit $4,500 times loss share 35% (15-70%). The mid is the mean loss per event."
+          },
+          "referenceDepositUsd": {
+            "lo": 3000,
+            "mid": 4500,
+            "hi": 8000,
+            "tag": "derived",
+            "basis": "Canasta Total for a couple with two children in the city: ARS 2,082,845 in August 2026, middle-class floor ARS 2,603,556 (https://www.estadisticaciudad.gob.ar/eyc/wp-content/uploads/2026/09/ir_2026_2054.pdf); plus 1.9% a month to November, at ARS 1,551 per dollar, three months are $4,300 to $5,300. A renting couple needs $3,200."
+          },
+          "lossShare": {
+            "lo": 0.15,
+            "mid": 0.35,
+            "hi": 0.7,
+            "tag": "guess",
+            "basis": "Dollar value lost by a peso balance in the five threshold years since 2002: 70%, 54%, 38%, 40% and 74%, mean 55% before interest (https://en.wikipedia.org/wiki/Historical_exchange_rates_of_Argentine_currency). I take 35%: deposit interest (recalled, not verified) recovers a third to a half of the loss on the remunerated half, and a banded rate should break less far. In local purchasing power the loss is roughly half this."
+          }
+        }
+      ],
+      "dwellingNotes": "No difference by dwelling. Households paid in cash or working informally suffered most from the 2001-02 cash shortage.",
+      "evidence": [
+        {
+          "claim": "Corralito: decreto 1570/2001 of 1 December 2001 limited withdrawals to 250 pesos or dollars a week per holder per bank; deposits fell from about 85 billion in January 2001 to 67 billion in November, with a record outflow of 5,543 million in November; decreto 214/2002 converted dollar deposits at 1.40 pesos; restrictions were lifted on 2 December 2002.",
+          "source": "https://es.wikipedia.org/wiki/Corralito",
+          "year": 2002,
+          "verified": true
+        },
+        {
+          "claim": "Plan Bonex, announced 28 December 1989 (decreto 36/90): time deposits swapped for ten-year dollar bonds, with up to 1 million australes (about USD 550) paid in cash per holder; the bonds fell to 25% of face value and reached about 80% a year later; prices rose 3,079% in 1989 and the dollar went from 17 to more than 1,800 australes.",
+          "source": "https://www.tiempoar.com.ar/ta_article/plan-bonex-a-30-anos-de-la-expropiacion-de-los-ahorros/",
+          "year": 2019,
+          "verified": true
+        },
+        {
+          "claim": "Argentina in the IMF database: banking crises 1980, 1989, 1995, 2001; currency crises 1975, 1981, 1987, 2002, 2013; sovereign debt crises 1982, 2001, 2014; deposit freezes dated 28 December 1989 and 3 December 2001 (12 months).",
+          "source": "https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf",
+          "year": 2018,
+          "verified": true
+        },
+        {
+          "claim": "Argentina spent 32.5% of years since independence in default or rescheduling and 8.8% in a banking crisis, with 4 banking crises since 1945.",
+          "source": "https://www.nber.org/papers/w14587.pdf",
+          "year": 2008,
+          "verified": true
+        },
+        {
+          "claim": "Official pesos per dollar, December averages: 1.01 (2001), 3.41 (2002), 3.98 (2010), 6.34 (2013), 8.55 (2014), 11.63 (2015), 17.72 (2017), 38.84 (2018), 63.01 (2019), 88.18 (2020), 179.98 (2022), 687.36 (2023), 1,049.33 (2024), 1,471.59 (2025).",
+          "source": "https://en.wikipedia.org/wiki/Historical_exchange_rates_of_Argentine_currency",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Controls of 2011-15: tax-agency approval for dollar purchases from 28 October 2011; on 8 May 2013 the free dollar reached 10.45 pesos and the gap with the official rate passed 100%; official devaluation of 23% on 23 January 2014.",
+          "source": "https://www.diariodecuyo.com.ar/noticias/la-historia-del-cepo-en-19-fechas-clave-609358.html",
+          "year": 2015,
+          "verified": true
+        },
+        {
+          "claim": "Rodrigazo of 4 June 1975 (devaluation near 100%), 1981 devaluations, Plan Austral 1985, monthly inflation of 196.6% in July 1989, second hyperinflation to March 1990; December 2015 official 9.80 against a parallel rate of 14-15; 9-12 August 2019 from 46.55 to 57.30 and then 63, with controls reinstated; an estimated 200 billion dollars held outside the banks.",
+          "source": "https://www.perfil.com/noticias/columnistas/del-rodrigazo-al-colchon-mas-de-medio-siglo-de-desconfianza-en-el-peso-por-carlos-burgueno.phtml",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "10 October 2023: parallel dollar 1,010 pesos (peak 1,050) against a wholesale rate of 350.10; gap 188.5% after a peak of 200%, the widest since 1989.",
+          "source": "https://www.diariodecuyo.com.ar/noticias/el-dolar-blue-subio-a-valores-record-cerro-a-1-010-y-en-san-juan-se-negocio-a-1-070-68029.html",
+          "year": 2023,
+          "verified": true
+        },
+        {
+          "claim": "After the August 2019 primary, dollar deposits fell from 32,500 to 19,109 million (42%) and peso time deposits by 12% in 57 working days.",
+          "source": "https://www.lanacion.com.ar/economia/dolar/desde-las-paso-los-bancos-perdieron-42-de-los-depositos-en-dolares-y-12-en-pesos-nid2305247",
+          "year": 2019,
+          "verified": true
+        },
+        {
+          "claim": "Reserve requirement on dollar deposits about 10% in 2001 and 50% in 2019, when banks could lend dollars only to borrowers who earn dollars; 'la probabilidad de un corralito hoy es más baja'.",
+          "source": "https://www.ambito.com/argentina-2001-vs-2019-diferencias-y-similitudes-n5053369",
+          "year": 2019,
+          "verified": true
+        },
+        {
+          "claim": "11 April 2025: the central bank removed the controls for individuals and let the dollar float in a band of 1,000-1,400 pesos widening 1% a month.",
+          "source": "https://chequeado.com/el-explicador/cronologia-del-cepo-cambiario-como-vario-entre-2011-y-2020/",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "January 2026: bands now indexed to inflation; companies still restricted in the exchange market; country risk 557 points.",
+          "source": "https://www.baenegocios.com/amp/Con-el-ajuste-de-bandas-y-un-cepo-mas-flexible-2026-arranca-con-el-menor-riesgo-pais-en-7-anos-20260102-0013/",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "3 November 2026: wholesale dollar 1,543.62; band ceiling 1,954.48, rising to 1,989.12 by month end; inflation 1.93% in September and 23.6% in the year to September; country risk 790 points.",
+          "source": "https://www.iprofesional.com/finanzas/468192-dolar-margen-subir-fuerte-alerta-compran-divisas-noviembre-2026",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "16 November 2026: wholesale dollar 1,551, parallel 1,600; country risk 840 after a peak of 939; Caputo: it 'subió de 400 a 950'; Morgan Stanley expects dollar demand to accelerate in 2027, an election year.",
+          "source": "https://www.larepublica.co/globoeconomia/mercado-cambiario-argentino-baja-por-dolarizacion-de-carteras-4525917",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Central bank survey of October 2026: inflation of 21.8% over the next 12 months; wholesale dollar at 1,590 in December 2026 and about 1,985 in October 2027.",
+          "source": "https://perfil.com/economia/rem-del-bcra-el-precio-que-le-ponen-a-la-inflacion-y-al-dolar-45-actores-del-mercado-a9fcc7k2dRuP",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Álvarez Agis, 28 October 2026: 'en vez de una corrida cambiaria en la elección, vamos a tener una maratón'; individuals demand 3 billion dollars a month; 'programa financiero 2027 que no cierra'; wants exchange controls back.",
+          "source": "https://eleconomista.com.ar/economia/advertencia-alvarez-agis-2027-en-vez-una-corrida-cambiaria-vamos-tener-una-maraton-n99269/amp",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "4 January 2002: wholesalers delivering only 30% of pharmacy orders; diabetics 'necesitan urgentemente insulina'; pharmacies serving behind lowered shutters.",
+          "source": "https://www.pagina12.com.ar/diario/sociedad/3-463-2002-01-04.html",
+          "year": 2002,
+          "verified": true
+        }
+      ],
+      "notes": "Freezes or forced conversions proper happened twice in 52 years (1989-90, 2001-02), 4% a year; I put them at about 1.5% a year now (guess) because dollar deposits are backed far more heavily than in 2001, and banks paid out 42% of them within 57 working days in 2019. A dollar deposit in a local bank lost 42-56% in 2002 (money-docs file). Present regime, November 2026: the band lets the peso lose 22% to the ceiling without any break; the market expects 1,985 pesos by October 2027, a 22% loss that expected inflation of 21.8% and deposit interest roughly offset; a break of the ceiling by then (about 2,420 at 1.8% a month) would be a 36% loss. Country risk of 900 points implies a risk-neutral default rate of about 14% a year at a 35% recovery (0.09 / 0.65). The crisis loss given here is gross of the interest premium that peso deposits earn in calm years: by my rough reckoning from recalled rates, remunerated peso deposits kept pace with the parallel dollar over 2003-2026 as a whole, gaining in 2003-10 and 2024-26 and losing about two thirds in 2011-23. Sight balances earn no such premium."
+    },
+    {
+      "id": "civilUnrest",
+      "location": "us",
+      "definition": "Within 12 months the household's city or district has serious rioting or looting, a riot curfew or state of siege, or disorder sustained over days, or there is armed conflict on home territory. Peaceful mass protest and single clashes confined to a government quarter do not count.",
+      "annualProbability": [
+        {
+          "location": "us",
+          "outlook": "forecast",
+          "lo": 0.003,
+          "mid": 0.01,
+          "hi": 0.03,
+          "tag": "guess",
+          "basis": "Share of residents living in a city under riot curfew or with serious rioting: about 0.6% a year over 1965-2026 and 1.5% over 2015-2026, nearly all from 2020, when at least 200 cities imposed curfews (https://en.wikipedia.org/wiki/George_Floyd_protests) covering some 60 million people (search snippet). The 1960s and 1992 populations are my estimates."
+        },
+        {
+          "location": "us",
+          "outlook": "pessimistic",
+          "lo": 0.01,
+          "mid": 0.03,
+          "hi": 0.08,
+          "tag": "guess",
+          "basis": "A wave on the scale of 2020 every five to seven years. Verisk Maplecroft ranks the US first among Western democracies and fifth in the world for unrest risk (https://www.insurancejournal.com/news/international/2026/02/17/858246.htm); Dalio put a civil war 'of some sort' at 35-40% (Financial Times, May 2024, search snippet)."
+        }
+      ],
+      "tickBox": null,
+      "windows": {
+        "food": {
+          "pOccur": {
+            "lo": 0.02,
+            "mid": 0.08,
+            "hi": 0.25,
+            "tag": "guess",
+            "basis": "Curfews are overnight and shops elsewhere stay open. In 2020 Target cut hours at about 200 of 1,900 stores and Walmart shut hundreds for a day (search snippets); in Los Angeles in 1992 mail delivery stopped and stores burned across the riot area."
+          },
+          "days": {
+            "p50": 1,
+            "p90": 3,
+            "p99": 21
+          },
+          "tag": "guess",
+          "basis": "Riots last 5-8 days (Los Angeles 29 April to 3 May 1992) with shops shut for part of that; the 99th percentile stands for armed conflict."
+        },
+        "displacement": {
+          "pOccur": {
+            "lo": 0.002,
+            "mid": 0.01,
+            "hi": 0.04,
+            "tag": "guess",
+            "basis": "Homes burned are rare: at least 100 families among roughly 3 million households in the affected English boroughs in 2011 (my population estimate), 1,100 buildings in Los Angeles. Most of the figure is the conflict share of 3%, in which a third of households move."
+          },
+          "days": {
+            "p50": 14,
+            "p90": 180,
+            "p99": 730
+          },
+          "tag": "guess",
+          "basis": "Weeks to rehouse after a fire; months to years in armed conflict."
+        },
+        "comms": {
+          "pOccur": {
+            "lo": 0.002,
+            "mid": 0.01,
+            "hi": 0.05,
+            "tag": "guess",
+            "basis": "No general shutdown has been ordered during riots in the US or western Europe; France's president threatened one in 2023 and none was applied (https://en.wikipedia.org/wiki/Nahel_Merzouk_riots). The figure covers local damage and armed conflict."
+          },
+          "days": {
+            "p50": 0.5,
+            "p90": 3,
+            "p99": 30
+          },
+          "tag": "guess",
+          "basis": "No case to measure."
+        },
+        "payments": {
+          "pOccur": {
+            "lo": 0.005,
+            "mid": 0.02,
+            "hi": 0.08,
+            "tag": "guess",
+            "basis": "Cards keep working in shops that are open; the window needs ATMs and branches out of use and cash-only sellers."
+          },
+          "days": {
+            "p50": 1,
+            "p90": 3,
+            "p99": 21
+          },
+          "tag": "guess",
+          "basis": "Same length as the food window."
+        },
+        "medication": {
+          "pOccur": {
+            "lo": 0.01,
+            "mid": 0.03,
+            "hi": 0.1,
+            "tag": "guess",
+            "basis": "Pharmacies are looting targets: CVS shut stores in 20 states in 2020 and 16 were damaged in Minneapolis-St Paul (search snippet). Another pharmacy is usually within reach by day."
+          },
+          "days": {
+            "p50": 1,
+            "p90": 4,
+            "p99": 21
+          },
+          "tag": "guess",
+          "basis": "Length of the riot."
+        },
+        "emergencyCare": {
+          "pOccur": {
+            "lo": 0.01,
+            "mid": 0.05,
+            "hi": 0.15,
+            "tag": "guess",
+            "basis": "Ambulances and fire crews are delayed or kept out while rioting is active; about 3,600 fires were set in Los Angeles in 1992."
+          },
+          "days": {
+            "p50": 0.5,
+            "p90": 2,
+            "p99": 14
+          },
+          "tag": "guess",
+          "basis": "Nights of active rioting."
+        }
+      },
+      "leave": {
+        "feasible": {
+          "lo": 0.75,
+          "mid": 0.92,
+          "hi": 0.99,
+          "tag": "guess",
+          "basis": "Riots are local and curfews apply at night, so a household can reach relatives or a hotel outside the district by day. Lower in armed conflict."
+        },
+        "earliestDay": {
+          "lo": 0,
+          "mid": 0.5,
+          "hi": 2,
+          "tag": "guess",
+          "basis": "The morning after the first night."
+        },
+        "fixedUsdPerHousehold": {
+          "lo": 50,
+          "mid": 200,
+          "hi": 800,
+          "tag": "guess",
+          "basis": "Fuel or tickets to a place outside the city; not priced."
+        },
+        "usdPerPersonDay": {
+          "lo": 15,
+          "mid": 50,
+          "hi": 120,
+          "tag": "guess",
+          "basis": "Hotel shared by the household, or little when staying with relatives; not priced."
+        }
+      },
+      "warningDays": {
+        "lo": 0,
+        "mid": 2,
+        "hi": 14,
+        "tag": "derived",
+        "basis": "Hours in the first city, days elsewhere: George Floyd died on 25 May 2020 and curfews spread from 30 May; Duggan was shot on 4 August 2011 and riots ran from 6 August; Nahel Merzouk was killed on the morning of 27 June 2023 and riots began that night."
+      },
+      "lateBuy": {
+        "staple": {
+          "lo": 0.6,
+          "mid": 0.85,
+          "hi": 0.97,
+          "tag": "guess",
+          "basis": "Shops outside the affected district, and by day inside it, stay open and stocked; an alert household can buy a week of food and fill prescriptions before nightfall."
+        },
+        "specialty": {
+          "lo": 0.2,
+          "mid": 0.5,
+          "hi": 0.8,
+          "tag": "guess",
+          "basis": "Items people rush for locally sell out; no data."
+        }
+      },
+      "exposures": [
+        {
+          "channel": "violence",
+          "description": "United States. Risk of death by violence or arson for an adult who takes no part and stays in the area. The mid is the mean per event; an armed-conflict share of 3% supplies most of it.",
+          "micromortsPerPerson": {
+            "lo": 0.4,
+            "mid": 9,
+            "hi": 90,
+            "tag": "guess",
+            "basis": "Riots, 0.5: 19 deaths among some 60 million under curfew in 2020 (0.3 per million) and 55-63 among the 3.5 million residents of Los Angeles in 1992 (16-18; population recalled), most of them on the street. Armed conflict, 300 (50-3,000) in 3% (0.5-10%) of events, from Northern Ireland in 1972 and Ukraine in 2022 (both recalled). 0.5 + 0.03 x 300."
+          },
+          "conflictShare": {
+            "lo": 0.005,
+            "mid": 0.03,
+            "hi": 0.1,
+            "tag": "guess",
+            "basis": "Metaculus gives 2% to a second civil war before 2031 (813 forecasters, read by the step-2 researcher on 19 November 2026), 0.5% a year, of which a fifth of households in the fighting zone gives 0.1%; I halve that for the bias of small probabilities and divide by a 1.5% event rate."
+          },
+          "multipliers": [
+            {
+              "profile": "child",
+              "mortality": 0.5,
+              "tag": "guess",
+              "basis": "Riot deaths are mostly of men aged 15-45 on the street; 7 of the 39 killed in Argentina in December 2001 were aged 13-18."
+            },
+            {
+              "profile": "age75plus",
+              "mortality": 0.7,
+              "tag": "guess",
+              "basis": "Less time outdoors; more exposed to fire."
+            },
+            {
+              "profile": "limitedMobility",
+              "mortality": 1.5,
+              "tag": "guess",
+              "basis": "Cannot leave a burning building or the area unaided."
+            }
+          ]
+        },
+        {
+          "channel": "financialLoss",
+          "description": "United States. Uninsured damage to home and vehicle, lost wages and forced moves for a household that owns no business. The mid is the mean per event.",
+          "financialUsdPerHousehold": {
+            "lo": 20,
+            "mid": 450,
+            "hi": 4000,
+            "tag": "guess",
+            "basis": "Riots, about $20: insured losses of $1-2 billion in 2020 are $45-90 per household under curfew, nearly all commercial. Armed conflict, $15,000 of lost income, damage and moving in 3% of events."
+          }
+        }
+      ],
+      "dwellingNotes": "Flats above shops and ground-floor flats on shopping streets carry the fire risk; cars parked on the street are the commonest household loss (12,031 vehicles burned in France in 2023). Detached houses in suburbs are rarely touched.",
+      "evidence": [
+        {
+          "claim": "2020: at least 200 cities imposed curfews; more than 30 states activated over 96,000 Guard and other troops; 19 deaths between 26 May and 8 June; at least 14,000 arrests; insured damage of $1-2 billion, the highest for civil disorder in US history; 93% of protests peaceful by ACLED's count.",
+          "source": "https://en.wikipedia.org/wiki/George_Floyd_protests",
+          "year": 2020,
+          "verified": true
+        },
+        {
+          "claim": "Los Angeles, 29 April to 3 May 1992: 55-63 deaths, about 2,400 injuries, 12,200 arrests, 3,600 fires, 1,100 buildings destroyed, about $1 billion of damage, dusk-to-dawn curfew, mail delivery suspended, 13,500 troops.",
+          "source": "https://en.wikipedia.org/wiki/1992_Los_Angeles_riots",
+          "year": 1992,
+          "verified": true
+        },
+        {
+          "claim": "Howden Re: insured losses from strikes, riots and civil commotion rose from negligible in 2013 to more than $8 billion over 2020-24. Verisk Maplecroft, first quarter of 2026: the US ranks first among Western democracies and fifth overall. Minneapolis 2026: two citizens killed by immigration officers, protests with limited property damage.",
+          "source": "https://www.insurancejournal.com/news/international/2026/02/17/858246.htm",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Dalio, October 2025: 'We have a civil war of some sort which is developing in the U.S. and elsewhere'; no probability given.",
+          "source": "https://fortune.com/2025/10/10/ray-dalio-us-civil-war-tests-of-power/",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Metaculus: second US civil war before 2031, 2% (813 forecasters); major civil unrest or rioting before 2031, 70-75% in older snapshots.",
+          "source": "https://www.metaculus.com/questions/6179/",
+          "year": 2026,
+          "verified": false
+        },
+        {
+          "claim": "More than 60 million residents of over 200 cities in at least 27 states were under curfew on 2 June 2020.",
+          "source": "https://www.nationthailand.com/news/30388952",
+          "year": 2020,
+          "verified": false
+        }
+      ],
+      "notes": "The event is defined broadly, so most events cost the household only its evenings; the windows carry the rest. Riots cluster in warm months, but no power window is given, so cold and heat shares are omitted."
+    },
+    {
+      "id": "civilUnrest",
+      "location": "westernEurope",
+      "definition": "As for the United States: serious rioting or looting, a riot curfew or state of emergency, or sustained disorder in the household's commune or borough, or armed conflict on home territory.",
+      "annualProbability": [
+        {
+          "location": "westernEurope",
+          "outlook": "forecast",
+          "lo": 0.003,
+          "mid": 0.01,
+          "hi": 0.03,
+          "tag": "guess",
+          "basis": "By commune: France about 4% a year (274 towns in 2005, city centres in 2018-19, at least 672 communes in 2023, autumn 2026; my estimate is that these hold 15-35% of the population each time), England about 1% (2011, 2024), other countries about 0.3%; weighted by population, 1% (https://www.publicsenat.fr/actualites/parlementaire/emeutes-de-2023-un-cout-colossal-estime-a-un-milliard-deuros-selon-le-rapport-du-senat)."
+        },
+        {
+          "location": "westernEurope",
+          "outlook": "pessimistic",
+          "lo": 0.01,
+          "mid": 0.03,
+          "hi": 0.08,
+          "tag": "guess",
+          "basis": "Verisk Maplecroft's gauge of large-scale unrest in Europe is at its highest since 2021 and insurers are capping riot cover (https://www.insurancejournal.com/news/international/2026/11/12/892199.htm). France already runs at about 4% on this measure; I add 0.1% a year for war reaching western Europe."
+        }
+      ],
+      "tickBox": null,
+      "windows": {
+        "food": {
+          "pOccur": {
+            "lo": 0.01,
+            "mid": 0.05,
+            "hi": 0.2,
+            "tag": "guess",
+            "basis": "More than 1,000 shops were damaged in France in 2023, 2,584 in England in 2011 and at least 3,000 in France in 2026, a small share of all shops; rioting is at night and shops elsewhere stay open."
+          },
+          "days": {
+            "p50": 1,
+            "p90": 3,
+            "p99": 21
+          },
+          "tag": "guess",
+          "basis": "Waves lasted 8 days in 2023, 6 in 2011 and 21 in 2005; the 99th percentile stands for armed conflict."
+        },
+        "displacement": {
+          "pOccur": {
+            "lo": 0.001,
+            "mid": 0.007,
+            "hi": 0.03,
+            "tag": "guess",
+            "basis": "At least 100 families were made homeless in England in 2011. Most of the figure is the conflict share of 2%, in which a third of households move."
+          },
+          "days": {
+            "p50": 14,
+            "p90": 180,
+            "p99": 730
+          },
+          "tag": "guess",
+          "basis": "Weeks to rehouse after a fire; months to years in armed conflict."
+        },
+        "comms": {
+          "pOccur": {
+            "lo": 0.002,
+            "mid": 0.01,
+            "hi": 0.05,
+            "tag": "guess",
+            "basis": "No shutdown was applied in France in 2023 or England in 2011, though both governments discussed one."
+          },
+          "days": {
+            "p50": 0.5,
+            "p90": 3,
+            "p99": 30
+          },
+          "tag": "guess",
+          "basis": "No case to measure."
+        },
+        "payments": {
+          "pOccur": {
+            "lo": 0.005,
+            "mid": 0.03,
+            "hi": 0.1,
+            "tag": "guess",
+            "basis": "366 bank branches were among the shops damaged in France in 2023, so local ATMs fail; cards keep working in open shops."
+          },
+          "days": {
+            "p50": 1,
+            "p90": 3,
+            "p99": 21
+          },
+          "tag": "guess",
+          "basis": "Same length as the food window."
+        },
+        "medication": {
+          "pOccur": {
+            "lo": 0.005,
+            "mid": 0.02,
+            "hi": 0.08,
+            "tag": "guess",
+            "basis": "Pharmacies are among looted shops but another is usually within reach by day."
+          },
+          "days": {
+            "p50": 1,
+            "p90": 4,
+            "p99": 21
+          },
+          "tag": "guess",
+          "basis": "Length of the riot."
+        },
+        "emergencyCare": {
+          "pOccur": {
+            "lo": 0.01,
+            "mid": 0.04,
+            "hi": 0.12,
+            "tag": "guess",
+            "basis": "Fire and ambulance crews are delayed during active rioting; London's fire brigade fought over 100 serious fires in 2011."
+          },
+          "days": {
+            "p50": 0.5,
+            "p90": 2,
+            "p99": 14
+          },
+          "tag": "guess",
+          "basis": "Nights of active rioting."
+        }
+      },
+      "leave": {
+        "feasible": {
+          "lo": 0.8,
+          "mid": 0.94,
+          "hi": 0.99,
+          "tag": "guess",
+          "basis": "Rioting is confined to some districts and to the night; trains and roads out run by day, though France stopped buses and trams at 9 pm in 2023."
+        },
+        "earliestDay": {
+          "lo": 0,
+          "mid": 0.5,
+          "hi": 2,
+          "tag": "guess",
+          "basis": "The morning after the first night."
+        },
+        "fixedUsdPerHousehold": {
+          "lo": 50,
+          "mid": 150,
+          "hi": 600,
+          "tag": "guess",
+          "basis": "Train tickets or fuel; not priced."
+        },
+        "usdPerPersonDay": {
+          "lo": 15,
+          "mid": 50,
+          "hi": 120,
+          "tag": "guess",
+          "basis": "Hotel shared by the household, or little when staying with relatives; not priced."
+        }
+      },
+      "warningDays": {
+        "lo": 0,
+        "mid": 2,
+        "hi": 14,
+        "tag": "derived",
+        "basis": "England 2011: shooting on 4 August, first riot on 6 August, other cities on 8 August. France 2023: the same night in Nanterre, national within three days. France 2026 built over weeks from September to mid-October."
+      },
+      "lateBuy": {
+        "staple": {
+          "lo": 0.6,
+          "mid": 0.85,
+          "hi": 0.97,
+          "tag": "guess",
+          "basis": "Shops are open by day and outside the affected districts."
+        },
+        "specialty": {
+          "lo": 0.2,
+          "mid": 0.5,
+          "hi": 0.8,
+          "tag": "guess",
+          "basis": "No data."
+        }
+      },
+      "exposures": [
+        {
+          "channel": "violence",
+          "description": "Western Europe. Risk of death by violence or arson for an adult who takes no part and stays in the area. The mid is the mean per event; an armed-conflict share of 2% supplies most of it.",
+          "micromortsPerPerson": {
+            "lo": 0.2,
+            "mid": 6,
+            "hi": 60,
+            "tag": "guess",
+            "basis": "Riots, 0.2: 2 deaths in France in 2023, 3 in 2005, and 5 in England in 2011 among roughly 8 million people in the affected boroughs (my estimate), 0.6 per million. Armed conflict, 300 (50-3,000) in 2% (0.3-8%) of events (recalled anchors). 0.2 + 0.02 x 300."
+          },
+          "conflictShare": {
+            "lo": 0.003,
+            "mid": 0.02,
+            "hi": 0.08,
+            "tag": "guess",
+            "basis": "About 0.02% a year for war or insurgency reaching a western European household, against a 1% event rate; no forecast found that separates western from eastern Europe."
+          },
+          "multipliers": [
+            {
+              "profile": "child",
+              "mortality": 0.5,
+              "tag": "guess",
+              "basis": "Riot deaths are mostly of adult men on the street."
+            },
+            {
+              "profile": "age75plus",
+              "mortality": 0.7,
+              "tag": "guess",
+              "basis": "Less time outdoors; more exposed to fire."
+            },
+            {
+              "profile": "limitedMobility",
+              "mortality": 1.5,
+              "tag": "guess",
+              "basis": "Cannot leave a burning building or the area unaided."
+            }
+          ]
+        },
+        {
+          "channel": "financialLoss",
+          "description": "Western Europe. Uninsured damage to home and vehicle, lost wages and forced moves for a household that owns no business. The mid is the mean per event.",
+          "financialUsdPerHousehold": {
+            "lo": 10,
+            "mid": 250,
+            "hi": 2500,
+            "tag": "guess",
+            "basis": "Riots, about $10: 12,031 vehicles burned in France in 2023 among roughly 11 million households in the 672 communes (my estimate) is 0.1% losing a car, half uninsured for fire. Armed conflict, $12,000 in 2% of events."
+          }
+        }
+      ],
+      "dwellingNotes": "Flats above shops burned in London in 2011; cars on the street are the commonest loss. Estates on the edge of French cities and the shopping streets of city centres are the usual sites.",
+      "evidence": [
+        {
+          "claim": "France 2023 (Senate report): 28 June to 5 July; at least 672 communes in 95 departments, twice as many as in 2005; 2,508 buildings damaged; 12,031 vehicles burned; more than 1,000 shops damaged including 366 bank branches; 16,400 insurance claims for EUR 793 million.",
+          "source": "https://www.publicsenat.fr/actualites/parlementaire/emeutes-de-2023-un-cout-colossal-estime-a-un-milliard-deuros-selon-le-rapport-du-senat",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "France 2023: 2 deaths; 808 officers injured; more than 3,300 arrests; buses and trams stopped at 9 pm nationwide from 30 June; curfews in several communes; the president threatened to cut off social media and no restriction was applied.",
+          "source": "https://en.wikipedia.org/wiki/Nahel_Merzouk_riots",
+          "year": 2023,
+          "verified": true
+        },
+        {
+          "claim": "France 2005: 27 October to 16 November; 274 towns; 8,973 vehicles burned; 3 deaths; 2,888 arrests; EUR 200 million; state of emergency from 8 November to 4 January 2006.",
+          "source": "https://en.wikipedia.org/wiki/2005_French_riots",
+          "year": 2005,
+          "verified": true
+        },
+        {
+          "claim": "France, September-October 2026: protests that began with school students spread to living costs; at least 3,000 businesses damaged or looted; about 2,400 arrests by 19 October; insured losses expected at EUR 1-1.2 billion; the prime minister called for local curfews.",
+          "source": "https://www.reinsurancene.ws/france-riots-put-srcc-accumulation-risk-in-focus-for-re-insurers-morningstar-dbrs/",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "November 2026: insurers in Europe are capping riot cover and raising deductibles; France approved a state-backed riot fund from January; gilets jaunes cost about EUR 220 million and the 2023 riots about EUR 730 million; Verisk Maplecroft's European unrest gauge is at its highest since 2021.",
+          "source": "https://www.insurancejournal.com/news/international/2026/11/12/892199.htm",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "England, 6-11 August 2011: 5 deaths; more than 3,000 arrests; 2,584 businesses attacked and 231 homes; at least 100 families made homeless; insurers expected to pay more than GBP 200 million.",
+          "source": "https://en.wikipedia.org/wiki/2011_England_riots",
+          "year": 2011,
+          "verified": true
+        }
+      ],
+      "notes": "France runs at about four times the regional figure and most other countries at about a third of it; a country setting would be more accurate than one number for western Europe. Conventional war on western European soil is included only through the 2% conflict share."
+    },
+    {
+      "id": "civilUnrest",
+      "location": "buenosAires",
+      "definition": "As for the United States: looting waves, serious rioting, a state of siege or sustained disorder in the household's part of Greater Buenos Aires, or armed conflict. Routine roadblocks and marches, and single clashes around Congress, do not count.",
+      "annualProbability": [
+        {
+          "location": "buenosAires",
+          "outlook": "forecast",
+          "lo": 0.015,
+          "mid": 0.04,
+          "hi": 0.1,
+          "tag": "derived",
+          "basis": "Greater Buenos Aires had looting waves or a state of siege in 1989, 2001, 2013 and 2023: four in the 43 years since 1983, 9% a year for the region. The city proper was hit in 2001 (7 of 39 deaths, a state of siege of about 36 hours) and in 1989, 2-5% a year (https://es.wikipedia.org/wiki/Crisis_de_diciembre_de_2001_en_Argentina)."
+        },
+        {
+          "location": "buenosAires",
+          "outlook": "pessimistic",
+          "lo": 0.03,
+          "mid": 0.08,
+          "hi": 0.18,
+          "tag": "guess",
+          "basis": "The regional frequency of 9% applied to the household, on the view that a currency break around the 2027 election would bring a December like 2001. No published forecast found."
+        }
+      ],
+      "tickBox": null,
+      "windows": {
+        "food": {
+          "pOccur": {
+            "lo": 0.05,
+            "mid": 0.2,
+            "hi": 0.45,
+            "tag": "guess",
+            "basis": "Looting in Argentina targets food shops and shopkeepers shut in advance: in December 2013 thousands of shops in Greater Buenos Aires closed early, and in August 2023 many in Once and Flores shut on rumours alone (https://chequeado.com/el-explicador/saqueos-en-el-conurbano-que-videos-circularon-y-que-paso-en-cada-municipio/)."
+          },
+          "days": {
+            "p50": 1.5,
+            "p90": 4,
+            "p99": 14
+          },
+          "tag": "derived",
+          "basis": "Seven days of looting in December 2001, two to three days in the conurbano in August 2023, 35 hours in Córdoba in 2013 (https://es.wikipedia.org/wiki/Saqueos_en_Argentina_de_2013)."
+        },
+        "displacement": {
+          "pOccur": {
+            "lo": 0.001,
+            "mid": 0.004,
+            "hi": 0.02,
+            "tag": "guess",
+            "basis": "Homes are not the target of looting waves; the figure is mostly the conflict share of 1%."
+          },
+          "days": {
+            "p50": 14,
+            "p90": 120,
+            "p99": 730
+          },
+          "tag": "guess",
+          "basis": "No case to measure."
+        },
+        "comms": {
+          "pOccur": {
+            "lo": 0.001,
+            "mid": 0.005,
+            "hi": 0.03,
+            "tag": "guess",
+            "basis": "No shutdown found in any Argentine episode."
+          },
+          "days": {
+            "p50": 0.5,
+            "p90": 2,
+            "p99": 14
+          },
+          "tag": "guess",
+          "basis": "No case to measure."
+        },
+        "payments": {
+          "pOccur": {
+            "lo": 0.02,
+            "mid": 0.08,
+            "hi": 0.25,
+            "tag": "guess",
+            "basis": "Small shops prefer cash, and banks and ATMs shut where there is rioting; in 2001 the unrest coincided with the withdrawal limit, which is counted under bankingCrisis."
+          },
+          "days": {
+            "p50": 1.5,
+            "p90": 4,
+            "p99": 14
+          },
+          "tag": "guess",
+          "basis": "Same length as the food window."
+        },
+        "medication": {
+          "pOccur": {
+            "lo": 0.01,
+            "mid": 0.04,
+            "hi": 0.12,
+            "tag": "guess",
+            "basis": "Pharmacies shut with other shops for the same days."
+          },
+          "days": {
+            "p50": 1,
+            "p90": 3,
+            "p99": 14
+          },
+          "tag": "guess",
+          "basis": "Length of the looting wave."
+        },
+        "emergencyCare": {
+          "pOccur": {
+            "lo": 0.01,
+            "mid": 0.05,
+            "hi": 0.15,
+            "tag": "guess",
+            "basis": "Ambulances delayed where streets are blocked or police are absent, as in the 2013 police strikes."
+          },
+          "days": {
+            "p50": 0.5,
+            "p90": 2,
+            "p99": 7
+          },
+          "tag": "guess",
+          "basis": "Days of active disorder."
+        }
+      },
+      "leave": {
+        "feasible": {
+          "lo": 0.75,
+          "mid": 0.9,
+          "hi": 0.98,
+          "tag": "guess",
+          "basis": "Looting is confined to some districts; the 2001 state of siege lasted about 36 hours and did not close roads out of the city."
+        },
+        "earliestDay": {
+          "lo": 0,
+          "mid": 0.5,
+          "hi": 2,
+          "tag": "guess",
+          "basis": "The next morning."
+        },
+        "fixedUsdPerHousehold": {
+          "lo": 30,
+          "mid": 100,
+          "hi": 400,
+          "tag": "guess",
+          "basis": "Bus tickets or fuel at local prices; not priced."
+        },
+        "usdPerPersonDay": {
+          "lo": 10,
+          "mid": 30,
+          "hi": 80,
+          "tag": "guess",
+          "basis": "Lodging at local prices, or little when staying with relatives; not priced."
+        }
+      },
+      "warningDays": {
+        "lo": 0,
+        "mid": 3,
+        "hi": 14,
+        "tag": "derived",
+        "basis": "In 2001 looting began on 13 December in the provinces and reached Greater Buenos Aires on the 19th; in 2023 it began on 19 August elsewhere and reached the conurbano on 21-23 August. December is the usual season."
+      },
+      "lateBuy": {
+        "staple": {
+          "lo": 0.6,
+          "mid": 0.85,
+          "hi": 0.97,
+          "tag": "guess",
+          "basis": "Waves start in other provinces days earlier and shops stay open until rumours reach the neighbourhood."
+        },
+        "specialty": {
+          "lo": 0.2,
+          "mid": 0.5,
+          "hi": 0.8,
+          "tag": "guess",
+          "basis": "No data."
+        }
+      },
+      "exposures": [
+        {
+          "channel": "violence",
+          "description": "Buenos Aires. Risk of death by violence for an adult who takes no part and stays in the area. The mid is the mean per event, including an armed-conflict share of 1%.",
+          "micromortsPerPerson": {
+            "lo": 0.3,
+            "mid": 3.5,
+            "hi": 30,
+            "tag": "guess",
+            "basis": "Riots, 0.5: 7 deaths in a city of about 3 million in December 2001 (2.4 per million) and 11 in the province, most of them demonstrators or looters; none in the metropolitan area in 2013 or 2023. Armed conflict, 300 in 1% of events (recalled anchors). 0.5 + 0.01 x 300."
+          },
+          "conflictShare": {
+            "lo": 0.002,
+            "mid": 0.01,
+            "hi": 0.04,
+            "tag": "guess",
+            "basis": "No armed conflict on the mainland since the 1970s and the barracks risings of 1987-90 (recalled); about 0.04% a year against a 4% event rate."
+          },
+          "multipliers": [
+            {
+              "profile": "child",
+              "mortality": 0.5,
+              "tag": "guess",
+              "basis": "Seven of the 39 killed in December 2001 were aged 13-18; young children were not among them."
+            },
+            {
+              "profile": "age75plus",
+              "mortality": 0.7,
+              "tag": "guess",
+              "basis": "Less time outdoors."
+            },
+            {
+              "profile": "limitedMobility",
+              "mortality": 1.5,
+              "tag": "guess",
+              "basis": "Cannot leave the area unaided."
+            }
+          ]
+        },
+        {
+          "channel": "financialLoss",
+          "description": "Buenos Aires. Uninsured damage, lost wages and forced moves for a household that owns no shop. The mid is the mean per event.",
+          "financialUsdPerHousehold": {
+            "lo": 3,
+            "mid": 55,
+            "hi": 600,
+            "tag": "guess",
+            "basis": "Riots, about $5 in lost days of informal work and damage; armed conflict, $5,000 in 1% of events. Shop owners lose far more: 400 million pesos among about 1,000 shops in Córdoba in 2013."
+          }
+        }
+      ],
+      "dwellingNotes": "Looting concentrates on supermarkets and shops in the conurbano and on a few commercial streets in the city (Once, Flores, Constitución); flats above or beside them carry the risk. Apartment buildings away from shopping streets were not affected in any episode.",
+      "evidence": [
+        {
+          "claim": "December 2001: looting from 13 to 20 December; state of siege from the night of 19 December to the morning of 21 December; 39 deaths, of which 11 in Buenos Aires province, 10 in Santa Fe and 7 in the city of Buenos Aires; 227 injured at Plaza de Mayo.",
+          "source": "https://es.wikipedia.org/wiki/Crisis_de_diciembre_de_2001_en_Argentina",
+          "year": 2001,
+          "verified": true
+        },
+        {
+          "claim": "Police strikes of 3-13 December 2013: looting in 20 provinces; about 18 deaths (Tucumán at least 8, Chaco 4, Entre Ríos 3, Córdoba 2, Jujuy 1); about 1,000 shops hit in Córdoba in 35 hours; no looting in the city of Buenos Aires; thousands of shops in Greater Buenos Aires closed early.",
+          "source": "https://es.wikipedia.org/wiki/Saqueos_en_Argentina_de_2013",
+          "year": 2013,
+          "verified": true
+        },
+        {
+          "claim": "August 2023: looting or attempts in at least 6 municipalities of Greater Buenos Aires on 21-23 August; 94 arrests in the province; one thwarted attempt in the city (barrio 1-11-14); many shops in Once and Flores shut on rumours.",
+          "source": "https://chequeado.com/el-explicador/saqueos-en-el-conurbano-que-videos-circularon-y-que-paso-en-cada-municipio/",
+          "year": 2023,
+          "verified": true
+        },
+        {
+          "claim": "Looting in May 1989 during the hyperinflation, and attempts before the year-end holidays of 2012 and 2013.",
+          "source": "https://www.lanacion.com.ar/opinion/el-ciclico-retorno-de-un-fantasma-que-siempre-esta-al-acecho-nid13092023/",
+          "year": 2023,
+          "verified": true
+        },
+        {
+          "claim": "The governor of Buenos Aires province reported 150 looting attempts in August 2023; 14 deaths and a 30-day state of siege in 1989.",
+          "source": "https://www.cadena3.com/noticia/politica-y-economia/kicillof-confirmo-que-ya-hay-94-detenidos-por-150-intentos-de-robos-en-conurbano_366647",
+          "year": 2023,
+          "verified": false
+        }
+      ],
+      "notes": "Argentine unrest and currency crises coincide (1989, 2001, and the 2023 wave days after a devaluation), while the model treats the two hazards as independent."
+    }
+  ],
+  "blockedSources": [
+    "https://www.metaculus.com/questions/18663/ and /6179/ (HTTP 403): current community forecasts and resolution criteria for US civil unrest and civil war; I rely on the step-2 reading of 2% and on search snippets.",
+    "https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf: opened, but the country table came through only in part; the rows for currency crises in advanced economies were unreadable, so the count of about ten western European currency crises in 1975-93 is recalled.",
+    "https://chequeado.com/el-explicador/cronologia-del-cepo-cambiario-como-vario-entre-2011-y-2020/: the timeline itself did not load, only the April 2025 update.",
+    "https://es.wikipedia.org/wiki/Saqueos_en_Argentina_de_1989 (HTTP 404): deaths and length of the 1989 state of siege; the 14 deaths and 30 days are recalled.",
+    "https://conferenceconsensuslogement.senat.fr/rap/r23-521/r23-521-syn.pdf (HTTP 404) and maire-info.com (HTTP 526): the French Senate report on the 2023 riots; read through Public Sénat instead.",
+    "https://www.verisk.com/blog/srcc-in-2026-five-countries-to-watch/ and https://www.verisk.com/en-gb/blog/srcc-risk-modeling-the-rising-tide-of-civil-unrest/: only the titles loaded; Verisk's $3 billion for the US in 2020 and $10 billion since 2017 are search snippets and are not used in any number.",
+    "https://acleddata.com/united-states-and-canada/usa: the data dashboard needs an account; no event counts obtained.",
+    "Financial Times interview with Ray Dalio, May 2024 (35-40% chance of civil war): not opened; search snippets of syndicated reports only.",
+    "Banco Central de la República Argentina, survey of expectations for October 2026 (PDF): not opened; figures taken from Perfil's report of it.",
+    "Destatis household spending for 2024, the ECB reference rate for the euro, and sentix's break-up index: search snippets only.",
+    "Series of the parallel dollar and of deposit interest rates in Argentina: not found on a page I could open; the adjustment for interest in the Buenos Aires loss share rests on recalled rates."
+  ],
+  "openQuestions": [
+    "Each hazard is given three times, once per location with the US entry first, so that tools/build-data.mjs turns the western European and Buenos Aires entries into byLocation profiles. If the builder expects one entry per hazard, take windows, leave and exposures from the entry whose 'location' field matches.",
+    "Exposure mids are means per event, not the median event, because the engine multiplies an exposure by the hazard probability without scaling it by severity. For civilUnrest the mean is dominated by a small armed-conflict share (extra field 'conflictShare'); the riot-only figures are in each basis.",
+    "The bankingCrisis loss is deposit times lossShare (extra fields 'referenceDepositUsd' and 'lossShare'). Store-of-value items in the money-docs file should avert lossShare times the sum they hold, not a fixed dollar amount.",
+    "Buenos Aires: the loss share is in dollars and gross of the extra interest that peso deposits earn in calm years. For remunerated deposits that premium has roughly matched the crisis losses since 2003 (rough reckoning from recalled rates); for sight balances it has not. The model needs a rule for what the reference household's pesos earn.",
+    "Buenos Aires: in local purchasing power the loss on a peso deposit is about half the dollar loss, while dollar notes gain purchasing power in a devaluation (2.4 times in 2002 according to the money-docs file). I used the dollar measure because the model is in dollars.",
+    "Unrest and banking crises coincide in Argentina, and the food and payments windows of December 2001 belong to both hazards. I put those days under civilUnrest and only a remainder under bankingCrisis.",
+    "Western Europe is too coarse for civilUnrest: France is about four times the regional rate. For bankingCrisis euro members with high debt differ from countries with their own central bank.",
+    "The payments window counts only days on which a household with a card could not pay, as the money-docs file asks. The months of withdrawal limits that follow are not in the model; their cost is queuing time, which I did not estimate.",
+    "No source separates households from businesses in riot losses; the household share of financial loss is my estimate."
+  ]
+}

@@ -1,0 +1,359 @@
+{
+  "kind": "hazards",
+  "group": "tail-nuclear-grid",
+  "hazards": [
+    {
+      "id": "nuclearNear",
+      "definition": "Nuclear weapons detonate on the household's own country in a large-scale attack (roughly 100 warheads or more), or in a smaller attack that puts the home inside a damaged area or under a fallout plume, and everyone in the household is alive one hour after the first detonation. In a large-scale attack every surviving household in the country counts, whether or not fallout reaches it, because power, supply and medical care fail nationally; the fallout exposure is therefore a mean over households, most of which receive little dose.",
+      "annualProbability": [
+        {"location": "us", "outlook": "forecast", "lo": 0.0001, "mid": 0.0006, "hi": 0.0025, "tag": "derived",
+         "basis": "Large-scale attack on the US 0.07%/yr x alive after the first hour 0.88 = 0.062%, plus under 0.001% for limited strikes. The 0.07% sits between the tournament superforecasters' 0.06%/yr for a nuclear catastrophe (https://forum-bots.effectivealtruism.org/posts/YyBoSSaWpNacLnCji), Samotsvety's London-hit rate blended over calm and crisis years (0.07%) and Rodriguez's 0.38%/yr US-Russia exchange x 0.2-0.3 for escalation to the homeland."},
+        {"location": "us", "outlook": "pessimistic", "lo": 0.0006, "mid": 0.0022, "hi": 0.008, "tag": "derived",
+         "basis": "Large-scale attack 0.25%/yr x 0.88. The 0.25% is Rodriguez's 0.38%/yr for any US-Russia exchange (https://rethinkpriorities.org/research-area/how-likely-is-a-nuclear-exchange-between-the-us-and-russia/) x about 0.5 for escalation, plus China and North Korea; Barrett et al.'s 0.9%/yr for inadvertent US-Russia war (90% interval 0.02-7%) sets the upper bound."},
+        {"location": "westernEurope", "outlook": "forecast", "lo": 0.00008, "mid": 0.0005, "hi": 0.002, "tag": "derived",
+         "basis": "Large-scale attack on Western Europe 0.07%/yr x 0.85 of the population in attacked or immediately downwind countries x 0.82 alive after the first hour = 0.049%. Samotsvety (https://forum-bots.effectivealtruism.org/posts/2nDTrDPZJBEerZGrk): London hit 0.36% in the year from October 2022; about 0.03%/yr without a crisis (0.132% x 23%)."},
+        {"location": "westernEurope", "outlook": "pessimistic", "lo": 0.0005, "mid": 0.0017, "hi": 0.007, "tag": "derived",
+         "basis": "0.25%/yr x 0.85 x 0.82, the same pessimistic war rate as for the United States; Samotsvety's March 2022 crisis-level figure for London alone was 0.8%/yr x 18% = 0.14%/yr."},
+        {"location": "buenosAires", "outlook": "forecast", "lo": 0, "mid": 0.000001, "hi": 0.00002, "tag": "guess",
+         "basis": "No nuclear-armed state has a reason to strike Argentina and fallout from Northern Hemisphere wars reaches the south only as trace global fallout. One in a million a year stands for accidents and scenarios nobody has listed."},
+        {"location": "buenosAires", "outlook": "pessimistic", "lo": 0, "mid": 0.000003, "hi": 0.00005, "tag": "guess",
+         "basis": "Three times the forecast figure; still negligible beside nuclearFar."}
+      ],
+      "conversionFactors": {
+        "note": "Steps from 'a nuclear war happens' to the two hazards. nuclearNear = largeScaleAttackOnOwnCountry x (share of population in attacked countries, Western Europe only) x aliveAfterFirstHour + limitedAttackOnOwnCountry x shareInsideDamageOrPlume x 0.8. nuclearFar = anyUseKillingOver1000 - largeScaleAttackOnOwnCountry - limitedAttackOnOwnCountry.",
+        "anyUseKillingOver1000PerYear": {
+          "forecast": {"lo": 0.0025, "mid": 0.007, "hi": 0.02, "tag": "derived", "basis": "Tournament superforecasters 4% and domain experts 4.5% by end-2030 for use killing over 1,000 (0.49% and 0.55%/yr over 8.3 years); Good Judgment 2018 0.40%/yr; Rodriguez 1.1%/yr; Metaculus 34% by 2050 (1.8%/yr). Geometric mean 0.79%; taken as 0.7% because the last two count single detonations below 1,000 deaths."},
+          "pessimistic": {"lo": 0.007, "mid": 0.018, "hi": 0.04, "tag": "derived", "basis": "Metaculus 1.8%/yr; the UK National Risk Register 2025 scores 'nuclear miscalculation not involving the UK or its allies' at 5-25% over its assessment period (https://assets.publishing.service.gov.uk/media/6787ea8e1124a2c3ceb646bf/National_Risk_Register_2025.pdf), at least 1-5%/yr."}
+        },
+        "largeScaleAttackOnOwnCountryPerYear": {
+          "forecast": {"lo": 0.00015, "mid": 0.0007, "hi": 0.003, "tag": "derived", "basis": "See the United States forecast basis. Used for both the United States and Western Europe: Europe is struck in more NATO-Russia scenarios, the United States also in wars with China or North Korea."},
+          "pessimistic": {"lo": 0.0008, "mid": 0.0025, "hi": 0.01, "tag": "derived", "basis": "See the United States pessimistic basis."}
+        },
+        "aliveAfterFirstHourGivenLargeAttack": {
+          "us": {"lo": 0.65, "mid": 0.88, "hi": 0.97, "tag": "derived", "basis": "Rodriguez: a Russian counterforce strike kills 8.7M Americans (4.9-13M) and city targeting about 48M if it happens, 3.4-40M probability-weighted (https://rethinkpriorities.org/research-area/how-many-people-would-be-killed-as-a-direct-result-of-a-us-russia-nuclear-exchange/); about 29M of 335M is 9%, some of them dying after the first hour. Cold War arsenals gave 98M prompt deaths of about 250M (Harvey et al. 1992, https://www.osti.gov/biblio/5948175)."},
+          "westernEurope": {"lo": 0.55, "mid": 0.82, "hi": 0.96, "tag": "guess", "basis": "Denser countries with targets inside or beside the largest cities; no modern published estimate found, so the US figure is shaded down."}
+        },
+        "shareOfWesternEuropeansInAttackedOrDownwindCountries": {"lo": 0.6, "mid": 0.85, "hi": 0.97, "tag": "guess", "basis": "The United Kingdom, France and the countries hosting US weapons or major bases (Germany, Italy, Belgium, the Netherlands, Spain) hold about 80% of Western Europe's population; neutral neighbours lie downwind."},
+        "limitedAttackOnOwnCountryPerYear": {"lo": 0.00005, "mid": 0.0003, "hi": 0.0015, "tag": "guess", "basis": "One or a few detonations on home soil without general war (North Korea, a demonstration strike, strikes on a few bases). No forecast found."},
+        "shareInsideDamageOrPlumeGivenLimitedAttack": {"lo": 0.002, "mid": 0.02, "hi": 0.08, "tag": "guess", "basis": "One metropolitan area and its plume out of a national population."},
+        "shareOfFirstHourSurvivorsWithOutdoor14DayDoseOver1Gy": {"lo": 0.01, "mid": 0.04, "hi": 0.15, "tag": "guess", "basis": "For the radiation researcher. Philippe et al.: after a silo-only attack most North Americans live where the chance of an outdoor dose above 1 Gy is about 1%, far more in the northern Plains and Midwest; other ground bursts add to that. https://www.scientificamerican.com/article/who-would-take-the-brunt-of-an-attack-on-u-s-nuclear-missile-silos/"}
+      },
+      "promptDeath": {
+        "note": "Outside the hazard by definition, given so that relocation-before-attack entries can be valued outside the engine.",
+        "probabilityGivenLargeAttack": {"lo": 0.03, "mid": 0.12, "hi": 0.35, "tag": "derived", "basis": "One minus aliveAfterFirstHour for an average US location; roughly 0.3-0.5 in the core of a targeted metropolitan area and 0.01-0.03 in rural areas away from bases (guess)."},
+        "annualMicromortsUsForecast": {"lo": 5, "mid": 85, "hi": 600, "tag": "derived", "basis": "0.07%/yr x 12% = 84 micromorts a year for an average US resident."}
+      },
+      "tickBox": null,
+      "windows": {
+        "power": {"pOccur": {"lo": 0.8, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Hundreds of detonations, high-altitude pulse and loss of fuel and staff take the grid down nearly everywhere; hydro-fed islands may hold."},
+                  "days": {"p50": 60, "p90": 400, "p99": 1500}, "tag": "guess",
+                  "basis": "No modern study gives restoration times after a nuclear attack. US EMP Commission 2008: restoration of some damage 'certainly months and in some instances years'; irreparably damaged large transformers take one to two years plus backlog (http://www.empcommission.org/docs/A2473-EMP_Commission-7MB.pdf)."},
+        "gas": {"pOccur": {"lo": 0.6, "mid": 0.85, "hi": 0.97, "tag": "guess", "basis": "Pipeline compression, control and production depend on power and staff."},
+                "days": {"p50": 60, "p90": 400, "p99": 1500}, "tag": "guess", "basis": "Assumed to follow the grid."},
+        "water": {"pOccur": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "Treatment and pumping stop with power; OTA 1979 notes water pressure gone in damaged areas."},
+                  "days": {"p50": 30, "p90": 150, "p99": 600},
+                  "shareTreatable": {"lo": 0.7, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "Rivers, rain, wells and standing water in pipes and tanks remain obtainable and can be filtered and disinfected; the exception is the first days inside a fallout zone, when fetching it costs dose."},
+                  "tag": "guess", "basis": "Net of relief: tankers and organised wells reach most survivors within weeks, taps take as long as the grid. No data; wide range intended."},
+        "food": {"pOccur": {"lo": 0.6, "mid": 0.85, "hi": 0.97, "tag": "guess", "basis": "Shops hold one to three days of food and regional warehouses about a month for their area (EMP Commission 2008); distribution needs fuel, power and payment systems."},
+                 "days": {"p50": 21, "p90": 90, "p99": 365}, "tag": "guess",
+                 "basis": "Net of relief: with nine in ten people and most grain stocks surviving, I assume some rationed distribution within two to six weeks for most households; in the worst tenth nothing organised for three months or more. A guess with no data behind it."},
+        "medication": {"pOccur": {"lo": 0.8, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Pharmacies shut and the supply chain is long and import-dependent."},
+                       "days": {"p50": 90, "p90": 400, "p99": 1100}, "tag": "guess", "basis": "Longer than food because drugs cannot be improvised or sourced locally."},
+        "emergencyCare": {"pOccur": {"lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Surviving hospitals are swamped: OTA 1979 expects injuries about equal to fatalities."},
+                          "days": {"p50": 45, "p90": 300, "p99": 1000}, "tag": "guess", "basis": "Until hospitals have power, supplies and staff again."},
+        "payments": {"pOccur": {"lo": 0.8, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Card networks and banks need power and communications; OTA 1979 expects 'large credit, monetary, contractual, and legal problems'."},
+                     "days": {"p50": 45, "p90": 300, "p99": 1000}, "tag": "guess", "basis": "Follows power and communications. Whether notes keep their value is a separate, open question."},
+        "comms": {"pOccur": {"lo": 0.8, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Telecom sites carry 4 to 72 hours of backup power (EMP Commission 2008); broadcast radio is the service most likely to survive."},
+                  "days": {"p50": 30, "p90": 200, "p99": 800}, "tag": "guess", "basis": "Counted from loss of service. Mobile and internet return with regional power; no data."},
+        "sanitation": {"pOccur": {"lo": 0.55, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "No water to flush for most; sewage pumping stops. About 70% of these days are lack of flush water, which hauled water cures."},
+                       "days": {"p50": 30, "p90": 200, "p99": 800}, "tag": "guess", "basis": "Follows water and power."},
+        "displacement": {"pOccur": {"lo": 0.08, "mid": 0.2, "hi": 0.45, "tag": "guess", "basis": "Homes damaged by blast or fire at the edge of struck areas, and homes where the fallout dose rate stays too high to live in after the shelter period."},
+                         "days": {"p50": 120, "p90": 1500, "p99": 6000}, "tag": "guess", "basis": "Many never return."}
+      },
+      "coldShare": {"lo": 0.4, "mid": 0.6, "hi": 0.85, "tag": "derived", "basis": "A 60-day median window overlaps a 120-day cold season with probability (120 + 60) / 365 = 0.49; longer windows and any soot-driven cooling raise it."},
+      "hotShare": {"lo": 0.2, "mid": 0.4, "hi": 0.6, "tag": "derived", "basis": "(90 + 60) / 365 = 0.41 for a 90-day hot season; cooling from soot would lower it, longer windows raise it."},
+      "leave": {
+        "feasible": {"lo": 0.03, "mid": 0.12, "hi": 0.35, "tag": "guess", "basis": "After a large-scale attack there is almost nowhere unaffected within reach: no fuel sales, no flights, borders shut. Feasible mainly in limited attacks and for households with a full tank near an untouched border."},
+        "earliestDay": {"lo": 1, "mid": 4, "hi": 14, "tag": "derived", "basis": "Dose rate falls as t^-1.2: about 1% of the one-hour rate at two days and 0.1% at two weeks, so travel becomes tolerable after one to three days outside the heaviest plumes and one to two weeks inside them."},
+        "fixedUsdPerHousehold": {"lo": 800, "mid": 3000, "hi": 15000, "tag": "guess", "basis": "A journey of 1,000 km or more with scarce fuel bought at crisis prices, and abandoned possessions."},
+        "usdPerPersonDay": {"lo": 20, "mid": 60, "hi": 200, "tag": "guess", "basis": "Lodging and food as a displaced person in a place itself short of supplies."}
+      },
+      "warningDays": {"lo": 0, "mid": 3, "hi": 21, "tag": "guess", "basis": "Most large exchanges would follow days or weeks of visible crisis or battlefield use; an accidental or surprise launch gives minutes. Samotsvety assumed a 50-75% chance that an attentive Londoner leaves in time."},
+      "lateBuy": {
+        "staple": {"lo": 0.1, "mid": 0.35, "hi": 0.65, "tag": "guess", "basis": "About 0.6 that there is usable warning x 0.6 that shops still hold food and water during the scare."},
+        "specialty": {"lo": 0.01, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "Potassium iodide, respirators, radios and meters sold out within days in March 2011 and February-March 2022 (recalled)."}
+      },
+      "exposures": [
+        {
+          "channel": "fallout",
+          "description": "Death from fallout radiation in the first two weeks (acute radiation syndrome, plus later cancer) for an adult in an unprepared household behaving typically in a typical building: about 30% have someone outdoors or in a car in the first hours, the rest stay in ordinary rooms. Mean over all first-hour survivors of a large-scale attack; about one in a hundred receives a lethal dose and most receive little.",
+          "micromortsPerPerson": {"lo": 1500, "mid": 10000, "hi": 60000, "tag": "derived",
+            "basis": "United States. Philippe et al. (https://www.scientificamerican.com/article/who-would-take-the-brunt-of-an-attack-on-u-s-nuclear-missile-silos/): an 800 kt ground burst on each of 450 silos kills 1.4M by acute radiation on average (0.34-4.6M by day of year) if people shelter four days, twice that without shelter. x 1.3 for typical behaviour = 1.8M, plus about 0.8M from other ground bursts (guess) = 2.6M of 295M survivors = 0.9% acute, or 8,800 micromorts; later cancer adds about 2,400 unweighted (1,000 if weighted 0.4). Taken as 10,000."},
+          "micromortsPerPersonByLocation": {
+            "us": {"lo": 1500, "mid": 10000, "hi": 60000, "tag": "derived", "basis": "As above. High end: Cold War counterforce studies gave 1-20M deaths of 225M, 14M under 'reasonable' shelter assumptions (OTA 1979, https://atomicarchive.com/resources/documents/effects/ota/chapter-4-4-2.html), and about 10M for an unsheltered population (Harvey et al. 1992). Low end: Harvey's under 1M with shelter, fewer ground bursts, favourable wind."},
+            "westernEurope": {"lo": 500, "mid": 6000, "hi": 50000, "tag": "guess", "basis": "No silo fields, so fewer ground bursts, and masonry housing lets through about half the dose of US light-frame houses (radiation researcher: 0.10-0.13 against 0.22-0.28); but hardened headquarters sit beside London, Paris and Brussels. No published estimate found."},
+            "buenosAires": {"lo": 0, "mid": 0, "hi": 10, "tag": "guess", "basis": "Not applicable: the hazard has near-zero probability there."}
+          },
+          "shareAcute": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Acute deaths 0.9% of survivors; cancer about 0.04 Gy mean dose among the rest (my guess) x 6% per Gy = 0.24% unweighted, so acute is 8,800 of 11,200. The mid of 10,000 already sits between the unweighted total and the total with latent deaths weighted 0.4 (9,800)."},
+          "multipliers": [
+            {"profile": "child", "mortality": 1.3, "tag": "guess", "basis": "Acute death dominates this exposure; the radiation researcher gives 1.3 for acute death and 2 for cancer."}
+          ]
+        },
+        {
+          "channel": "trauma",
+          "description": "Death in the days and weeks after the attack from burns, glass and crush injuries received in the first minutes, among people alive at one hour, with no hospital care. Most of these injuries are beyond home first aid; I guess that about 15% (5-40%) of the deaths are bleeding or wound infection that a trained person with dressings could prevent. Drop this exposure if the model treats all prompt-effect injuries as outside the household's control.",
+          "micromortsPerPerson": {"lo": 800, "mid": 6000, "hi": 40000, "tag": "guess",
+            "basis": "OTA 1979: injuries about equal fatalities. 3-20% of first-hour survivors are in light-to-moderate damage zones, about 30% of them seriously hurt, 20-40% of those die without care: 0.2-2.4%, taken as 0.6%."},
+          "shareAmenableToFirstAid": {"lo": 0.05, "mid": 0.15, "hi": 0.4, "tag": "guess", "basis": "No data; burns and crush injuries dominate."}
+        }
+      ],
+      "dwellingNotes": "Fallout dose depends on the building far more than any other factor: the radiation researcher gives an unprepared household 0.22-0.28 of the outdoor dose in a US light-frame house, 0.13 in a masonry house, 0.10 in a large apartment block and 0.42 in a mobile home, so the fallout figure should be scaled by dwelling (roughly x1.4 light-frame, x0.6 masonry or large block, x2.3 mobile home, relative to a mean of 0.18). Flats above about the sixth floor lose water as soon as pumps stop. Location inside the country matters as much: downwind of the Montana, North Dakota and Wyoming-Nebraska-Colorado silo fields the mean is several times higher, on the Pacific coast and in the Southeast several times lower.",
+      "evidence": [
+        {"claim": "Tournament medians: nuclear catastrophe (over 10% of humanity dead within 5 years) 0.5% by 2030, 1.83% by 2050, 4% by 2100 for superforecasters; 1%, 3.4%, 8% for domain experts. Nuclear use killing over 1,000: 4% and 4.5% by 2030.", "source": "https://forum-bots.effectivealtruism.org/posts/YyBoSSaWpNacLnCji/what-do-xpt-forecasts-tell-us-about-nuclear-risk", "year": 2023, "verified": true},
+        {"claim": "Rodriguez: about 1.1% a year for any nuclear war and 0.38% for a US-Russia exchange; inputs include Barrett et al. 0.9% (90% CI 0.02-7%) and Good Judgment 0.40% a year for any state attack with a fatality.", "source": "https://rethinkpriorities.org/research-area/how-likely-is-a-nuclear-exchange-between-the-us-and-russia/", "year": 2019, "verified": true},
+        {"claim": "Samotsvety, March 2022: NATO-Russia exchange 0.067% a month (0.8% a year), London hit 18% given exchange; Eli Lifland put the pre-war baseline near 0.1% a year.", "source": "https://forum-bots.effectivealtruism.org/posts/KRFXjCqqfGQAYirm5/samotsvety-nuclear-risk-forecasts-march-2022", "year": 2022, "verified": true},
+        {"claim": "Samotsvety, October 2022: London hit within a year 0.36%; without Russian use in Ukraine, nuclear conflict beyond Ukraine within a year 0.132%; London hit given NATO escalation 23%.", "source": "https://forum-bots.effectivealtruism.org/posts/2nDTrDPZJBEerZGrk/samotsvety-nuclear-risk-update-october-2022", "year": 2022, "verified": true},
+        {"claim": "Rodriguez: Russian counterforce strike on the US kills 4.9-13M (8.7M expected); city targeting about 48M if it occurs; 51M direct deaths on both sides (90% CI 30-75M).", "source": "https://rethinkpriorities.org/research-area/how-many-people-would-be-killed-as-a-direct-result-of-a-us-russia-nuclear-exchange/", "year": 2019, "verified": true},
+        {"claim": "Attack on 450 US silos with one 800 kt warhead each: average 1.4M acute radiation deaths (0.34-4.6M) if people shelter at least four days, perhaps twice as many without shelter; over 300M people live where lethal fallout is possible.", "source": "https://www.scientificamerican.com/article/who-would-take-the-brunt-of-an-attack-on-u-s-nuclear-missile-silos/", "year": 2023, "verified": true},
+        {"claim": "Same method applied to China's silo fields: 4.6M deaths with building protection factors, 17.9M without.", "source": "https://scienceandglobalsecurity.org/archive/sgs31philippe.pdf", "year": 2023, "verified": true},
+        {"claim": "Harvey, Shapiro and Wittler: counterforce attack about 8M prompt deaths, counterforce plus cities about 98M; fallout deaths under 1M in each scenario with shelter, about 10M for an unsheltered population.", "source": "https://www.osti.gov/biblio/5948175", "year": 1992, "verified": true},
+        {"claim": "OTA 1979: counterforce attacks kill 1-20M within 30 days depending on shelter (protection factor 3 at the high end, 25 at the low), 14M under a more reasonable shelter assumption; injuries about equal fatalities.", "source": "https://atomicarchive.com/resources/documents/effects/ota/chapter-4-4-2.html", "year": 1979, "verified": true},
+        {"claim": "Metaculus: 34% that a nuclear weapon is detonated as an act of war by 2050 (read by the step 2 researcher on 19 Nov 2026).", "source": "https://www.metaculus.com/questions/4779/", "year": 2026, "verified": false}
+      ],
+      "notes": "Almost all of the probability is large-scale attack, so windows describe that case; in a limited attack they would be days to weeks and leaving would be feasible. The violence channel uses the security researcher's default (three times the everyday rate from the second week); I have no event data to replace it. Property and savings losses are not quantified: no household item addresses them."
+    },
+    {
+      "id": "nuclearFar",
+      "appliesTo": ["us", "westernEurope"],
+      "definition": "Nuclear weapons kill more than 1,000 people in a war that leaves the household's own country without large-scale attack and its home outside any damaged or fallout area. Event mix for these two locations: about 62% limited use abroad (ten detonations or fewer), 33% regional war with tens to hundreds of detonations (India-Pakistan, Korea, a NATO-Russia exchange confined to another theatre), 5% a larger war that spares the household's country.",
+      "annualProbability": [
+        {"location": "us", "outlook": "forecast", "lo": 0.002, "mid": 0.006, "hi": 0.018, "tag": "derived",
+         "basis": "Any use killing over 1,000 people 0.7%/yr minus 0.07% for large-scale attack on the US and 0.03% for limited strikes on it. Sources for the 0.7%: tournament 0.49-0.55%, Good Judgment 0.40%, Rodriguez 1.1%, Metaculus 1.8% (https://forum-bots.effectivealtruism.org/posts/YyBoSSaWpNacLnCji)."},
+        {"location": "us", "outlook": "pessimistic", "lo": 0.006, "mid": 0.015, "hi": 0.035, "tag": "derived",
+         "basis": "1.8%/yr (Metaculus 34% by 2050) minus 0.25% and 0.05%. The UK National Risk Register 2025 scores a limited nuclear conflict between two other states at 5-25% over its assessment period."},
+        {"location": "westernEurope", "outlook": "forecast", "lo": 0.002, "mid": 0.006, "hi": 0.018, "tag": "derived",
+         "basis": "Same arithmetic as for the United States: 0.7% minus 0.07% and 0.03%."},
+        {"location": "westernEurope", "outlook": "pessimistic", "lo": 0.006, "mid": 0.015, "hi": 0.035, "tag": "derived",
+         "basis": "Same arithmetic as for the United States: 1.8% minus 0.25% and 0.05%."}
+      ],
+      "tickBox": null,
+      "windows": {
+        "food": {"pOccur": {"lo": 0.01, "mid": 0.04, "hi": 0.12, "tag": "guess", "basis": "Panic buying empties shops for some days in the worst events; in March 2020 toilet paper was out at 70% of US grocers yet food stayed obtainable (base-rates.md)."},
+                 "days": {"p50": 2, "p90": 7, "p99": 21}, "tag": "guess", "basis": "Net of relief. Both regions grow more grain than they eat, so the harm from a soot-driven harvest loss is price, carried on financialLoss, not absence."},
+        "medication": {"pOccur": {"lo": 0.02, "mid": 0.07, "hi": 0.2, "tag": "guess", "basis": "Chance that a given regular drug cannot be had from any pharmacy because its ingredients come from a struck or blockaded country (India and China make most generic ingredients; recalled)."},
+                       "days": {"p50": 21, "p90": 90, "p99": 365}, "tag": "guess", "basis": "Until substitute suppliers or products are found; drug shortages in peacetime commonly run for months."},
+        "payments": {"pOccur": {"lo": 0.005, "mid": 0.02, "hi": 0.08, "tag": "guess", "basis": "Market closures and bank runs in the first days of the worst events; cards normally keep working."},
+                     "days": {"p50": 1, "p90": 4, "p99": 14}, "tag": "guess", "basis": "Counted only while a household with a card and an account cannot pay at all."},
+        "comms": {"pOccur": {"lo": 0.005, "mid": 0.02, "hi": 0.08, "tag": "guess", "basis": "Satellite losses, cable cuts or cyber spillover in the worst events; no data."},
+                  "days": {"p50": 1, "p90": 5, "p99": 30}, "tag": "guess", "basis": "Counted from loss of service."}
+      },
+      "leave": {
+        "feasible": {"lo": 0, "mid": 0.02, "hi": 0.1, "tag": "guess", "basis": "The effects are prices, jobs and supply chains, which are global; there is no unaffected place to go."},
+        "earliestDay": {"lo": 0, "mid": 1, "hi": 7, "tag": "guess", "basis": "Not a meaningful option here."},
+        "fixedUsdPerHousehold": {"lo": 500, "mid": 3000, "hi": 15000, "tag": "guess", "basis": "International relocation; placeholder."},
+        "usdPerPersonDay": {"lo": 20, "mid": 60, "hi": 200, "tag": "guess", "basis": "Placeholder."}
+      },
+      "warningDays": {"lo": 0, "mid": 3, "hi": 30, "tag": "guess", "basis": "Wars usually build over days to weeks; the effects on a distant household then arrive over weeks to months."},
+      "lateBuy": {
+        "staple": {"lo": 0.6, "mid": 0.85, "hi": 0.97, "tag": "guess", "basis": "Shops stay open and restock; a few goods run short for days."},
+        "specialty": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Potassium iodide, respirators and radiation meters sold out within days across Europe and North America in March 2011 and early 2022 (recalled)."}
+      },
+      "exposures": [
+        {
+          "channel": "financialLoss",
+          "description": "Loss to a median household, net of insurance and aid, from higher food and energy prices, lost earnings in the recession and lasting loss on savings; paper losses that recover are excluded. Mean over the event mix: about $700 after limited use, $6,000 after a regional war, $30,000 after a larger war that spares the country.",
+          "financialUsdPerHousehold": {"lo": 300, "mid": 3000, "hi": 25000, "tag": "guess",
+            "basis": "0.62 x $700 + 0.33 x $6,000 + 0.05 x $30,000 = $3,900, shaded to $3,000. The $6,000: food bill of $10,000 up 25% for two years ($5,000 over two years, partly offset) plus a 10% chance of losing $20,000 of earnings. No market has priced a nuclear war since 1945."},
+          "foodPriceRiseGivenRegionalWarOrLarger": {"lo": 0.05, "mid": 0.25, "hi": 1.0, "tag": "guess",
+            "basis": "Peak rise in retail food prices. Xia et al. 2022 put global crop calories 7% lower for five years after 5 Tg of soot (search snippet); Jagermeyr et al. 2020 give maize -13% and wheat -11%; Hochman et al. 2022 find only a few points lost if trade holds. For scale, the FAO index rose 34% in the year to March 2022 with no fall in world output (search snippet). Los Alamos modelling finds almost no soot reaches the stratosphere."}
+        }
+      ],
+      "dwellingNotes": "No difference by dwelling.",
+      "evidence": [
+        {"claim": "Tournament medians for nuclear use killing over 1,000 people: 1.5% by end-2024 and 4% by end-2030 (superforecasters), 2% and 4.5% (domain experts).", "source": "https://forum-bots.effectivealtruism.org/posts/YyBoSSaWpNacLnCji/what-do-xpt-forecasts-tell-us-about-nuclear-risk", "year": 2023, "verified": true},
+        {"claim": "UK National Risk Register 2025: 'nuclear miscalculation not involving the UK or its allies' sits in the 5-25% likelihood column with impact 4 of 5; the scenario is a limited nuclear conflict between two states with economic disruption for UK businesses.", "source": "https://assets.publishing.service.gov.uk/media/6787ea8e1124a2c3ceb646bf/National_Risk_Register_2025.pdf", "year": 2025, "verified": true},
+        {"claim": "Hinge's review: 20-50 Tg of soot and 2-6 C of global cooling expected after a full NATO-Russia exchange, against 150 Tg in the Rutgers work; if Los Alamos is right 'there would likely be no climate shock'.", "source": "https://forum-bots.effectivealtruism.org/posts/pbMfYGjBqrhmmmDSo/nuclear-winter-reviewing-the-evidence-the-complexities-and", "year": 2023, "verified": true},
+        {"claim": "Xia et al. 2022: soot injections above 5 Tg cause mass food shortage; crop calories fall about 7% after 5 Tg and about 90% three to four years after 150 Tg; over 2 billion deaths after an India-Pakistan war and over 5 billion after a US-Russia war.", "source": "https://www.nature.com/articles/s43016-022-00573-0", "year": 2022, "verified": false},
+        {"claim": "Jagermeyr et al. 2020: 5 Tg of soot cuts maize calories 13%, wheat 11%, rice 3%, soy 17% over five years; Hochman et al. 2022: with trade intact global food availability falls by a few percentage points.", "source": "https://pure.iiasa.ac.at/id/eprint/16344/", "year": 2020, "verified": false},
+        {"claim": "The 2025 National Academies report finds major uncertainties and data gaps at every stage from weapon use to socioeconomic effect and recommends model intercomparison; it gives no central estimate on the pages I could open.", "source": "https://www.nationalacademies.org/publications/27515", "year": 2025, "verified": true}
+      ],
+      "notes": "Most events in this hazard barely touch a distant household; the mean harm comes from the worst third. Windows are rare and short. The value of a pantry here is as a hedge against price rises (foodPriceRiseGivenRegionalWarOrLarger), not against empty shops."
+    },
+    {
+      "id": "nuclearFar",
+      "location": "buenosAires",
+      "definition": "Nuclear weapons kill more than 1,000 people in a war anywhere; for Buenos Aires every nuclear war is elsewhere. Event mix: about 55% limited use (ten detonations or fewer), 30% regional war with tens to hundreds of detonations, 15% war between great powers in the Northern Hemisphere, which removes Argentina's main trading partners and the dollar-based financial system and may cool the climate for years.",
+      "annualProbability": [
+        {"location": "buenosAires", "outlook": "forecast", "lo": 0.0025, "mid": 0.007, "hi": 0.02, "tag": "derived",
+         "basis": "Any nuclear use killing over 1,000 people: tournament 0.49-0.55%/yr, Good Judgment 0.40%, Rodriguez 1.1%, Metaculus 1.8%; geometric mean 0.79%, taken as 0.7% (https://forum-bots.effectivealtruism.org/posts/YyBoSSaWpNacLnCji). About 0.1% of it is great-power war."},
+        {"location": "buenosAires", "outlook": "pessimistic", "lo": 0.007, "mid": 0.018, "hi": 0.04, "tag": "derived",
+         "basis": "Metaculus 34% by 2050 = 1.8%/yr; about 0.3% of it great-power war (Rodriguez 0.38%/yr for a US-Russia exchange)."}
+      ],
+      "tickBox": null,
+      "windows": {
+        "food": {"pOccur": {"lo": 0.01, "mid": 0.04, "hi": 0.12, "tag": "guess", "basis": "Argentina grows more than ten times its own calorie needs, and about four times even after a 150 Tg winter if feed and biofuel crops go to people (ORCG and ALLFED 2023). Shops empty only briefly, in panics or when prices are frozen."},
+                 "days": {"p50": 3, "p90": 14, "p99": 90}, "tag": "guess", "basis": "The long tail is the severe-winter case with policy failure, where the same report says net output barely covers needs and prices would soar. For most households that is a price problem, carried on financialLoss."},
+        "medication": {"pOccur": {"lo": 0.06, "mid": 0.2, "hi": 0.45, "tag": "guess", "basis": "Chance that a given regular drug cannot be had: 0.15 great-power war x 0.7 + 0.30 regional war x 0.3 = 0.2. About 80% of active ingredients are imported, 46% from China and 18% from India (German trade agency, search snippet)."},
+                       "days": {"p50": 45, "p90": 240, "p99": 900}, "tag": "guess", "basis": "Local laboratories formulate most medicines but run out of ingredients; supply returns as trade re-forms. No data."},
+        "payments": {"pOccur": {"lo": 0.05, "mid": 0.14, "hi": 0.35, "tag": "guess", "basis": "0.15 x 0.7 + 0.30 x 0.1 + 0.55 x 0.01 = 0.14: a bank holiday or payment-system stop is likely after a great-power war and possible after a regional one."},
+                     "days": {"p50": 4, "p90": 15, "p99": 60}, "tag": "guess", "basis": "Counted only while a household with a card and an account cannot pay at all; Argentina's 2001-02 bank holidays ran days at a time (recalled). The larger harm is on financialLoss."},
+        "comms": {"pOccur": {"lo": 0.03, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Loss of northern data centres, cables and satellites in a great-power war; no data."},
+                  "days": {"p50": 3, "p90": 30, "p99": 180}, "tag": "guess", "basis": "Counted from loss of service."}
+      },
+      "leave": {
+        "feasible": {"lo": 0, "mid": 0.02, "hi": 0.1, "tag": "guess", "basis": "The effects are global; Buenos Aires is already among the places people would flee to."},
+        "earliestDay": {"lo": 0, "mid": 1, "hi": 7, "tag": "guess", "basis": "Not a meaningful option here."},
+        "fixedUsdPerHousehold": {"lo": 300, "mid": 2000, "hi": 10000, "tag": "guess", "basis": "Placeholder."},
+        "usdPerPersonDay": {"lo": 5, "mid": 40, "hi": 90, "tag": "guess", "basis": "Same as the locations researcher's Buenos Aires figure."}
+      },
+      "warningDays": {"lo": 0, "mid": 3, "hi": 30, "tag": "guess", "basis": "Wars usually build over days to weeks; effects reach Buenos Aires over weeks to months."},
+      "lateBuy": {
+        "staple": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "Shops stay open; imported goods run short over months, not days."},
+        "specialty": {"lo": 0.15, "mid": 0.4, "hi": 0.7, "tag": "guess", "basis": "Imported specialty goods are thinly stocked and would not be replenished."}
+      },
+      "exposures": [
+        {
+          "channel": "financialLoss",
+          "description": "Loss to a median Buenos Aires household, net of aid: recession and inflation after a trade and financial shock, and loss of value of savings held in dollars or abroad. About $400 after limited use, $2,500 after a regional war, $13,000 after a great-power war (income of about $18,000 a year down 20% for three years, plus savings).",
+          "financialUsdPerHousehold": {"lo": 300, "mid": 2500, "hi": 20000, "tag": "guess",
+            "basis": "0.55 x $400 + 0.30 x $2,500 + 0.15 x $13,000 = $2,900, shaded to $2,500. Argentine residents hold roughly $220-255 billion in dollar notes and unregistered foreign deposits (INDEC, end-2025, search snippet), about $5,000 a head, very unevenly; what a dollar note is worth after a war that wrecks the United States is unknown."},
+          "foodPriceRiseGivenRegionalWarOrLarger": {"lo": 0.05, "mid": 0.3, "hi": 2.0, "tag": "guess",
+            "basis": "Domestic prices follow export prices unless exports are restricted, which Argentine governments routinely do. ORCG and ALLFED 2023: after a 150 Tg winter with no adaptation yields fall up to 73% and net output barely covers needs, 'which would send prices soaring'."}
+        }
+      ],
+      "dwellingNotes": "No difference by dwelling.",
+      "evidence": [
+        {"claim": "Argentina after a 150 Tg soot injection: yields down by up to 73%; without any measures more than one million Argentines could starve after two years (citing Xia et al.); gross output is more than 10 times needs today and 4 times needs in the winter if feed and biofuel crops are redirected, while net output would barely cover minimum needs.", "source": "https://www.orcg.info/s/V2-Informe-Seguridad-Alimentaria-en-Argentina-en-caso-de-ERALS.pdf", "year": 2023, "verified": true},
+        {"claim": "Same report: Argentina used 5 million tonnes of fertiliser in 2020 and made 2.3 million; its main trading partners are Brazil, China, the United States and Chile.", "source": "https://www.orcg.info/s/V2-Informe-Seguridad-Alimentaria-en-Argentina-en-caso-de-ERALS.pdf", "year": 2023, "verified": true},
+        {"claim": "Boyd and Wilson 2023: Australia, New Zealand, Iceland, the Solomon Islands and Vanuatu are the island nations best placed to feed themselves in a nuclear winter, but New Zealand is threatened by loss of imported diesel, machinery parts and other industrial inputs if trade stops.", "source": "https://doi.org/10.1111/risa.14072", "year": 2023, "verified": false},
+        {"claim": "About 80% of the active pharmaceutical ingredients processed in Argentina are imported, 46.3% from China and 18.3% from India.", "source": "https://www.gtai.de/de/trade/argentinien/branchen/branchenstruktur-1824884", "year": 2024, "verified": false},
+        {"claim": "Argentine residents held about US$255 billion in dollar notes and unregistered foreign deposits at end-2025 (INDEC); another INDEC series gives $218 billion.", "source": "https://www.baenegocios.com/amp/el-indec-estimo-que-los-argentinos-guardaron-usd-254-898-millones-fuera-del-sistema-bancario/", "year": 2026, "verified": false}
+      ],
+      "notes": "For Buenos Aires this hazard is a trade, finance and import-dependence shock, not a food shock: the country keeps a calorie surplus in every published scenario provided exports and animal feed are redirected. The model's bankingCrisis hazard would very likely be triggered by the worst 15% of these events; the integrator should avoid counting that twice."
+    },
+    {
+      "id": "gridLong",
+      "definition": "Collapse of the transmission grid over a whole country or a region of 10 million people or more, caused by a geomagnetic storm, a cyber or physical attack, an electromagnetic pulse or a cascading technical failure, that leaves the household without grid power for at least 72 hours. Outages confined to the footprint of a storm, hurricane, earthquake or cold wave belong to other hazards; a pulse that is part of a nuclear attack on the country belongs to nuclearNear. About 30% of these events last a week or more and 20% two weeks or more.",
+      "annualProbability": [
+        {"location": "us", "outlook": "forecast", "lo": 0.00008, "mid": 0.0006, "hi": 0.0035, "tag": "derived",
+         "basis": "Sum of four routes. Storm: 0.4%/yr for a Carrington-class storm x 5% of households out 72 h or more = 0.02%. Attack: 0.2% x 0.25 in the footprint x 0.4 = 0.02%. Cascade needing a black start: 0.3% x 0.07 = 0.02%. Stand-alone pulse 0.005%. The storm factor weights NERC's view (hours to days) above Lloyd's (https://assets.lloyds.com/assets/pdf-solar-storm-risk-to-the-north-american-electric-grid/1/pdf-Solar-Storm-Risk-to-the-North-American-Electric-Grid.pdf)."},
+        {"location": "us", "outlook": "pessimistic", "lo": 0.0006, "mid": 0.0025, "hi": 0.01, "tag": "derived",
+         "basis": "Lloyd's view. Storm: 1%/yr (Riley's 12% a decade) x 12% (Lloyd's 20-40M Americans at risk of 16 days to 2 years) = 0.12%. Attack: 0.5%/yr (Lloyd's 2015 puts a 93M-person cyber blackout inside the 1-in-200 benchmark) x 0.28 x 0.5 = 0.07%. Cascade 0.05%, pulse 0.02%. Sum 0.26%."},
+        {"location": "westernEurope", "outlook": "forecast", "lo": 0.00012, "mid": 0.0008, "hi": 0.004, "tag": "derived",
+         "basis": "Great Britain: the National Risk Register 2025 puts total grid failure at 1-5% in five years (0.45%/yr) with full restoration taking up to 7 days; x 0.4 of households out 72 h or more = 0.18%. Continent: national blackouts hit 1.15% of people a year (Italy 2003, Iberia 2025) but ended within a day; 0.05% for the 72-hour tail plus attack. Weighted 17:83 = 0.07%, rounded up. https://assets.publishing.service.gov.uk/media/6787ea8e1124a2c3ceb646bf/National_Risk_Register_2025.pdf"},
+        {"location": "westernEurope", "outlook": "pessimistic", "lo": 0.0008, "mid": 0.003, "hi": 0.01, "tag": "derived",
+         "basis": "Top of the UK band (1%/yr x 0.5) applied to a fifth of the population, the UK register's 5-25% two-year likelihood class for cyber attacks on infrastructure, and a Lloyd's-type storm outcome at high latitudes; about four times the forecast."},
+        {"location": "buenosAires", "outlook": "forecast", "lo": 0.00015, "mid": 0.001, "hi": 0.005, "tag": "derived",
+         "basis": "Two system-wide collapses in about 25 years (16 June 2019, 48M people, 6-14 h; 1 March 2023, recalled) = 8%/yr, x 0.7-2.3% chance that restoration takes over 72 h (log-normal, median 8 h, sigma 0.9-1.1) = 0.06-0.18%. Storm risk is low at Buenos Aires's magnetic latitude."},
+        {"location": "buenosAires", "outlook": "pessimistic", "lo": 0.0008, "mid": 0.003, "hi": 0.012, "tag": "guess",
+         "basis": "A grid run down as Venezuela's was: in March 2019 most of that country lost power for five to seven days and again later in the month (https://en.wikipedia.org/wiki/2019_Venezuelan_blackouts). Three times the forecast."}
+      ],
+      "routeInputs": {
+        "carringtonClassStormPerYear": {"lo": 0.0005, "mid": 0.004, "hi": 0.013, "tag": "derived", "basis": "Morina et al. 2019: 0.92% a decade, 95% CI 0.46-1.88% (https://pmc.ncbi.nlm.nih.gov/articles/PMC6382914/); Lloyd's 2013: return period 150 years, range 100-250; Riley 2012: 12% a decade; Riley and Love 2017: 10.3% or 3.0% a decade by model; Chapman 2020: 1 in 151 years (the last three from search snippets). UK register: 5-25% in five years for a Carrington-scale reasonable worst case."},
+        "shareOfHouseholdsOut72hGivenStorm": {"lo": 0.005, "mid": 0.05, "hi": 0.2, "tag": "derived", "basis": "NERC 2012: the most likely outcome is voltage collapse, restored in 'hours to days'. Cambridge Helios scenario: 90M Americans lose power, about 5% of the population for more than three days. Lloyd's 2013: 20-40M (6-12%) at risk of 16 days to 1-2 years. Oak Ridge and Metatech put over 100M at risk (recalled)."},
+        "shareOfEventsWithEquipmentDamage": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Share of 72-hour-plus events in which large transformers or generators must be replaced, which is what turns days into months. Drives the tail of the power window."}
+      },
+      "tickBox": null,
+      "windows": {
+        "power": {"pOccur": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "True by definition of the event."},
+                  "days": {"p50": 6, "p90": 30, "p99": 250}, "tag": "derived",
+                  "basis": "Mixture. 70% of events have no major equipment damage and end in 3-7 days (UK register: full restoration up to 7 days; Lloyd's 2015: mean 3.8 days, two weeks to 90% restored). 30% need transformers or generators replaced: median 20 days, tenth 120 days or more (Lloyd's 2013: 16 days to 1-2 years; new transformers take 5-16 months; EMP Commission: one to two years). Mixture gives about 6 / 30-44 / 230-290."},
+        "gas": {"pOccur": {"lo": 0.15, "mid": 0.35, "hi": 0.6, "tag": "guess", "basis": "The UK register lists gas among services lost in a national blackout; many compressors are gas-driven and keep running. Texas 2021 showed gas supply failing when its own facilities lost power."},
+                "days": {"p50": 4, "p90": 20, "p99": 150}, "tag": "guess", "basis": "Assumed to return shortly after power."},
+        "water": {"pOccur": {"lo": 0.4, "mid": 0.65, "hi": 0.85, "tag": "derived", "basis": "TAB 2011: storage and backup power in German water systems are designed 'to bridge supply interruptions lasting just a few hours', generator fuel lasts about five days; Venezuela 2019: about two thirds of people without water wholly or partly. Larger US and UK works have more backup, hence below 1."},
+                  "days": {"p50": 4, "p90": 15, "p99": 90},
+                  "shareTreatable": {"lo": 0.75, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "Low-pressure or unsafe tap water, rivers, rain, water heaters and tanks stay obtainable on most days and can be boiled or disinfected."},
+                  "tag": "guess", "basis": "Starts on day 1-3 and is net of relief: tankers, standpipes and emergency wells (Germany keeps 5,200) cover a growing share after the first week or two, as in Puerto Rico where households averaged 68 days without water against 84 without power."},
+        "food": {"pOccur": {"lo": 0.25, "mid": 0.5, "hi": 0.75, "tag": "derived", "basis": "TAB 2011: shelves empty within 2 to 5 days, warehouses stop within 2 days, and shop and household stocks are 'likely to be used up by the end of the first week'. EMP Commission 2008: supermarkets hold 1 to 3 days. So the window opens around day 3-5, in about half of events."},
+                 "days": {"p50": 3, "p90": 12, "p99": 60}, "tag": "guess", "basis": "Net of relief: cash sales in the first days, then official distribution from warehouses, which hold about a month's food for their area (EMP Commission). No measurement exists for a rich country."},
+        "medication": {"pOccur": {"lo": 0.45, "mid": 0.7, "hi": 0.9, "tag": "derived", "basis": "TAB 2011: after 24 hours most surgeries and pharmacies are shut; drugs grow scarce during the first week; even hospital pharmacies with 14 days of stock cannot meet demand."},
+                       "days": {"p50": 5, "p90": 25, "p99": 150}, "tag": "guess", "basis": "Starts on day 1 and ends when pharmacies reopen or relief dispensing is organised."},
+        "emergencyCare": {"pOccur": {"lo": 0.35, "mid": 0.6, "hi": 0.85, "tag": "derived", "basis": "TAB 2011: marked decline in health care after 24 hours, emergency calls cannot get through, and collapse of medical care is likely by the end of the first week. Emergency generators generally carry under 72 hours of fuel (EMP Commission 2008)."},
+                          "days": {"p50": 4, "p90": 20, "p99": 120}, "tag": "guess", "basis": "Starts on day 1-3. Hospitals get first call on fuel and mobile generators, so this ends before household power returns."},
+        "payments": {"pOccur": {"lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "derived", "basis": "TAB 2011: card payment and cash machines stop at once and most bank counters close within days. Venezuela 2019: cards unusable in the first days."},
+                     "days": {"p50": 5, "p90": 28, "p99": 230}, "tag": "guess", "basis": "Nearly as long as the power window; what is on sale is sold for cash."},
+        "comms": {"pOccur": {"lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "derived", "basis": "Cell sites carry 2-8 hours of battery and telecom sites 4 to 72 hours of backup (TAB 2011; EMP Commission 2008); Venezuela lost 96% of telecom capacity on day 3."},
+                  "days": {"p50": 5, "p90": 28, "p99": 230}, "tag": "guess", "basis": "Counted from loss of service, about 0.3 to 1 day after the power fails; battery radio keeps working."},
+        "sanitation": {"pOccur": {"lo": 0.3, "mid": 0.55, "hi": 0.8, "tag": "guess", "basis": "TAB 2011: without water toilets cannot be flushed and become blocked. About 70% of these days are lack of flush water, which hauled water cures; 30% are sewer pumping failures."},
+                       "days": {"p50": 4, "p90": 15, "p99": 90}, "tag": "guess", "basis": "Follows the water window."}
+      },
+      "coldShare": {"lo": 0.25, "mid": 0.4, "hi": 0.6, "tag": "guess", "basis": "A 6-day event overlaps a 110-day cold season with probability 0.32; raised because collapses are likelier at winter peak load (the UK scenario assumes winter; Texas 2021)."},
+      "hotShare": {"lo": 0.15, "mid": 0.3, "hi": 0.5, "tag": "guess", "basis": "(90 + 6) / 365 = 0.26, raised a little for summer-peak collapses (US Northeast, August 2003; Buenos Aires heat waves)."},
+      "leave": {
+        "feasible": {"lo": 0.2, "mid": 0.5, "hi": 0.75, "tag": "guess", "basis": "United States. An unaffected region usually exists within 300-1,500 km (three separate interconnections; a storm hits high latitudes and coasts hardest) but few fuel stations have backup power (EMP Commission 2008), so reach is what is in the tank. In Texas 2021, 18% of affected people left home."},
+        "earliestDay": {"lo": 0.5, "mid": 2, "hi": 5, "tag": "guess", "basis": "It takes a day or two to learn that restoration will be slow and where the power is on; roads jam on the first day."},
+        "fixedUsdPerHousehold": {"lo": 150, "mid": 400, "hi": 1500, "tag": "guess", "basis": "A round trip of 600-1,500 km by car at about $0.45 a km, or bus or air fares for the household."},
+        "usdPerPersonDay": {"lo": 10, "mid": 45, "hi": 95, "tag": "derived", "basis": "The ordinary-hazards researcher's blend: hotel $95 a person a day, relatives or friends $10, mixed 40:60."},
+        "byLocation": {
+          "westernEurope": {
+            "feasible": {"lo": 0.3, "mid": 0.55, "hi": 0.8, "tag": "guess", "basis": "A neighbouring country with its own grid operator is usually 100-500 km away, but electric trains stop and Great Britain and Ireland need a ferry or tunnel."},
+            "fixedUsdPerHousehold": {"lo": 110, "mid": 330, "hi": 1300, "tag": "guess", "basis": "About EUR 300 of car or coach travel at EUR 1 = USD 1.099."},
+            "usdPerPersonDay": {"lo": 11, "mid": 60, "hi": 160, "tag": "guess", "basis": "Between the locations researcher's hotel figure ($82) and staying with family ($11), for stays of a week or more."}
+          },
+          "buenosAires": {
+            "feasible": {"lo": 0.15, "mid": 0.4, "hi": 0.65, "tag": "guess", "basis": "The national grid covers nearly all of Argentina. Uruguay, 50 km away by ferry, has its own generation and recovered within hours in 2019 (recalled); about half of city households have no car."},
+            "fixedUsdPerHousehold": {"lo": 80, "mid": 250, "hi": 900, "tag": "guess", "basis": "Ferry or coach fares for a household; no price page read."},
+            "usdPerPersonDay": {"lo": 5, "mid": 40, "hi": 90, "tag": "guess", "basis": "The locations researcher's Buenos Aires figure."}
+          }
+        }
+      },
+      "warningDays": {"lo": 0, "mid": 0.1, "hi": 2, "tag": "guess", "basis": "Attacks, pulses and cascades give none. A solar eruption takes 15 hours to 4 days to arrive, but forecasts cannot say whether a grid will fail and few households would act on one."},
+      "lateBuy": {
+        "staple": {"lo": 0.1, "mid": 0.3, "hi": 0.55, "tag": "guess", "basis": "No useful warning, but for the first day or two some shops sell for cash before shelves empty (TAB 2011: 2 to 5 days)."},
+        "specialty": {"lo": 0, "mid": 0.03, "hi": 0.15, "tag": "guess", "basis": "Generators, stoves, fuel and batteries go in the first hours."}
+      },
+      "exposures": [
+        {
+          "channel": "financialLoss",
+          "description": "Lost earnings and spoiled food for a household that stays, net of aid. Mean over events, which are mostly under a week with a long tail.",
+          "financialUsdPerHousehold": {"lo": 250, "mid": 1000, "hi": 8000, "tag": "derived",
+            "basis": "The Berkeley Lab survey in prior-art.md: in a 3-day outage 20% of households lose income, $1,157 each, about $77 per household-day. Mean event length about 17 days x $60 a day (more hourly workers idle, partly offset by employers and aid) = $1,000, plus about $200 of refrigerated food, rounded down."}
+        }
+      ],
+      "dwellingNotes": "Flats above about the sixth floor lose tap water within minutes to hours because booster pumps stop, and their lifts stop; treat the water window as certain there. Buenos Aires apartment blocks draw from rooftop tanks filled by electric pumps, about a day's supply. Houses on private wells lose water at once. Homes with piped gas can usually still cook, and heat if the boiler needs no mains power. Ground-floor and gravity-fed homes keep water longest.",
+      "evidence": [
+        {"claim": "Lloyd's 2013: return period 150 years for a Carrington-level storm (range 100-250); '20-40 million' Americans at risk of extended outage, 'with durations of 16 days to 1-2 years'; new transformers take at least five months.", "source": "https://assets.lloyds.com/assets/pdf-solar-storm-risk-to-the-north-american-electric-grid/1/pdf-Solar-Storm-Risk-to-the-North-American-Electric-Grid.pdf", "year": 2013, "verified": true},
+        {"claim": "NERC 2012: the most likely consequence of a strong storm is loss of reactive power and voltage instability; restoration from voltage collapse 'would be a matter of hours to days, while replacing transformers requires long-lead times (a number of months)'.", "source": "https://www.nerc.com/pa/RAPA/ra/Reliability%20Assessments%20DL/2012GMD.pdf", "year": 2012, "verified": true},
+        {"claim": "Oughton et al. 2017 describe 'two opposing views': collapse protects equipment and outages last hours or a few days, or damage occurs first and blackouts last weeks to months; their scenarios black out 8% to 66% of the US population.", "source": "https://www.repository.cam.ac.uk/bitstream/1810/263120/1/Oughton_et_al-2017-Space_Weather-VoR.pdf", "year": 2017, "verified": true},
+        {"claim": "Morina et al. 2019: probability of a Carrington-like storm in the next decade 0.92%, 95% CI 0.46-1.88%, against Riley's 12%.", "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6382914/", "year": 2019, "verified": true},
+        {"claim": "Roodman (Open Philanthropy, 2015): Riley's 12% a decade is an unrepresentative extrapolation; he is not convinced the catastrophe is as likely as prominent voices say, but cannot rule out 'a blackout spanning states and lasting months'.", "source": "https://www.openphilanthropy.org/research/geomagnetic-storms-an-introduction-to-the-risk/", "year": 2015, "verified": false},
+        {"claim": "UK National Risk Register 2025: total failure of the national transmission system is impact 5 of 5, likelihood 1-5% in five years; 'significant proportion of demand' reconnected within a few days, 'Full restoration could take up to 7 days', critical services possibly 'several months'. Severe space weather: 5-25% in five years; transformers in remote coastal areas could take several months to replace.", "source": "https://assets.publishing.service.gov.uk/media/6787ea8e1124a2c3ceb646bf/National_Risk_Register_2025.pdf", "year": 2025, "verified": true},
+        {"claim": "TAB 2011 (German parliament): after 24 hours health care declines sharply and pharmacies shut; food shelves empty in 2 to 5 days; water systems bridge only a few hours; mobile base stations fail within minutes to hours; cash machines and card payment stop at once; 'A disaster would be likely by the end of the first week at the latest'.", "source": "https://publikationen.bibliothek.kit.edu/1000103292/122337755", "year": 2011, "verified": true},
+        {"claim": "US EMP Commission 2008: emergency generators generally hold less than 72 hours of fuel; telecom sites 4 to 72 hours of backup; supermarkets 1 to 3 days of food and regional warehouses about a month; few service stations have backup generators; past large outages recovered in one to several days; large transformers take one to two years to replace.", "source": "http://www.empcommission.org/docs/A2473-EMP_Commission-7MB.pdf", "year": 2008, "verified": true},
+        {"claim": "Lloyd's and Cambridge 2015 cyber scenario: 93M people in 15 states lose power; some areas restored in an average of three days, others dark or on rolling blackouts for weeks; 2, 3 or 4 weeks to 90% restoration and 3.8, 8.1 or 13.8 mean days without power by variant; 'within the benchmark return period of 1:200'.", "source": "https://www.jbs.cam.ac.uk/wp-content/uploads/2020/08/150708-business-blackout.pdf", "year": 2015, "verified": true},
+        {"claim": "Venezuela, 7-14 March 2019: most of the country without power for about five to seven days; at least 43 deaths counted by doctors' groups; about two thirds of people without water in the following weeks; 96% of telecom capacity down on 9 March; cards unusable; 523 shops looted in Maracaibo.", "source": "https://en.wikipedia.org/wiki/2019_Venezuelan_blackouts", "year": 2019, "verified": true},
+        {"claim": "Texas, February 2021: the grid operator said the system was 'seconds and minutes' from an uncontrolled collapse that could have left the state without power for weeks or months.", "source": "https://www.texastribune.org/2021/02/18/texas-power-outages-ercot/", "year": 2021, "verified": false},
+        {"claim": "Cambridge Helios solar storm scenario: outage initially affecting 90 million US citizens; about 5% of the US population disconnected for more than three days.", "source": "https://www.jbs.cam.ac.uk/centres/risk/publications/technology-and-space/helios-solar-storm-scenario/", "year": 2016, "verified": true}
+      ],
+      "notes": "The duration dispute is carried in two places. The day quantiles mix the two camps: half of events end within 6 days, as NERC and Roodman expect, and one in ten lasts a month or more, as Lloyd's does. The outlooks weight them: forecast is mostly NERC's view, pessimistic is Lloyd's. To restate the hazard as 'out for a week or more' multiply the probability by 0.3; for two weeks or more by 0.2. Mortality anchors for checking the engine: Venezuela at least 1.5 micromorts per person in a week (an undercount), New York 2003 about 11 in two days, Texas 2021 8-24 in two to four days of cold. Violence uses the security researcher's default; Venezuela saw mass looting of shops but few deaths."
+    }
+  ],
+  "blockedSources": [
+    "https://forum.effectivealtruism.org (HTTP 429 on every post): read through forum-bots.effectivealtruism.org and rethinkpriorities.org instead",
+    "https://samotsvety.org/blog/2022/10/03/samotsvety-nuclear-risk-update-october-2022/ (connection refused): read through the forum mirror",
+    "https://www.metaculus.com/api2/questions/4779/ (HTTP 403): current community forecasts on nuclear detonation and on grid attacks; the 34% by 2050 figure is the step 2 reading",
+    "https://coefficientgiving.org/research/geomagnetic-storms-an-introduction-to-the-risk/ and the GiveWell blog copies (403 or empty): Roodman's per-decade probability (0.33% or 0.70%) and his verdict on blackout duration; only search snippets seen",
+    "https://web.archive.org (not reachable from the fetch tool): fallback copies of the above",
+    "https://www.nature.com/articles/s43016-022-00573-0 (redirect to login; the PIK copy exceeds the 10 MB limit; PubMed needs cookies): Xia et al. 2022 country table, including Argentina and Australia",
+    "https://www.nationalacademies.org/read/27515 (only the abstract loaded): findings of the 2025 report on environmental effects of nuclear war",
+    "https://www.nationalacademies.org/read/940/chapter/13 (page bodies failed to load): Daugherty, Levi and von Hippel 1986, 13-34M deaths from a 3,000-warhead counterforce attack and the fallout share",
+    "https://www.princeton.edu/~ota/disk3/1979/7906/790603.PDF (403): OTA 1979 summary table; one chapter read on atomicarchive.com instead",
+    "https://apps.dtic.mil/sti/pdfs/ADA484672.pdf (403): EMP Commission report, read from empcommission.org instead",
+    "https://www.texastribune.org/2021/02/18/texas-power-outages-ercot/ (403): the grid operator's 'seconds and minutes' statement, seen in search snippets only",
+    "https://www.gov.uk/government/publications/national-risk-register-2023/ scenario pages (404): the 2025 PDF was read instead",
+    "Riley 2012, Riley and Love 2017 and Chapman et al. 2020 (publisher pages not tried after earlier 403s reported in step 2): storm probabilities taken from search snippets",
+    "FERC-NERC November 2021 report on the Texas event: not opened; the black-start restoration time is unverified"
+  ],
+  "openQuestions": [
+    "Scope of nuclearNear. I count every first-hour survivor in a country under large-scale attack, not only those in struck or fallout areas, because their windows are the same; the fallout exposure is the mean over all of them. If the engine instead wants only households under fallout, multiply the probability by about 0.25 and divide the fallout micromorts by the same factor.",
+    "The fallout exposure should vary by dwelling and by position relative to silo fields and other hardened targets; the schema has one number. Suggested dwelling scaling is in dwellingNotes. A reader input such as 'within 500 km downwind of a missile field or beside a military headquarters' would move the figure by a factor of three or more either way.",
+    "Long windows in nuclearNear (food 21 / 90 / 365 days) are days without any outside source. The engine should not read a 90-day window against a 14-day pantry as 76 days of zero intake: survivors ration, barter and forage. The food researcher raised the same point.",
+    "gridLong is defined from 72 hours, not from a week, so that the three-to-seven-day national blackout (the UK government's reasonable worst case) has a home in the model. The integrator may prefer a threshold of one week: multiply the probability by 0.3 and use power days of about 14 / 60 / 400.",
+    "nuclearFar is given twice, once for the United States and Western Europe and once with location buenosAires, because the event mix and the windows differ. The first entry uses the key appliesTo, the second the key location, following the locations researcher.",
+    "The worst nuclearFar events for Buenos Aires would trigger the bankingCrisis hazard; the two should not both be charged in full.",
+    "Trauma from prompt effects is offered as a guess with a field shareAmenableToFirstAid; the medical researcher's reduce fractions were not written with burns and crush injuries in mind.",
+    "Prompt death (about 12% given a large-scale attack on the United States, far higher in targeted city cores) lies outside nuclearNear. The promptDeath block gives the numbers needed to value relocation-before-attack entries outside the engine, as the radiation researcher asked.",
+    "leave.byLocation holds Western Europe and Buenos Aires values for gridLong; the schema has no slot for them.",
+    "Nothing here covers advanced AI raising or lowering these probabilities."
+  ]
+}

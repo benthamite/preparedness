@@ -119,7 +119,7 @@ function makeStrata(segments) {
   }
   return out;
 }
-export const STRATA = makeStrata([[0, 0.5, 4], [0.5, 0.9, 8], [0.9, 0.99, 12], [0.99, 0.999, 8], [0.999, 1, 4]]);
+export const STRATA = makeStrata([[0, 0.5, 3], [0.5, 0.9, 5], [0.9, 0.99, 8], [0.99, 0.999, 5], [0.999, 1, 3]]);
 
 // Length in days of a window at quantile u of its own distribution, from its
 // 50th, 90th and 99th percentiles. Interpolates on a log scale against the
@@ -302,7 +302,32 @@ export function aiShift(ai, settings, hazardId, loc) {
     const arrived = F(y), over = F(y - T);
     sum += (1 - arrived) * now + (arrived - over) * during + over * after;
   }
-  return sum / H - atConcern(r.baseline, c);
+  // Only the share of the added risk that a household could survive counts.
+  return (sum / H - atConcern(r.baseline, c)) * (r.survivable === undefined ? 1 : r.survivable);
+}
+
+// The chance, averaged over the planning horizon, that no existential
+// catastrophe has happened yet. Nothing a household owns is worth anything
+// after one, so every hazard's weight is scaled by this. The chance of such
+// a catastrophe given AGI is spread evenly over the transition.
+export function aiSurvival(ai, settings) {
+  const s = settings.ai;
+  if (!ai || !s || !s.timeline || s.timeline === 'none' || !ai.pExistential) return 1;
+  const points = s.timeline === 'custom' ? (s.custom || []) : ai.timelines[s.timeline].cumulative;
+  const F = arrivalCdf(points, ai.startYear);
+  const pX = atConcern(ai.pExistential, s.concern === undefined ? 0.5 : s.concern);
+  const T = ai.transitionYears;
+  const H = Math.max(1, Math.round(s.horizonYears || ai.horizonYears));
+  let sum = 0;
+  for (let k = 0; k < H; k++) {
+    const y = ai.startYear + k + 0.5;
+    // Expected share of the transition already elapsed by y.
+    let elapsed = 0;
+    const steps = 20;
+    for (let i = 0; i < steps; i++) elapsed += F(y - T * (i + 0.5) / steps) / steps;
+    sum += 1 - pX * elapsed;
+  }
+  return sum / H;
 }
 
 // ---------------------------------------------------------------------------
@@ -357,6 +382,7 @@ export function buildWorld(m, settings) {
 
   // ---- hazards and events ----
   const hazardIds = Object.keys(m.hazards);
+  const survival = aiSurvival(m.ai, settings);
   const hazards = [];
   const ev = { hz: [], key: [], w: [], gaps: [], cookOut: [], share: [] };
   hazardIds.forEach((id, hIdx) => {
@@ -375,7 +401,7 @@ export function buildWorld(m, settings) {
     if (!(p > 0)) return;
     const late = h.lateBuy && (h.warningDays || 0) >= 0.5 ? h.lateBuy : { staple: 0, specialty: 0 };
     const hz = {
-      id, index: hazards.length, p, spec: h,
+      id, index: hazards.length, p, pw: p * survival, spec: h,
       late: { staple: late.staple || 0, specialty: late.specialty || 0, none: 0 },
       feasible: h.leave ? h.leave.feasible : 0,
       earliest: h.leave ? h.leave.earliestDay : 0,
@@ -422,7 +448,7 @@ export function buildWorld(m, settings) {
         });
         ev.hz.push(hz.index);
         ev.key.push(hIdx * 4096 + sIdx * 256 + qIdx);
-        ev.w.push(p * ws * wq * homePresence);
+        ev.w.push(hz.pw * ws * wq * homePresence);
         ev.gaps.push(row);
         ev.cookOut.push(Math.max(0, g.cookOut - D));
         ev.share.push(g.shareTreatable);
@@ -831,7 +857,7 @@ export function buildWorld(m, settings) {
       if (x.usd) usd += x.usd * chanKeep(x.c, hz, level, 'hardship');
       if (x.mm) mm += x.mm * chanKeep(x.c, hz, level, 'mortality');
     }
-    return [hz.p * usd, hz.p * mm];
+    return [hz.pw * usd, hz.pw * mm];
   }
   const curX = hazards.map(() => [0, 0]);
 
@@ -905,7 +931,7 @@ export function buildWorld(m, settings) {
   }
 
   return {
-    v, timeValue, items, needs, hazards, needIds, channelIds, E, people,
+    v, timeValue, survival, items, needs, hazards, needIds, channelIds, E, people,
     capProviders, refresh, total, delta, cost,
     itemIndex: Object.fromEntries(items.map((it) => [it.id, it.i])),
     newLevel: () => new Int32Array(items.length),
@@ -944,11 +970,15 @@ function candidates(W, level) {
       if (cheapest !== it.i && !extra.some(([i]) => i === cheapest)) extra.push([cheapest, 1]);
     }
     if (!ok) continue;
-    for (let lv = level[it.i] + 1; lv <= it.maxLevel; lv++) out.push([[it.i, lv], ...extra]);
+    // The next three levels, and the top.
+    const next = level[it.i] + 1;
+    for (const lv of new Set([next, Math.min(next + 1, it.maxLevel), Math.min(next + 2, it.maxLevel), it.maxLevel])) out.push([[it.i, lv], ...extra]);
+    // With the next level of each item it pairs with (food that needs
+    // cooking and the fuel to cook it).
     for (const id of it.spec.bundleWith || []) {
       const j = index[id];
-      if (j === undefined || !W.items[j].applicable || level[j] > 0 || extra.some(([i]) => i === j)) continue;
-      out.push([[it.i, level[it.i] + 1], ...extra, [j, 1]]);
+      if (j === undefined || !W.items[j].applicable || level[j] >= W.items[j].maxLevel || extra.some(([i]) => i === j)) continue;
+      out.push([[it.i, next], ...extra, [j, level[j] + 1]]);
     }
   }
   return out;
@@ -971,13 +1001,10 @@ function ratioOf(value, annual) {
 export function rank(data, settings) {
   const m = resolveModel(data, null);
   const W = buildWorld(m, settings);
+  W.refresh(W.newLevel());
+  const baseline = W.total(null);
   const level = ownedLevels(W, settings);
   W.refresh(level);
-  const baseline = (() => {
-    const W0 = buildWorld(m, settings);
-    W0.refresh(W0.newLevel());
-    return W0.total(null);
-  })();
   const start = W.total(level);
   const entries = [];
   let cumUpfront = 0, cumAnnual = 0;
@@ -1051,6 +1078,7 @@ export function rank(data, settings) {
     entries,
     micromortValueUsd: W.v,
     timeValueUsdPerHour: W.timeValue,
+    survival: W.survival,
     harm: { unprepared: baseline, start, end: W.total(level) },
     hazards: W.hazards.map((hz) => ({ id: hz.id, p: hz.p })),
     events: W.E,

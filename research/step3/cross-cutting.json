@@ -59,7 +59,7 @@
         "mid": 15,
         "hi": 26,
         "tag": "guess",
-        "basis": "HHS method applied to European wages. Median gross hourly earnings 2022: EU EUR 14.9, Germany 19.4, Netherlands 19.0 (Eurostat Structure of Earnings Survey, https://ec.europa.eu/eurostat/statistics-explained/index.php/Earnings_statistics; search snippet); with France about 16.5, UK about 18, Italy 13, Spain 11 (recalled) the population-weighted Western European median is about EUR 16.4. Plus about 17% nominal growth to 2026 = 19.2; less about 29% income tax and employee contributions = 13.6; x 1.15 USD per EUR (assumed) = $15.6. Lo is half of that."
+        "basis": "HHS method applied to European wages. Median gross hourly earnings 2022: EU EUR 14.9, Germany 19.4, Netherlands 19.0 (Eurostat Structure of Earnings Survey, https://ec.europa.eu/eurostat/statistics-explained/index.php/Earnings_statistics; search snippet); with France about 16.5, UK about 18, Italy 13, Spain 11 (recalled) the population-weighted Western European median is about EUR 16.4. Plus about 17% nominal growth to 2026 = 19.2; less about 29% income tax and employee contributions = 13.6; x 1.15 USD per EUR (assumed) = $15.7. Lo is half of that."
       }
     },
     {
@@ -107,7 +107,7 @@
         "mid": 0.02,
         "hi": 0.1,
         "tag": "guess",
-        "basis": "US single-family rent about $1.2 per sq ft a month (about $2,200 for 1,800 sq ft; recalled) = $155 per square metre a year. Garage or unfinished basement space is valued at about 30% of living space: $47 per square metre a year, or 47 / 900 = $0.052 per litre-year on average. Houses usually have slack, so the marginal litre is worth about 40% of that: $0.02. Hi is living-space value at 60%; lo is a house with empty basement."
+        "basis": "US single-family rent about $1.2 per sq ft a month (about $2,200 for 1,800 sq ft; recalled) = $158 per square metre a year. Garage or unfinished basement space is valued at about 30% of living space: $47 per square metre a year, or 47 / 900 = $0.052 per litre-year on average. Houses usually have slack, so the marginal litre is worth about 40% of that: $0.02. Hi is living-space value at 60%; lo is a house with empty basement."
       }
     },
     {
@@ -155,7 +155,7 @@
         "mid": 0.9,
         "hi": 0.93,
         "tag": "derived",
-        "basis": "92% of all US households have a vehicle (2023 ACS, via https://www.pewresearch.org/short-reads/2024/11/14/1-in-10-americans-rarely-or-never-drive-a-car/, read). Urban adults are 2.3 times as likely as suburban ones to seldom or never drive (18% against 7%, same page), so I take 0.90 for urban households; lo is central cities only."
+        "basis": "92% of all US households have a vehicle (2023 ACS, via https://www.pewresearch.org/short-reads/2024/11/14/1-in-10-americans-rarely-or-never-drive-a-car/, read). Urban adults are 2.6 times as likely as suburban ones to seldom or never drive (18% against 7%, same page), so I take 0.90 for urban households; lo is central cities only."
       }
     },
     {
@@ -311,7 +311,7 @@
         "mid": 0.22,
         "hi": 0.3,
         "tag": "derived",
-        "basis": "Europe about 20% (IEA); Italy nearly 60%, Spain 41%, France 25%, Germany 6% (Verivox says 19% in 2024), UK under 5% (all from https://www.carbonbrief.org/eight-facts-about-air-conditioning-amid-an-overheated-global-debate/, read). Population-weighted with 20% for the Netherlands and 12% elsewhere: 0.23."
+        "basis": "Europe about 20% (IEA); Italy nearly 60%, Spain 41%, France 25%, Germany 6% (Verivox says 19% in 2024), UK under 5% (all from https://www.carbonbrief.org/eight-facts-about-air-conditioning-amid-an-overheated-global-debate/, read). Population-weighted with 20% for the Netherlands and 12% elsewhere: 0.22 with Germany at 6%, 0.25 with Germany at 19%."
       }
     },
     {
@@ -335,7 +335,7 @@
         "mid": 45,
         "hi": 130,
         "tag": "guess",
-        "basis": "Hotel route: GSA standard lodging rate for fiscal 2027 is $113 a night (https://www.federalregister.gov/documents/2026/09/10/2026-18439/maximum-per-diem-reimbursement-rates-for-the-continental-united-states-conus; search snippet), shared by 2.5 people = $45 each, plus meals out at part of the $68 meals rate less about $12 of groceries saved = about $35: $80 per person-day for a family, about $150 for one person alone. Friends-or-family route: about $15 for contributions and extra travel. Evacuation surveys put roughly 60% with friends or relatives, 30% in paid lodging and the rest in shelters (recalled): 0.6 x 15 + 0.3 x 95 + 0.1 x 10 = $38; I round up to 45 because multi-day events fill cheap rooms."
+        "basis": "Hotel route: GSA standard lodging rate for fiscal 2027 is $113 a night (https://www.federalregister.gov/documents/2026/09/10/2026-18439/maximum-per-diem-reimbursement-rates-for-the-continental-united-states-conus; search snippet), shared by 2.5 people = $45 each, plus meals out at part of the $68 meals rate less about $12 of groceries saved = about $35: $80 per person-day for a family, about $150 for one person alone; I use $95 for this route. Friends-or-family route: about $15 for contributions and extra travel. Evacuation surveys put roughly 60% with friends or relatives, 30% in paid lodging and the rest in shelters (recalled): 0.6 x 15 + 0.3 x 95 + 0.1 x 10 = $38; I round up to 45 because multi-day events fill cheap rooms."
       }
     },
     {
@@ -443,7 +443,7 @@
         "mid": 0.15,
         "hi": 0.5,
         "tag": "derived",
-        "basis": "Rate ratios from deaths by age over population by age. Texas 2021: ages 0-19, 8 deaths in 8.25M against 90 in 15.5M aged 20-59: 0.17 (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf; population shares approximate). Katrina: under 18, 1 per 10,000 against about 6.6 for ages 18-59: 0.15 (https://doi.org/10.1097/DMP.0b013e31818aaf55, Table 2). British Columbia 2021: no deaths under 19 (https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf). Japan 2011 indirect deaths: 1 of 1,263 under 10: 0.08 (https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf). Ordinary all-cause mortality gives about 0.2."
+        "basis": "Rate ratios from deaths by age (read from the sources) over population by age (recalled census shares, so each ratio is good to about 20%). Texas 2021: ages 0-19, 8 deaths in 8.25M against 90 in 15.5M aged 20-59: 0.17 (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf; population shares approximate). Katrina: under 18, 1 per 10,000 against about 6.6 for ages 18-59: 0.15 (https://doi.org/10.1097/DMP.0b013e31818aaf55, Table 2). British Columbia 2021: no deaths under 19 (https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf). Japan 2011 indirect deaths: 1 of 1,263 under 10: 0.08 (https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf). Ordinary all-cause mortality gives about 0.2."
       }
     },
     {
@@ -640,7 +640,7 @@
         "basis": "mid = 10 / (19,000,000 x 1.75) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
       },
       "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf",
-      "notes": "About twelve times the ordinary US home-fire death rate of roughly 0.023 micromorts per person-day (about 2,800 deaths a year, recalled)."
+      "notes": "About thirteen times the ordinary US home-fire death rate of roughly 0.023 micromorts per person-day (about 2,800 deaths a year, recalled)."
     },
     {
       "event": "Texas winter storm, February 2021",
@@ -674,7 +674,7 @@
         "basis": "mid = 60 / (19,000,000 x 1.75) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
       },
       "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf",
-      "notes": "For the powerDependent profile: if about 10 of the 25 were device, oxygen or dialysis deaths among roughly 150,000 electricity-dependent people in homes without power (0.9% of population, HHS emPOWER share, recalled), that is about 40 micromorts per dependent person-day, uncertain by a factor of four either way."
+      "notes": "For the powerDependent profile: if about 10 of the 25 were device, oxygen or dialysis deaths among roughly 170,000 electricity-dependent people in homes without power (0.9% of 19 million, HHS emPOWER share, recalled), that is 10 / (170,000 x 1.75) = about 33 micromorts per dependent person-day, uncertain by a factor of four either way."
     },
     {
       "event": "Texas winter storm, February 2021",
@@ -874,8 +874,8 @@
         "lo": 0.122,
         "mid": 0.412,
         "hi": 0.75,
-        "tag": "derived",
-        "basis": "mid = 4 / (8,100,000 x 1.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 4 / (8,100,000 x 1.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729",
       "notes": "A summer outage: generators and cooking, not heating."
@@ -908,8 +908,8 @@
         "lo": 0,
         "mid": 0.103,
         "hi": 0.25,
-        "tag": "derived",
-        "basis": "mid = 1 / (8,100,000 x 1.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 1 / (8,100,000 x 1.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729",
       "notes": ""
@@ -942,8 +942,8 @@
         "lo": 0,
         "mid": 0,
         "hi": 0.25,
-        "tag": "derived",
-        "basis": "mid = 0 / (8,100,000 x 1.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 0 / (8,100,000 x 1.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729",
       "notes": ""
@@ -976,8 +976,8 @@
         "lo": 1.98,
         "mid": 7.46,
         "hi": 17,
-        "tag": "derived",
-        "basis": "mid = 380 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 380 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
       "notes": "Certified count alone gives 2.5. For the 61,564 nursing-home residents studied, 262 extra deaths in 30 days is about 4,300 micromorts each."
@@ -1010,8 +1010,8 @@
         "lo": 0.261,
         "mid": 0.589,
         "hi": 6.06,
-        "tag": "derived",
-        "basis": "mid = 30 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 30 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
       "notes": "Certified count alone gives 0.33. Early-autumn Florida heat in a state where nearly every home normally has air conditioning."
@@ -1078,8 +1078,8 @@
         "lo": 0,
         "mid": 0.0196,
         "hi": 0.182,
-        "tag": "derived",
-        "basis": "mid = 1 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 1 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
       "notes": ""
@@ -1112,8 +1112,8 @@
         "lo": 0.092,
         "mid": 0.589,
         "hi": 7.58,
-        "tag": "derived",
-        "basis": "mid = 30 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 30 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
       "notes": "Certified count alone gives 0.12."
@@ -1248,8 +1248,8 @@
         "lo": 1.12,
         "mid": 6.49,
         "hi": 16.9,
-        "tag": "derived",
-        "basis": "mid = 1,800 / (3,300,000 x 84) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 1,800 / (3,300,000 x 84) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://fxb.harvard.edu/2018/05/29/study-estimates-prolonged-increase-in-puerto-rican-death-rate-after-hurricane-maria",
       "notes": "The best anchor for a long outage with health care, pharmacies, dialysis and oxygen supply disrupted for weeks. Nearly all of it falls on people aged 60 and over with chronic illness."
@@ -1282,8 +1282,8 @@
         "lo": 0.819,
         "mid": 9.7,
         "hi": 32.8,
-        "tag": "derived",
-        "basis": "mid = 64 / (3,300,000 x 2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 64 / (3,300,000 x 2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://fxb.harvard.edu/2018/05/29/study-estimates-prolonged-increase-in-puerto-rican-death-rate-after-hurricane-maria",
       "notes": "Direct storm deaths were about 2% of the eventual excess."
@@ -1316,8 +1316,8 @@
         "lo": 0.0112,
         "mid": 0.116,
         "hi": 0.48,
-        "tag": "derived",
-        "basis": "mid = 26 / (3,300,000 x 68) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 26 / (3,300,000 x 68) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://fxb.harvard.edu/2018/05/29/study-estimates-prolonged-increase-in-puerto-rican-death-rate-after-hurricane-maria",
       "notes": "People drew water from streams and springs for weeks. This is the only anchor in the set with deaths from unsafe water, and it is about a hundredth of the all-cause figure. Excess septicaemia deaths (81 in two months) may add to it."
@@ -1388,7 +1388,7 @@
         "basis": "mid = 55 / (3,080,000 x 7) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
       },
       "source": "https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf",
-      "notes": "Upper bound for a healthy adult: the coroners found schizophrenia, substance use and other chronic illness over-represented among the dead. Rates per million for the week from the preliminary table: 15-59, 15; 60-69, 164; 70-79, 338; 80-89, 747; 90 and over, 1,388."
+      "notes": "Upper bound for a healthy adult: the coroners found schizophrenia, substance use and other chronic illness over-represented among the dead. Rates per million for the week from the preliminary table, over an approximate population by age: 15-59, 15; 60-69, 164; 70-79, 338; 80-89, 747; 90 and over, 1,388."
     },
     {
       "event": "Tohoku earthquake and tsunami, Japan, 2011 (disaster-related deaths)",
@@ -1486,8 +1486,8 @@
         "lo": 10.4,
         "mid": 18.4,
         "hi": 33.4,
-        "tag": "derived",
-        "basis": "mid = 279 / (165,000 x 92) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 279 / (165,000 x 92) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf",
       "notes": "Unheated gyms in March, thin bedding, little water or food in the first days, no usual medication. Residents were mostly elderly."
@@ -1520,8 +1520,8 @@
         "lo": 0.172,
         "mid": 0.838,
         "hi": 4.29,
-        "tag": "derived",
-        "basis": "mid = 67 / (5,710,000 x 14) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 67 / (5,710,000 x 14) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8998736",
       "notes": "People soaked by the tsunami and then left without heat."
@@ -1588,8 +1588,8 @@
         "lo": 0,
         "mid": 0,
         "hi": 1.33,
-        "tag": "derived",
-        "basis": "mid = 0 / (5,710,000 x 7) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 0 / (5,710,000 x 7) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf",
       "notes": ""
@@ -1622,8 +1622,8 @@
         "lo": 1.06,
         "mid": 2.54,
         "hi": 8,
-        "tag": "derived",
-        "basis": "mid = 159 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 159 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
       "notes": "60 of the 117 died in the first two days. Mean age 60, median 65."
@@ -1656,8 +1656,8 @@
         "lo": 0.682,
         "mid": 1.29,
         "hi": 2.4,
-        "tag": "derived",
-        "basis": "mid = 81 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 81 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
       "notes": "Mostly storm-day deaths, not outage deaths."
@@ -1690,8 +1690,8 @@
         "lo": 60,
         "mid": 69.2,
         "hi": 105,
-        "tag": "derived",
-        "basis": "mid = 18 / (260,000 x 1) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 18 / (260,000 x 1) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
       "notes": "The price of ignoring an evacuation order in a surge zone: about 70 micromorts in one night."
@@ -1724,8 +1724,8 @@
         "lo": 0.0818,
         "mid": 0.144,
         "hi": 0.4,
-        "tag": "derived",
-        "basis": "mid = 9 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 9 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
       "notes": "Late October, with generators and indoor combustion for heat."
@@ -1758,8 +1758,8 @@
         "lo": 0.0182,
         "mid": 0.0957,
         "hi": 0.213,
-        "tag": "derived",
-        "basis": "mid = 6 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 6 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
       "notes": ""
@@ -1792,8 +1792,8 @@
         "lo": 0.0182,
         "mid": 0.159,
         "hi": 1.07,
-        "tag": "derived",
-        "basis": "mid = 10 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 10 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
       "notes": "Night temperatures of 0-5 C in early November, far milder than Texas 2021."
@@ -1826,8 +1826,8 @@
         "lo": 320,
         "mid": 735,
         "hi": 1880,
-        "tag": "derived",
-        "basis": "mid = 39 / (13,264 x 4) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 39 / (13,264 x 4) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://pubmed.ncbi.nlm.nih.gov/25156306/",
       "notes": "A profile-specific anchor: several hundred micromorts per patient-day of disruption even though 60% had early dialysis before the storm. Use it to check criticalDrug and powerDependent multipliers, not the general curve."
@@ -1860,8 +1860,8 @@
         "lo": 0,
         "mid": 0,
         "hi": 0.0533,
-        "tag": "derived",
-        "basis": "mid = 0 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 0 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
       "notes": ""
@@ -1894,8 +1894,8 @@
         "lo": 694,
         "mid": 1790,
         "hi": 20600,
-        "tag": "derived",
-        "basis": "mid = 986 / (110,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 986 / (110,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://doi.org/10.1097/DMP.0b013e31818aaf55",
       "notes": "About 0.9% of those who stayed died, most of them on the first day; per resident of the three parishes it is about 980 micromorts. Rates per 10,000 residents by age: under 18, 1; 18-29, 2; 30-44, 3; 45-54, 14; 55-64, 25; 65-74, 36; 75 and over, 121."
@@ -1928,8 +1928,8 @@
         "lo": 1580,
         "mid": 6980,
         "hi": 12900,
-        "tag": "derived",
-        "basis": "mid = 768 / (110,000 x 1) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 768 / (110,000 x 1) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://doi.org/10.1097/DMP.0b013e31818aaf55",
       "notes": "Flood drowning, concentrated near the levee breaches. 178 people aged 75 or over died in their homes, 115 of them by drowning."
@@ -1962,8 +1962,8 @@
         "lo": 4.29,
         "mid": 27.3,
         "hi": 857,
-        "tag": "derived",
-        "basis": "mid = 15 / (110,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 15 / (110,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://doi.org/10.1097/DMP.0b013e31818aaf55",
       "notes": "Days above 32 C with no power, on roofs, in attics and in crowded mass shelters."
@@ -1996,8 +1996,8 @@
         "lo": 107,
         "mid": 345,
         "hi": 4860,
-        "tag": "derived",
-        "basis": "mid = 190 / (110,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 190 / (110,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://doi.org/10.1097/DMP.0b013e31818aaf55",
       "notes": "At least 70 hospital inpatients died between 29 August and 2 September and 57 more bodies were recovered from hospitals; at least 78 died in nursing homes. The true denominator is a few thousand patients and residents who were not evacuated, so risk per person was far higher than shown."
@@ -2030,8 +2030,8 @@
         "lo": 2.14,
         "mid": 5.45,
         "hi": 114,
-        "tag": "derived",
-        "basis": "mid = 3 / (110,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 3 / (110,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://doi.org/10.1097/DMP.0b013e31818aaf55",
       "notes": ""
@@ -2064,8 +2064,8 @@
         "lo": 0,
         "mid": 16.7,
         "hi": 189,
-        "tag": "derived",
-        "basis": "mid = 3 / (45,000 x 4) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 3 / (45,000 x 4) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://doi.org/10.1097/DMP.0b013e31818aaf55",
       "notes": "The worst rich-country case of people stranded without water, and still at most a handful of deaths from it."
@@ -2132,8 +2132,8 @@
         "lo": 0.0851,
         "mid": 0.132,
         "hi": 0.284,
-        "tag": "derived",
-        "basis": "mid = 3 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 3 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.euronews.com/2025/04/29/power-returns-after-massive-blackout-in-spain-and-portugal-as-fallout-continues",
       "notes": ""
@@ -2166,8 +2166,8 @@
         "lo": 0.0284,
         "mid": 0.044,
         "hi": 0.17,
-        "tag": "derived",
-        "basis": "mid = 1 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 1 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://www.euronews.com/2025/04/29/power-returns-after-massive-blackout-in-spain-and-portugal-as-fallout-continues",
       "notes": ""
@@ -2200,8 +2200,8 @@
         "lo": 0.0284,
         "mid": 0.132,
         "hi": 8.52,
-        "tag": "derived",
-        "basis": "mid = 3 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 3 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12231376/",
       "notes": ""
@@ -2234,8 +2234,8 @@
         "lo": 0,
         "mid": 0,
         "hi": 0.0568,
-        "tag": "derived",
-        "basis": "mid = 0 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+        "tag": "guess",
+        "basis": "mid = 0 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval. Tagged guess because an input is a guess."
       },
       "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12231376/",
       "notes": ""
@@ -2257,7 +2257,7 @@
   ],
   "openQuestions": [
     "Most deaths the model can avert are of people aged 75 or over, with perhaps eight discounted life-years left. A population-average micromort value overstates them about threefold relative to a life-year approach (HHS value per statistical life year $611,000 at 3%). Official US practice does not adjust for age and the OECD advises against it, so I give the unadjusted value, but the engine should offer a per-life-year option.",
-    "To compare an all-ages anchor with a healthy-adult mortality curve, divide the anchor by the population-average multiplier. With US age shares (under 15, 18%; 15-59, 59%; 60-74, 16%; 75 and over, 7%) and the multipliers here it is 0.18 x 0.15 + 0.59 + 0.16 x 7 + 0.07 x 25 = 3.5. Texas cold: 8.5 / 3.5 = 2.4 micromorts per healthy-adult day without power, which agrees with the direct under-60 figure of 1.9-2.9.",
+    "To compare an all-ages anchor with a healthy-adult mortality curve, divide the anchor by the population-average multiplier. With US age shares (under 15, 18%; 15-59, 59%; 60-74, 16%; 75 and over, 7%) and the multipliers here it is 0.18 x 0.15 + 0.59 + 0.16 x 7 + 0.07 x 25 = 3.5. Texas cold: 9.0 / 3.5 = 2.6 micromorts per healthy-adult day without power, which agrees with the direct under-60 figure of 1.9-2.9.",
     "Age multipliers differ by cause by a factor of five (about 10 at 75 and over for cold and injury, 45-75 for heat and interrupted care). Need-level multipliers from the item researchers should override these cross-cutting ones where they exist.",
     "Anchor denominators mix two conventions: people in homes that lost a utility (Texas, Irma, Sandy) and all residents (New York, British Columbia, Japan, Maria, Iberia). The notes give the alternative where it changes the figure by more than a factor of 1.5.",
     "Excess-death estimates are two to four times the certified counts (Texas 702 against 246; Irma; Iberia 147 against 8). Mortality curves fitted to certified counts will understate harm to the old and chronically ill by about that factor.",
