@@ -1102,6 +1102,7 @@
   "probabilities": {},
   "parameters": {},
   "pantryDays": 14,
+  "rankOn": "mean",
   "ai": {
    "timeline": "none",
    "concern": 0.5,

@@ -204,7 +204,9 @@ recompute, repeat. Complements and substitutes need no special treatment.
 
 Every number is a triple: low (5th percentile), middle (median), high (95th
 percentile), tagged `data` (read from a source), `derived` (computed from
-data with stated steps) or `guess`. The headline list uses the medians. A
+data with stated steps) or `guess`. The headline list uses each triple's
+average under that spread, which is what expected value means; the reader can
+switch to medians, which favours everyday entries over tail ones. A
 second pass samples all parameters and reports, for each entry, an interval on
 its ratio and the probability that the ratio exceeds 1. For items whose value
 comes mostly from one tail hazard, the list also reports the break-even
@@ -240,11 +242,9 @@ A probability the reader sets by hand overrides all of this for that hazard.
 - Risk aversion. Values are expected values, so insurance never pays on these
   terms; it is reported with its loading, not ranked.
 - Interactions between hazards (a pandemic during a blackout).
-- What the list ranks on is each parameter's median. For skewed parameters
-  the expected value is higher, so entries that rest on a tail hazard would
-  score higher on means, and everyday entries a little lower. The page's
-  "chance it pays" column shows how often each entry clears the bar across
-  the ranges.
+- Averages are taken parameter by parameter, so the headline ratio is not
+  exactly expected value over expected cost; a sampled check of the leading
+  entries puts the two within about 30% of each other.
 
 ## Verification
 

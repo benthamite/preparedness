@@ -3,7 +3,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { rank, robustness, cumulative, windowDays, drawTriple, resolveModel, normInv, STRATA, arrivalCdf, atConcern } from '../src/model.mjs';
+import { rank, robustness, cumulative, windowDays, drawTriple, meanTriple, resolveModel, normInv, STRATA, arrivalCdf, atConcern } from '../src/model.mjs';
 
 const flat = (v) => ({ lo: v, mid: v, hi: v });
 const fixed = (days) => ({ p50: days, p90: days, p99: days });
@@ -465,4 +465,19 @@ test('those who cannot leave at first find a way in time', () => {
   d.hazards.storm.leave.halfLifeDays = 10;
   const moving = run(d).harm.unprepared.usd;
   assert.ok(moving < 0.6 * stuck, `${moving} against ${stuck}`);
+});
+
+test('ranking on averages gives skewed quantities their expected value', () => {
+  near(meanTriple({ lo: 3, mid: 3, hi: 3 }), 3);
+  // A lognormal with median 1 and 95th percentile e^1.645 has sigma 1: mean e^0.5,
+  // a little less here because draws are capped at 2.5 deviations.
+  const m = meanTriple({ lo: Math.exp(-1.6448536269514722), mid: 1, hi: Math.exp(1.6448536269514722) });
+  assert.ok(m > 1.5 && m < Math.exp(0.5), String(m));
+  const d = fixture();
+  d.hazards.storm.probability.us = { lo: 0.01, mid: 0.1, hi: 1, max: 1 };
+  const median = run(d).entries[0].valueUsd;
+  const mean = run(d, { rankOn: 'mean' }).entries[0].valueUsd;
+  near(median, 60);
+  near(mean, 60 * meanTriple(d.hazards.storm.probability.us) / 0.1);
+  assert.ok(mean > 1.5 * median);
 });

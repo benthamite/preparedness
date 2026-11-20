@@ -36,15 +36,26 @@ export function drawTriple(t, z) {
   return t.max !== undefined ? Math.min(t.max, v) : v;
 }
 
+// The average of a triple under the same spread: what the quantity is worth
+// in expectation. For a quantity whose high end lies far above its middle,
+// this is well above the middle.
+export function meanTriple(t) {
+  const n = 64;
+  let sum = 0;
+  for (let i = 0; i < n; i++) sum += drawTriple(t, normInv((i + 0.5) / n));
+  return sum / n;
+}
+
 // Replace every triple in `data` by a number. `draw` returns a standard-normal
-// deviate per parameter, or is null for medians. The steps of one curve share
-// a deviate, so a sampled curve keeps its shape.
-export function resolveModel(data, draw) {
+// deviate per parameter, or is null for medians; with `mean`, each triple is
+// replaced by its average instead. The steps of one curve share a deviate, so
+// a sampled curve keeps its shape.
+export function resolveModel(data, draw, mean = false) {
   const walk = (node, shared) => {
     if (Array.isArray(node)) return node.map((x) => walk(x, shared));
     if (node === null || typeof node !== 'object') return node;
     if (isTriple(node)) {
-      const v = drawTriple(node, shared !== undefined ? shared : (draw ? draw() : 0));
+      const v = mean ? meanTriple(node) : drawTriple(node, shared !== undefined ? shared : (draw ? draw() : 0));
       return 'fromDay' in node ? { fromDay: node.fromDay, v } : v;
     }
     const out = {};
@@ -1114,8 +1125,11 @@ function ratioOf(value, annual) {
   return value > 0 ? Infinity : 0;
 }
 
+// The list. It is ranked on the middle value of every input, or, with
+// settings.rankOn = 'mean', on the average of every input, which is closer to
+// what "expected value" means and gives more weight to rare catastrophes.
 export function rank(data, settings) {
-  const m = resolveModel(data, null);
+  const m = resolveModel(data, null, settings.rankOn === 'mean');
   const W = buildWorld(m, settings);
   W.refresh(W.newLevel());
   const baseline = W.total(null);
@@ -1204,7 +1218,7 @@ export function rank(data, settings) {
 // How sure is each entry? Samples every uncertain parameter, replays the
 // ranked order, and reports the spread of each entry's ratio.
 // With `raw`, returns each entry's sampled ratios instead of their summary.
-export function robustness(data, settings, order, { samples = 200, seed = 1, raw = false } = {}) {
+export function robustness(data, settings, order, { samples = 200, seed = 1, raw = false, sums = null } = {}) {
   const ratios = order.map(() => []);
   for (let s = 0; s < samples; s++) {
     const m = resolveModel(data, normalFrom(mulberry32(seed * 7919 + s)));
@@ -1216,6 +1230,8 @@ export function robustness(data, settings, order, { samples = 200, seed = 1, raw
       const c = costOf(W, level, add);
       const d = W.delta(level, add, { commit: true });
       ratios[n].push(ratioOf(d.usd + W.v * d.mm, c.annual));
+      // For checking averages: total value and total cost over the samples.
+      if (sums) { sums[n] ||= { value: 0, cost: 0 }; sums[n].value += d.usd + W.v * d.mm; sums[n].cost += c.annual; }
     });
   }
   if (raw) return ratios;

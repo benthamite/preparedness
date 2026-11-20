@@ -31,6 +31,9 @@ export default {
     household, ticks: { ...ticks, coldWinters: true, hotSummers: true },
     owned: {}, probabilities: {}, parameters: {},
     pantryDays: 14,
+    // The list is ranked on the average of every input, which is what
+    // expected value means; the reader can ask for middle values instead.
+    rankOn: 'mean',
     ai: { timeline: 'none', concern: 0.5, horizonYears: 5 },
   },
 

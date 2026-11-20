@@ -99,6 +99,7 @@ function controls() {
     </div>
     ${aiPanel}
     <div class="panel"><h3>Values</h3>
+      ${sel('rankOn', 'Rank on', [['median', 'Middle values'], ['mean', 'Averages (expected value)']], s.rankOn || 'median')}
       ${sel('outlook', 'Other risks', Object.entries(DATA.outlooks).map(([k, v]) => [k, v.label]), s.outlook)}
       ${numf('p-micromort', 'A one-in-a-million risk of death is worth ($)', p.micromortValueUsd ?? '', 0.5)}
       ${numf('p-time', 'An hour of your time is worth ($)', p.timeValueUsdPerHour ?? '', 1)}
@@ -127,7 +128,7 @@ function readControls() {
   const s = settings;
   for (const [k] of HOUSEHOLD) s.household[k] = Math.max(0, Math.floor(Number($(`hh-${k}`).value) || 0));
   if (s.household.adults + s.household.children + s.household.age60to74 + s.household.age75plus === 0) s.household.adults = 1;
-  for (const k of ['location', 'dwelling', 'cooking', 'heating', 'outlook']) s[k] = $(k).value;
+  for (const k of ['location', 'dwelling', 'cooking', 'heating', 'outlook', 'rankOn']) s[k] = $(k).value;
   for (const k of ['airConditioning', 'pumpedWater', 'car']) s[k] = $(k).checked;
   s.pantryDays = Number($('pantryDays').value);
   for (const [k] of TICKS) s.ticks[k] = $(`tick-${k}`).checked && !$(`tick-${k}`).disabled;
