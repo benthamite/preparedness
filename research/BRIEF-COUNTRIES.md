@@ -45,7 +45,9 @@ without any AI effect (the AI adjustment is applied on top).
   in `research/step3/hazards-ordinary.json` and `hazards-locations.json`
   (field `basis` of `localOutage`): they convert SAIFI (interruptions per
   customer a year) and SAIDI (minutes) into the share of households with an
-  outage of 6 hours or more. Use SAIDI and SAIFI from national regulators,
+  outage of 6 hours or more. (Note added after the research: the anchors'
+  own conversions use a 4-hour threshold, and only that threshold reproduces
+  all three; `research/countries/grid.md` uses it.) Use SAIDI and SAIFI from national regulators,
   CEER, the World Bank's Doing Business "Getting Electricity" reliability
   data, or Enterprise Surveys (outages per month and their length), and the
   same conversion.
