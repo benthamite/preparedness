@@ -179,6 +179,17 @@ export default {
         warningDays: 0, lateBuy: { staple: 0, specialty: 0 },
       },
     },
+    aiFraud: {
+      label: 'Scam or account takeover', aiBase: true,
+      definition: 'Someone in the household loses money to an impersonation scam, or loses control of a financial, email or phone account, whether or not AI was used.',
+      profile: {
+        windows: { payments: { pOccur: guess(0.1, 0.25, 0.5, 'The share of events that lock the household out of an account. A guess.', 1), days: { p50: 2, p90: 10, p99: 45 } } },
+        leave: { feasible: 0, earliestDay: 0, fixedUsdPerHousehold: 0, usdPerPersonDay: 0 },
+        warningDays: 0, lateBuy: { staple: 0, specialty: 0 },
+        exposures: [{ channel: 'financialLoss', financialUsdPerHousehold: guess(500, 2000, 6000, 'ai-economy.json: mean unreimbursed loss per event in the United States.') }],
+        exposureScale: { location: { us: 1, westernEurope: 0.5, buenosAires: 0.3 } },
+      },
+    },
     greatPowerWar: {
       label: 'War between great powers, short of nuclear', aiBase: true,
       definition: 'A conventional war between the United States and China, or a Russia–NATO war of similar scale, that does not go nuclear. Its financial effects are not counted here: nothing on the list addresses them.',
@@ -271,6 +282,7 @@ export default {
     unused: {
       cyberSupplyShock: 'Its main effect is on motor fuel, for which the model has no window.',
       incomeShock: 'Nothing on the list addresses a lasting fall in earnings.',
+      marketCrash: 'Nothing on the list addresses a fall in the value of savings.',
     },
   },
 

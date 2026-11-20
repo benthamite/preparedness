@@ -1,0 +1,1762 @@
+{
+  "kind": "ai",
+  "group": "ai-economy",
+  "hazardRates": [
+    {
+      "hazard": "bankingCrisis",
+      "location": "us",
+      "baseline": {
+        "lo": 0.0003,
+        "mid": 0.001,
+        "hi": 0.003,
+        "tag": "derived",
+        "basis": "Step 2 derived about 0.15% per advanced-economy year for a deposit freeze from Laeven and Valencia (IMF WP/18/206; WP/26/94 adds only Lebanon 2019 since). The US has had no freeze or bank holiday since 1933 and its 2023 failures were not systemic, so I set it at two-thirds of that."
+      },
+      "now": {
+        "lo": 0.001,
+        "mid": 0.0015,
+        "hi": 0.005,
+        "tag": "guess",
+        "basis": "lo: no change, the view of BIS Bulletin 120 (Jan 2026: risks 'appear moderate') and of the IMF's Oct 2026 stress test. mid: 1.5 times baseline for close to $1 trillion of large-bank exposure to AI financing (Fed FSR, Nov 2026). hi: a debt-financed bust with faster runs (Barr, 16 Nov 2026). No source gives a probability."
+      },
+      "transition": {
+        "lo": 0.001,
+        "mid": 0.005,
+        "hi": 0.03,
+        "tag": "guess",
+        "basis": "No source quantifies this. lo: a sceptic expecting slow diffusion and a working lender of last resort (Narayanan and Kapoor). mid: five times baseline for a real-rate shock (Chow, Halperin and Mazlish), runs in minutes (Barr) and tax-base erosion (Korinek and Lockwood). hi: my reading of a highly concerned view, about 14% over five years."
+      },
+      "after": {
+        "lo": 0.0003,
+        "mid": 0.001,
+        "hi": 0.01,
+        "tag": "guess",
+        "basis": "lo and mid: back to baseline once growth and public finances settle. hi: institutions weakened by concentration of power (Kulveit et al.; Drago and Laine), which those authors do not quantify."
+      },
+      "mechanism": "An AI investment boom now financed largely by debt, with close to $1 trillion of large-bank exposure, could end in a bust; AI agents and synthetic media can speed deposit runs; and during a transition a jump in real interest rates, mass loss of labour income and an eroding tax base would strain banks and public finances. Official stress tests still find banks adequately capitalised, and no source predicts a deposit freeze or capital controls in an advanced economy.",
+      "survivableShare": {
+        "lo": 0.6,
+        "mid": 0.85,
+        "hi": 0.98,
+        "tag": "guess",
+        "basis": "Share of transition-period probability outside worlds that end in extinction or permanent disempowerment; the existential-risk assignment should override it."
+      },
+      "evidence": [
+        {
+          "claim": "Laeven and Valencia, IMF WP/26/94 (May 2026): '164 systemic banking crises (including borderline episodes) for 1970–2025'; deposit freezes named in the text: Cyprus 2013, Ukraine 2014, Greece 2015, Lebanon 2019; the 2023 US bank failures are classed as not systemic.",
+          "source": "https://www.imf.org/-/media/files/publications/wp/2026/english/wpiea2026094-source-pdf.pdf.md",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Laeven and Valencia, IMF WP/18/206: 151 systemic banking crises 1970–2017; deposit freezes in 8 episodes, bank holidays in 6 (as read in step 2, base-rates.md section 7).",
+          "source": "https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf.md",
+          "year": 2018,
+          "verified": true
+        },
+        {
+          "claim": "Federal Reserve, Financial Stability Report, 13 Nov 2026. Box 2.2: 'the largest U.S. bank holding companies have close to $1 trillion of exposure to large technology firms, data center developers, advanced computing–related SPEs and private credit vehicles, and utility companies'; issuance 'more than $680 billion by October 2026' against '$130 billion in all of 2023'; outstanding public debt 'more than $1.1 trillion'. Box 5.1: 'AI was the top-cited risk' (23 market contacts).",
+          "source": "https://www.federalreserve.gov/publications/files/financial-stability-report-20261113.pdf",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "IMF, Global Financial Stability Report, Oct 2026, ch. 1: under a bond-yield spike and AI-led correction the banking system 'would remain adequately capitalized', yet 'Banks representing 22 percent of global banking assets are classified as weak' (18% in the 2025 test); the capital ratio 'declines by about 150 basis points to approximately 11.5 percent'.",
+          "source": "https://www.imf.org/-/media/files/publications/gfsr/2026/october/english/ch1.pdf.md",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Fed Governor Michael Barr, 'Some Potential Financial Stability Implications of Artificial Intelligence', Milan, 16 Nov 2026: 'the high levels of capital at the largest banks provide a bulwark against spillovers'; 'AI agents may accelerate deposit outflows during stress periods'.",
+          "source": "https://www.federalreserve.gov/newsevents/speech/barr20261116a.htm",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "BIS Bulletin 120, 7 Jan 2026: 'macroeconomic and financial stability risks from the AI boom appear moderate'.",
+          "source": "https://www.bis.org/publ/bisbull120.htm",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Pierre-Olivier Gourinchas (then IMF chief economist), 14 Oct 2025, reported by Reuters: 'This is not financed by debt, and that means that if there is a market correction, some shareholders, some equity holders, may lose out'. The 2026 Fed and IMF texts describe large debt financing, so this predates an important development.",
+          "source": "https://finance.yahoo.com/news/ai-investment-boom-may-lead-132652425.html",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Chow, Halperin and Mazlish, 'Transformative AI, existential risk, and real interest rates' (first posted Jan 2023; version of Oct 2025): transformative AI, aligned or not, implies a large rise in long-term real interest rates; the paper gives no point estimate.",
+          "source": "https://tmychow.com/papers/agi_emh.pdf",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Korinek and Lockwood, NBER WP 34873 (Feb 2026): transformative AI erodes the 'labor income and human consumption' tax bases; the paper evaluates robot, compute and token taxes, sovereign funds and windfall clauses.",
+          "source": "https://www.nber.org/papers/w34873",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Trammell and Patel, 'Capital in the 22nd century', 29 Dec 2025: discusses 'the risk of capital flight' and 'a global and highly progressive tax on capital'; it never proposes or predicts capital controls.",
+          "source": "https://philiptrammell.substack.com/p/capital-in-the-22nd-century",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "FDIC: four bank failures in 2001, with assets of $2.36 billion. The dot-com bust did not cause a banking crisis.",
+          "source": "https://www.fdic.gov/resources/resolutions/bank-failures/in-brief/2001",
+          "year": 2001,
+          "verified": true
+        }
+      ],
+      "notes": "Household effects as the model already has them for bankingCrisis: the payments window and a financialLoss exposure. An equity crash alone is not this hazard (see marketCrash): the dot-com bust produced four US bank failures in 2001. Capital controls or emergency taxes as a response to AI are speculation only: Trammell and Patel discuss capital flight and a global capital tax, never controls."
+    },
+    {
+      "hazard": "bankingCrisis",
+      "location": "westernEurope",
+      "baseline": {
+        "lo": 0.0007,
+        "mid": 0.002,
+        "hi": 0.005,
+        "tag": "derived",
+        "basis": "Advanced-economy deposit freezes since 2008 are European (Cyprus 2013, Greece 2015; Laeven and Valencia, IMF WP/26/94). Step 2's 0.15% per advanced-economy year, raised a little because euro-area members cannot print their own currency."
+      },
+      "now": {
+        "lo": 0.002,
+        "mid": 0.0025,
+        "hi": 0.007,
+        "tag": "guess",
+        "basis": "Same reasoning as the US entry, scaled to the European baseline. The Bank of England's FPC (25 Sep 2026) says 'The risk of a sharper correction persists' but that UK banks remain 'appropriately capitalised'. lo is BIS Bulletin 120; hi a debt-financed bust."
+      },
+      "transition": {
+        "lo": 0.002,
+        "mid": 0.008,
+        "hi": 0.04,
+        "tag": "guess",
+        "basis": "As for the US, with weaker sovereigns in the euro-area periphery more exposed to a rise in real rates. lo: sceptic (Narayanan and Kapoor). mid and hi: my guesses; no source gives a figure."
+      },
+      "after": {
+        "lo": 0.0005,
+        "mid": 0.002,
+        "hi": 0.015,
+        "tag": "guess",
+        "basis": "As for the US entry."
+      },
+      "mechanism": "As for the US: a debt-financed AI boom that could end in a bust, faster deposit runs, and in a transition a jump in real interest rates and an eroding tax base. European banks' direct lending to AI is smaller, and the route runs through bank funding and sovereign yields more than through household equity wealth.",
+      "survivableShare": {
+        "lo": 0.6,
+        "mid": 0.85,
+        "hi": 0.98,
+        "tag": "guess",
+        "basis": "As for the US entry."
+      },
+      "evidence": [
+        {
+          "claim": "Laeven and Valencia, IMF WP/26/94 (May 2026): deposit freezes named in the text are Cyprus 2013, Ukraine 2014, Greece 2015 and Lebanon 2019.",
+          "source": "https://www.imf.org/-/media/files/publications/wp/2026/english/wpiea2026094-source-pdf.pdf.md",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Bank of England FPC record, meeting of 2 Oct 2025 (published 8 Oct): 'The risk of a sharp market correction has increased.'; equity valuations 'comparable to the peak of the dot com bubble' on an earnings-yield measure.",
+          "source": "https://www.bankofengland.co.uk/financial-policy-committee-record/2025/october-2025",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Bank of England FPC record, meeting of 25 Sep 2026 (published 30 Sep): 'The risk of a sharper correction persists.'; 'Rapid advances in AI capabilities have increased cyber and operational resilience risks.'; the UK banking system 'remains appropriately capitalised with high levels of liquidity'.",
+          "source": "https://www.bankofengland.co.uk/financial-policy-committee-record/2026/september-2026",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "IMF, Global Financial Stability Report, Oct 2026, ch. 1: banks 'would remain adequately capitalized' under a bond-yield spike and AI-led correction; weak banks are 22% of global banking assets.",
+          "source": "https://www.imf.org/-/media/files/publications/gfsr/2026/october/english/ch1.pdf.md",
+          "year": 2026,
+          "verified": true
+        }
+      ],
+      "notes": "Same household effects as the canonical hazard. European households hold much less equity than American ones."
+    },
+    {
+      "hazard": "bankingCrisis",
+      "location": "buenosAires",
+      "baseline": {
+        "lo": 0.04,
+        "mid": 0.07,
+        "hi": 0.15,
+        "tag": "derived",
+        "basis": "Episodes that cut Argentine households off from their own money: freezes in Dec 1989 and Dec 2001 and retail exchange controls imposed in 2011 and 2019, four in about 56 years, or 7%. lo counts freezes only (step 2's 4%); hi adds severe devaluations (2014, 2018, 2023). The dates other than the freezes are from memory."
+      },
+      "now": {
+        "lo": 0.07,
+        "mid": 0.08,
+        "hi": 0.18,
+        "tag": "guess",
+        "basis": "Argentine risk is mostly home-made. AI adds an outside shock: an AI-led correction or higher long rates would widen emerging-market spreads. lo: no AI effect. mid: about one point. hi: allows for today's fragile conditions, which are not an AI effect."
+      },
+      "transition": {
+        "lo": 0.07,
+        "mid": 0.12,
+        "hi": 0.25,
+        "tag": "guess",
+        "basis": "No source. lo: no AI effect. mid: a jump in world real rates (Chow, Halperin and Mazlish) and volatile capital flows hit a dollar-indebted country hard, partly offset by demand for energy, metals and food. hi: a repeat of 1998–2002, when a US bust and emerging-market contagion preceded the corralito."
+      },
+      "after": {
+        "lo": 0.02,
+        "mid": 0.06,
+        "hi": 0.15,
+        "tag": "guess",
+        "basis": "Slightly below baseline if world growth is high and commodity demand strong; the range is my own."
+      },
+      "mechanism": "For Argentina AI mainly changes the outside world: a US correction or a jump in world interest rates raises the cost of dollar funding, and knowledge-service exports of about US$10 billion a year are exposed to automation. Domestic policy remains the main driver.",
+      "survivableShare": {
+        "lo": 0.7,
+        "mid": 0.9,
+        "hi": 0.99,
+        "tag": "guess",
+        "basis": "As for the US entry; Buenos Aires is further from the direct effects of an AI-driven conflict."
+      },
+      "evidence": [
+        {
+          "claim": "Argentina's corralito: deposit withdrawals limited to 250 pesos a week from 1 Dec 2001, lifted 2 Dec 2002; an earlier freeze in Dec 1989 (step 2, base-rates.md section 7; search snippet there).",
+          "source": "https://newbagehot.yale.edu/docs/argentina-national-bank-holidays-2001",
+          "year": 2001,
+          "verified": false
+        },
+        {
+          "claim": "Laeven and Valencia, IMF WP/26/94: Argentina has four systemic banking crises in the database, the last in 2001–2003.",
+          "source": "https://www.imf.org/-/media/files/publications/wp/2026/english/wpiea2026094-source-pdf.pdf.md",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Argentina's knowledge-based service exports: US$10,085 million in the twelve months to March 2026, up 11.7% (Argencon, reported by Ámbito, 1 Jul 2026).",
+          "source": "https://www.ambito.com/economia/la-del-conocimiento-rompio-un-record-y-supero-primera-vez-los-us10000-millones-exportaciones-n6294824",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Chow, Halperin and Mazlish (version of Oct 2025): transformative AI implies a large rise in long-term real interest rates; no point estimate.",
+          "source": "https://tmychow.com/papers/agi_emh.pdf",
+          "year": 2025,
+          "verified": true
+        }
+      ],
+      "notes": "Baseline definition matters here: 4% counts deposit freezes only, 7% adds new retail exchange controls, and about 15% adds severe devaluations. The 'now' rate isolates AI's effect; it is not a forecast of Argentina's 2027. Press reports (Infobae, not captured with full URLs) put country risk at 931 basis points on 19 Nov 2026 and say exchange controls were lifted for individuals in April 2025 but remain for firms."
+    },
+    {
+      "hazard": "supplyShock",
+      "location": "us",
+      "baseline": {
+        "lo": 0.02,
+        "mid": 0.045,
+        "hi": 0.08,
+        "tag": "guess",
+        "basis": "My count of events outside storms and pandemics that left a typical household unable to buy some staple for days: fuel in 1973–74 and 1979, the 2021 Colonial Pipeline shutdown (regional, weighted 0.2), the 2024 port-strike panic (0.3): 2.5 in 53 years, 4.7%."
+      },
+      "now": {
+        "lo": 0.045,
+        "mid": 0.05,
+        "hi": 0.075,
+        "tag": "guess",
+        "basis": "lo: no AI effect, since no supply incident has been attributed to AI. mid: about 10% above baseline for the rise in ransomware (leak-site victims 5,422 to 8,835, 2023–2025) and documented AI-run intrusions (Anthropic, Aug and Nov 2025). hi: the 2025–26 run of retail incidents is the new normal."
+      },
+      "transition": {
+        "lo": 0.045,
+        "mid": 0.08,
+        "hi": 0.2,
+        "tag": "guess",
+        "basis": "No source gives a figure. lo: baseline, for a sceptic who expects defence to keep pace (the 'normal technology' view). mid: nearly double, for automated attacks plus labour action. hi: frequent disruption from cyberattack, strikes and unrest; Amodei writes of 'public anger and perhaps even civil unrest' without a probability."
+      },
+      "after": {
+        "lo": 0.015,
+        "mid": 0.035,
+        "hi": 0.1,
+        "tag": "guess",
+        "basis": "mid: below baseline if automated logistics and defence mature. hi: persistent offence advantage. My own range."
+      },
+      "mechanism": "Three routes, in falling order of evidence: cyberattacks on distributors and retailers, which AI makes cheaper to mount (no incident so far is attributed to AI); strikes and panic buying over automation, as in the October 2024 US port strike; and protest or blockade arising from job displacement, which the literature describes only in narrative. Against these, AI should improve logistics and defence.",
+      "survivableShare": {
+        "lo": 0.6,
+        "mid": 0.85,
+        "hi": 0.98,
+        "tag": "guess",
+        "basis": "As for bankingCrisis."
+      },
+      "evidence": [
+        {
+          "claim": "United Natural Foods cyberattack discovered 5 Jun 2025; ordering restored 16 Jun, core systems 26 Jun; 'lost sales of up to $400 million'; about 30,000 customer locations supplied. No account says AI was used.",
+          "source": "https://cyberscoop.com/united-natural-foods-cyberattack-400-million/",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Colonial Pipeline, May 2021: 'About 70%' of North Carolina fuel stations without fuel, 73% in Washington DC, 'about half' in Virginia, South Carolina and Georgia (GasBuddy, reported by ABC11).",
+          "source": "https://abc11.com/post/nc-gas-shortage-update-where-to-find-near-me-buddy-station/10643819/",
+          "year": 2021,
+          "verified": true
+        },
+        {
+          "claim": "International Longshoremen's Association strike, three days in early Oct 2024 (the contract ratified in Feb 2025 bars 'fully automated' terminals, per Supply Chain Dive); runs on toilet paper at Costco and Target and purchase limits at Kroger, though the product is 'mostly manufactured in the US'.",
+          "source": "https://fortune.com/2024/10/03/port-dock-workers-strike-toilet-paper/",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "Anthropic threat-intelligence report, 27 Aug 2025: one actor used Claude Code to extort 'at least 17 distinct organizations'; ransom demands 'sometimes exceeded $500,000'.",
+          "source": "https://www.anthropic.com/news/detecting-countering-misuse-aug-2025",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Anthropic, 13 Nov 2025: a state-sponsored group used Claude against 'roughly thirty global targets', with AI doing '80-90% of the campaign'; it succeeded 'in a small number of cases'.",
+          "source": "https://www.anthropic.com/news/disrupting-AI-espionage",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Ransomware leak-site victims: 5,422 (2023), 6,034 (2024), 8,835 (2025) on RansomLook counts; active groups 72 to 141. The source does not attribute the rise to AI.",
+          "source": "https://www.emsisoft.com/en/blog/?p=47215",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "UK National Cyber Security Centre, 7 May 2025: AI 'will almost certainly continue to make elements of cyber intrusion operations more effective and efficient'.",
+          "source": "https://www.ncsc.gov.uk/report/impact-ai-cyber-threat-now-2027",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Byman and McCabe, CSIS, 22 Oct 2026: two AI-motivated attacks in their dataset (shots at an Indianapolis councillor's home, 6 Apr 2026; a Molotov cocktail at Sam Altman's home, 10 Apr 2026); it is not shown 'that a broader campaign has begun'.",
+          "source": "https://www.csis.org/analysis/will-ai-concerns-become-new-source-terrorism",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Dario Amodei, 'The adolescence of technology', Jan 2026: labour and concentration effects 'may force us to face the other problems in an environment of public anger and perhaps even civil unrest'. No probability.",
+          "source": "https://www.darioamodei.com/essay/the-adolescence-of-technology",
+          "year": 2026,
+          "verified": true
+        }
+      ],
+      "notes": "Household effects as the model already has them for supplyShock. Overlaps the cyber assignment, which should own the attack rate. No transformative-AI source gives a probability of unrest; AI 2027's '10,000 person anti-AI protest in DC' for late 2026 has not happened (largest found: 'a couple of hundred' in London, 28 Feb 2026, per an anonymous tracker site). Double-counting warning: these rates include the cyber route. The cyber assignment carries that route separately as cyberSupplyShock; if the model adds that hazard, use for supplyShock only the strike and unrest part, which I put at 4.6% now and 6% in transition (guess)."
+    },
+    {
+      "hazard": "supplyShock",
+      "location": "westernEurope",
+      "baseline": {
+        "lo": 0.03,
+        "mid": 0.06,
+        "hi": 0.1,
+        "tag": "guess",
+        "basis": "My count for Britain and France, from memory and search snippets: 1973–74, 1978–79, the 2000 fuel protests and the 2021 fuel crisis in Britain; refinery strikes in France in 2010, 2016 and 2022. About four per country in 53 years, 6–8%."
+      },
+      "now": {
+        "lo": 0.06,
+        "mid": 0.07,
+        "hi": 0.1,
+        "tag": "guess",
+        "basis": "lo: no AI effect. mid: Europe has had the most retail incidents (Marks & Spencer and Co-op in 2025; about 700 French supermarkets in October 2026), none attributed to AI. hi: that run continues."
+      },
+      "transition": {
+        "lo": 0.06,
+        "mid": 0.11,
+        "hi": 0.25,
+        "tag": "guess",
+        "basis": "As for the US entry; stronger unions make strikes over automation more likely. No source gives a figure."
+      },
+      "after": {
+        "lo": 0.02,
+        "mid": 0.05,
+        "hi": 0.12,
+        "tag": "guess",
+        "basis": "As for the US entry."
+      },
+      "mechanism": "As for the US: cyberattacks on distributors and retailers that AI makes cheaper, strikes over automation, and protest arising from displacement, the last described only in narrative.",
+      "survivableShare": {
+        "lo": 0.6,
+        "mid": 0.85,
+        "hi": 0.98,
+        "tag": "guess",
+        "basis": "As for bankingCrisis."
+      },
+      "evidence": [
+        {
+          "claim": "Marks & Spencer: online orders suspended for 46 days to 10 Jun 2025 after a cyberattack; '£300 million' operating-profit loss. No account says AI was used.",
+          "source": "https://www.theregister.com/2025/06/10/ms_resumes_online_orders_46/",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "France, about 19 Oct 2026: internet-connected refrigeration controllers manipulated at about 700 supermarkets (Intermarché 300, Carrefour 80); restocking took 'nearly a week'. The article does not say AI was used.",
+          "source": "https://www.insurancejournal.com/news/international/2026/10/21/889797.htm",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "UK National Cyber Security Centre, 7 May 2025: 'realistic possibility of critical systems becoming more vulnerable' to advanced threat actors by 2027.",
+          "source": "https://www.ncsc.gov.uk/report/impact-ai-cyber-threat-now-2027",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Ransomware leak-site victims: 5,422 (2023), 6,034 (2024), 8,835 (2025). The source does not attribute the rise to AI.",
+          "source": "https://www.emsisoft.com/en/blog/?p=47215",
+          "year": 2026,
+          "verified": true
+        }
+      ],
+      "notes": "Fuel-shortage events used for the baseline were seen only in search snippets. No European port strike over automation was found for 2025–26. Double-counting warning: these rates include the cyber route. The cyber assignment carries that route separately as cyberSupplyShock; if the model adds that hazard, use for supplyShock only the strike and unrest part, which I put at 6.2% now and 8% in transition (guess)."
+    },
+    {
+      "hazard": "supplyShock",
+      "location": "buenosAires",
+      "baseline": {
+        "lo": 0.08,
+        "mid": 0.15,
+        "hi": 0.25,
+        "tag": "guess",
+        "basis": "My count, from memory and search snippets: 1989, 2001–02, the 2008 farm lockout, shortages under price controls in 2013–15, the 2022 diesel and October 2023 petrol shortages: six or more in 37 years. One-day general strikes (48 since 1983) are too short to count."
+      },
+      "now": {
+        "lo": 0.15,
+        "mid": 0.155,
+        "hi": 0.19,
+        "tag": "guess",
+        "basis": "lo: no AI effect; no Argentine incident or strike linked to AI was found. mid: a small addition for imported cyber risk."
+      },
+      "transition": {
+        "lo": 0.15,
+        "mid": 0.19,
+        "hi": 0.35,
+        "tag": "guess",
+        "basis": "As for the US entry, added to a much higher baseline; Argentina's strong unions and import dependence cut both ways. No source gives a figure."
+      },
+      "after": {
+        "lo": 0.06,
+        "mid": 0.13,
+        "hi": 0.25,
+        "tag": "guess",
+        "basis": "As for the US entry."
+      },
+      "mechanism": "As for the US, on top of a baseline set by domestic macroeconomics and labour relations; AI's addition is small beside it.",
+      "survivableShare": {
+        "lo": 0.7,
+        "mid": 0.9,
+        "hi": 0.99,
+        "tag": "guess",
+        "basis": "As for bankingCrisis in Buenos Aires."
+      },
+      "evidence": [
+        {
+          "claim": "Argentina: 48 general strikes since 1983; four under Milei (24 Jan 2024, 9 May 2024, Apr 2025, 19 Feb 2026). No strike over AI was found.",
+          "source": "https://chequeado.com/el-explicador/cuarto-paro-general-contra-javier-milei-que-presidentes-enfrentaron-mas-medidas-de-fuerza-desde-1983/",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Ransomware leak-site victims worldwide: 5,422 (2023), 6,034 (2024), 8,835 (2025).",
+          "source": "https://www.emsisoft.com/en/blog/?p=47215",
+          "year": 2026,
+          "verified": true
+        }
+      ],
+      "notes": "Every number here is a guess; the base-rate events were not read on fetched pages. Double-counting warning: these rates include the cyber route. The cyber assignment carries that route separately as cyberSupplyShock; if the model adds that hazard, use for supplyShock only the strike and unrest part, which I put at 15.1% now and 17% in transition (guess)."
+    },
+    {
+      "hazard": "incomeShock",
+      "newHazard": true,
+      "location": "us",
+      "baseline": {
+        "lo": 0.0015,
+        "mid": 0.003,
+        "hi": 0.006,
+        "tag": "derived",
+        "basis": "BLS: 3.3 million long-tenured workers displaced in 2023–25, 1.1 million a year, over about 85 million such workers (my assumption) = 1.3%; times 0.35 still sharply down after two years (53% were at the survey: 33.9% not employed plus 29.1% of the 66.1% re-employed); times 0.7 for graduates (Farber: 11% against 16%)."
+      },
+      "now": {
+        "lo": 0.003,
+        "mid": 0.004,
+        "hi": 0.01,
+        "tag": "derived",
+        "basis": "lo: no effect yet (Brookings and Yale; Massenkoff and McCrory). mid: AI-attributed cuts of 112,713 in Jan–Jul 2026 (Challenger) annualise to 0.3% of about 60 million white-collar jobs (my assumption); times a 0.4 sharp-loss share adds 0.1 point. hi: the young workers' 19% shortfall (Brynjolfsson et al.) spreads to older ones."
+      },
+      "transition": {
+        "lo": 0.01,
+        "mid": 0.05,
+        "hi": 0.25,
+        "tag": "guess",
+        "basis": "lo: FRI economists' rapid scenario (participation 62.6% to 59.1% by 2030, half due to AI; unemployment 6%) gives about 1% for exposed professionals. hi: Korinek and Suh's five-year scenario, wage collapse after about three years, about 75% over five years. mid: the geometric mean, 23% over five years, near Amodei's 'half of all entry-level white collar jobs' discounted for seniority."
+      },
+      "after": {
+        "lo": 0.003,
+        "mid": 0.03,
+        "hi": 0.15,
+        "tag": "guess",
+        "basis": "For households still earning. lo: a new equilibrium like the old (Narayanan and Kapoor). hi: labour income keeps disappearing (Korinek and Suh; Drago and Laine). mid is my guess."
+      },
+      "mechanism": "AI that does remote cognitive work at expert level substitutes for professional labour. So far the measured effect is on hiring of the young, not on dismissal of established workers; in growth models with full automation wages collapse. How fast capability turns into dismissals is the main disagreement.",
+      "survivableShare": {
+        "lo": 0.5,
+        "mid": 0.8,
+        "hi": 0.98,
+        "tag": "guess",
+        "basis": "The rest is where wages collapse generally and for good, or the transition ends in catastrophe, so that months of savings change little. Fast displacement and catastrophe are correlated."
+      },
+      "evidence": [
+        {
+          "claim": "BLS, Worker Displacement 2023–2025 (27 Aug 2026): 3.3 million workers displaced from jobs held three years or more; in Jan 2026 66.1% were re-employed, 18.3% unemployed, 15.7% out of the labour force. Table 7: of 1,942 thousand re-employed former full-timers, 10.1% worked part time and 19.0% worked full time for at least 20% less.",
+          "source": "https://www.bls.gov/news.release/disp.nr0.htm",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Farber, NBER digest: job-loss rate 2007–09 of 16% overall and 11% for the college-educated; re-employed job losers earned 17.5% less a week (21.8% for those who lost full-time jobs).",
+          "source": "https://www.nber.org/digest/sep11/job-loss-great-recession",
+          "year": 2011,
+          "verified": true
+        },
+        {
+          "claim": "Davis and von Wachter (2011), NBER digest: men with three or more years of tenure lose 1.4 years of pre-displacement earnings in present value when displaced with unemployment below 6%, and 2.8 years when it is above 8% (20 years, 5% discount rate).",
+          "source": "https://www.nber.org/digest/apr12/recessions-and-cost-job-loss",
+          "year": 2011,
+          "verified": true
+        },
+        {
+          "claim": "Brynjolfsson, Chandar and Chen, Stanford Digital Economy Lab, 12 Aug 2026 (ADP payroll data): employment of workers aged 22–25 in highly AI-exposed occupations is 'about 19% below where it would be if it had kept pace' (15% at the July 2025 vintage); 'Experienced workers show no comparable gap.'; 'These are descriptive patterns, not causal estimates of the effect of AI.'; 'We do not see widespread, economy-wide job displacement associated with AI.'",
+          "source": "https://digitaleconomy.stanford.edu/news/canariesaug26/",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Cline and Kaymak, Cleveland Fed Economic Commentary 2026-26 (9 Nov 2026): unemployment for ages 23–54 'has risen by roughly 1 percentage point more in occupations most exposed to AI'; job-finding rates 'declined by roughly six percentage points more'; 'We do not find consistent evidence of elevated job separation rates among workers in occupations highly exposed to AI.'",
+          "source": "https://www.clevelandfed.org/publications/economic-commentary/2026/ec-202626-job-finding-and-unemployment-in-the-age-of-ai",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Kinder, Gimbel, Kendall and Lee, Brookings and Yale Budget Lab, 1 Oct 2025: 33 months after ChatGPT, 'a labor market characterized broadly by stability, rather than disruption'.",
+          "source": "https://www.brookings.edu/articles/new-data-show-no-ai-jobs-apocalypse-for-now/",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Challenger, Gray & Christmas: employers cited AI for 112,713 announced job cuts in Jan–Jul 2026 and 184,538 since 2023.",
+          "source": "https://www.challengergray.com/?p=28706",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Forecasting Research Institute, 31 Mar 2026 (69 economists, 52 AI experts, 38 superforecasters): economists give 14% to a 'rapid' scenario for 2030 in which 'AI outperforms all humans at many tasks, can run businesses at the level of a competent CEO'; in it they forecast labour-force participation falling from 62.6% in 2025 'to 59.1% in 2030 and 55% in 2050', 'roughly half of this decline—equivalent to 10 million jobs—attributable to AI', GDP growth of 3.5% and an unemployment rate of 6%.",
+          "source": "https://forecastingresearch.substack.com/p/forecasting-the-economic-effects-of-ai",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Korinek and Suh, 'Scenarios for the transition to AGI' (NBER WP 32255, arXiv 2403.12107, Mar 2024): in the scenario with full automation within five years 'the wage collapse happens after about 3 years'; in the 20-year scenario wages 'grow slightly during the initial periods but then collapse before full automation is reached'.",
+          "source": "https://arxiv.org/html/2403.12107",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "Dario Amodei, 'The adolescence of technology', Jan 2026: he 'predicted that AI could displace half of all entry-level white collar jobs in the next 1–5 years'; AI is 'a general labor substitute for humans'. The essay gives no unemployment rate.",
+          "source": "https://www.darioamodei.com/essay/the-adolescence-of-technology",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Narayanan and Kapoor, 'AI as normal technology', 15 Apr 2025: 'Diffusion occurs over decades, not years.'; automation 'does not mean that human labor will be superfluous'.",
+          "source": "https://knightcolumbia.org/content/ai-as-normal-technology",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Ganong and Noel, AER 2019 (NBER WP 25417): non-durable spending falls 6% at the onset of unemployment and a further 12% when unemployment benefits run out (search snippet).",
+          "source": "https://www.nber.org/papers/w25417",
+          "year": 2019,
+          "verified": false
+        },
+        {
+          "claim": "Urban Institute, 'Thriving residents, thriving cities' (2016): families with savings of $250–$749 are less likely to be evicted or miss a housing or utility payment after an income disruption (search snippet; page returned 403).",
+          "source": "https://www.urban.org/research/publication/thriving-residents-thriving-cities-family-financial-security-matters-cities",
+          "year": 2016,
+          "verified": false
+        }
+      ],
+      "notes": "Definition: the household's main earner is permanently displaced and household earnings are still at least 25% lower two years later. Model terms: no window opens. One exposure on financialLoss: present value about 2 years (1 to 5) of the earner's previous earnings, for example $300,000 on $150,000 a year, from a loss of about 40% of earnings lasting about five years. Preparation of the kind the model ranks cannot restore earnings. A liquid buffer of months of spending, low fixed commitments and documents ready for benefit claims change only the cost of adjusting, which I put at about 3% of the harm (1–8%, guess). Carry the hazard only if the cash ladder is extended to months of expenses. A market crash would raise this rate: Bernstein and Cummings put unemployment above 7% after a sell-off the size of the dot-com bust."
+    },
+    {
+      "hazard": "incomeShock",
+      "newHazard": true,
+      "location": "westernEurope",
+      "baseline": {
+        "lo": 0.001,
+        "mid": 0.0025,
+        "hi": 0.005,
+        "tag": "guess",
+        "basis": "The US derivation scaled down a little for stronger job protection. Losses once displaced vary threefold within Europe (Bertheau et al.: least in Denmark and Sweden, most in Italy, Spain and Portugal)."
+      },
+      "now": {
+        "lo": 0.0025,
+        "mid": 0.003,
+        "hi": 0.007,
+        "tag": "guess",
+        "basis": "Effects show later than in the US, which the ECB attributes partly to America's 'relatively flexible labour market'. lo: no effect."
+      },
+      "transition": {
+        "lo": 0.007,
+        "mid": 0.035,
+        "hi": 0.15,
+        "tag": "guess",
+        "basis": "The US anchors (FRI economists at the low end, Korinek and Suh at the high end) scaled by about 0.7 for dismissal protection and slower adoption; my own scaling, no European source gives a figure."
+      },
+      "after": {
+        "lo": 0.0025,
+        "mid": 0.025,
+        "hi": 0.12,
+        "tag": "guess",
+        "basis": "As for the US entry, scaled."
+      },
+      "mechanism": "As for the US: AI substitutes for remote cognitive work. Dismissal protection and slower adoption delay the effect; they do not remove it.",
+      "survivableShare": {
+        "lo": 0.5,
+        "mid": 0.8,
+        "hi": 0.98,
+        "tag": "guess",
+        "basis": "As for the US entry."
+      },
+      "evidence": [
+        {
+          "claim": "ECB Economic Bulletin 4/2026: the United States shows labour-market effects of AI earlier partly because of 'a relatively flexible labour market'.",
+          "source": "https://www.ecb.europa.eu/press/economic-bulletin/focus/2026/html/ecb.ebbox202604_01~d9259db536.en.html",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Bertheau et al., AER: Insights 2023: displaced workers in Denmark and Sweden lose least; those in Italy, Spain and Portugal lose about three times as much (abstract, search snippet).",
+          "source": "https://www.aeaweb.org/doi/10.1257/aeri.20220006",
+          "year": 2023,
+          "verified": false
+        },
+        {
+          "claim": "Humlum and Vestergaard, NBER WP 33777 (rev. Mar 2026), Danish administrative data: 'precise null effects on earnings and recorded hours', ruling out effects 'larger than 2%'.",
+          "source": "https://www.nber.org/papers/w33777",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Korinek and Suh (2024): with full automation within five years 'the wage collapse happens after about 3 years'.",
+          "source": "https://arxiv.org/html/2403.12107",
+          "year": 2024,
+          "verified": true
+        }
+      ],
+      "notes": "Same definition and model terms as the US entry: no window, one financialLoss exposure of about 2 years (1 to 5) of the earner's previous earnings. More generous unemployment insurance makes the first year milder and the buffer less valuable. Preparation addresses only the adjustment cost, about 3% of the harm (guess)."
+    },
+    {
+      "hazard": "incomeShock",
+      "newHazard": true,
+      "location": "buenosAires",
+      "baseline": {
+        "lo": 0.002,
+        "mid": 0.004,
+        "hi": 0.009,
+        "tag": "guess",
+        "basis": "The US derivation raised a little for weaker re-employment and more self-employment; no Argentine displacement series was found. Falls in real earnings from inflation and devaluation are a different hazard."
+      },
+      "now": {
+        "lo": 0.004,
+        "mid": 0.005,
+        "hi": 0.015,
+        "tag": "guess",
+        "basis": "lo: no effect. hi: freelancers and exporters of knowledge services, who sell to the firms adopting AI fastest and have no dismissal protection. No Argentine measurement was found."
+      },
+      "transition": {
+        "lo": 0.008,
+        "mid": 0.05,
+        "hi": 0.25,
+        "tag": "guess",
+        "basis": "Two groups: professionals serving foreign clients face the US rates or worse; those serving the local market or the state face slower change, since low wages delay automation (ILO: 2–5% of Latin American jobs at risk of full automation). mid is my blend."
+      },
+      "after": {
+        "lo": 0.004,
+        "mid": 0.03,
+        "hi": 0.15,
+        "tag": "guess",
+        "basis": "As for the US entry."
+      },
+      "mechanism": "As for the US. Buenos Aires professionals who export services or freelance for foreign clients are exposed to their clients' adoption of AI; those serving the local market are shielded for a time by low wages and slow adoption.",
+      "survivableShare": {
+        "lo": 0.6,
+        "mid": 0.85,
+        "hi": 0.99,
+        "tag": "guess",
+        "basis": "As for the US entry, slightly higher."
+      },
+      "evidence": [
+        {
+          "claim": "ILO Working Paper 121, 'Buffer or bottleneck?', 31 Jul 2024: 26–38% of jobs in Latin America and the Caribbean are exposed to generative AI; 2–5% are at risk of full automation.",
+          "source": "https://www.ilo.org/publications/buffer-or-bottleneck-employment-exposure-generative-ai-and-digital-divide",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "CESBA (Consejo Económico y Social de la Ciudad de Buenos Aires), reported by El Cronista, 19 Aug 2026: 67% of jobs in the city fall in some gradient of exposure to AI; 'exposición no es lo mismo que pérdida'.",
+          "source": "https://www.cronista.com/economia-politica/fin-de-la-ciencia-ficcion-casi-el-70-de-los-empleos-portenos-ya-estan-expuestos-a-la-ia-donde-pega-mas/",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Argentina's knowledge-based service exports: US$10,085 million in the twelve months to March 2026 (Argencon, reported by Ámbito, 1 Jul 2026).",
+          "source": "https://www.ambito.com/economia/la-del-conocimiento-rompio-un-record-y-supero-primera-vez-los-us10000-millones-exportaciones-n6294824",
+          "year": 2026,
+          "verified": true
+        }
+      ],
+      "notes": "Same definition and model terms as the US entry: no window, one financialLoss exposure of about 2 years (1 to 5) of the earner's previous earnings. Dollar savings held outside the banking system are common and already serve as the buffer. Every Argentine number here is a guess."
+    },
+    {
+      "hazard": "aiFraud",
+      "newHazard": true,
+      "location": "us",
+      "baseline": {
+        "lo": 0.025,
+        "mid": 0.05,
+        "hi": 0.09,
+        "tag": "derived",
+        "basis": "Today's rate less an AI share of 10–20%, which nobody has measured; the FBI's tagged floor is 4.3% of losses. Reported losses rose 25% in 2024 and 27% in 2025 (FTC), but no source attributes the rise to AI."
+      },
+      "now": {
+        "lo": 0.03,
+        "mid": 0.06,
+        "hi": 0.1,
+        "tag": "derived",
+        "basis": "Gallup: 10% of adults live in a household scammed in 2025; imposter scams are 'nearly one in three' FTC reports but lose money less often, so 2–3% of households; plus account takeover, Javelin's 6 million victims over about 132 million households (my assumption) = 4.5%, cut to 3% for overlap and vendor optimism. lo: BJS's 1.25% of adults plus takeover. hi: all scams."
+      },
+      "transition": {
+        "lo": 0.05,
+        "mid": 0.12,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "lo: defence keeps pace, the 'normal technology' view. mid: double, in line with the 32% a year Deloitte projects to 2027. hi: real-time cloning and automated targeting beat current authentication for several years. No source gives a household rate."
+      },
+      "after": {
+        "lo": 0.01,
+        "mid": 0.05,
+        "hi": 0.2,
+        "tag": "guess",
+        "basis": "lo: cryptographic authentication becomes universal. hi: no stable defence. My own range."
+      },
+      "mechanism": "Voice cloning, synthetic video and language models make impersonation cheaper, more personal and available in any language, and automate account takeover. The share of fraud that uses AI is not measured: the FBI's 2025 count of complaints tagged 'AI Related' is 4.3% of reported losses and is a floor, since victims rarely know.",
+      "survivableShare": {
+        "lo": 0.9,
+        "mid": 0.97,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "An everyday hazard; only the small share falling in worlds beyond help is excluded."
+      },
+      "evidence": [
+        {
+          "claim": "Gallup and Stop Scams Alliance, 29 Jun 2026 (probability panel, n=5,173, fielded 8 Jan–18 Feb 2026): 6% of US adults, 'an estimated 15 million people', lost money to a scam in 2025 and a further 4% say a household member did; losses of $68 billion (95% interval $33.1–114.1 billion); mean $5,578 per scam; 56% of scams cost '$500 or less'. Excludes identity theft and card fraud unless the victim was deceived.",
+          "source": "https://news.gallup.com/poll/710984/scam-victims-report-billions-lost-harm-mental-health.aspx",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "FTC testimony to the Joint Economic Committee, 25 Mar 2026: 3 million fraud reports and $15.9 billion of reported losses in 2025; imposter scams over 1 million reports and over $3.5 billion.",
+          "source": "https://www.ftc.gov/system/files/ftc_gov/pdf/ftc-testimony-jec-hearing-on-the-rising-scam-economy.pdf",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "FTC, 10 Mar 2025: reported fraud losses 'more than $12.5 billion' in 2024, up 25%; 2.6 million fraud reports; 38% of reporters lost money (27% in 2023); imposter scams $2.95 billion.",
+          "source": "https://www.ftc.gov/news-events/news/press-releases/2025/03/new-ftc-data-show-big-jump-reported-losses-fraud-125-billion-2024",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "FTC, Protecting Older Consumers 2025–2026 (19 Oct 2026): fraud losses in 2025 adjusted for under-reporting are $261.5 billion, or $38.1 billion on the conservative assumption; adults 60 and over reporting phone-call scams lost $578 million, median $3,000.",
+          "source": "https://www.ftc.gov/system/files/ftc_gov/pdf/2026-older-adults-report-10192026.pdf",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "FBI IC3 2025 report (Apr 2026): 1,008,597 complaints and $20.877 billion of losses; complaints with the descriptor 'AI Related': 22,364, with $893,346,472 of losses (4.3% of losses and 2.2% of complaints, my arithmetic); account takeover about 4,700 complaints and $359.7 million. The report's definition of 'AI Related' was not read.",
+          "source": "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Bureau of Justice Statistics, Financial Fraud in the United States, 2017 (Apr 2021): 1.25% of adults (3.0 million) were victims of personal financial fraud; mean loss $1,090; 14% reported to police.",
+          "source": "https://bjs.ojp.gov/content/pub/pdf/ffus17_sum.pdf",
+          "year": 2021,
+          "verified": true
+        },
+        {
+          "claim": "Bureau of Justice Statistics, 12 Oct 2023: 9% of persons aged 16 or over (23.9 million) experienced identity theft in 2021; bank-account misuse 3%; losses of $16.4 billion.",
+          "source": "https://www.bjs.ojp.gov/press-release/victims-identity-theft-2021",
+          "year": 2023,
+          "verified": true
+        },
+        {
+          "claim": "Javelin Strategy & Research, 21 Apr 2026 (vendor survey, n=5,010): 6 million US account-takeover victims in 2025 (5.1 million in 2024); identity-fraud losses $27.3 billion.",
+          "source": "https://javelinstrategy.com/node/35385",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Deloitte Center for Financial Services, 29 May 2024, a projection: 'gen AI could enable fraud losses to reach US$40 billion in the United States by 2027, from US$12.3 billion in 2023, a compound annual growth rate of 32%'. The page gives no source for the 2023 figure.",
+          "source": "https://www.deloitte.com/us/en/insights/industry/financial-services/deepfake-banking-fraud-risk-on-the-rise.html",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "FBI public service announcement I-120324-PSA, 3 Dec 2024: 'Create a secret word or phrase with your family to verify their identity.' Repeated in I-051525-PSA, 15 May 2025. Neither cites evidence of effectiveness.",
+          "source": "https://www.ic3.gov/PSA/2024/PSA241203",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "Google, NYU and UC San Diego, 17 May 2019: an SMS code blocked '100% of automated bots, 96% of bulk phishing attacks, and 76% of targeted attacks'; an on-device prompt 100%, 99% and 90%; 'zero users that exclusively use security keys fell victim to targeted phishing'.",
+          "source": "https://security.googleblog.com/2019/05/new-research-how-effective-is-basic.html",
+          "year": 2019,
+          "verified": true
+        },
+        {
+          "claim": "Microsoft, 1 May 2023 (Azure AD commercial accounts): multi-factor authentication cut the risk of compromise by 99.22%.",
+          "source": "https://arxiv.org/abs/2305.00945",
+          "year": 2023,
+          "verified": true
+        },
+        {
+          "claim": "CFPB Electronic Fund Transfers FAQ (updated 15 Jan 2025): a transfer made after a consumer is fraudulently induced to share access information is an unauthorized transfer under Regulation E; payments the consumer initiates are not covered.",
+          "source": "https://www.consumerfinance.gov/compliance/compliance-resources/deposit-accounts-resources/electronic-fund-transfers/electronic-fund-transfers-faqs/",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Starling Bank 'Safe Phrases' campaign, 18 Sep 2024 (vendor survey, n=3,010): 28% 'say they have been targeted by an AI voice cloning scam at least once in the past year'. No evidence is cited that a safe phrase works.",
+          "source": "https://www.starlingbank.com/news/starling-bank-launches-safe-phrases-campaign/",
+          "year": 2024,
+          "verified": true
+        }
+      ],
+      "notes": "Definition: someone in the household loses money to an impersonation scam, or loses control of a financial, email or phone account, whether or not AI was used; the rate with AI's effect removed is the baseline. Model terms: exposure on financialLoss (mean $2,000 per event; see parameters); the account-takeover part also opens the payments window for the affected account, median about 2 days, 90th percentile 10, 99th 45 (guess). Expected loss about $130 a household a year: Gallup's $68 billion over 132 million households is $515 for all scams; imposters are 22% of FTC-reported losses, $113; plus about $15 of unreimbursed takeover loss. Preparation can do a good deal: security keys or passkeys, a credit freeze, a call-back habit and a family verification phrase (see the .md). Regulation E covers unauthorised transfers but not payments the victim is talked into making. Lock-out of the household's own accounts after a takeover or a fraud flag is counted here; system-wide payment failures belong to the paymentsOutage hazard of the cyber assignment."
+    },
+    {
+      "hazard": "aiFraud",
+      "newHazard": true,
+      "location": "westernEurope",
+      "baseline": {
+        "lo": 0.015,
+        "mid": 0.035,
+        "hi": 0.07,
+        "tag": "guess",
+        "basis": "Today's rate less an unmeasured AI share of 10–20%."
+      },
+      "now": {
+        "lo": 0.02,
+        "mid": 0.04,
+        "hi": 0.08,
+        "tag": "guess",
+        "basis": "England and Wales: 7.8% of people were fraud victims in the year to March 2026, mostly card and bank fraud; about 71% of incidents involve a loss and 70% of those are fully reimbursed. I take roughly half of loss-bearing incidents as impersonation or takeover. Authorised push payment cases alone are 248,070, about 0.9% of UK households. No EU-wide annual prevalence exists."
+      },
+      "transition": {
+        "lo": 0.03,
+        "mid": 0.08,
+        "hi": 0.22,
+        "tag": "guess",
+        "basis": "As for the US entry: lo is defence keeping pace, mid a doubling, hi a failure of current authentication. No source gives a household rate."
+      },
+      "after": {
+        "lo": 0.01,
+        "mid": 0.035,
+        "hi": 0.15,
+        "tag": "guess",
+        "basis": "As for the US entry."
+      },
+      "mechanism": "As for the US. Europol's 2026 threat assessment says generative AI is helping fraudsters make scams more convincing and personal, without a quantified share.",
+      "survivableShare": {
+        "lo": 0.9,
+        "mid": 0.97,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "As for the US entry."
+      },
+      "evidence": [
+        {
+          "claim": "ONS, Crime in England and Wales, year ending March 2026 (23 Jul 2026): 4.5 million fraud incidents; 7.8% of people were victims.",
+          "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/crimeandjustice/bulletins/crimeinenglandandwales/yearendingmarch2026",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "ONS, Nature of fraud and computer misuse, year ending March 2025 (26 Mar 2026): about 3 million of 4.2 million fraud incidents involved a loss, 70% of which were fully reimbursed; 70% lost under £250 and 1% lost £10,000 or more.",
+          "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/crimeandjustice/articles/natureoffraudandcomputermisuseinenglandandwales/yearendingmarch2025",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "UK Finance Annual Fraud Report 2026 (15 Jun 2026): £1.28 billion stolen in 2025; authorised push payment fraud £576.4 million in 248,070 cases, of which £354.3 million (61%) was reimbursed; unauthorised fraud £703.4 million in 3.81 million cases.",
+          "source": "https://www.ukfinance.org.uk/news-and-insight/press-release/fraud-report-2026-press-release",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "UK Payment Systems Regulator, 8 Oct 2025: in the first nine months of mandatory reimbursement (from 7 Oct 2024, cap £85,000) 88% of claimed money was returned, against 66% a year earlier.",
+          "source": "https://www.psr.org.uk/news-and-updates/latest-news/news/one-year-on-impact-of-app-reimbursement-on-victims/",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "EBA and ECB, 15 Dec 2025: payment fraud in the EEA was €4.2 billion in 2024 (€3.5 billion in 2023); 'Strong customer authentication remains effective against the fraud types it was designed to mitigate'; users bore about 85% of the losses.",
+          "source": "https://www.eba.europa.eu/publications-and-media/press-releases/joint-eba-ecb-report-payment-fraud-strong-authentication-remains-effective-fraudsters-are-adapting",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "EU Agency for Fundamental Rights, 29 May 2026 (n=26,453): 'One in four people in the EU fell victim to online fraud in their lifetime'. A lifetime figure, not an annual one.",
+          "source": "https://fra.europa.eu/en/publication/2026/victims-online-fraud",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "European Parliament, 27 Nov 2025, on the payment services deal: for impersonation of a payment provider, 'the PSP must refund the full amount as long as the customer reports the fraud to the police and informs their PSP'. Application date not confirmed.",
+          "source": "https://www.europarl.europa.eu/news/en/press-room/20251121IPR31540/payment-services-deal-more-protection-from-online-fraud-and-hidden-fees",
+          "year": 2025,
+          "verified": true
+        }
+      ],
+      "notes": "Same definition and model terms as the US entry; mean unreimbursed loss about $1,000 per event (see parameters). Net losses are lower in Britain, where since 7 October 2024 banks must reimburse authorised push payment fraud up to £85,000 and returned 88% of claimed money; elsewhere in the EEA users bore about 85% of fraud losses in 2024. The same preparation applies."
+    },
+    {
+      "hazard": "aiFraud",
+      "newHazard": true,
+      "location": "buenosAires",
+      "baseline": {
+        "lo": 0.02,
+        "mid": 0.05,
+        "hi": 0.1,
+        "tag": "guess",
+        "basis": "Today's rate less an unmeasured AI share. In August 2024 the head of the federal cybercrime unit said no Argentine case using AI had been detected; nothing later was found."
+      },
+      "now": {
+        "lo": 0.025,
+        "mid": 0.06,
+        "hi": 0.12,
+        "tag": "guess",
+        "basis": "No survey gives Argentine fraud prevalence. Reports to the federal unit rose 21% in 2024 to 34,468, a small fraction of incidents. I assume the US rate, since impersonation by telephone and takeover of messaging accounts are common."
+      },
+      "transition": {
+        "lo": 0.04,
+        "mid": 0.12,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "As for the US entry; fluent Spanish-language voice cloning removes a barrier that protected against foreign scammers. No source gives a figure."
+      },
+      "after": {
+        "lo": 0.01,
+        "mid": 0.05,
+        "hi": 0.2,
+        "tag": "guess",
+        "basis": "As for the US entry."
+      },
+      "mechanism": "As for the US. Argentine official statistics do not yet record AI use in fraud.",
+      "survivableShare": {
+        "lo": 0.9,
+        "mid": 0.97,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "As for the US entry."
+      },
+      "evidence": [
+        {
+          "claim": "UFECI (Argentina's federal cybercrime prosecution unit), annual report 2024: 34,468 reports in 2024, against 28,456 in 2023 and 22,364 in 2021. No 2025 report is listed.",
+          "source": "https://www.mpf.gob.ar/ufeci/files/2025/06/UFECI_informe_anual_2024-1.pdf",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Chequeado, 4 Jul 2025, on the UFECI report: reports up 21.1% in 2024; online fraud 21,729 of them (63%).",
+          "source": "https://chequeado.com/el-explicador/las-denuncias-de-estafas-virtuales-aumentaron-un-21-en-2024-cuales-son-los-tipos-de-fraude-mas-comunes/",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Horacio Azzolin, head of UFECI, quoted by Chequeado, 25 Aug 2024: 'no se han detectado en el país casos de estafas virtuales en los que se haya utilizado inteligencia artificial'. No later official count found.",
+          "source": "https://chequeado.com/?p=84342",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "INDEC, Encuesta Nacional de Victimización 2017: 11.4% of adults were victims in 2016 of a non-violent crime against the person (fraud, swindle, theft without violence, bribery). A fraud-only figure was not located.",
+          "source": "https://www.indec.gob.ar/uploads/informesdeprensa/env_2017_02_18.pdf",
+          "year": 2018,
+          "verified": true
+        },
+        {
+          "claim": "'Méndez c/ Banco de la Nación', Cámara Civil y Comercial Federal, Sala I, 22 Apr 2026: a pre-approved loan taken out by phishing was annulled and the loss split 50/50 between bank and customer.",
+          "source": "https://aldiaargentina.microjuris.com/2026/06/18/fallos-phishing-nulidad-del-prestamo-preaprobado-la-venta-de-divisas-y-las-transferencias-de-los-pesos-resultantes-de-tal-accionar/",
+          "year": 2026,
+          "verified": true
+        }
+      ],
+      "notes": "Same definition and model terms as the US entry; mean unreimbursed loss about $600 per event (guess). Courts often make banks share the loss on fraudulent pre-approved loans. Every Argentine rate here is a guess. The same preparation applies."
+    },
+    {
+      "hazard": "marketCrash",
+      "newHazard": true,
+      "recommendCarry": false,
+      "location": "all",
+      "baseline": {
+        "lo": 0.035,
+        "mid": 0.05,
+        "hi": 0.08,
+        "tag": "derived",
+        "basis": "Six S&P 500 drawdowns of 30% or more since 1871 on monthly total returns is 3.9% a year (https://dqydj.com/sp-500-drawdown-history/); daily price series since 1929 give about 8% (from memory)."
+      },
+      "now": {
+        "lo": 0.05,
+        "mid": 0.1,
+        "hi": 0.2,
+        "tag": "guess",
+        "basis": "lo: base rate. mid: doubled for valuations the Bank of England compared with the dot-com peak and for the debt now behind AI investment (Fed, IMF). hi: Polymarket's 25.5% by mid-2027 for a composite 'AI bubble burst'. Press reports put indices 6–12% below their October 2026 records in mid-November."
+      },
+      "transition": {
+        "lo": 0.05,
+        "mid": 0.12,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "Large swings both ways: repricing if AI disappoints, and rate shocks or taxation if it does not. My own range; no source gives a figure."
+      },
+      "after": {
+        "lo": 0.03,
+        "mid": 0.05,
+        "hi": 0.15,
+        "tag": "guess",
+        "basis": "Base rate, with a wide upper range."
+      },
+      "mechanism": "AI firms dominate equity indices and their investment is increasingly debt-financed; a reassessment of AI's returns would cut equity values sharply. Gopinath puts a dot-com-size fall at over $20 trillion of US household wealth.",
+      "survivableShare": {
+        "lo": 0.7,
+        "mid": 0.9,
+        "hi": 0.99,
+        "tag": "guess",
+        "basis": "As for bankingCrisis."
+      },
+      "evidence": [
+        {
+          "claim": "S&P 500 since 1871, monthly total return: six drawdowns of 30% or more (a secondary compilation; not checked against a primary series).",
+          "source": "https://dqydj.com/sp-500-drawdown-history/",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Bank of England FPC record, meeting of 2 Oct 2025: 'The risk of a sharp market correction has increased.' Record of 25 Sep 2026: 'The risk of a sharper correction persists.'",
+          "source": "https://www.bankofengland.co.uk/financial-policy-committee-record/2026/september-2026",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Gita Gopinath, The Economist, 15 Oct 2025, as quoted by Benzinga: a crash on the scale of the dot-com bust would 'wipe out over $20trn in wealth for American households'; 'foreign investors could face wealth losses exceeding $15trn, or about 20% of the rest of the world's GDP'. The Economist page was blocked.",
+          "source": "https://finviz.com/news/296830",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "Federal Reserve financial accounts via FRED: equities were 48.23% of US household financial assets in Q2 2026, against 38.71% in Q1 2000.",
+          "source": "https://fred.stlouisfed.org/series/BOGZ1FL153064486Q",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Polymarket 'AI bubble burst by…?', snapshot of 12 Nov 2026 on a third-party tracker: 25.5% by 30 Jun 2027, 10.9% by 31 Dec 2026. Resolution needs three of six events within 90 days, one being Nvidia closing 50% below its high.",
+          "source": "https://polymarkettrader.com/odds/ai-bubble-burst/",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Bernstein and Cummings, New York Times, 6 Nov 2026, as summarised by GARP: a sell-off the size of the dot-com bust would cut real GDP by 1.4% and lift unemployment from 4.1% to above 7%.",
+          "source": "https://www.garp.org/risk-intelligence/technology/will-ai-cause-financial-crisis-261113",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "IMF, Global Financial Stability Report, Oct 2026, ch. 1: 'Fourteen publicly disclosed transactions since 2023 account for approximately $300 billion of aggregate equity investments', with about $650 billion of debt, 'in exchange for $1.4 trillion in future revenue commitments'.",
+          "source": "https://www.imf.org/-/media/files/publications/gfsr/2026/october/english/ch1.pdf.md",
+          "year": 2026,
+          "verified": true
+        }
+      ],
+      "notes": "Recommendation: do not carry this hazard. Definition: a fall of 30% or more in a broad equity index that lasts a year or longer. Model terms: no window; a financialLoss exposure of 30–50% of the household's equity holdings (equities are 48% of US household financial assets, far less in Europe and Argentina). Nothing on the model's list (stores, equipment, cash, documents, plans, habits) changes that loss, and how to hold savings is investment advice, which is out of scope. Its effect belongs in the model as a higher incomeShock rate and a slightly higher bankingCrisis rate."
+    }
+  ],
+  "views": [
+    {
+      "who": "Tom Davidson (Open Philanthropy), 2023",
+      "claim": "'there will probably just be a few years (~3 years) from 20%-AI to 100%-AI'; '~25% to a <1 year takeoff'; '~80% to a <10 year takeoff'.",
+      "source": "https://www.alignmentforum.org/posts/Gc9FGtdXhK9sCSEYu",
+      "year": 2023,
+      "verified": true
+    },
+    {
+      "who": "Tom Davidson (Open Philanthropy), 2021",
+      "claim": "'Overall, I place at least 10% probability on advanced AI driving explosive growth this century', explosive meaning '> 30% annual growth of gross world product'.",
+      "source": "https://www.lesswrong.com/posts/dGWMCFkETTg8EZ2bB",
+      "year": 2021,
+      "verified": true
+    },
+    {
+      "who": "Trammell and Korinek, NBER WP 31815",
+      "claim": "Full automation of production 'would dramatically raise the growth rate and lower the labor share'; wages 'may rise or fall' (abstract).",
+      "source": "https://www.nber.org/papers/w31815",
+      "year": 2023,
+      "verified": true
+    },
+    {
+      "who": "Epoch AI, GATE model",
+      "claim": "Growth 'elevated by 2-20 times'; 'we don't recommend interpreting the model outcomes as precise quantitative predictions'. The model has no wage output: it 'does not allow us to model quantities of interest such as prices, wages and interest rates' (arXiv 2503.04941).",
+      "source": "https://epoch.ai/blog/announcing-gate",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Charles Jones, NBER WP 34779",
+      "claim": "'it is distinctly possible that automating intelligence leads economic growth rates to accelerate', but only once 'the vast majority of the weak links' are automated.",
+      "source": "https://www.nber.org/papers/w34779",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "William Nordhaus, AEJ Macro 2021",
+      "claim": "'The tests suggest that the Singularity is not near.' (abstract)",
+      "source": "https://www.nber.org/papers/w21547",
+      "year": 2021,
+      "verified": true
+    },
+    {
+      "who": "Daron Acemoglu, 'The simple macroeconomics of AI'",
+      "claim": "TFP gain 'no more than 0.66% in total' over ten years; '20% of US labor tasks are exposed', of which 23% are profitable to automate.",
+      "source": "https://economics.mit.edu/sites/default/files/2024-05/The%20Simple%20Macroeconomics%20of%20AI.pdf",
+      "year": 2024,
+      "verified": true
+    },
+    {
+      "who": "Korinek and Suh, 'Scenarios for the transition to AGI'",
+      "claim": "If human task complexity is bounded and full automation is reached, wages collapse. With full automation within five years 'the wage collapse happens after about 3 years'; within 20 years wages 'grow slightly during the initial periods but then collapse before full automation is reached'.",
+      "source": "https://arxiv.org/html/2403.12107",
+      "year": 2024,
+      "verified": true
+    },
+    {
+      "who": "Davidson and Hadshar (Forethought), 'The industrial explosion'",
+      "claim": "The first phase 'will involve lots of humans doing physical labour, as their cognitive labour is no longer useful'.",
+      "source": "https://www.forethought.org/research/the-industrial-explosion",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "MacAskill and Moorhouse (Forethought), 'Preparing for the intelligence explosion'",
+      "claim": "'a century in a decade'; output 'could double every few years or even months'; if 'the labour share shrinks significantly', 'most income would come from rents on capital and land'.",
+      "source": "https://www.forethought.org/research/preparing-for-the-intelligence-explosion",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Carl Shulman, 80,000 Hours podcast",
+      "claim": "'I'm not worried about that issue of unemployment, meaning people can't earn wages to support themselves'; redistribution could support very high consumption. Read by a research subagent; the URL is reconstructed, so marked unverified.",
+      "source": "https://80000hours.org/podcast/episodes/carl-shulman-economy-agi/",
+      "year": 2024,
+      "verified": false
+    },
+    {
+      "who": "Leopold Aschenbrenner, 'Situational awareness'",
+      "claim": "'I expect us to get something that looks a lot like a drop-in remote worker'; 'AGI by 2027 is strikingly plausible'. He gives no unemployment forecast.",
+      "source": "https://situational-awareness.ai/",
+      "year": 2024,
+      "verified": true
+    },
+    {
+      "who": "AI 2027 (Kokotajlo, Alexander, Larsen, Lifland, Romeo)",
+      "claim": "Scenario for late 2026: 'The job market for junior software engineers is in turmoil'; 'there is a 10,000 person anti-AI protest in DC'. No unemployment rate is given, and the phrase '25% of remote-work jobs' is not in the text.",
+      "source": "https://ai-2027.com/",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Kulveit, Douglas, Ammann, Turan, Krueger and Duvenaud, 'Gradual disempowerment'",
+      "claim": "'even incremental improvements in AI capabilities can undermine human influence over large-scale systems'. No probabilities.",
+      "source": "https://arxiv.org/abs/2501.16946",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Drago and Laine, 'The intelligence curse'",
+      "claim": "AI 'will remove the need for regular people in our economy'. No dates and no probabilities.",
+      "source": "https://intelligence-curse.ai/",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Dario Amodei (Anthropic), 'The adolescence of technology'",
+      "claim": "He 'predicted that AI could displace half of all entry-level white collar jobs in the next 1–5 years'; AI is 'a general labor substitute for humans'; 'a 10–20% sustained annual GDP growth rate may be possible'; labour and concentration effects could bring 'public anger and perhaps even civil unrest'. No unemployment rate.",
+      "source": "https://www.darioamodei.com/essay/the-adolescence-of-technology",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Dario Amodei, as paraphrased by Axios",
+      "claim": "Axios, 28 May 2025: AI could 'spike unemployment to 10-20% in the next one to five years'. The wording is Axios's, seen only in search snippets; the page returned 403.",
+      "source": "https://www.axios.com/2025/05/28/ai-jobs-white-collar-unemployment-anthropic",
+      "year": 2025,
+      "verified": false
+    },
+    {
+      "who": "Anthropic Economic Index, January 2026",
+      "claim": "'49% of jobs have seen AI usage for at least a quarter of their tasks' (36% in the February 2025 report). The September 2025 report was 'the first report where automation usage exceeds augmentation usage'.",
+      "source": "https://www.anthropic.com/research/anthropic-economic-index-january-2026-report",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Massenkoff and McCrory (Anthropic), 5 Mar 2026",
+      "claim": "'no systematic increase in unemployment for highly exposed workers since late 2022'; job-finding for ages 22–25 in exposed occupations about 14% lower, 'just barely statistically significant'.",
+      "source": "https://www.anthropic.com/research/labor-market-impacts",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Brynjolfsson, Chandar and Chen (Stanford Digital Economy Lab), 12 Aug 2026",
+      "claim": "Employment of workers aged 22–25 in highly AI-exposed occupations is 'about 19% below where it would be if it had kept pace' (15% at the July 2025 vintage); 'Experienced workers show no comparable gap.'; 'These are descriptive patterns, not causal estimates of the effect of AI.'; 'We do not see widespread, economy-wide job displacement associated with AI.'",
+      "source": "https://digitaleconomy.stanford.edu/news/canariesaug26/",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Cline and Kaymak (Cleveland Fed), 9 Nov 2026",
+      "claim": "Unemployment for ages 23–54 'has risen by roughly 1 percentage point more in occupations most exposed to AI'; job-finding rates 'declined by roughly six percentage points more'; 'We do not find consistent evidence of elevated job separation rates among workers in occupations highly exposed to AI.'",
+      "source": "https://www.clevelandfed.org/publications/economic-commentary/2026/ec-202626-job-finding-and-unemployment-in-the-age-of-ai",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Kinder, Gimbel, Kendall and Lee (Brookings and Yale Budget Lab), 1 Oct 2025",
+      "claim": "33 months after ChatGPT, 'a labor market characterized broadly by stability, rather than disruption'.",
+      "source": "https://www.brookings.edu/articles/new-data-show-no-ai-jobs-apocalypse-for-now/",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Humlum and Vestergaard, NBER WP 33777",
+      "claim": "Danish administrative data: 'precise null effects on earnings and recorded hours', ruling out effects 'larger than 2%'.",
+      "source": "https://www.nber.org/papers/w33777",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Atkinson and Yamco (Dallas Fed), 6 Jan 2026",
+      "claim": "The share of young workers in the most exposed jobs fell from 16.4% to 15.5%; at most 0.1 percentage point of aggregate unemployment; fewer entrants, not layoffs.",
+      "source": "https://www.dallasfed.org/research/economics/2026/0106",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "New York Fed, 1 Sep 2026",
+      "claim": "Service firms using AI: 61% (40% in 2025); firms reporting AI layoffs: 4% (1%).",
+      "source": "https://libertystreeteconomics.newyorkfed.org/2026/09/businesses-are-using-ai-to-transform-work-not-cut-jobs/",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Challenger, Gray & Christmas",
+      "claim": "Employers cited AI for 112,713 announced job cuts in Jan–Jul 2026 and 184,538 since 2023.",
+      "source": "https://www.challengergray.com/?p=28706",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Goldman Sachs (Briggs), as reported by Fortune, 22 Oct 2026",
+      "claim": "Up to 9% of US workers displaced by AI (6–7% in its August 2025 estimate), adding under one percentage point a year to unemployment.",
+      "source": "https://fortune.com/2026/10/22/goldman-sachs-forecast-how-many-jobs-lost-to-ai-9-percent/",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Forecasting Research Institute, 'Forecasting the economic effects of AI', 31 Mar 2026",
+      "claim": "69 economists, 52 AI experts, 38 superforecasters. Economists give 14% to a 'rapid' scenario for 2030 ('AI outperforms all humans at many tasks, can run businesses at the level of a competent CEO'); in it, labour-force participation falls from 62.6% in 2025 'to 59.1% in 2030 and 55% in 2050', 'roughly half of this decline—equivalent to 10 million jobs—attributable to AI'; GDP growth 3.5%; unemployment 6%.",
+      "source": "https://forecastingresearch.substack.com/p/forecasting-the-economic-effects-of-ai",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Narayanan and Kapoor, 'AI as normal technology', 15 Apr 2025",
+      "claim": "'Diffusion occurs over decades, not years.'; 'transformative economic and societal impacts will be slow (on the timescale of decades)'; they list 'massive job losses in specific occupations' as a risk but say automation 'does not mean that human labor will be superfluous'.",
+      "source": "https://knightcolumbia.org/content/ai-as-normal-technology",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Frey and Osborne, 2013",
+      "claim": "'about 47 per cent of total US employment is at risk'. Arntz, Gregory and Zierahn (OECD, 2016) re-estimated 9% on a task basis. Read by a research subagent; URL reconstructed, so marked unverified.",
+      "source": "https://www.oxfordmartin.ox.ac.uk/publications/the-future-of-employment",
+      "year": 2013,
+      "verified": false
+    },
+    {
+      "who": "Metaculus, question 18664, 'US unemployment rate 10% before 2031?'",
+      "claim": "Community prediction 50%, 61 forecasters, read on 19 Nov 2026 through a reader proxy because Metaculus returned 403; resolution criteria not seen. Thin and unconfirmed: do not rely on it.",
+      "source": "https://www.metaculus.com/questions/18664/",
+      "year": 2026,
+      "verified": false
+    },
+    {
+      "who": "Metaculus, question 18060, 'Run on the Banks before 2031?'",
+      "claim": "Community prediction 10%, 29 forecasters, read on 19 Nov 2026 through a reader proxy; resolution criteria not seen. Thin and unconfirmed.",
+      "source": "https://www.metaculus.com/questions/18060/",
+      "year": 2026,
+      "verified": false
+    },
+    {
+      "who": "Federal Reserve, Financial Stability Report, 13 Nov 2026",
+      "claim": "'the largest U.S. bank holding companies have close to $1 trillion of exposure' to AI-related borrowers; advanced computing–related debt issuance 'more than $680 billion by October 2026' against '$130 billion in all of 2023'; 'AI was the top-cited risk' among 23 market contacts (87% of them, per Reuters).",
+      "source": "https://www.federalreserve.gov/publications/files/financial-stability-report-20261113.pdf",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "IMF, Global Financial Stability Report, Oct 2026",
+      "claim": "Under a bond-yield spike and AI-led correction the banking system 'would remain adequately capitalized'; 'Banks representing 22 percent of global banking assets are classified as weak'; 'Fourteen publicly disclosed transactions since 2023 account for approximately $300 billion of aggregate equity investments'.",
+      "source": "https://www.imf.org/-/media/files/publications/gfsr/2026/october/english/ch1.pdf.md",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Bank of England, Financial Policy Committee, Oct 2025",
+      "claim": "'The risk of a sharp market correction has increased.'; valuations 'comparable to the peak of the dot com bubble' on an earnings-yield measure.",
+      "source": "https://www.bankofengland.co.uk/financial-policy-committee-record/2025/october-2025",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Bank of England, Financial Policy Committee, Sep 2026",
+      "claim": "'The risk of a sharper correction persists.'; 'Rapid advances in AI capabilities have increased cyber and operational resilience risks.'; Morgan Stanley estimate that 'global AI-related debt issuance totalled around $450 billion'.",
+      "source": "https://www.bankofengland.co.uk/financial-policy-committee-record/2026/september-2026",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "BIS Bulletin 120, 7 Jan 2026",
+      "claim": "'macroeconomic and financial stability risks from the AI boom appear moderate'.",
+      "source": "https://www.bis.org/publ/bisbull120.htm",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Michael Barr (Federal Reserve), 16 Nov 2026",
+      "claim": "'the high levels of capital at the largest banks provide a bulwark against spillovers'; 'AI agents may accelerate deposit outflows during stress periods'.",
+      "source": "https://www.federalreserve.gov/newsevents/speech/barr20261116a.htm",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Pierre-Olivier Gourinchas (IMF), 14 Oct 2025, via Reuters",
+      "claim": "'This is not financed by debt, and that means that if there is a market correction, some shareholders, some equity holders, may lose out'. Overtaken by the 2026 Fed and IMF figures on debt financing.",
+      "source": "https://finance.yahoo.com/news/ai-investment-boom-may-lead-132652425.html",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Gita Gopinath, The Economist, 15 Oct 2025, as quoted by Benzinga",
+      "claim": "A crash on the scale of the dot-com bust would 'wipe out over $20trn in wealth for American households'; 'foreign investors could face wealth losses exceeding $15trn, or about 20% of the rest of the world's GDP'.",
+      "source": "https://finviz.com/news/296830",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Chow, Halperin and Mazlish",
+      "claim": "Transformative AI, aligned or not, implies a large rise in long-term real interest rates; no point estimate (paper version of Oct 2025).",
+      "source": "https://tmychow.com/papers/agi_emh.pdf",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Korinek and Lockwood, NBER WP 34873",
+      "claim": "Transformative AI erodes the 'labor income and human consumption' tax bases; evaluates robot, compute and token taxes, sovereign funds and windfall clauses.",
+      "source": "https://www.nber.org/papers/w34873",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Trammell and Patel, 'Capital in the 22nd century'",
+      "claim": "Discusses 'the risk of capital flight' and 'a global and highly progressive tax on capital'; never capital controls.",
+      "source": "https://philiptrammell.substack.com/p/capital-in-the-22nd-century",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Bernstein and Cummings, New York Times, 6 Nov 2026, as summarised by GARP",
+      "claim": "A sell-off the size of the dot-com bust would cut real GDP by 1.4% and lift unemployment from 4.1% to above 7%.",
+      "source": "https://www.garp.org/risk-intelligence/technology/will-ai-cause-financial-crisis-261113",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Polymarket, 'AI bubble burst by…?'",
+      "claim": "25.5% by 30 Jun 2027 and 10.9% by 31 Dec 2026 on a third-party tracker's snapshot of 12 Nov 2026; needs three of six events within 90 days.",
+      "source": "https://polymarkettrader.com/odds/ai-bubble-burst/",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Kalshi, 'Recession in 2027'",
+      "claim": "20% on 16 Nov 2026 (two consecutive negative quarters, Q4 2026 to Q4 2027), read on a third-party tracker.",
+      "source": "https://kalshiview.com/markets/recession-in-2027/",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "FTC, testimony of 25 Mar 2026",
+      "claim": "3 million fraud reports and $15.9 billion of reported losses in 2025; imposter scams over 1 million reports and over $3.5 billion.",
+      "source": "https://www.ftc.gov/system/files/ftc_gov/pdf/ftc-testimony-jec-hearing-on-the-rising-scam-economy.pdf",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "FTC, Protecting Older Consumers 2025–2026, 19 Oct 2026",
+      "claim": "Fraud losses in 2025 adjusted for under-reporting: $261.5 billion, or $38.1 billion on the conservative assumption.",
+      "source": "https://www.ftc.gov/system/files/ftc_gov/pdf/2026-older-adults-report-10192026.pdf",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "FBI IC3, 2025 report",
+      "claim": "1,008,597 complaints and $20.877 billion of losses; 'AI Related' descriptor: 22,364 complaints and $893,346,472 of losses.",
+      "source": "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "FBI, public service announcement of 3 Dec 2024",
+      "claim": "'Create a secret word or phrase with your family to verify their identity.' No evidence of effectiveness cited.",
+      "source": "https://www.ic3.gov/PSA/2024/PSA241203",
+      "year": 2024,
+      "verified": true
+    },
+    {
+      "who": "Gallup and Stop Scams Alliance, 29 Jun 2026",
+      "claim": "6% of US adults, 'an estimated 15 million people', lost money to a scam in 2025; a further 4% say a household member did; $68 billion lost (95% interval $33.1–114.1 billion); mean $5,578; 56% of scams cost '$500 or less'.",
+      "source": "https://news.gallup.com/poll/710984/scam-victims-report-billions-lost-harm-mental-health.aspx",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Gallup, 21 Nov 2023",
+      "claim": "15% of US households, and 8% of adults personally, were scammed in the past year (n=1,009). A different question from the 2026 survey, so not a trend.",
+      "source": "https://news.gallup.com/poll/544643/scams-relatively-common-anxiety-inducing-americans.aspx",
+      "year": 2023,
+      "verified": true
+    },
+    {
+      "who": "Javelin Strategy & Research, 21 Apr 2026",
+      "claim": "6 million US account-takeover victims in 2025 (5.1 million in 2024); a vendor survey.",
+      "source": "https://javelinstrategy.com/node/35385",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Bureau of Justice Statistics, 2017 fraud survey",
+      "claim": "1.25% of adults (3.0 million) were victims of personal financial fraud in 2017; mean loss $1,090.",
+      "source": "https://bjs.ojp.gov/content/pub/pdf/ffus17_sum.pdf",
+      "year": 2021,
+      "verified": true
+    },
+    {
+      "who": "Deloitte Center for Financial Services, 29 May 2024",
+      "claim": "A projection: 'gen AI could enable fraud losses to reach US$40 billion in the United States by 2027, from US$12.3 billion in 2023, a compound annual growth rate of 32%'.",
+      "source": "https://www.deloitte.com/us/en/insights/industry/financial-services/deepfake-banking-fraud-risk-on-the-rise.html",
+      "year": 2024,
+      "verified": true
+    },
+    {
+      "who": "Google, NYU and UC San Diego, 17 May 2019",
+      "claim": "An SMS code blocked '100% of automated bots, 96% of bulk phishing attacks, and 76% of targeted attacks'; 'zero users that exclusively use security keys fell victim to targeted phishing'.",
+      "source": "https://security.googleblog.com/2019/05/new-research-how-effective-is-basic.html",
+      "year": 2019,
+      "verified": true
+    },
+    {
+      "who": "UK Finance, Annual Fraud Report 2026",
+      "claim": "£1.28 billion stolen in 2025; authorised push payment fraud £576.4 million in 248,070 cases, 61% reimbursed.",
+      "source": "https://www.ukfinance.org.uk/news-and-insight/press-release/fraud-report-2026-press-release",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "UK Payment Systems Regulator, 8 Oct 2025",
+      "claim": "Under mandatory reimbursement 88% of claimed money was returned, against 66% a year earlier.",
+      "source": "https://www.psr.org.uk/news-and-updates/latest-news/news/one-year-on-impact-of-app-reimbursement-on-victims/",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "ONS, Crime Survey for England and Wales, year ending March 2026",
+      "claim": "4.5 million fraud incidents; 7.8% of people were victims.",
+      "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/crimeandjustice/bulletins/crimeinenglandandwales/yearendingmarch2026",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "EBA and ECB, 15 Dec 2025",
+      "claim": "EEA payment fraud €4.2 billion in 2024; 'Strong customer authentication remains effective against the fraud types it was designed to mitigate'; users bore about 85% of losses.",
+      "source": "https://www.eba.europa.eu/publications-and-media/press-releases/joint-eba-ecb-report-payment-fraud-strong-authentication-remains-effective-fraudsters-are-adapting",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "UFECI (Argentina), annual report 2024",
+      "claim": "34,468 cybercrime reports in 2024, against 28,456 in 2023.",
+      "source": "https://www.mpf.gob.ar/ufeci/files/2025/06/UFECI_informe_anual_2024-1.pdf",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Horacio Azzolin (UFECI), quoted by Chequeado, 25 Aug 2024",
+      "claim": "'no se han detectado en el país casos de estafas virtuales en los que se haya utilizado inteligencia artificial'.",
+      "source": "https://chequeado.com/?p=84342",
+      "year": 2024,
+      "verified": true
+    },
+    {
+      "who": "Anthropic, threat-intelligence report, 27 Aug 2025",
+      "claim": "One actor used Claude Code to extort 'at least 17 distinct organizations'.",
+      "source": "https://www.anthropic.com/news/detecting-countering-misuse-aug-2025",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Anthropic, 13 Nov 2025",
+      "claim": "A state-sponsored group used Claude against 'roughly thirty global targets', with AI doing '80-90% of the campaign'.",
+      "source": "https://www.anthropic.com/news/disrupting-AI-espionage",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Byman and McCabe (CSIS), 22 Oct 2026",
+      "claim": "Two AI-motivated attacks in their dataset, both in April 2026; it is not shown 'that a broader campaign has begun'.",
+      "source": "https://www.csis.org/analysis/will-ai-concerns-become-new-source-terrorism",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Pew Research Center, survey of 22–28 Jun 2026 (n=3,488)",
+      "claim": "52% of US adults are more concerned than excited about AI; 71% expect it to lead to fewer jobs.",
+      "source": "https://www.pewresearch.org/short-reads/2026/08/18/young-adults-in-the-us-are-increasingly-wary-of-ai-concerned-it-will-take-jobs/",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Hendrycks, Schmidt and Wang, 'Superintelligence strategy'",
+      "claim": "Automation 'could undermine political stability'; they propose 'a targeted value-added tax on AI services, complemented by rebates'. No probability.",
+      "source": "https://www.nationalsecurity.ai/chapter/competitiveness",
+      "year": 2025,
+      "verified": true
+    },
+    {
+      "who": "Forecasting Research Institute, LEAP wave 9, 30 Jun 2026",
+      "claim": "The panel has no question on unrest; it gives 50% that the US, UK or EU restricts an AI release by 2030.",
+      "source": "https://forecastingresearch.substack.com/p/forecasting-major-risks-from-ai",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "Manifold",
+      "claim": "A protest of 10,000 against AGI before 2030: 69%, nine traders. A thin market.",
+      "source": "https://api.manifold.markets/v0/slug/will-a-protest-attracting-10000-par-be1fd71f5496",
+      "year": 2026,
+      "verified": true
+    },
+    {
+      "who": "ILO Working Paper 121, 31 Jul 2024",
+      "claim": "26–38% of jobs in Latin America and the Caribbean are exposed to generative AI; 2–5% are at risk of full automation.",
+      "source": "https://www.ilo.org/publications/buffer-or-bottleneck-employment-exposure-generative-ai-and-digital-divide",
+      "year": 2024,
+      "verified": true
+    },
+    {
+      "who": "CESBA (Buenos Aires), reported by El Cronista, 19 Aug 2026",
+      "claim": "67% of jobs in the city of Buenos Aires fall in some gradient of exposure to AI; 'exposición no es lo mismo que pérdida'.",
+      "source": "https://www.cronista.com/economia-politica/fin-de-la-ciencia-ficcion-casi-el-70-de-los-empleos-portenos-ya-estan-expuestos-a-la-ia-donde-pega-mas/",
+      "year": 2026,
+      "verified": true
+    }
+  ],
+  "parameters": [
+    {
+      "id": "incomeShock.lossShareOfEarnings",
+      "definition": "Share of the displaced earner's previous earnings lost each year while the shock lasts.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.25,
+        "mid": 0.4,
+        "hi": 0.8,
+        "tag": "guess",
+        "basis": "Ordinary displacement: re-employed workers earn 17.5–21.8% less (Farber, https://www.nber.org/digest/sep11/job-loss-great-recession) and a third are not re-employed (BLS). I set AI displacement higher because the occupation, not just the job, loses value."
+      }
+    },
+    {
+      "id": "incomeShock.durationYears",
+      "definition": "Years for which earnings stay down.",
+      "unit": "years",
+      "value": {
+        "lo": 2,
+        "mid": 5,
+        "hi": 15,
+        "tag": "guess",
+        "basis": "Davis and von Wachter measure losses over 20 years (https://www.nber.org/digest/apr12/recessions-and-cost-job-loss); my central five years assumes partial recovery through a change of occupation."
+      }
+    },
+    {
+      "id": "incomeShock.presentValueLossYearsOfEarnings",
+      "definition": "Present value of the earnings loss, in years of the earner's previous earnings.",
+      "unit": "years of earnings",
+      "value": {
+        "lo": 1,
+        "mid": 2,
+        "hi": 5,
+        "tag": "derived",
+        "basis": "Davis and von Wachter: 1.4 years when unemployment is below 6%, 2.8 when above 8% (https://www.nber.org/digest/apr12/recessions-and-cost-job-loss). 0.4 × 5 years = 2.0. hi approaches a permanent loss."
+      }
+    },
+    {
+      "id": "incomeShock.addressableShareOfHarm",
+      "definition": "Share of the incomeShock harm that a liquid buffer of three to six months of spending can avert (borrowing costs, forced sales, missed housing payments).",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.01,
+        "mid": 0.03,
+        "hi": 0.08,
+        "tag": "guess",
+        "basis": "No study measures this. Spending falls 6% at job loss and 12% more when benefits end (Ganong and Noel, https://www.nber.org/papers/w25417, search snippet), so households do run short; the buffer covers months against a loss worth years."
+      }
+    },
+    {
+      "id": "aiFraud.meanLossUsdPerEvent.us",
+      "definition": "Mean unreimbursed loss per aiFraud event, United States.",
+      "unit": "USD",
+      "value": {
+        "lo": 700,
+        "mid": 2000,
+        "hi": 5000,
+        "tag": "derived",
+        "basis": "About one-third impersonation scams at Gallup's mean of $5,578 (https://news.gallup.com/poll/710984/scam-victims-report-billions-lost-harm-mental-health.aspx; 56% are $500 or less) and two-thirds account takeovers at an assumed $300 out of pocket."
+      }
+    },
+    {
+      "id": "aiFraud.meanLossUsdPerEvent.westernEurope",
+      "definition": "Mean unreimbursed loss per aiFraud event, western Europe.",
+      "unit": "USD",
+      "value": {
+        "lo": 300,
+        "mid": 1000,
+        "hi": 3000,
+        "tag": "guess",
+        "basis": "UK authorised push payment fraud averages £2,324 a case (£576.4 million over 248,070 cases) with 61% reimbursed (https://www.ukfinance.org.uk/news-and-insight/press-release/fraud-report-2026-press-release); elsewhere in Europe less is reimbursed."
+      }
+    },
+    {
+      "id": "aiFraud.meanLossUsdPerEvent.buenosAires",
+      "definition": "Mean unreimbursed loss per aiFraud event, Buenos Aires.",
+      "unit": "USD",
+      "value": {
+        "lo": 150,
+        "mid": 600,
+        "hi": 3000,
+        "tag": "guess",
+        "basis": "No Argentine loss data found; scaled from the US figure by income, with a long upper tail for fraudulent pre-approved loans."
+      }
+    },
+    {
+      "id": "aiFraud.expectedAnnualLossUsdPerHousehold.us",
+      "definition": "Expected unreimbursed loss per US household per year from impersonation and account takeover.",
+      "unit": "USD per year",
+      "value": {
+        "lo": 50,
+        "mid": 130,
+        "hi": 400,
+        "tag": "derived",
+        "basis": "Gallup's $68 billion (95% interval $33.1–114.1 billion) over about 132 million households is $515 for all scams; imposter scams are 22% of FTC-reported losses ($3.5 of $15.9 billion); plus about $15 for account takeover. The household count is my assumption."
+      }
+    },
+    {
+      "id": "aiFraud.aiShareOfLossesNow",
+      "definition": "Share of today's fraud losses that would not occur without generative AI.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.04,
+        "mid": 0.12,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "lo is the FBI's tagged floor, $893 million of $20.9 billion (https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf). No agency measures the true share; mid and hi are my guesses."
+      }
+    },
+    {
+      "id": "aiFraud.fractionOfTakeoverBlockedByStrongAuthentication",
+      "definition": "Share of account-takeover attempts blocked by a security key or on-device prompt on the household's main accounts.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.76,
+        "mid": 0.9,
+        "hi": 0.99,
+        "tag": "data",
+        "basis": "Google, NYU and UC San Diego 2019: against targeted attacks an SMS code blocked 76%, an on-device prompt 90% and security keys all of them (https://security.googleblog.com/2019/05/new-research-how-effective-is-basic.html). Measured before generative AI."
+      }
+    },
+    {
+      "id": "aiFraud.fractionOfFamilyImpersonationBlockedByVerificationPhrase",
+      "definition": "Share of losses from scams impersonating a family member that an agreed verification phrase plus a call-back habit prevents.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.1,
+        "mid": 0.4,
+        "hi": 0.8,
+        "tag": "guess",
+        "basis": "Recommended by the FBI (https://www.ic3.gov/PSA/2024/PSA241203), the National Cybersecurity Alliance and Starling Bank; no study of effectiveness was found. The range is my guess, limited by whether a frightened relative remembers to ask."
+      }
+    }
+  ],
+  "blockedSources": [
+    "https://www.metaculus.com/ (403, API included): current community predictions on unemployment, bank runs, recession, capital controls; two values were read through a reader proxy and are marked unverified",
+    "https://www.axios.com/2025/05/28/ai-jobs-white-collar-unemployment-anthropic (403): the exact wording of Amodei's 10–20% unemployment remark",
+    "https://www.economist.com/ (blocked): Gopinath's article of 15 Oct 2025; quotes taken from Benzinga",
+    "https://committees.parliament.uk/ and https://www.computerweekly.com/ (403): the Treasury Committee's bank-outage figures",
+    "https://www.urban.org/ (403): the brief on small savings and hardship after income loss",
+    "https://web.archive.org/ (blocked for every agent): archived copies of the above",
+    "https://www.coefficientgiving.org/ (403): Davidson's full reports; the author's summaries were read instead",
+    "https://forum.effectivealtruism.org/ (429): the Chow, Halperin and Mazlish post; the paper PDF was read instead",
+    "https://cybermonitoringcentre.com/: its own loss statements for the M&S, Co-op and JLR incidents; The Register's reports were read instead",
+    "FTC Consumer Sentinel 2025 data book and Tableau pages: all-ages median loss and share of reporters losing money in 2025",
+    "IC3 2025 report appendix: the definition of the 'AI Related' descriptor",
+    "https://budgetlab.yale.edu/ (empty response): the Yale Budget Lab version of the Oct 2025 labour-market study",
+    "https://www.pnas.org/ and PubMed (blocked): Anelli, Colantone and Stanig on robots and nationalist voting",
+    "GAO and Department of Labor OIG PDFs (binary): how late unemployment benefits were paid in 2020",
+    "UFECI annual report for 2025: not yet listed; INDEC victimisation table for fraud alone: not located",
+    "https://polymarket.com/ (DNS failure): read through third-party trackers",
+    "Charles Jones's Stanford site (certificate error): Jones and Tonetti, 'How weak links tame the growth explosion'",
+    "McAfee and Consumer Reports primary pages (403 or timeout): voice-cloning survey wording",
+    "Infobae articles of 19 May and 19 Nov 2026 on Argentine exchange controls and country risk: read by a subagent but full URLs not captured"
+  ],
+  "openQuestions": [
+    "incomeShock's baseline is ordinary job displacement. If the model wants only the AI-caused part, subtract the baseline from each later rate.",
+    "incomeShock is worth carrying only if the cash ladder can be extended to months of spending; otherwise nothing on the list addresses it. Proposed capability id: liquidBuffer.",
+    "marketCrash: I recommend not carrying it; nothing on the list addresses it without becoming investment advice.",
+    "Proposed new capability ids for fraud items: strongAuth (security keys or passkeys on main accounts), verificationPhrase, secondAccount (an account at an unrelated bank with a card on another network), creditFreeze.",
+    "bankingCrisis baseline for Buenos Aires depends on definition: 4% (deposit freezes), 7% (plus new retail exchange controls), about 15% (plus severe devaluations). I used 7%.",
+    "Every survivableShare here should be replaced by whatever the existential-risk assignment implies.",
+    "No forecaster or official body has put a probability on an AI bust causing a systemic banking crisis, on unrest from displacement, or on capital controls as an AI response; those transition rates are my guesses.",
+    "'verified' is true where I or a research subagent read the figure on the fetched page whose URL is given; the subagents' fetches pass through a summarising model, so quotations should be re-checked before print.",
+    "supplyShock here includes the cyber route, which the cyber assignment also carries as cyberSupplyShock. Use one or the other: each supplyShock entry gives the rate without the cyber part in its notes.",
+    "Loss of access to services when identity systems fail: I add no hazard. System-wide failures are the cyber assignment's paymentsOutage; lock-out of a household's own accounts is inside aiFraud; the link from AI to identity-system failure is speculation. Ordinary IT outages of a day or more that are neither attacks nor AI-caused are in neither file: step 2 guessed 0.5% a year, and UK banks reported at least 803 hours of unplanned outages in 158 incidents at nine firms between January 2023 and February 2025 (Treasury Committee, 6 Mar 2025, search snippets only).",
+    "civilUnrest is carried by the war assignment. My finding for it: unrest from job displacement is narrative only in every source read (Amodei, Hendrycks et al., AI 2027); no forecaster gives a probability."
+  ]
+}

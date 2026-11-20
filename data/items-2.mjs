@@ -241,6 +241,42 @@ export const items = [
   { id: 'document-box', from: 'fire-document-box', group: 'Money and documents', effects: (s, T2) => reduceAll(s, T2, { on: 'hardship' }) },
   { id: 'data-backup', from: 'data-backup', group: 'Money and documents', effects: (s, T2) => reduceAll(s, T2, { on: 'hardship' }) },
 
+  // Two entries that come from the AI research (research/ai/ai-economy.md),
+  // not from a step 3 item. Both act on scams and account takeover.
+  {
+    id: 'verification-phrase', group: 'Money and documents',
+    name: 'Family verification phrase and call-back habit',
+    spec: 'Agree a phrase that family members will ask for before acting on any urgent request for money, and the habit of hanging up and calling back on a number you already have.',
+    units: 'arrangement', confidence: 'guess', scalesWith: 'household',
+    price: 0, lifeYears: 5, upkeepUsdPerYear: 0, everydayShare: 0, volumeLitres: 0, lateBuyClass: 'none',
+    setupHours: guess(0.2, 0.5, 1.5, "The model's own guess."),
+    upkeepHoursPerYear: guess(0.05, 0.2, 0.5, "The model's own guess: a yearly reminder."),
+    reliability: guess(0.4, 0.7, 0.9, "The model's own guess: the chance that the person targeted remembers to use it.", 1),
+    note: 'Recommended by the FBI, the National Cybersecurity Alliance and others. No study of its effectiveness exists, so the fraction is a guess.',
+    effects: () => [{
+      type: 'reduce', target: 'financialLoss', hazards: ['aiFraud'], on: 'hardship',
+      fraction: guess(0.02, 0.12, 0.35, 'Imposter scams are most of the expected loss (ai-economy.md); the share a phrase and a call-back would stop is unmeasured.', 1),
+      adherence: guess(0.3, 0.6, 0.9, "The model's own guess.", 1),
+    }],
+  },
+  {
+    id: 'account-protection', group: 'Money and documents',
+    name: 'Passkeys or hardware keys, credit freeze and port-out PIN',
+    spec: 'Passkeys or hardware keys on email, bank and phone accounts; a credit freeze; a port-out PIN with the mobile carrier; transaction alerts.',
+    units: 'set-up', confidence: 'guess', scalesWith: 'household',
+    price: guess(0, 50, 100, 'Two hardware keys; passkeys alone cost nothing.'),
+    lifeYears: 8, upkeepUsdPerYear: 0, everydayShare: 0.5, volumeLitres: 0, lateBuyClass: 'none',
+    setupHours: guess(1, 3, 6, "The model's own guess."),
+    upkeepHoursPerYear: guess(0.2, 0.5, 1.5, "The model's own guess."),
+    reliability: guess(0.8, 0.95, 0.99, "The model's own guess.", 1),
+    note: 'In a 2019 Google study hardware keys blocked every targeted account-takeover attempt; but takeover is the smaller part of the loss, and no study measures a credit freeze or a port-out PIN.',
+    effects: () => [{
+      type: 'reduce', target: 'financialLoss', hazards: ['aiFraud'], on: 'hardship',
+      fraction: guess(0.03, 0.1, 0.25, 'Account takeover is roughly a tenth of the expected loss (ai-economy.md: about $15 of $130 a year); hardware keys stop nearly all of it.', 1),
+      adherence: 0.9,
+    }],
+  },
+
   // ---- security ----
   { id: 'pepper-spray', from: 'pepper-spray', group: 'Security', effects: (s, T2) => reduceAll(s, T2, { on: 'mortality' }) },
   {

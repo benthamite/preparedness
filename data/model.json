@@ -507,6 +507,219 @@
      "survivable": 0.99
     }
    },
+   "bankingCrisis": {
+    "us": {
+     "baseline": [
+      0.0003,
+      0.001,
+      0.003
+     ],
+     "now": [
+      0.001,
+      0.0015,
+      0.005
+     ],
+     "transition": [
+      0.001,
+      0.005,
+      0.03
+     ],
+     "after": [
+      0.0003,
+      0.001,
+      0.01
+     ],
+     "survivable": 0.85
+    },
+    "westernEurope": {
+     "baseline": [
+      0.0007,
+      0.002,
+      0.005
+     ],
+     "now": [
+      0.002,
+      0.0025,
+      0.007
+     ],
+     "transition": [
+      0.002,
+      0.008,
+      0.04
+     ],
+     "after": [
+      0.0005,
+      0.002,
+      0.015
+     ],
+     "survivable": 0.85
+    },
+    "buenosAires": {
+     "baseline": [
+      0.04,
+      0.07,
+      0.15
+     ],
+     "now": [
+      0.07,
+      0.08,
+      0.18
+     ],
+     "transition": [
+      0.07,
+      0.12,
+      0.25
+     ],
+     "after": [
+      0.02,
+      0.06,
+      0.15
+     ],
+     "survivable": 0.9
+    }
+   },
+   "supplyShock": {
+    "us": {
+     "baseline": [
+      0.02,
+      0.045,
+      0.08
+     ],
+     "now": [
+      0.045,
+      0.05,
+      0.075
+     ],
+     "transition": [
+      0.045,
+      0.08,
+      0.2
+     ],
+     "after": [
+      0.015,
+      0.035,
+      0.1
+     ],
+     "survivable": 0.85
+    },
+    "westernEurope": {
+     "baseline": [
+      0.03,
+      0.06,
+      0.1
+     ],
+     "now": [
+      0.06,
+      0.07,
+      0.1
+     ],
+     "transition": [
+      0.06,
+      0.11,
+      0.25
+     ],
+     "after": [
+      0.02,
+      0.05,
+      0.12
+     ],
+     "survivable": 0.85
+    },
+    "buenosAires": {
+     "baseline": [
+      0.08,
+      0.15,
+      0.25
+     ],
+     "now": [
+      0.15,
+      0.155,
+      0.19
+     ],
+     "transition": [
+      0.15,
+      0.19,
+      0.35
+     ],
+     "after": [
+      0.06,
+      0.13,
+      0.25
+     ],
+     "survivable": 0.9
+    }
+   },
+   "aiFraud": {
+    "us": {
+     "baseline": [
+      0.025,
+      0.05,
+      0.09
+     ],
+     "now": [
+      0.03,
+      0.06,
+      0.1
+     ],
+     "transition": [
+      0.05,
+      0.12,
+      0.3
+     ],
+     "after": [
+      0.01,
+      0.05,
+      0.2
+     ],
+     "survivable": 0.97
+    },
+    "westernEurope": {
+     "baseline": [
+      0.015,
+      0.035,
+      0.07
+     ],
+     "now": [
+      0.02,
+      0.04,
+      0.08
+     ],
+     "transition": [
+      0.03,
+      0.08,
+      0.22
+     ],
+     "after": [
+      0.01,
+      0.035,
+      0.15
+     ],
+     "survivable": 0.97
+    },
+    "buenosAires": {
+     "baseline": [
+      0.02,
+      0.05,
+      0.1
+     ],
+     "now": [
+      0.025,
+      0.06,
+      0.12
+     ],
+     "transition": [
+      0.04,
+      0.12,
+      0.3
+     ],
+     "after": [
+      0.01,
+      0.05,
+      0.2
+     ],
+     "survivable": 0.97
+    }
+   },
    "greatPowerWar": {
     "us": {
      "baseline": [
@@ -10881,6 +11094,91 @@
     "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
    }
   },
+  "aiFraud": {
+   "label": "Scam or account takeover",
+   "definition": "Someone in the household loses money to an impersonation scam, or loses control of a financial, email or phone account, whether or not AI was used.",
+   "tickBox": null,
+   "probability": {
+    "us": {
+     "lo": 0.025,
+     "mid": 0.05,
+     "hi": 0.09,
+     "max": 1,
+     "tag": "derived",
+     "basis": "Today's rate less an AI share of 10–20%, which nobody has measured; the FBI's tagged floor is 4.3% of losses. Reported losses rose 25% in 2024 and 27% in 2025 (FTC), but no source attributes the rise to AI."
+    },
+    "westernEurope": {
+     "lo": 0.015,
+     "mid": 0.035,
+     "hi": 0.07,
+     "max": 1,
+     "tag": "guess",
+     "basis": "Today's rate less an unmeasured AI share of 10–20%."
+    },
+    "buenosAires": {
+     "lo": 0.02,
+     "mid": 0.05,
+     "hi": 0.1,
+     "max": 1,
+     "tag": "guess",
+     "basis": "Today's rate less an unmeasured AI share. In August 2024 the head of the federal cybercrime unit said no Argentine case using AI had been detected; nothing later was found."
+    }
+   },
+   "windows": {
+    "payments": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.25,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "The share of events that lock the household out of an account. A guess.",
+      "max": 1
+     },
+     "days": {
+      "p50": 2,
+      "p90": 10,
+      "p99": 45
+     }
+    }
+   },
+   "leave": {
+    "feasible": 0,
+    "earliestDay": 0,
+    "fixedUsdPerHousehold": 0,
+    "usdPerPersonDay": 0
+   },
+   "warningDays": 0,
+   "lateBuy": {
+    "staple": 0,
+    "specialty": 0
+   },
+   "exposures": [
+    {
+     "channel": "financialLoss",
+     "financialUsdPerHousehold": {
+      "lo": 500,
+      "mid": 2000,
+      "hi": 6000,
+      "tag": "guess",
+      "basis": "ai-economy.json: mean unreimbursed loss per event in the United States."
+     }
+    }
+   ],
+   "exposureScale": {
+    "location": {
+     "us": 1,
+     "westernEurope": 0.5,
+     "buenosAires": 0.3
+    }
+   },
+   "durationScale": {
+    "lo": 0.6,
+    "mid": 1,
+    "hi": 1.7,
+    "tag": "guess",
+    "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
+   }
+  },
   "greatPowerWar": {
    "label": "War between great powers, short of nuclear",
    "definition": "A conventional war between the United States and China, or a Russia–NATO war of similar scale, that does not go nuclear. Its financial effects are not counted here: nothing on the list addresses them.",
@@ -20642,6 +20940,141 @@
     "https://www.iii.org/fact-statistic/facts-statistics-homeowners-and-renters-insurance"
    ],
    "provenance": "money-docs:data-backup"
+  },
+  {
+   "id": "verification-phrase",
+   "name": "Family verification phrase and call-back habit",
+   "group": "Money and documents",
+   "spec": "Agree a phrase that family members will ask for before acting on any urgent request for money, and the habit of hanging up and calling back on a number you already have.",
+   "units": "arrangement",
+   "note": "Recommended by the FBI, the National Cybersecurity Alliance and others. No study of its effectiveness exists, so the fraction is a guess.",
+   "confidence": "guess",
+   "scalesWith": "household",
+   "price": 0,
+   "lifeYears": 5,
+   "setupHours": {
+    "lo": 0.2,
+    "mid": 0.5,
+    "hi": 1.5,
+    "tag": "guess",
+    "basis": "The model's own guess."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0.05,
+    "mid": 0.2,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "The model's own guess: a yearly reminder."
+   },
+   "upkeepUsdPerYear": 0,
+   "everydayShare": 0,
+   "volumeLitres": 0,
+   "reliability": {
+    "lo": 0.4,
+    "mid": 0.7,
+    "hi": 0.9,
+    "tag": "guess",
+    "basis": "The model's own guess: the chance that the person targeted remembers to use it.",
+    "max": 1
+   },
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "reduce",
+     "target": "financialLoss",
+     "hazards": [
+      "aiFraud"
+     ],
+     "on": "hardship",
+     "fraction": {
+      "lo": 0.02,
+      "mid": 0.12,
+      "hi": 0.35,
+      "tag": "guess",
+      "basis": "Imposter scams are most of the expected loss (ai-economy.md); the share a phrase and a call-back would stop is unmeasured.",
+      "max": 1
+     },
+     "adherence": {
+      "lo": 0.3,
+      "mid": 0.6,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "The model's own guess.",
+      "max": 1
+     }
+    }
+   ],
+   "sources": [],
+   "provenance": "config"
+  },
+  {
+   "id": "account-protection",
+   "name": "Passkeys or hardware keys, credit freeze and port-out PIN",
+   "group": "Money and documents",
+   "spec": "Passkeys or hardware keys on email, bank and phone accounts; a credit freeze; a port-out PIN with the mobile carrier; transaction alerts.",
+   "units": "set-up",
+   "note": "In a 2019 Google study hardware keys blocked every targeted account-takeover attempt; but takeover is the smaller part of the loss, and no study measures a credit freeze or a port-out PIN.",
+   "confidence": "guess",
+   "scalesWith": "household",
+   "price": {
+    "lo": 0,
+    "mid": 50,
+    "hi": 100,
+    "tag": "guess",
+    "basis": "Two hardware keys; passkeys alone cost nothing."
+   },
+   "lifeYears": 8,
+   "setupHours": {
+    "lo": 1,
+    "mid": 3,
+    "hi": 6,
+    "tag": "guess",
+    "basis": "The model's own guess."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0.2,
+    "mid": 0.5,
+    "hi": 1.5,
+    "tag": "guess",
+    "basis": "The model's own guess."
+   },
+   "upkeepUsdPerYear": 0,
+   "everydayShare": 0.5,
+   "volumeLitres": 0,
+   "reliability": {
+    "lo": 0.8,
+    "mid": 0.95,
+    "hi": 0.99,
+    "tag": "guess",
+    "basis": "The model's own guess.",
+    "max": 1
+   },
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "reduce",
+     "target": "financialLoss",
+     "hazards": [
+      "aiFraud"
+     ],
+     "on": "hardship",
+     "fraction": {
+      "lo": 0.03,
+      "mid": 0.1,
+      "hi": 0.25,
+      "tag": "guess",
+      "basis": "Account takeover is roughly a tenth of the expected loss (ai-economy.md: about $15 of $130 a year); hardware keys stop nearly all of it.",
+      "max": 1
+     },
+     "adherence": 0.9
+    }
+   ],
+   "sources": [],
+   "provenance": "config"
   },
   {
    "id": "pepper-spray",
