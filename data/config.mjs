@@ -30,6 +30,7 @@ export default {
     cooking: 'electric', heating: 'electric', airConditioning: true, pumpedWater: false, car: true,
     household, ticks: { ...ticks, coldWinters: true, hotSummers: true },
     owned: {}, probabilities: {}, parameters: {},
+    pantryDays: 14,
     ai: { timeline: 'none', concern: 0.5, horizonYears: 5 },
   },
 
@@ -49,7 +50,40 @@ export default {
   // from the research file that owns the need unless given here.
   needs: {
     water: { label: 'Drinking water', per: 'person', gap: 'water', special: 'water', demandPerPersonDay: 3 },
-    food: { label: 'Food', per: 'person', gap: 'food', special: 'food', demandPerPersonDay: 1, noCookShare: 0.5 },
+    food: {
+      label: 'Food', per: 'person', gap: 'food', special: 'food', demandPerPersonDay: 1,
+      // The reader says how many days they could eat from the kitchen now;
+      // the research median, 14, is the default (food.json).
+      baselineSetting: 'pantryDays',
+      // Of what is in the kitchen: half can be eaten as it is, about a
+      // quarter needs cooking, and the rest is chilled or frozen and is lost
+      // in a power cut of five days or more (food.json, note 1).
+      cookShare: 0.23, chilledShare: 0.27,
+      // After a while without a cooker a household improvises one. The
+      // model's own guess: a week in a house, two in a flat.
+      improviseCookDays: { house: 7, apartment: 14 },
+      // food.json sizes its multipliers for age and illness on the first
+      // weeks; beyond a month without food they are held to 3. The 40 for a
+      // critical drug is, the researcher says, really a small addition and
+      // not a scaling; it is set to 1.
+      lateMultiplierCap: 3,
+      adjust: { multipliers: { criticalDrug: { hardship: 2, mortality: 1 } } },
+      // Short rations. Half rations: food.json note 3 ($20, $40, $60 a
+      // person-day; 1 micromort a day for three months, then 10; none of 36
+      // men died on half rations for 24 weeks in the Minnesota experiment).
+      // Quarter rations: the verifier's figures, anchored on the Dutch famine
+      // of 1944-45 (about 13 micromorts a day under 65 on 500 to 900 kcal).
+      rationing: {
+        half: {
+          hardship: { tag: 'guess', basis: 'food.json note 3.', steps: [{ fromDay: 1, lo: 8, mid: 20, hi: 60 }, { fromDay: 31, lo: 15, mid: 40, hi: 120 }, { fromDay: 91, lo: 25, mid: 60, hi: 180 }] },
+          mortality: { tag: 'guess', basis: 'food.json note 3.', steps: [{ fromDay: 1, lo: 0.1, mid: 1, hi: 5 }, { fromDay: 91, lo: 1, mid: 10, hi: 50 }] },
+        },
+        quarter: {
+          hardship: { tag: 'guess', basis: 'Scaled up from the half-ration figures.', steps: [{ fromDay: 1, lo: 20, mid: 60, hi: 180 }, { fromDay: 31, lo: 35, mid: 100, hi: 300 }, { fromDay: 91, lo: 50, mid: 150, hi: 450 }] },
+          mortality: { tag: 'guess', basis: 'Dutch famine, 1944-45.', steps: [{ fromDay: 1, lo: 1, mid: 5, hi: 20 }, { fromDay: 31, lo: 4, mid: 15, hi: 60 }, { fromDay: 91, lo: 10, mid: 40, hi: 150 }] },
+        },
+      },
+    },
     hotMeals: {
       label: 'Hot food and drink', per: 'person', gap: 'cookOut', demandPerPersonDay: 0.25, baselineDays: 0,
       hardship: flatCurve(1, 3, 10, 'food.json, camp-stove: hot meals and drinks for a household that would otherwise eat cold are worth about $3 a person a day.'),
@@ -97,7 +131,7 @@ export default {
   channels: {
     infection: null, smoke: null, fallout: null, co: null, fire: null, trauma: null, violence: null, financialLoss: null,
     // Everyday respiratory infection that routine vaccination averts.
-    seasonalInfection: { multipliers: { age60to74: { mortality: 16 }, age75plus: { mortality: 85 }, child: { mortality: 0.25 } } },
+    seasonalInfection: { multipliers: { age60to74: { mortality: 6.2 }, age75plus: { mortality: 32 }, child: { mortality: 0.1 } } },
   },
 
   sideRisks: {
@@ -122,12 +156,21 @@ export default {
     pandemicModerate: {
       label: 'Pandemic on the scale of COVID-19', from: 'tail-pandemic',
       needScale: { emergencyCare: { mortality: 0.4 } },
+      // tail-pandemic.md: at these ages Western Europe lost about half as
+      // many to COVID-19 as the United States.
+      exposureScale: { location: { westernEurope: 0.5 } },
     },
     pandemicSevere: {
       label: 'Pandemic far worse than COVID-19', from: 'tail-pandemic',
       needScale: { emergencyCare: { mortality: 0.4 } },
     },
-    nuclearNear: { label: 'Nuclear war reaching your region', from: 'tail-nuclear-grid' },
+    nuclearNear: {
+      label: 'Nuclear war reaching your region', from: 'tail-nuclear-grid',
+      // The nuclear researcher asks for the fallout figure to be scaled by
+      // dwelling: a large block or masonry building shields; a light-frame
+      // house does not.
+      exposureScale: { dwelling: { apartment: 0.6, house: 1.4 } },
+    },
     nuclearFar: { label: 'Nuclear war elsewhere', from: 'tail-nuclear-grid' },
     gridLong: { label: 'Grid failure for weeks or months', from: 'tail-nuclear-grid' },
     bankingCrisis: { label: 'Bank freeze or currency crisis', from: 'tail-finance-unrest' },
@@ -183,7 +226,9 @@ export default {
       label: 'Scam or account takeover', aiBase: true,
       definition: 'Someone in the household loses money to an impersonation scam, or loses control of a financial, email or phone account, whether or not AI was used.',
       profile: {
-        windows: { payments: { pOccur: guess(0.1, 0.25, 0.5, 'The share of events that lock the household out of an account. A guess.', 1), days: { p50: 2, p90: 10, p99: 45 } } },
+        // Being locked out of one account is not being unable to pay, so the
+        // event opens no payments window.
+        windows: {},
         leave: { feasible: 0, earliestDay: 0, fixedUsdPerHousehold: 0, usdPerPersonDay: 0 },
         warningDays: 0, lateBuy: { staple: 0, specialty: 0 },
         exposures: [{ channel: 'financialLoss', financialUsdPerHousehold: guess(500, 2000, 6000, 'ai-economy.json: mean unreimbursed loss per event in the United States.') }],
@@ -222,10 +267,13 @@ export default {
       everyday: true,
       label: 'House fire (everyday)',
       definition: 'The yearly risk of death and loss from fire at home, for a home with no working smoke alarm.',
+      // The research figure for property is gross of insurance and of who
+      // owns the building; the researcher puts the household's own share at
+      // 0.25 to 0.4. Location factors are fire-co.json's.
       profile: (R, T) => ({
         probability: { all: 1 }, windows: {},
-        exposures: [{ channel: 'fire', micromortsPerPerson: T(R.channels.fire.everydayAnnualMicromortsPerPerson), financialUsdPerHousehold: T(R.channels.fire.everydayAnnualUsdPerHousehold) }],
-        exposureScale: { dwelling: { house: 1.15, apartment: 0.5 } },
+        exposures: [{ channel: 'fire', micromortsPerPerson: T(R.channels.fire.everydayAnnualMicromortsPerPerson), financialUsdPerHousehold: T(R.channels.fire.everydayAnnualUsdPerHousehold, { scale: 0.35 }) }],
+        exposureScale: { dwelling: { house: 1.15, apartment: 0.5 }, location: { westernEurope: 0.5, buenosAires: 1 } },
       }),
     },
     coIncident: {
@@ -235,7 +283,11 @@ export default {
       profile: (R, T) => ({
         probability: { all: 1 }, windows: {},
         exposures: [{ channel: 'co', micromortsPerPerson: T(R.channels.co.everydayAnnualMicromortsPerPerson), financialUsdPerHousehold: T(R.channels.co.everydayAnnualUsdPerHousehold) }],
-        exposureScale: { dwelling: { house: 1.15, apartment: 0.5 } },
+        // fire-co.json gives 0.05 micromorts a year for a home that burns no
+        // fuel and has no attached garage, against 1.1 for one that does;
+        // and location factors of 0.8 for Western Europe and 2 for Buenos
+        // Aires, where unflued gas heaters are common in flats.
+        exposureScale: { dwelling: { house: 1.15, apartment: 0.5 }, location: { westernEurope: 0.8, buenosAires: 2 }, conditions: [{ if: 'allElectric', factor: 0.09 }] },
       }),
     },
     homeMedicalEmergency: {
@@ -253,7 +305,9 @@ export default {
       definition: 'The yearly deaths from influenza, COVID-19 and similar infections that routine vaccination averts.',
       profile: () => ({
         probability: { all: 1 }, windows: {},
-        exposures: [{ channel: 'seasonalInfection', micromortsPerPerson: { lo: 2, mid: 8, hi: 26, tag: 'derived', basis: 'medical.json, routine-vaccinations: yearly micromorts averted for a healthy adult aged 15 to 59 against skipping all routine vaccines; 130 at ages 60 to 74 and 680 at 75 or over.' } }],
+        // The figure is for an adult of average risk, like the other everyday
+        // baselines, not for a healthy one (8).
+        exposures: [{ channel: 'seasonalInfection', micromortsPerPerson: { lo: 5, mid: 21, hi: 68, tag: 'derived', basis: 'medical.json, routine-vaccinations: yearly micromorts averted for an adult aged 15 to 59 of average risk against skipping all routine vaccines; 130 at ages 60 to 74 and 680 at 75 or over.' } }],
       }),
     },
     violentCrime: {
@@ -262,7 +316,12 @@ export default {
       definition: 'The yearly risk of death and loss from burglary and assault at home.',
       profile: (R, T) => ({
         probability: { all: 1 }, windows: {},
-        exposures: [{ channel: 'violence', micromortsPerPerson: T(R.channels.violence.everydayAnnualMicromortsPerPerson), financialUsdPerHousehold: T(R.channels.violence.everydayAnnualUsdPerHousehold) }],
+        // The research figure of 2 micromorts rests on a cross-check that
+        // read a five-year count of burglary homicides as a yearly one; with
+        // that corrected it is about 1.2. Location factors are the
+        // researcher's, blended over deaths and dollars.
+        exposures: [{ channel: 'violence', micromortsPerPerson: guess(0.4, 1.2, 2.5, 'plans-skills-security.json, corrected: about 0.3 from burglary (FBI expanded homicide data, 80 to 110 a year) plus 0.8 from robbery at home.'), financialUsdPerHousehold: T(R.channels.violence.everydayAnnualUsdPerHousehold) }],
+        exposureScale: { location: { westernEurope: 0.4, buenosAires: 1.5 } },
       }),
     },
   },
@@ -278,6 +337,14 @@ export default {
       long: { from: 'preset-long', label: 'Long: the 2040s (forecasting panels, researcher surveys)' },
       never: { from: 'preset-not-this-century', label: 'Not this century' },
     },
+    // In these files the low and high figures for the rate with AI removed
+    // are bounds on that rate, not the sceptic's and the concerned view of
+    // it; the middle figure is used at every level of concern.
+    baselineIsPoint: ['ai-economy'],
+    // Slips in the researchers' own arithmetic, found on verification.
+    corrections: [
+      { hazard: 'pandemicSevere', location: 'all', field: 'now', mid: 0.004, reason: 'ai-bio.md: 0.3% + 0.8% x 0.12 = 0.396%, entered as 0.45%.' },
+    ],
     // Rates the researchers gave for hazards the model does not carry.
     unused: {
       cyberSupplyShock: 'Its main effect is on motor fuel, for which the model has no window.',

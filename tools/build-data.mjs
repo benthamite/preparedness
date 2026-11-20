@@ -66,7 +66,16 @@ if (existsSync(aiDir)) {
   for (const f of readdirSync(aiDir).filter((x) => x.endsWith('.json')).sort()) {
     const d = JSON.parse(readFileSync(join(aiDir, f), 'utf8'));
     if (d.kind !== 'ai') continue;
-    for (const r of d.hazardRates || []) (AI.rates[r.hazard] ||= {})[r.location] = { ...r, file: basename(f, '.json') };
+    for (const r0 of d.hazardRates || []) {
+      const r = { ...r0, file: basename(f, '.json') };
+      // Where a file gives bounds on the rate with AI removed, not views of
+      // it, the middle figure serves at every level of concern.
+      if (((config.ai || {}).baselineIsPoint || []).includes(r.file)) r.baseline = { ...r.baseline, lo: r.baseline.mid, hi: r.baseline.mid };
+      for (const c of (config.ai || {}).corrections || []) {
+        if (c.hazard === r.hazard && c.location === r.location) r[c.field] = { ...r[c.field], mid: c.mid };
+      }
+      (AI.rates[r.hazard] ||= {})[r.location] = r;
+    }
     for (const t of d.timelines || []) AI.timelines.push(t);
     for (const x of d.parameters || []) AI.params[x.id] = x;
   }
@@ -101,7 +110,7 @@ for (const [id, spec] of Object.entries(config.needs)) {
       baselineDays: T(r.baselineCoverageDays),
       hardship: curve(r.hardshipUsdPerPersonDay, a.hardshipScale),
       mortality: curve(r.mortalityMicromortsPerPersonDay, a.mortalityScale),
-      multipliers: mults(r.multipliers),
+      multipliers: { ...(mults(r.multipliers) || {}), ...(a.multipliers || {}) },
     } : {}),
     ...engine,
   };
@@ -123,7 +132,8 @@ function profileOf(h) {
   }
   // The heat-wave researcher gives the length of the heat itself beside the
   // canonical windows.
-  if (h.heat) windows.heat = { pOccur: T(h.heat.pOccur, { max: 1 }), days: h.heat.days, tag: h.heat.tag, basis: h.heat.basis };
+  const heat = h.heat || (h.extraWindows && h.extraWindows.heat);
+  if (heat) windows.heat = { pOccur: T(heat.pOccur, { max: 1 }), days: heat.days, tag: heat.tag, basis: heat.basis };
   return {
     windows,
     coldShare: T(h.coldShare, { max: 1 }),
@@ -139,6 +149,10 @@ function profileOf(h) {
     exposures: (h.exposures || []).map((x) => ({
       channel: x.channel,
       micromortsPerPerson: T(x.micromortsPerPerson),
+      // Some exposures are given separately for each place.
+      micromortsPerPersonByLocation: x.micromortsPerPersonByLocation
+        ? Object.fromEntries(Object.entries(x.micromortsPerPersonByLocation).filter(([, q]) => q && typeof q === 'object').map(([l, q]) => [l, T(q)]))
+        : undefined,
       hardshipUsdPerPerson: T(x.hardshipUsdPerPerson),
       financialUsdPerHousehold: T(x.financialUsdPerHousehold),
       multipliers: mults(x.multipliers),
@@ -263,6 +277,11 @@ for (const spec of config.items) {
     reliability: pickQ('reliability', { max: 1 }),
     lateBuyClass: spec.lateBuyClass || src.lateBuyClass || 'none',
     lateBuyLevel: spec.lateBuyLevel,
+    lateUptake: spec.lateUptake,
+    hoursPerPerson: spec.hoursPerPerson,
+    everydayUpkeep: spec.everydayUpkeep,
+    setupLifeYears: spec.setupLifeYears,
+    noReview: spec.noReview,
     requires: spec.requires !== undefined ? spec.requires : (src.requires || []),
     conditions: spec.conditions !== undefined ? spec.conditions : (src.conditions || []),
     bundleWith: spec.bundleWith,
@@ -311,6 +330,25 @@ const model = {
   defaults: config.defaults,
   parameters, needs, channels, hazards, items,
 };
+// An effect that names hazards none of which exposes its target can never act.
+for (const it of items) {
+  for (const fx of it.effects) {
+    if (fx.type !== 'reduce' || !(fx.target in channels)) continue;
+    const scope = !fx.hazards || fx.hazards.includes('all') ? Object.keys(hazards) : fx.hazards;
+    const sideRisk = items.some((x) => x.effects.some((e) => e.type === 'sideRisk' && e.channel === fx.target));
+    const exposed = scope.some((h) => hazards[h] && [hazards[h], ...Object.values(hazards[h].byLocation || {})].some((p) => (p.exposures || []).some((x) => x.channel === fx.target)));
+    if (!exposed && !sideRisk) warn(`item ${it.id}: reduces ${fx.target} in ${scope.slice(0, 4).join(', ')}, where nothing exposes it`);
+  }
+}
+// The sceptic's AI effect should not exceed the concerned view's.
+for (const [hz, byLoc] of Object.entries((ai || {}).hazards || {})) {
+  for (const [l, r] of Object.entries(byLoc)) {
+    for (const k of ['now', 'transition']) {
+      if (r[k][0] - r.baseline[0] > r[k][2] - r.baseline[2] + 1e-12) warn(`AI rates for ${hz} in ${l}: the ${k} effect falls as concern rises`);
+    }
+  }
+}
+
 // Drop undefined values and check every engine triple is well-formed.
 const clean = JSON.parse(JSON.stringify(model));
 (function check(node, path) {

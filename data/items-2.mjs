@@ -1,10 +1,16 @@
 // Model entries for food, fire and carbon monoxide, respiratory protection,
-// radiation, evacuation, money and documents, security, tools, plans and
-// structural measures. See items-1.mjs for the conventions.
+// radiation, evacuation, money and documents, protection of the home, tools,
+// plans and structural measures. See items-1.mjs for the conventions.
 
-import { guess, reduce, reduceAll } from './helpers.mjs';
+import { guess, reduce, reduceAll, OUTAGES } from './helpers.mjs';
 
 const days = (n, units) => ({ label: `${n} days`, units: units === undefined ? n : units });
+
+// The share of a pandemic's risk that falls before countermeasures arrive
+// and before respirators can be bought again (tail-pandemic.json,
+// shareBeforeCountermeasure). A respirator bought in advance, and a stock of
+// food to stay home on, earn their keep in that period only.
+const EARLY = { pandemicModerate: 0.55, pandemicSevere: 0.85 };
 
 // Staying home through a severe pandemic. respiratory.md section 3: the share
 // of infection risk avoided is H x T(D), where H = 0.78 for a household in
@@ -23,51 +29,65 @@ const T = (d) => {
 };
 const isolation = (stockDays) => ({
   type: 'reduce', target: 'infection', hazards: ['pandemicSevere'], group: 'isolation',
-  fractionByLevel: stockDays.map((d) => Number((0.78 * (T(14 + d) - T(14))).toFixed(4))),
+  fractionByLevel: stockDays.map((d) => Number((EARLY.pandemicSevere * 0.78 * (T(14 + d) - T(14))).toFixed(4))),
   adherence: guess(0.08, 0.25, 0.5, 'Half of households holding the stock would isolate; half of those could not have done so without it. Both guesses.', 1),
 });
 const KCAL = 2100;
 
+// A respirator's effect on infection in one of the two pandemics.
+const respirator = (s, T2, hazard, fraction) => reduce(s, T2, 'infection', { hazard, hazards: [hazard], group: 'respirator', scale: EARLY[hazard], fraction });
+
+// Smoke alarms and extinguishers act on fires at home, in ordinary times and
+// in outages, but not on wildfire.
+const HOME_FIRES = ['houseFire', ...OUTAGES];
+
 export const items = [
   // ---- food ----
   {
-    id: 'pantry-ready', from: 'pantry-no-cook', group: 'Food',
+    // What a household with warning buys is two weeks of ordinary groceries;
+    // that is this entry's third step. Setting up the habit is done once.
+    id: 'pantry-ready', from: 'pantry-no-cook', group: 'Food', lateBuyLevel: 3, lateUptake: 0.6, setupLifeYears: 10,
     ladder: [3, 7, 14, 30, 60].map((n) => days(n)),
     effects: () => [{ type: 'supply', need: 'food', amount: 1 }, isolation([3, 7, 14, 30, 60])],
   },
   {
-    id: 'pantry-cook', from: 'pantry-cook', group: 'Food', requires: [], bundleWith: ['camp-stove', 'stove-fuel'],
+    id: 'pantry-cook', from: 'pantry-cook', group: 'Food', requires: [], bundleWith: ['camp-stove', 'stove-fuel'], lateBuyClass: 'none', setupLifeYears: 10,
     ladder: [7, 14, 30, 60, 90].map((n) => days(n)),
     effects: () => [{ type: 'supply', need: 'food', amount: 1, pool: 'cook' }, isolation([7, 14, 30, 60, 90])],
   },
   {
-    id: 'freeze-dried', from: 'freeze-dried-meals', group: 'Food',
+    id: 'freeze-dried', from: 'freeze-dried-meals', group: 'Food', lateBuyClass: 'none',
     ladder: [3, 7, 14, 30].map((n) => days(n)),
     effects: () => [{ type: 'supply', need: 'food', amount: 1 }],
   },
   {
-    id: 'bulk-staples', from: 'bulk-staples', group: 'Food', requires: [], bundleWith: ['camp-stove', 'stove-fuel'],
+    id: 'bulk-staples', from: 'bulk-staples', group: 'Food', requires: [], bundleWith: ['camp-stove', 'stove-fuel'], lateBuyClass: 'none',
     ladder: [30, 90, 180, 365].map((n) => days(n)),
     effects: () => [{ type: 'supply', need: 'food', amount: 1, pool: 'cook' }, isolation([30, 90, 180, 365])],
   },
   {
-    id: 'ration-bars', from: 'ration-bars', group: 'Food',
+    id: 'ration-bars', from: 'ration-bars', group: 'Food', lateBuyClass: 'none',
     ladder: [{ label: '1 pack', units: 1 }, { label: '2 packs', units: 2 }, { label: '4 packs', units: 4 }],
     effects: () => [{ type: 'supply', need: 'food', amount: 3600 / KCAL }],
   },
   {
-    // A person-day of cooked staples takes about a quarter of an hour of burn.
-    id: 'camp-stove', from: 'camp-stove', group: 'Food',
+    // A person-day of cooked staples takes about a quarter of an hour of
+    // burn. The stove can also boil water, which the model does not credit:
+    // boiling draws on the same small stock of fuel.
+    id: 'camp-stove', from: 'camp-stove', group: 'Food', lateUptake: 0.1,
     effects: () => [
       { type: 'capability', capability: 'cook' },
+      { type: 'capability', capability: 'campStove' },
       { type: 'supply', capability: 'cook', amount: 5.3, perPersonDay: 0.25 },
       { type: 'supply', need: 'hotMeals', amount: 5.3 },
       { type: 'sideRisk', need: 'hotMeals', channel: 'co', micromortsPerDay: 'SIDE:campStove' },
     ],
   },
   {
-    id: 'stove-fuel', from: 'stove-fuel', group: 'Food', requires: ['cook'], bundleWith: ['bulk-staples', 'pantry-cook'],
-    ladder: [{ label: '12 canisters', units: 12 }, { label: '36 canisters', units: 36 }, { label: '96 canisters', units: 96 }],
+    // Fire codes commonly limit the gas kept inside a dwelling to about five
+    // small canisters; the larger steps need somewhere else to keep them.
+    id: 'stove-fuel', from: 'stove-fuel', group: 'Food', requires: ['campStove'], bundleWith: ['bulk-staples', 'pantry-cook'], lateBuyClass: 'none',
+    ladder: [{ label: '4 canisters', units: 4 }, { label: '12 canisters', units: 12 }, { label: '36 canisters', units: 36 }],
     effects: () => [
       { type: 'supply', capability: 'cook', amount: 1.33, perPersonDay: 0.25 },
       { type: 'supply', need: 'hotMeals', amount: 1.33 },
@@ -96,22 +116,25 @@ export const items = [
   // ---- fire and carbon monoxide ----
   {
     // The researcher gives a separate fraction for property loss; in the
-    // engine that is the dollar side of the fire channel.
+    // engine that is the dollar side of the fire channel. NFPA's figures for
+    // alarms of every kind give a reduction of 50 to 60%; for battery alarms
+    // alone, 30%. Both are confounded by the age of the housing. The entry
+    // keeps the researcher's 0.55 with a range that reaches 0.3.
     id: 'smoke-alarms', from: 'smoke-alarm-basic', group: 'Fire and CO',
+    note: 'Worth nothing extra to the homes that already have working alarms, which in the United States is about five in six.',
     effects: (s, T2) => {
       const e = s.effects.find((x) => x.type === 'reduce');
-      const base = { type: 'reduce', hazards: ['all'], adherence: T2(e.adherence, { max: 1 }), group: 'smokeAlarm' };
-      const m = T2(e.fractionRemoved, { max: 1 });
+      const base = { type: 'reduce', hazards: HOME_FIRES, adherence: T2(e.adherence, { max: 1 }), group: 'smokeAlarm' };
       return [
         { type: 'capability', capability: 'smokeAlarm' },
-        { ...base, target: 'fire', on: 'mortality', fraction: m },
+        { ...base, target: 'fire', on: 'mortality', fraction: T2(e.fractionRemoved, { max: 1 }) },
         { ...base, target: 'fire', on: 'hardship', fraction: T2({ ...e.financialFractionRemoved, basis: e.fractionRemoved.basis }, { max: 1 }) },
       ];
     },
   },
   {
     id: 'smoke-alarms-interconnected', from: 'smoke-alarm-upgrade', group: 'Fire and CO',
-    effects: (s, T2) => reduce(s, T2, 'fire', { hazards: ['all'], on: 'mortality', both: true }),
+    effects: (s, T2) => reduce(s, T2, 'fire', { hazards: HOME_FIRES, on: 'mortality' }),
   },
   {
     id: 'co-alarm', from: 'co-alarm', group: 'Fire and CO',
@@ -124,54 +147,81 @@ export const items = [
     id: 'fire-extinguisher', from: 'fire-extinguisher', group: 'Fire and CO',
     effects: (s, T2) => {
       const e = s.effects.find((x) => x.type === 'reduce');
-      const base = { type: 'reduce', target: 'fire', hazards: ['all'], adherence: T2(e.adherence, { max: 1 }) };
+      const base = { type: 'reduce', target: 'fire', hazards: HOME_FIRES, adherence: T2(e.adherence, { max: 1 }) };
       return [
         { ...base, on: 'mortality', fraction: T2(e.fractionRemoved, { max: 1 }) },
         { ...base, on: 'hardship', fraction: T2({ ...e.financialFractionRemoved, basis: e.fractionRemoved.basis }, { max: 1 }) },
       ];
     },
   },
-  { id: 'gas-shutoff', from: 'gas-shutoff-tool', group: 'Fire and CO', effects: (s, T2) => reduce(s, T2, 'fire', { both: true }) },
 
   // ---- respiratory protection ----
   {
-    // The fraction applies while the stock lasts. The model's own guess of
-    // how much of a pandemic each step covers: 15, 30, 55, 85 and 100%.
+    // The respiratory researcher's protection figure for an unfitted N95,
+    // 0.6, already allows for the hours it is not worn, and adherence is
+    // then applied again. Fit studies (Lawrence 2006) put leakage at about
+    // 10% for an N95 against 5% for an elastomeric; 0.75 is used here.
+    // The fraction applies while the stock lasts: masks x 3 uses over the
+    // roughly 90 days of outings before respirators can be bought again.
     id: 'n95-respirators', from: 'n95-respirators', group: 'Air',
-    ladder: [5, 10, 20, 40, 80].map((n) => ({ label: `${n} each`, units: n })),
+    ladder: [5, 10, 20, 40].map((n) => ({ label: `${n} each`, units: n })),
     effects: (s, T2) => {
-      const mod = s.effects.find((x) => x.type === 'reduce' && x.hazards.includes('pandemicModerate'));
-      const sev = s.effects.find((x) => x.type === 'reduce' && x.hazards.includes('pandemicSevere'));
-      const cover = [0.15, 0.3, 0.55, 0.85, 1];
-      return [
-        { type: 'reduce', target: 'infection', hazards: ['pandemicModerate'], group: 'respirator', fractionByLevel: cover.map((c) => c * mod.fractionRemoved.mid), adherence: T2(mod.adherence, { max: 1 }) },
-        { type: 'reduce', target: 'infection', hazards: ['pandemicSevere'], group: 'respirator', fractionByLevel: cover.map((c) => c * sev.fractionRemoved.mid), adherence: T2(sev.adherence, { max: 1 }) },
-        ...reduce(s, T2, 'smoke', { group: 'smokeMask' }),
-      ];
+      const cover = [0.17, 0.33, 0.67, 1];
+      const worn = guess(0.4, 0.75, 0.9, 'Lawrence et al. 2006 fit factors, as re-read by the verifier; respiratory.json gives 0.6 net of partial wear.', 1);
+      const spread = { lo: worn.lo / worn.mid, mid: 1, hi: worn.hi / worn.mid, tag: 'guess', basis: worn.basis };
+      const eff = (hazard) => {
+        const e = s.effects.find((x) => x.type === 'reduce' && x.hazards.includes(hazard));
+        return { type: 'reduce', target: 'infection', hazards: [hazard], group: 'respirator', fractionByLevel: cover.map((c) => c * worn.mid * EARLY[hazard]), levelScale: spread, adherence: T2(e.adherence, { max: 1 }) };
+      };
+      return [eff('pandemicModerate'), eff('pandemicSevere'), ...reduce(s, T2, 'smoke', { group: 'smokeMask' })];
     },
   },
   {
+    // The mask and filters are per person; the kit for checking the fit is
+    // bought once. $45 is the researcher's price for a home-made kit; the
+    // one kit whose price was read on a page costs $193.
     id: 'elastomeric-respirator', from: 'elastomeric-respirator-p100', group: 'Air',
+    price: guess(45, 57, 100, 'respiratory.json: mask $23.99 plus two pairs of filters at $16.69.'),
+    fixedPrice: guess(18, 45, 193, 'respiratory.json: fit-check kit, home-made to bought.'),
+    note: 'An N95 stock does much the same job. Whichever is bought first earns most of the value; the second adds a fraction of it.',
     effects: (s, T2) => [
-      ...reduce(s, T2, 'infection', { hazard: 'pandemicSevere', group: 'respirator' }),
-      ...reduce(s, T2, 'infection', { hazard: 'pandemicModerate', group: 'respirator' }),
+      ...respirator(s, T2, 'pandemicSevere'),
+      ...respirator(s, T2, 'pandemicModerate'),
       ...reduce(s, T2, 'smoke', { group: 'smokeMask' }),
     ],
   },
   {
     id: 'papr', from: 'papr', group: 'Air',
-    effects: (s, T2) => [
-      ...reduce(s, T2, 'infection', { hazard: 'pandemicSevere', group: 'respirator' }),
-      ...reduce(s, T2, 'infection', { hazard: 'pandemicModerate', group: 'respirator' }),
-    ],
+    effects: (s, T2) => [...respirator(s, T2, 'pandemicSevere'), ...respirator(s, T2, 'pandemicModerate')],
   },
   { id: 'goggles', from: 'sealed-goggles', group: 'Air', effects: (s, T2) => reduceAll(s, T2) },
-  { id: 'hepa-purifier', from: 'hepa-purifier', group: 'Air', effects: (s, T2) => reduceAll(s, T2) },
+  { id: 'hepa-purifier', from: 'hepa-purifier', group: 'Air', everydayUpkeep: true, effects: (s, T2) => reduceAll(s, T2) },
   { id: 'far-uvc', from: 'far-uvc-lamp', group: 'Air', effects: (s, T2) => reduceAll(s, T2) },
+  {
+    // respiratory.json sizes this at about 3% of infection risk for an
+    // hour's work, and passed it to the plans researcher, who folded it
+    // into the isolation plan. It is its own entry here.
+    id: 'sick-room-plan', group: 'Air',
+    name: 'Sick-room plan',
+    spec: 'Decide in advance which room a sick member would stay in, who would care for them, and that both would wear respirators; keep a few for the purpose.',
+    units: 'plan', confidence: 'guess', scalesWith: 'household',
+    price: 0, lifeYears: 5, upkeepUsdPerYear: 0, everydayShare: 0, volumeLitres: 0, lateBuyClass: 'none',
+    setupHours: guess(0.5, 1, 2, 'respiratory.json, excluded items: an hour of planning.'),
+    upkeepHoursPerYear: 0,
+    reliability: guess(0.5, 0.8, 0.95, "The model's own guess.", 1),
+    effects: () => [{
+      type: 'reduce', target: 'infection', hazards: ['pandemicModerate', 'pandemicSevere'],
+      fraction: guess(0.02, 0.075, 0.15, 'respiratory.json: a quarter of infections are caught at home; masking the sick person and the carer before symptoms spread cuts onward spread by about 0.3.', 1),
+      adherence: guess(0.15, 0.4, 0.7, 'respiratory.json.', 1),
+    }],
+  },
 
   // ---- radiation ----
   {
-    id: 'shelter-plan', from: 'fallout-shelter-plan', group: 'Radiation',
+    // A two-hour plan made from official advice can also be made in the days
+    // of warning that the nuclear researcher expects, so it is something an
+    // unprepared household may still acquire.
+    id: 'shelter-plan', from: 'fallout-shelter-plan', group: 'Radiation', lateBuyClass: 'staple',
     effects: (s, T2) => [{ type: 'capability', capability: 'shelterPlan' }, ...reduceAll(s, T2)],
   },
   { id: 'potassium-iodide', from: 'potassium-iodide', group: 'Radiation', effects: (s, T2) => reduceAll(s, T2) },
@@ -188,28 +238,30 @@ export const items = [
 
   // ---- evacuation ----
   {
-    id: 'go-bag', from: 'go-bag', group: 'Evacuation',
+    id: 'go-bag', from: 'go-bag', group: 'Evacuation', lateUptake: 0.5,
     effects: (s, T2) => [
       { type: 'capability', capability: 'goBag' },
-      ...reduce(s, T2, 'displacement', { on: 'hardship', both: true }),
+      ...reduce(s, T2, 'displacement', { on: 'hardship' }),
       ...reduce(s, T2, 'trauma'),
     ],
   },
   {
     // The leave effect is the researcher's suggestion: a free bed waiting
-    // makes relocating 8% cheaper and 3 points likelier.
+    // makes relocating 8% cheaper and 3 points likelier. It applies where a
+    // place to stay is what holds people back, not in a pandemic or a long
+    // grid failure.
     id: 'evacuation-plan', from: 'evacuation-plan', group: 'Evacuation',
     effects: (s, T2) => [
       { type: 'capability', capability: 'evacuationPlan' },
-      ...reduce(s, T2, 'displacement', { on: 'hardship', both: true }),
+      ...reduce(s, T2, 'displacement', { on: 'hardship' }),
       ...reduce(s, T2, 'trauma'),
-      { type: 'leave', cost: guess(0.02, 0.08, 0.2, 'mobility.json, evacuation-plan.', 1), feasible: guess(0, 0.03, 0.1, 'mobility.json, evacuation-plan.', 1) },
+      { type: 'leave', hazards: ['hurricane', 'wildfire', 'flood', 'earthquake', 'severeStorm', 'winterStorm', 'civilUnrest', 'cyberOutage'], cost: guess(0.02, 0.08, 0.2, 'mobility.json, evacuation-plan.', 1), feasible: guess(0, 0.03, 0.1, 'mobility.json, evacuation-plan.', 1) },
     ],
   },
   {
     id: 'half-tank', from: 'half-tank-habit', group: 'Evacuation',
     effects: (s, T2) => [
-      ...reduce(s, T2, 'displacement', { on: 'hardship', both: true }),
+      ...reduce(s, T2, 'displacement', { on: 'hardship' }),
       ...reduce(s, T2, 'trauma'),
       { type: 'leave', hazards: ['hurricane', 'gridLong', 'supplyShock', 'nuclearFar'], feasible: guess(0, 0.03, 0.08, 'mobility.json, half-tank-habit.', 1) },
     ],
@@ -222,7 +274,7 @@ export const items = [
     // The money is still the owner's. Its cost is what it loses lying at
     // home: purchasing power beyond what a bank would pay, and the risk of
     // theft, which the researcher puts at $3.60 a year per $100.
-    id: 'cash', from: 'cash-small-notes', group: 'Money and documents', units: 'hundreds of dollars',
+    id: 'cash', from: 'cash-small-notes', group: 'Money and documents', units: 'hundreds of dollars', lateUptake: 0.5,
     capitalFree: true, upkeepUsdPerYear: 0,
     upkeepUsdPerUnitYear: (R, T2) => T2(R['cash-small-notes'].upkeepUsdPerYear),
     ladder: [1, 2, 3, 5, 10, 20, 50].map((n) => ({ label: `$${n * 100}`, units: n })),
@@ -235,12 +287,22 @@ export const items = [
     effects: (s, T2) => reduceAll(s, T2),
   },
   {
+    // After a house fire the loss sits on the fire channel, so the effect
+    // on losses there is entered against that channel.
     id: 'document-copies', from: 'document-copies', group: 'Money and documents',
-    effects: (s, T2) => [...reduce(s, T2, 'financialLoss', { on: 'hardship', both: true }), ...reduce(s, T2, 'displacement', { on: 'hardship', both: true })],
+    effects: (s, T2) => {
+      const [loss] = reduce(s, T2, 'financialLoss', { on: 'hardship' });
+      return [loss, { ...loss, target: 'fire', hazards: ['houseFire'] }, ...reduce(s, T2, 'displacement', { on: 'hardship' })];
+    },
   },
-  { id: 'document-box', from: 'fire-document-box', group: 'Money and documents', effects: (s, T2) => reduceAll(s, T2, { on: 'hardship' }) },
-  { id: 'data-backup', from: 'data-backup', group: 'Money and documents', effects: (s, T2) => reduceAll(s, T2, { on: 'hardship' }) },
-
+  {
+    id: 'document-box', from: 'fire-document-box', group: 'Money and documents',
+    effects: (s, T2) => { const [loss] = reduce(s, T2, 'financialLoss', { on: 'hardship' }); return [loss, { ...loss, target: 'fire', hazards: ['houseFire'] }]; },
+  },
+  {
+    id: 'data-backup', from: 'data-backup', group: 'Money and documents', everydayUpkeep: true,
+    effects: (s, T2) => { const [loss] = reduce(s, T2, 'financialLoss', { on: 'hardship' }); return [loss, { ...loss, target: 'fire', hazards: ['houseFire'] }]; },
+  },
   // Two entries that come from the AI research (research/ai/ai-economy.md),
   // not from a step 3 item. Both act on scams and account takeover.
   {
@@ -277,39 +339,55 @@ export const items = [
     }],
   },
 
-  // ---- security ----
-  { id: 'pepper-spray', from: 'pepper-spray', group: 'Security', effects: (s, T2) => reduceAll(s, T2, { on: 'mortality' }) },
+  // ---- protection of the home ----
+  { id: 'pepper-spray', from: 'pepper-spray', group: 'Protection', effects: (s, T2) => reduceAll(s, T2, { on: 'mortality' }) },
   {
-    // The researcher's ownership risk is 0.22 micromorts per person per day,
-    // from the evidence on suicide, homicide and accident in homes with guns.
-    id: 'firearm', from: 'firearm-with-training', group: 'Security',
-    effects: (s, T2) => {
-      const side = s.effects.find((x) => x.type === 'sideRisk');
-      return [...reduceAll(s, T2), { type: 'annualRisk', micromortsPerPersonYear: T2(side.micromortsPerDayOfUse, { scale: 365 }) }];
-    },
+    // The researcher's ownership risk is 0.22 micromorts a day averaged over
+    // two adults, from Studdert et al. 2020 on suicide, homicide and accident
+    // in homes with handguns: about 123 a year for the owner and 38 for
+    // another adult in the home. The figure for a child is the model's guess.
+    id: 'firearm', from: 'firearm-with-training', group: 'Protection',
+    effects: (s, T2) => [
+      // The researcher's first effect is on everyday crime at home, which
+      // the model carries as its own hazard.
+      ...reduceAll(s, T2, { hazards: (list) => (list.includes('localOutage') ? ['violentCrime'] : list) }),
+      {
+        type: 'annualRisk',
+        micromortsOwner: guess(35, 123, 330, 'plans-skills-security.json: firearm suicide and accident among owners (Studdert et al. 2020).'),
+        micromortsOtherAdult: guess(10, 38, 100, 'plans-skills-security.json: risk to an adult living with an owner.'),
+        micromortsChild: guess(1, 5, 20, "The model's own guess."),
+      },
+    ],
   },
-  { id: 'helmet', from: 'protective-helmet', group: 'Security', effects: (s, T2) => reduceAll(s, T2) },
-  { id: 'door-reinforcement', from: 'door-reinforcement', group: 'Security', ladder: null, effects: (s, T2) => reduceAll(s, T2) },
+  { id: 'helmet', from: 'protective-helmet', group: 'Protection', effects: (s, T2) => reduceAll(s, T2) },
+  { id: 'door-reinforcement', from: 'door-reinforcement', group: 'Protection', ladder: null, noReview: true, effects: (s, T2) => reduceAll(s, T2) },
   {
     // A habit costs attention if not money: six minutes a year, the model's own figure.
-    id: 'discretion', from: 'discretion-about-supplies', group: 'Security', upkeepHoursPerYear: 0.1,
+    id: 'discretion', from: 'discretion-about-supplies', group: 'Protection', upkeepHoursPerYear: 0.1,
     effects: (s, T2) => reduceAll(s, T2),
   },
-  { id: 'digital-security', from: 'basic-digital-security', group: 'Security', effects: (s, T2) => reduceAll(s, T2, { on: 'hardship' }) },
+  { id: 'digital-hygiene', from: 'basic-digital-security', group: 'Protection', everydayUpkeep: true, effects: (s, T2) => reduceAll(s, T2, { on: 'hardship' }) },
 
   // ---- tools ----
   { id: 'tools-bundle', from: 'basic-tools-bundle', group: 'Tools', effects: (s, T2) => reduceAll(s, T2) },
   { id: 'axe-shovel-saw', from: 'axe-shovel-saw', group: 'Tools', effects: (s, T2) => reduceAll(s, T2) },
 
   // ---- plans and skills ----
-  { id: 'household-plan', from: 'household-plan', group: 'Plans and skills', effects: (s, T2) => reduceAll(s, T2) },
-  { id: 'neighbour-network', from: 'neighbour-network', group: 'Plans and skills', effects: (s, T2) => reduceAll(s, T2) },
   {
-    // Practice multiplies every other item's chance of failing by 0.6.
+    // An escape plan saves lives, not property, and only where alarms give
+    // the warning to act on.
+    id: 'household-plan', from: 'household-plan', group: 'Plans and skills', requires: ['smokeAlarm'],
+    effects: (s, T2) => [...reduceAll(s, T2, { only: ['fire'], on: 'mortality' }), ...reduceAll(s, T2, { only: ['information', 'displacement'] })],
+  },
+  { id: 'neighbour-network', from: 'neighbour-network', group: 'Plans and skills', everydayUpkeep: true, effects: (s, T2) => reduceAll(s, T2) },
+  {
+    // Practice multiplies every other item's chance of failing by 0.6. Its
+    // effect on carbon monoxide is on the risks of improvised heat and power
+    // in outages, not on the everyday risk.
     id: 'practice', from: 'practice-and-yearly-review', group: 'Plans and skills',
     effects: (s, T2) => [
       { type: 'review', failureFactor: guess(0.35, 0.6, 0.9, 'plans-skills-security.json, practice-and-yearly-review.', 1) },
-      ...reduceAll(s, T2),
+      ...reduceAll(s, T2, { hazards: () => OUTAGES }),
     ],
   },
   { id: 'learn-hazards', from: 'learn-local-hazards', group: 'Plans and skills', effects: (s, T2) => reduceAll(s, T2) },
@@ -317,7 +395,7 @@ export const items = [
   { id: 'isolation-plan', from: 'pandemic-isolation-plan', group: 'Plans and skills', effects: (s, T2) => reduceAll(s, T2) },
 
   // ---- the home itself ----
-  { id: 'seismic-securing', from: 'seismic-securing', group: 'The home', effects: (s, T2) => reduceAll(s, T2) },
+  { id: 'seismic-securing', from: 'seismic-securing', group: 'The home', effects: (s, T2) => reduceAll(s, T2, { only: ['trauma', 'financialLoss'] }) },
   { id: 'seismic-retrofit', from: 'seismic-brace-and-bolt', group: 'The home', effects: (s, T2) => reduceAll(s, T2) },
   { id: 'storm-shutters', from: 'wind-opening-protection', group: 'The home', effects: (s, T2) => reduceAll(s, T2) },
   { id: 'flood-proofing', from: 'flood-proofing-basic', group: 'The home', effects: (s, T2) => reduceAll(s, T2) },
@@ -337,15 +415,6 @@ export const items = [
     note: 'The water needs treating, so it counts toward sanitation only.',
     effects: (s, T2) => reduceAll(s, T2),
   },
-  {
-    id: 'stored-petrol', from: 'extra-fuel-store', group: 'The home', requires: ['generator'],
-    ladder: [{ label: '5 gallons', units: 1 }, { label: '10 gallons', units: 2 }, { label: '15 gallons', units: 3 }],
-    effects: () => [
-      { type: 'supply', need: 'refrigeration', amount: 17500 },
-      { type: 'supply', need: 'medicalPower', amount: 17500 },
-      { type: 'supply', need: 'devicePower', amount: 17500 },
-    ],
-  },
 ];
 
 export const dropped = {
@@ -353,6 +422,7 @@ export const dropped = {
   'kitchen-sundries': 'Nearly every home has a way to open a can and light a flame; the harm avoided is small and unquantified.',
   'smoke-co-combo-alarm': 'A substitute for the separate smoke and CO alarms, with the same effects.',
   'fire-blanket': 'Overlaps almost wholly with the extinguisher.',
+  'gas-shutoff-tool': 'Its effect is on fires after an earthquake, which the earthquake hazard does not carry separately; in the model it would be worth nothing.',
   'gloves-and-gowns': 'Removes about half a percent of infection risk for an airborne pathogen.',
   'faraday-bag-radio': 'The same object as the communications entry.',
   'get-home-bag': 'The model has no away-from-home state. The researcher puts its value at 5 to 40 cents a year per commuter.',
@@ -366,4 +436,5 @@ export const dropped = {
   'insurance-flood': 'Not ranked, for the same reason.',
   'insurance-earthquake': 'Not ranked, for the same reason.',
   'check-home-hazard-exposure': 'Acts only when a household is about to move; it changes which boxes the reader ticks.',
+  'extra-fuel-store': 'Fuel for the generator, which is not ranked.',
 };

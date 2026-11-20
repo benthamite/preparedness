@@ -182,7 +182,7 @@
      ],
      "now": [
       0.001,
-      0.0045,
+      0.004,
       0.015
      ],
      "transition": [
@@ -510,9 +510,9 @@
    "bankingCrisis": {
     "us": {
      "baseline": [
-      0.0003,
       0.001,
-      0.003
+      0.001,
+      0.001
      ],
      "now": [
       0.001,
@@ -533,9 +533,9 @@
     },
     "westernEurope": {
      "baseline": [
-      0.0007,
       0.002,
-      0.005
+      0.002,
+      0.002
      ],
      "now": [
       0.002,
@@ -556,9 +556,9 @@
     },
     "buenosAires": {
      "baseline": [
-      0.04,
       0.07,
-      0.15
+      0.07,
+      0.07
      ],
      "now": [
       0.07,
@@ -581,9 +581,9 @@
    "supplyShock": {
     "us": {
      "baseline": [
-      0.02,
       0.045,
-      0.08
+      0.045,
+      0.045
      ],
      "now": [
       0.045,
@@ -604,9 +604,9 @@
     },
     "westernEurope": {
      "baseline": [
-      0.03,
       0.06,
-      0.1
+      0.06,
+      0.06
      ],
      "now": [
       0.06,
@@ -627,9 +627,9 @@
     },
     "buenosAires": {
      "baseline": [
-      0.08,
       0.15,
-      0.25
+      0.15,
+      0.15
      ],
      "now": [
       0.15,
@@ -652,9 +652,9 @@
    "aiFraud": {
     "us": {
      "baseline": [
-      0.025,
       0.05,
-      0.09
+      0.05,
+      0.05
      ],
      "now": [
       0.03,
@@ -675,9 +675,9 @@
     },
     "westernEurope": {
      "baseline": [
-      0.015,
       0.035,
-      0.07
+      0.035,
+      0.035
      ],
      "now": [
       0.02,
@@ -698,9 +698,9 @@
     },
     "buenosAires": {
      "baseline": [
-      0.02,
       0.05,
-      0.1
+      0.05,
+      0.05
      ],
      "now": [
       0.025,
@@ -1101,6 +1101,7 @@
   "owned": {},
   "probabilities": {},
   "parameters": {},
+  "pantryDays": 14,
   "ai": {
    "timeline": "none",
    "concern": 0.5,
@@ -1423,7 +1424,7 @@
     },
     "criticalDrug": {
      "hardship": 2,
-     "mortality": 40
+     "mortality": 1
     },
     "limitedMobility": {
      "hardship": 1.3,
@@ -1434,7 +1435,110 @@
    "gap": "food",
    "special": "food",
    "demandPerPersonDay": 1,
-   "noCookShare": 0.5
+   "baselineSetting": "pantryDays",
+   "cookShare": 0.23,
+   "chilledShare": 0.27,
+   "improviseCookDays": {
+    "house": 7,
+    "apartment": 14
+   },
+   "lateMultiplierCap": 3,
+   "rationing": {
+    "half": {
+     "hardship": {
+      "tag": "guess",
+      "basis": "food.json note 3.",
+      "steps": [
+       {
+        "fromDay": 1,
+        "lo": 8,
+        "mid": 20,
+        "hi": 60
+       },
+       {
+        "fromDay": 31,
+        "lo": 15,
+        "mid": 40,
+        "hi": 120
+       },
+       {
+        "fromDay": 91,
+        "lo": 25,
+        "mid": 60,
+        "hi": 180
+       }
+      ]
+     },
+     "mortality": {
+      "tag": "guess",
+      "basis": "food.json note 3.",
+      "steps": [
+       {
+        "fromDay": 1,
+        "lo": 0.1,
+        "mid": 1,
+        "hi": 5
+       },
+       {
+        "fromDay": 91,
+        "lo": 1,
+        "mid": 10,
+        "hi": 50
+       }
+      ]
+     }
+    },
+    "quarter": {
+     "hardship": {
+      "tag": "guess",
+      "basis": "Scaled up from the half-ration figures.",
+      "steps": [
+       {
+        "fromDay": 1,
+        "lo": 20,
+        "mid": 60,
+        "hi": 180
+       },
+       {
+        "fromDay": 31,
+        "lo": 35,
+        "mid": 100,
+        "hi": 300
+       },
+       {
+        "fromDay": 91,
+        "lo": 50,
+        "mid": 150,
+        "hi": 450
+       }
+      ]
+     },
+     "mortality": {
+      "tag": "guess",
+      "basis": "Dutch famine, 1944-45.",
+      "steps": [
+       {
+        "fromDay": 1,
+        "lo": 1,
+        "mid": 5,
+        "hi": 20
+       },
+       {
+        "fromDay": 31,
+        "lo": 4,
+        "mid": 15,
+        "hi": 60
+       },
+       {
+        "fromDay": 91,
+        "lo": 10,
+        "mid": 40,
+        "hi": 150
+       }
+      ]
+     }
+    }
+   }
   },
   "hotMeals": {
    "label": "Hot food and drink",
@@ -2603,13 +2707,13 @@
   "seasonalInfection": {
    "multipliers": {
     "age60to74": {
-     "mortality": 16
+     "mortality": 6.2
     },
     "age75plus": {
-     "mortality": 85
+     "mortality": 32
     },
     "child": {
-     "mortality": 0.25
+     "mortality": 0.1
     }
    }
   }
@@ -4810,6 +4914,23 @@
        },
        "tag": "guess",
        "basis": "Ambulance and emergency departments saturated in major heat waves (France 2003, England July 2022, recalled); guess."
+      },
+      "heat": {
+       "pOccur": {
+        "lo": 0.98,
+        "mid": 1,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "Same evidence as this window's basis.",
+        "max": 1
+       },
+       "days": {
+        "p50": 5,
+        "p90": 12,
+        "p99": 22
+       },
+       "tag": "guess",
+       "basis": "Days of dangerous heat in the year's spell: Paris had nine consecutive days at 35 C or more in August 2003 and three- to six-day spells in 2019, 2020 and 2022; Spain had an 18-day wave in July 2022; Italy two to three weeks in 2023 and 2024 (recalled). Not a canonical window id."
       }
      },
      "coldShare": {
@@ -4957,6 +5078,23 @@
        },
        "tag": "guess",
        "basis": "Ambulance service under strain; lifts out in blocks without power. Guess."
+      },
+      "heat": {
+       "pOccur": {
+        "lo": 0.98,
+        "mid": 1,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "Same evidence as this window's basis.",
+        "max": 1
+       },
+       "days": {
+        "p50": 5,
+        "p90": 10,
+        "p99": 16
+       },
+       "tag": "guess",
+       "basis": "The December 2013 wave lasted 9 days with a mean maximum of 36.1 C and followed a 4-day wave by three days (Chesini 2019, read); March 2023 had about two weeks above the alert threshold (press, search snippet); January 2022 and February 2024 about five days (recalled). Not a canonical window id."
       }
      },
      "coldShare": {
@@ -8612,6 +8750,11 @@
     "emergencyCare": {
      "mortality": 0.4
     }
+   },
+   "exposureScale": {
+    "location": {
+     "westernEurope": 0.5
+    }
    }
   },
   "pandemicSevere": {
@@ -9162,6 +9305,29 @@
       "tag": "derived",
       "basis": "United States. Philippe et al. (https://www.scientificamerican.com/article/who-would-take-the-brunt-of-an-attack-on-u-s-nuclear-missile-silos/): an 800 kt ground burst on each of 450 silos kills 1.4M by acute radiation on average (0.34-4.6M by day of year) if people shelter four days, twice that without shelter. x 1.3 for typical behaviour = 1.8M, plus about 0.8M from other ground bursts (guess) = 2.6M of 295M survivors = 0.9% acute, or 8,800 micromorts; later cancer adds about 2,400 unweighted (1,000 if weighted 0.4). Taken as 10,000."
      },
+     "micromortsPerPersonByLocation": {
+      "us": {
+       "lo": 1500,
+       "mid": 10000,
+       "hi": 60000,
+       "tag": "derived",
+       "basis": "As above. High end: Cold War counterforce studies gave 1-20M deaths of 225M, 14M under 'reasonable' shelter assumptions (OTA 1979, https://atomicarchive.com/resources/documents/effects/ota/chapter-4-4-2.html), and about 10M for an unsheltered population (Harvey et al. 1992). Low end: Harvey's under 1M with shelter, fewer ground bursts, favourable wind."
+      },
+      "westernEurope": {
+       "lo": 500,
+       "mid": 6000,
+       "hi": 50000,
+       "tag": "guess",
+       "basis": "No silo fields, so fewer ground bursts, and masonry housing lets through about half the dose of US light-frame houses (radiation researcher: 0.10-0.13 against 0.22-0.28); but hardened headquarters sit beside London, Paris and Brussels. No published estimate found."
+      },
+      "buenosAires": {
+       "lo": 0,
+       "mid": 0,
+       "hi": 10,
+       "tag": "guess",
+       "basis": "Not applicable: the hazard has near-zero probability there."
+      }
+     },
      "multipliers": {
       "child": {
        "mortality": 1.3
@@ -9185,6 +9351,12 @@
     "hi": 1.7,
     "tag": "guess",
     "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
+   },
+   "exposureScale": {
+    "dwelling": {
+     "apartment": 0.6,
+     "house": 1.4
+    }
    }
   },
   "nuclearFar": {
@@ -11100,47 +11272,31 @@
    "tickBox": null,
    "probability": {
     "us": {
-     "lo": 0.025,
+     "lo": 0.05,
      "mid": 0.05,
-     "hi": 0.09,
+     "hi": 0.05,
      "max": 1,
      "tag": "derived",
      "basis": "Today's rate less an AI share of 10–20%, which nobody has measured; the FBI's tagged floor is 4.3% of losses. Reported losses rose 25% in 2024 and 27% in 2025 (FTC), but no source attributes the rise to AI."
     },
     "westernEurope": {
-     "lo": 0.015,
+     "lo": 0.035,
      "mid": 0.035,
-     "hi": 0.07,
+     "hi": 0.035,
      "max": 1,
      "tag": "guess",
      "basis": "Today's rate less an unmeasured AI share of 10–20%."
     },
     "buenosAires": {
-     "lo": 0.02,
+     "lo": 0.05,
      "mid": 0.05,
-     "hi": 0.1,
+     "hi": 0.05,
      "max": 1,
      "tag": "guess",
      "basis": "Today's rate less an unmeasured AI share. In August 2024 the head of the federal cybercrime unit said no Argentine case using AI had been detected; nothing later was found."
     }
    },
-   "windows": {
-    "payments": {
-     "pOccur": {
-      "lo": 0.1,
-      "mid": 0.25,
-      "hi": 0.5,
-      "tag": "guess",
-      "basis": "The share of events that lock the household out of an account. A guess.",
-      "max": 1
-     },
-     "days": {
-      "p50": 2,
-      "p90": 10,
-      "p99": 45
-     }
-    }
-   },
+   "windows": {},
    "leave": {
     "feasible": 0,
     "earliestDay": 0,
@@ -11316,9 +11472,9 @@
       "basis": "Adult 15-59 in a home with no working smoke alarm. NFPA 2019-2023 home fire death rates by age give 5.2 per million for ages 15-59 (7.8 all ages; 8.6 in 2023 and 2024), so 5.4; divided by (1 - 0.84 x 0.55) because 84% of homes have a working alarm (CPSC 2024) that removes about 55%. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/US-Fire-Problem/oshomevictims.pdf"
      },
      "financialUsdPerHousehold": {
-      "lo": 75,
-      "mid": 110,
-      "hi": 160,
+      "lo": 26.25,
+      "mid": 38.5,
+      "hi": 56,
       "tag": "derived",
       "basis": "Home with no working alarm. Reported direct property damage $8.9bn a year in 2019-2023 and $11.4bn in 2024 over about 131M households is $68-87, about $85 in 2026 dollars; plus about $6 for 9,000-10,800 injuries at a guessed $70,000 each; scaled by 1.27 for the no-alarm state. Gross of insurance. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/US-Fire-Problem/osFireLoss.pdf"
      }
@@ -11328,6 +11484,10 @@
     "dwelling": {
      "house": 1.15,
      "apartment": 0.5
+    },
+    "location": {
+     "westernEurope": 0.5,
+     "buenosAires": 1
     }
    },
    "durationScale": {
@@ -11370,7 +11530,17 @@
     "dwelling": {
      "house": 1.15,
      "apartment": 0.5
-    }
+    },
+    "location": {
+     "westernEurope": 0.8,
+     "buenosAires": 2
+    },
+    "conditions": [
+     {
+      "if": "allElectric",
+      "factor": 0.09
+     }
+    ]
    },
    "durationScale": {
     "lo": 0.6,
@@ -11422,11 +11592,11 @@
     {
      "channel": "seasonalInfection",
      "micromortsPerPerson": {
-      "lo": 2,
-      "mid": 8,
-      "hi": 26,
+      "lo": 5,
+      "mid": 21,
+      "hi": 68,
       "tag": "derived",
-      "basis": "medical.json, routine-vaccinations: yearly micromorts averted for a healthy adult aged 15 to 59 against skipping all routine vaccines; 130 at ages 60 to 74 and 680 at 75 or over."
+      "basis": "medical.json, routine-vaccinations: yearly micromorts averted for an adult aged 15 to 59 of average risk against skipping all routine vaccines; 130 at ages 60 to 74 and 680 at 75 or over."
      }
     }
    ],
@@ -11451,11 +11621,11 @@
     {
      "channel": "violence",
      "micromortsPerPerson": {
-      "lo": 0.8,
-      "mid": 2,
-      "hi": 4,
-      "tag": "derived",
-      "basis": "Adult 15-59, United States. NVDRS 2021: 21.9% of homicides with known circumstances were precipitated by another crime, of which burglary 11.6% and robbery 29.6%, so burglary 2.5% of homicides and robbery 6.5%; I take a quarter of the robberies as at home (guess), 4.1% in all. Times 51 micromorts a year (2024 homicide rate 5.1 per 100,000, search snippet of a BJS bulletin) = 2.1; at the 2021 rate of 7.9 it is 3.3. Cross-check: BJS counts about 430 burglary-related homicides a year in 2003-2007, about 1.5 per million residents. https://www.cdc.gov/mmwr/volumes/73/ss/ss7305a1.htm https://bjs.ojp.gov/content/pub/ascii/vdhb.txt"
+      "lo": 0.4,
+      "mid": 1.2,
+      "hi": 2.5,
+      "tag": "guess",
+      "basis": "plans-skills-security.json, corrected: about 0.3 from burglary (FBI expanded homicide data, 80 to 110 a year) plus 0.8 from robbery at home."
      },
      "financialUsdPerHousehold": {
       "lo": 15,
@@ -11466,6 +11636,12 @@
      }
     }
    ],
+   "exposureScale": {
+    "location": {
+     "westernEurope": 0.4,
+     "buenosAires": 1.5
+    }
+   },
    "durationScale": {
     "lo": 0.6,
     "mid": 1,
@@ -11552,6 +11728,7 @@
     "max": 1
    },
    "lateBuyClass": "staple",
+   "lateUptake": 0.6,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -11616,11 +11793,11 @@
     "basis": "Choose, buy, sanitise, fill and label four to six containers."
    },
    "upkeepHoursPerYear": {
-    "lo": 0.2,
-    "mid": 0.5,
-    "hi": 1.5,
+    "lo": 0.1,
+    "mid": 0.25,
+    "hi": 0.6,
     "tag": "guess",
-    "basis": "Per household at the 14-day step: empty, rinse and refill once a year (CDC says every 6 months, The Prepared says 1 year or more). Scales with litres."
+    "basis": "water-sanitation.json gives 0.5 hours a year for a 14-day store and says it scales with litres."
    },
    "upkeepUsdPerYear": {
     "lo": 0,
@@ -11646,7 +11823,7 @@
     "basis": "Failures: leaks, a dirty container, water never refilled after a first use. Clean chlorinated tap water sealed in the dark stays safe well past the rotation date.",
     "max": 1
    },
-   "lateBuyClass": "staple",
+   "lateBuyClass": "none",
    "requires": [],
    "conditions": [],
    "effects": [
@@ -11960,8 +12137,9 @@
    "conditions": [],
    "effects": [
     {
-     "type": "capability",
-     "capability": "treatWater"
+     "type": "supply",
+     "need": "water",
+     "amount": 24
     }
    ],
    "sources": [
@@ -12390,6 +12568,7 @@
     "max": 1
    },
    "lateBuyClass": "staple",
+   "lateUptake": 0.05,
    "requires": [],
    "conditions": [
     "coldWinters"
@@ -12513,6 +12692,7 @@
     "max": 1
    },
    "lateBuyClass": "staple",
+   "lateUptake": 0.05,
    "requires": [],
    "conditions": [
     "coldWinters"
@@ -12777,6 +12957,7 @@
     "max": 1
    },
    "lateBuyClass": "specialty",
+   "lateUptake": 0.1,
    "requires": [],
    "conditions": [
     "coldWinters"
@@ -13358,7 +13539,7 @@
    "group": "Light and power",
    "spec": "One compact LED flashlight on AA or AAA cells, 100+ lumens with a low mode, cells installed; kept in a fixed place.",
    "units": "flashlight with cells",
-   "note": "Nearly every household already has a light; that is in the baseline.",
+   "note": "Nearly every household already has a light; that is in the baseline. This entry is a second one.",
    "confidence": "guess",
    "scalesWith": "household",
    "price": {
@@ -13414,6 +13595,7 @@
     "max": 1
    },
    "lateBuyClass": "staple",
+   "lateUptake": 0.3,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -13509,6 +13691,7 @@
     "max": 1
    },
    "lateBuyClass": "staple",
+   "lateUptake": 0.3,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -13585,6 +13768,7 @@
     "max": 1
    },
    "lateBuyClass": "staple",
+   "lateUptake": 0.3,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -13686,6 +13870,7 @@
     "max": 1
    },
    "lateBuyClass": "staple",
+   "lateUptake": 0.3,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -13892,118 +14077,6 @@
     "https://cdn.shopify.com/s/files/1/2790/7304/files/ResMed_Battery_Guide_Converter.pdf"
    ],
    "provenance": "power-light:power-station"
-  },
-  {
-   "id": "generator",
-   "name": "Portable generator with fuel",
-   "group": "Light and power",
-   "spec": "Inverter generator of about 1,850 running watts with CO shut-off, two 5-gallon cans holding 10 gallons of stabilised petrol, and a 12-gauge outdoor extension lead. Run outdoors, 20 ft from the house.",
-   "units": "generator, fuel and lead",
-   "confidence": "derived",
-   "scalesWith": "household",
-   "price": {
-    "lo": 480,
-    "mid": 650,
-    "hi": 1400,
-    "tag": "derived",
-    "basis": "Champion 2500-watt dual-fuel inverter generator $399 on sale, $649.99 regular, read on https://www.campingworld.com/champion-2500-watt-portable-dual-fuel-inverter-generator-123244.html. Add about $130 for cans, 10 gal of fuel, stabiliser and lead (my estimate). High end is a Honda-class unit."
-   },
-   "lifeYears": {
-    "lo": 8,
-    "mid": 15,
-    "hi": 25,
-    "tag": "guess",
-    "basis": "Low hours; carburettor neglect ends most of them."
-   },
-   "setupHours": {
-    "lo": 2,
-    "mid": 4,
-    "hi": 10,
-    "tag": "guess",
-    "basis": "Choose, assemble, first run, learn safe siting."
-   },
-   "upkeepHoursPerYear": {
-    "lo": 1,
-    "mid": 3,
-    "hi": 6,
-    "tag": "guess",
-    "basis": "Test runs, fuel rotation every 6-12 months, oil."
-   },
-   "upkeepUsdPerYear": {
-    "lo": 10,
-    "mid": 30,
-    "hi": 60,
-    "tag": "guess",
-    "basis": "Stabiliser, oil, test fuel; rotated petrol goes into the car."
-   },
-   "everydayShare": {
-    "lo": 0,
-    "mid": 0.05,
-    "hi": 0.2,
-    "tag": "guess",
-    "basis": "Occasional tool or camping use.",
-    "max": 1
-   },
-   "volumeLitres": 100,
-   "reliability": {
-    "lo": 0.55,
-    "mid": 0.8,
-    "hi": 0.93,
-    "tag": "guess",
-    "basis": "Stale fuel and gummed carburettors are the known failure; no failure-to-start data found.",
-    "max": 1
-   },
-   "lateBuyClass": "specialty",
-   "requires": [],
-   "conditions": [
-    "house"
-   ],
-   "effects": [
-    {
-     "type": "capability",
-     "capability": "mainsPower"
-    },
-    {
-     "type": "capability",
-     "capability": "chargePhone"
-    },
-    {
-     "type": "supply",
-     "need": "devicePower",
-     "amount": 35000
-    },
-    {
-     "type": "supply",
-     "need": "medicalPower",
-     "amount": 35000
-    },
-    {
-     "type": "capability",
-     "capability": "generator"
-    },
-    {
-     "type": "supply",
-     "need": "refrigeration",
-     "amount": 35000
-    },
-    {
-     "type": "sideRisk",
-     "need": "refrigeration",
-     "channel": "co",
-     "micromortsPerDay": {
-      "lo": 0.5,
-      "mid": 1.5,
-      "hi": 4,
-      "tag": "derived",
-      "basis": "National: CPSC estimates 98 generator CO deaths a year (2020-2022), 24% of those with a known reason in weather or grid outages, so about 24; over 21.46M generators in use x 0.27 with an outage of 6 hours or more x 0.8 that run it x 1.3 days = 6.0M household-days, 3.9 per household-day, 1.6 per person. Texas 2021 gives 1.7 if 6 of the 19 CO deaths were generators (12% of 5.9M households, 2.8 people, 1.75 days). The exposure shares are guesses. https://www.cpsc.gov/s3fs-public/Generators-and-OEDT-CO-Poisoning-Fatalities-Report-2023-final.pdf"
-     }
-    }
-   ],
-   "sources": [
-    "https://www.campingworld.com/champion-2500-watt-portable-dual-fuel-inverter-generator-123244.html",
-    "https://www.cpsc.gov/s3fs-public/Fatal-Incidents-Associated-with-Non-Fire-Carbon-Monoxide-Poisioning-from-Engine-Driven-Generators-and-Other-Engine-Driven-Tools-2011-2021.pdf"
-   ],
-   "provenance": "power-light:generator-fuel"
   },
   {
    "id": "medical-backup-battery",
@@ -14364,41 +14437,6 @@
       "hi": 0.001,
       "tag": "guess",
       "basis": "Nothing in the kit treats cardiac arrest, choking or overdose, which are over 99% of the baseline; a pressure dressing helps with severe bleeding only a little more than a clean cloth.",
-      "max": 1
-     }
-    },
-    {
-     "type": "reduce",
-     "target": "trauma",
-     "hazards": [
-      "severeStorm",
-      "winterStorm",
-      "heatWave",
-      "hurricane",
-      "earthquake",
-      "wildfire",
-      "flood",
-      "pandemicModerate",
-      "pandemicSevere",
-      "nuclearNear",
-      "nuclearFar",
-      "gridLong",
-      "civilUnrest"
-     ],
-     "adherence": {
-      "lo": 0.4,
-      "mid": 0.7,
-      "hi": 0.9,
-      "tag": "guess",
-      "basis": "As above.",
-      "max": 1
-     },
-     "fraction": {
-      "lo": 0,
-      "mid": 0.01,
-      "hi": 0.03,
-      "tag": "guess",
-      "basis": "Cleaning and covering wounds when care is days away lowers wound infection; no study measures it. Most deaths in the window are heart attacks, sepsis and strokes that a kit cannot touch.",
       "max": 1
      }
     },
@@ -14986,6 +15024,7 @@
     "max": 1
    },
    "lateBuyClass": "none",
+   "noReview": true,
    "requires": [],
    "conditions": [
     "severalPeople"
@@ -15103,7 +15142,6 @@
       "basis": "HAT trial: the device was used in 32 of 58 witnessed home arrests (55%), in trained households; x 0.85 that a capable member is present. https://pubmed.ncbi.nlm.nih.gov/18381485/",
       "max": 1
      },
-     "othersOnly": true,
      "fraction": {
       "lo": 0.003,
       "mid": 0.015,
@@ -15132,13 +15170,7 @@
    "note": "Worth nothing extra to people who already keep up to date. Shown as a benchmark.",
    "confidence": "derived",
    "scalesWith": "person",
-   "price": {
-    "lo": 0,
-    "mid": 0,
-    "hi": 250,
-    "tag": "guess",
-    "basis": "No charge under most US insurance and Medicare (memory). Cash flu shot $21.99 at Costco to $99 at CVS (search snippets); the upper end adds a cash COVID shot, price from memory."
-   },
+   "price": 0,
    "lifeYears": {
     "lo": 1,
     "mid": 1,
@@ -15185,6 +15217,8 @@
     "max": 1
    },
    "lateBuyClass": "none",
+   "hoursPerPerson": true,
+   "noReview": true,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -15211,6 +15245,7 @@
    "group": "Drugs",
    "spec": "Extra supply of every regular prescription drug, and of what is needed to take it (needles, test strips), beyond the normal refill cycle; kept together in one pouch and used oldest first. Obtained by asking the prescriber for 90-day fills with refills, then refilling on the first day the plan allows each cycle (commonly once 75-80% of the supply is used, which banks about a week per 30-day fill or three weeks per 90-day fill), or by paying cash with a discount card for one extra fill of cheap generics, or by a vacation override. Controlled substances (opioids, stimulants, benzodiazepines, clinic-dispensed methadone) usually cannot be banked.",
    "units": "person-day of the full regimen, for one person on regular medication",
+   "note": "For someone on a drug that is dangerous to miss, most of the value comes from the longest shortages: nuclear war and war between great powers.",
    "confidence": "derived",
    "scalesWith": "person",
    "scalesWho": "onMedication",
@@ -15289,6 +15324,8 @@
     "max": 1
    },
    "lateBuyClass": "staple",
+   "hoursPerPerson": true,
+   "setupLifeYears": 10,
    "requires": [],
    "conditions": [
     "onMedication"
@@ -15310,109 +15347,6 @@
     "https://ihpi.umich.edu/national-poll-healthy-aging/national-findings/emergency-planning-among-older-adults"
    ],
    "provenance": "drugs:prescription-buffer"
-  },
-  {
-   "id": "medication-list",
-   "name": "Written medication list",
-   "group": "Drugs",
-   "spec": "One page per person listing every drug, dose and schedule, the prescriber, the pharmacy's phone number and the prescription numbers, plus allergies and conditions; a paper copy in the wallet and go-bag and a photo of each label on the phone.",
-   "units": "set of lists for the household",
-   "confidence": "guess",
-   "scalesWith": "household",
-   "price": {
-    "lo": 0,
-    "mid": 0.5,
-    "hi": 2,
-    "tag": "guess",
-    "basis": "Paper and printing only."
-   },
-   "lifeYears": {
-    "lo": 2,
-    "mid": 5,
-    "hi": 10,
-    "tag": "guess",
-    "basis": "Lasts as long as it is kept current; the updating is in upkeep."
-   },
-   "setupHours": {
-    "lo": 0.2,
-    "mid": 0.5,
-    "hi": 1.5,
-    "tag": "guess",
-    "basis": "Copying labels for a household with one to three people on medication."
-   },
-   "upkeepHoursPerYear": {
-    "lo": 0.1,
-    "mid": 0.25,
-    "hi": 0.5,
-    "tag": "guess",
-    "basis": "Revising after each change of drug or dose."
-   },
-   "upkeepUsdPerYear": {
-    "lo": 0,
-    "mid": 0,
-    "hi": 1,
-    "tag": "guess",
-    "basis": "None."
-   },
-   "everydayShare": {
-    "lo": 0.2,
-    "mid": 0.5,
-    "hi": 0.8,
-    "tag": "guess",
-    "basis": "Used at any emergency-department visit, new prescriber or trip.",
-    "max": 1
-   },
-   "volumeLitres": 0,
-   "reliability": {
-    "lo": 0.5,
-    "mid": 0.75,
-    "hi": 0.9,
-    "tag": "guess",
-    "basis": "Chance it is current and with the person when needed.",
-    "max": 1
-   },
-   "lateBuyClass": "none",
-   "requires": [],
-   "conditions": [
-    "onMedication"
-   ],
-   "effects": [
-    {
-     "type": "reduce",
-     "target": "medication",
-     "hazards": [
-      "hurricane",
-      "wildfire",
-      "flood",
-      "earthquake",
-      "severeStorm",
-      "winterStorm",
-      "nuclearNear",
-      "civilUnrest"
-     ],
-     "adherence": {
-      "lo": 0.5,
-      "mid": 0.75,
-      "hi": 0.9,
-      "tag": "guess",
-      "basis": "Share of owners whose list is current and carried.",
-      "max": 1
-     },
-     "fraction": {
-      "lo": 0.01,
-      "mid": 0.05,
-      "hi": 0.15,
-      "tag": "guess",
-      "basis": "Inside a window as the model defines it (no pharmacy or prescriber at all) a list does nothing. Its effect is to make relief usable sooner: a shelter clinic or an unfamiliar pharmacy can replace a known regimen at once. Chain pharmacies and electronic records now do much of this, so the share of unmet days removed is small.",
-      "max": 1
-     }
-    }
-   ],
-   "sources": [
-    "https://healthcareready.org/wp-content/uploads/2022/07/July-Analysis_HcR-2022-Domestic-Preparedness-Poll-Summary_Final-7-18.pdf",
-    "https://currents.plos.org/disasters/article/disaster-driven-evacuation-and-medication-a-systematic-literature-review/"
-   ],
-   "provenance": "drugs:medication-list"
   },
   {
    "id": "otc-core-kit",
@@ -15508,36 +15442,11 @@
       "max": 1
      },
      "fraction": {
-      "lo": 0.002,
-      "mid": 0.01,
-      "hi": 0.06,
+      "lo": 0.0005,
+      "mid": 0.0025,
+      "hi": 0.02,
       "tag": "guess",
-      "basis": "With ambulances running, paramedics give aspirin anyway and ISIS-2 found little dependence on the hour of treatment, so I credit self-treatment with a tenth of the trial effect: 240,000 heart attacks a year at 15-59 x 0.24 points = about 580 deaths, or 3 micromorts a year, about 1% of the medical researcher's everyday base of 280. The high end is Russo 2024, a model in which self-given aspirin within four hours of chest pain delays 13,016 US deaths a year (PMID 38690705).",
-      "max": 1
-     }
-    },
-    {
-     "type": "reduce",
-     "target": "trauma",
-     "hazards": [
-      "gridLong",
-      "pandemicSevere",
-      "nuclearNear"
-     ],
-     "adherence": {
-      "lo": 0.1,
-      "mid": 0.25,
-      "hi": 0.5,
-      "tag": "guess",
-      "basis": "Chance the symptoms are recognised and aspirin is chewed, net of the roughly half of households that hold aspirin anyway.",
-      "max": 1
-     },
-     "fraction": {
-      "lo": 0.03,
-      "mid": 0.1,
-      "hi": 0.2,
-      "tag": "guess",
-      "basis": "Aspirin when no emergency care can be reached, scaled to the medical researcher's base of 1.2 micromorts a day for an adult aged 15-59. Heart attacks at that age run at about 1.2 per 1,000 a year (recalled), or 3.4 per million a day. ISIS-2: 9.4% v 11.8% vascular death at five weeks, 23% lower odds; with no other care the baseline is higher, so I take 4 points (2.4-8). 3.4 x 0.04 = 0.14 micromorts a day, 11% of 1.2.",
+      "basis": "drugs.json aspirin effect, recomputed at present-day case fatality for adults under 60 (Gupta et al. 2014: 1.8 to 2.3% in hospital at ages 30 to 54).",
       "max": 1
      }
     },
@@ -15720,31 +15629,6 @@
    "effects": [
     {
      "type": "reduce",
-     "target": "trauma",
-     "hazards": [
-      "gridLong",
-      "nuclearNear",
-      "pandemicSevere"
-     ],
-     "adherence": {
-      "lo": 0.25,
-      "mid": 0.5,
-      "hi": 0.75,
-      "tag": "guess",
-      "basis": "Chance a lay person with the booklet treats the right illness with the right drug for long enough.",
-      "max": 1
-     },
-     "fraction": {
-      "lo": 0.05,
-      "mid": 0.3,
-      "hi": 0.6,
-      "tag": "guess",
-      "basis": "Set to give 0.36 micromorts a day at full adherence on the medical researcher's no-care base of 1.2 a day for an adult aged 15-59. My own sum is higher, about 0.8: with no antibiotics and no hospital, bacterial pneumonia, kidney, skin and wound infection and appendicitis would kill such adults at roughly 50 per 100,000 a year (pneumonia needing hospital runs at about 12 per 10,000 a year at this age and killed a fifth or more before antibiotics; recalled figures), and correctly chosen oral drugs avert about 60%. That is two thirds of the 1.2 base, which suggests the base leaves out slow infections; I use the cautious figure. US infectious mortality fell 8.2% a year from 1938 to 1952 as antibiotics arrived (Armstrong 1999). Net of harm from the drugs, roughly 10-20 micromorts per course from allergy and gut infection.",
-      "max": 1
-     }
-    },
-    {
-     "type": "reduce",
      "target": "emergencyCare",
      "hazards": [
       "gridLong",
@@ -15838,6 +15722,7 @@
     "max": 1
    },
    "lateBuyClass": "specialty",
+   "lateUptake": 0.3,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -16873,6 +16758,9 @@
     "max": 1
    },
    "lateBuyClass": "staple",
+   "lateBuyLevel": 3,
+   "lateUptake": 0.6,
+   "setupLifeYears": 10,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -16889,11 +16777,11 @@
      ],
      "group": "isolation",
      "fractionByLevel": [
-      0.0117,
-      0.0273,
-      0.0546,
-      0.1079,
-      0.2054
+      0.0099,
+      0.0232,
+      0.0464,
+      0.0917,
+      0.1746
      ],
      "adherence": {
       "lo": 0.08,
@@ -16995,7 +16883,8 @@
     "basis": "Given that cooking and water are available. Failures are pests, damp and having eaten it down. My estimate.",
     "max": 1
    },
-   "lateBuyClass": "staple",
+   "lateBuyClass": "none",
+   "setupLifeYears": 10,
    "requires": [],
    "conditions": [],
    "bundleWith": [
@@ -17017,11 +16906,11 @@
      ],
      "group": "isolation",
      "fractionByLevel": [
-      0.0273,
-      0.0546,
-      0.1079,
-      0.2054,
-      0.2817
+      0.0232,
+      0.0464,
+      0.0917,
+      0.1746,
+      0.2394
      ],
      "adherence": {
       "lo": 0.08,
@@ -17117,7 +17006,7 @@
     "basis": "Nobody eats it down, so it is there when wanted. My estimate.",
     "max": 1
    },
-   "lateBuyClass": "specialty",
+   "lateBuyClass": "none",
    "requires": [],
    "conditions": [],
    "effects": [
@@ -17211,7 +17100,7 @@
     "basis": "Home sealing can fail, the household may never have cooked from it, and it is useless without fuel and water. My estimate.",
     "max": 1
    },
-   "lateBuyClass": "staple",
+   "lateBuyClass": "none",
    "requires": [],
    "conditions": [],
    "bundleWith": [
@@ -17233,10 +17122,10 @@
      ],
      "group": "isolation",
      "fractionByLevel": [
-      0.1079,
-      0.2817,
-      0.4223,
-      0.5304
+      0.0917,
+      0.2394,
+      0.3589,
+      0.4508
      ],
      "adherence": {
       "lo": 0.08,
@@ -17329,7 +17218,7 @@
     "basis": "Risk is being forgotten past expiry or left in a hot car. My estimate.",
     "max": 1
    },
-   "lateBuyClass": "specialty",
+   "lateBuyClass": "none",
    "requires": [],
    "conditions": [],
    "effects": [
@@ -17405,12 +17294,17 @@
     "max": 1
    },
    "lateBuyClass": "specialty",
+   "lateUptake": 0.1,
    "requires": [],
    "conditions": [],
    "effects": [
     {
      "type": "capability",
      "capability": "cook"
+    },
+    {
+     "type": "capability",
+     "capability": "campStove"
     },
     {
      "type": "supply",
@@ -17454,16 +17348,16 @@
    "scalesWith": "household",
    "ladder": [
     {
+     "label": "4 canisters",
+     "units": 4
+    },
+    {
      "label": "12 canisters",
      "units": 12
     },
     {
      "label": "36 canisters",
      "units": 36
-    },
-    {
-     "label": "96 canisters",
-     "units": 96
     }
    ],
    "price": {
@@ -17518,9 +17412,9 @@
     "basis": "Little to go wrong. My estimate.",
     "max": 1
    },
-   "lateBuyClass": "specialty",
+   "lateBuyClass": "none",
    "requires": [
-    "cook"
+    "campStove"
    ],
    "conditions": [],
    "bundleWith": [
@@ -17825,6 +17719,7 @@
    "group": "Fire and CO",
    "spec": "Two 10-year sealed-battery photoelectric smoke alarms: one in the hallway outside the bedrooms, one on another level or in the living area. For a household with no working alarm, which includes one whose alarms are past 10 years, silent on test or missing a battery.",
    "units": "2-pack of alarms",
+   "note": "Worth nothing extra to the homes that already have working alarms, which in the United States is about five in six.",
    "confidence": "derived",
    "scalesWith": "household",
    "price": {
@@ -17890,7 +17785,18 @@
     {
      "type": "reduce",
      "hazards": [
-      "all"
+      "houseFire",
+      "localOutage",
+      "severeStorm",
+      "winterStorm",
+      "heatWave",
+      "hurricane",
+      "earthquake",
+      "flood",
+      "gridLong",
+      "cyberOutage",
+      "greatPowerWar",
+      "nuclearNear"
      ],
      "adherence": {
       "lo": 0.85,
@@ -17915,7 +17821,18 @@
     {
      "type": "reduce",
      "hazards": [
-      "all"
+      "houseFire",
+      "localOutage",
+      "severeStorm",
+      "winterStorm",
+      "heatWave",
+      "hurricane",
+      "earthquake",
+      "flood",
+      "gridLong",
+      "cyberOutage",
+      "greatPowerWar",
+      "nuclearNear"
      ],
      "adherence": {
       "lo": 0.85,
@@ -18021,7 +17938,18 @@
      "type": "reduce",
      "target": "fire",
      "hazards": [
-      "all"
+      "houseFire",
+      "localOutage",
+      "severeStorm",
+      "winterStorm",
+      "heatWave",
+      "hurricane",
+      "earthquake",
+      "flood",
+      "gridLong",
+      "cyberOutage",
+      "greatPowerWar",
+      "nuclearNear"
      ],
      "adherence": {
       "lo": 0.9,
@@ -18247,7 +18175,18 @@
      "type": "reduce",
      "target": "fire",
      "hazards": [
-      "all"
+      "houseFire",
+      "localOutage",
+      "severeStorm",
+      "winterStorm",
+      "heatWave",
+      "hurricane",
+      "earthquake",
+      "flood",
+      "gridLong",
+      "cyberOutage",
+      "greatPowerWar",
+      "nuclearNear"
      ],
      "adherence": {
       "lo": 0.4,
@@ -18271,7 +18210,18 @@
      "type": "reduce",
      "target": "fire",
      "hazards": [
-      "all"
+      "houseFire",
+      "localOutage",
+      "severeStorm",
+      "winterStorm",
+      "heatWave",
+      "hurricane",
+      "earthquake",
+      "flood",
+      "gridLong",
+      "cyberOutage",
+      "greatPowerWar",
+      "nuclearNear"
      ],
      "adherence": {
       "lo": 0.4,
@@ -18300,104 +18250,6 @@
    "provenance": "fire-co:fire-extinguisher"
   },
   {
-   "id": "gas-shutoff",
-   "name": "Gas and water shut-off tool and know-how",
-   "group": "Fire and CO",
-   "spec": "A 2-in-1 gas and water shut-off wrench kept by the meter, plus about 45 minutes finding the gas meter valve, the water main and the breaker panel and showing every adult. Rule: shut the gas only if you smell or hear a leak or the building is damaged, and leave relighting to the utility.",
-   "units": "tool plus one walk-through",
-   "confidence": "guess",
-   "scalesWith": "household",
-   "price": {
-    "lo": 5,
-    "mid": 18,
-    "hi": 22,
-    "tag": "data",
-    "basis": "$17.98 read on the seller's page, 19 Nov 2026; a plain gas wrench is $5-10 and the longlist's 4-in-1 tool $21.99 (both unverified). https://www.sosproducts.com/gas-and-water-shut-off-tool-p/12350.htm"
-   },
-   "lifeYears": {
-    "lo": 20,
-    "mid": 30,
-    "hi": 50,
-    "tag": "guess",
-    "basis": "A steel wrench; the knowledge needs refreshing."
-   },
-   "setupHours": {
-    "lo": 0.3,
-    "mid": 0.75,
-    "hi": 1.5,
-    "tag": "guess",
-    "basis": "Find the three shut-offs, check the wrench fits, show the household."
-   },
-   "upkeepHoursPerYear": {
-    "lo": 0,
-    "mid": 0.1,
-    "hi": 0.25,
-    "tag": "guess",
-    "basis": "A yearly reminder; new household members."
-   },
-   "upkeepUsdPerYear": {
-    "lo": 0,
-    "mid": 0,
-    "hi": 1,
-    "tag": "guess",
-    "basis": "None."
-   },
-   "everydayShare": {
-    "lo": 0,
-    "mid": 0.1,
-    "hi": 0.3,
-    "tag": "guess",
-    "basis": "Occasional use for plumbing repairs and leaks.",
-    "max": 1
-   },
-   "volumeLitres": 0.3,
-   "reliability": {
-    "lo": 0.5,
-    "mid": 0.75,
-    "hi": 0.9,
-    "tag": "guess",
-    "basis": "Someone who knows is at home, the valve is not seized and the tool is where it was left.",
-    "max": 1
-   },
-   "lateBuyClass": "none",
-   "requires": [],
-   "conditions": [
-    "earthquake",
-    "house"
-   ],
-   "effects": [
-    {
-     "type": "reduce",
-     "target": "fire",
-     "hazards": [
-      "earthquake"
-     ],
-     "adherence": {
-      "lo": 0.3,
-      "mid": 0.5,
-      "hi": 0.8,
-      "tag": "guess",
-      "basis": "Someone is home, checks for a leak and acts within minutes.",
-      "max": 1
-     },
-     "fraction": {
-      "lo": 0.02,
-      "mid": 0.1,
-      "hi": 0.25,
-      "tag": "guess",
-      "basis": "Share of the household's post-earthquake fire risk. Gas fed at least 50 structure fires after Northridge, by my recollection a quarter to a half of ignitions, against 14,000 leaks on customer lines; a manual shut-off helps only where the leak is noticed before it ignites, which I put at about a third. https://www.osti.gov/scitech/biblio/403466",
-      "max": 1
-     }
-    }
-   ],
-   "sources": [
-    "https://www.sosproducts.com/gas-and-water-shut-off-tool-p/12350.htm",
-    "https://www.osti.gov/scitech/biblio/403466",
-    "https://ssc.ca.gov/wp-content/uploads/sites/9/2020/08/cssc_2002-03_natural_gas_safety.pdf"
-   ],
-   "provenance": "fire-co:gas-shutoff-tool"
-  },
-  {
    "id": "n95-respirators",
    "name": "Disposable N95 respirators",
    "group": "Air",
@@ -18421,10 +18273,6 @@
     {
      "label": "40 each",
      "units": 40
-    },
-    {
-     "label": "80 each",
-     "units": 80
     }
    ],
    "price": {
@@ -18491,12 +18339,18 @@
      ],
      "group": "respirator",
      "fractionByLevel": [
-      0.09,
-      0.18,
-      0.33,
-      0.51,
-      0.6
+      0.070125,
+      0.136125,
+      0.27637500000000004,
+      0.41250000000000003
      ],
+     "levelScale": {
+      "lo": 0.5333333333333333,
+      "mid": 1,
+      "hi": 1.2,
+      "tag": "guess",
+      "basis": "Lawrence et al. 2006 fit factors, as re-read by the verifier; respiratory.json gives 0.6 net of partial wear."
+     },
      "adherence": {
       "lo": 0.25,
       "mid": 0.5,
@@ -18514,12 +18368,18 @@
      ],
      "group": "respirator",
      "fractionByLevel": [
-      0.09,
-      0.18,
-      0.33,
-      0.51,
-      0.6
+      0.108375,
+      0.210375,
+      0.42712500000000003,
+      0.6375
      ],
+     "levelScale": {
+      "lo": 0.5333333333333333,
+      "mid": 1,
+      "hi": 1.2,
+      "tag": "guess",
+      "basis": "Lawrence et al. 2006 fit factors, as re-read by the verifier; respiratory.json gives 0.6 net of partial wear."
+     },
      "adherence": {
       "lo": 0.5,
       "mid": 0.75,
@@ -18576,14 +18436,22 @@
    "group": "Air",
    "spec": "One reusable half-facepiece per person in the right size (3M 6000 or 6500 series or similar), two pairs of P100 particulate filters each, and one household fit-check kit (saccharin or Bitrex aerosol and a hood).",
    "units": "respirator set for one person, including a share of the household fit-check kit",
+   "note": "An N95 stock does much the same job. Whichever is bought first earns most of the value; the second adds a fraction of it.",
    "confidence": "derived",
    "scalesWith": "person",
    "price": {
-    "lo": 40,
-    "mid": 70,
-    "hi": 135,
-    "tag": "derived",
-    "basis": "Facepiece $23.99 and P100 filters $16.69 a pair at Quill (read on the pages) x 2 pairs = $57; fit check $45 home-made (guess) to $192.99 for a Gerson kit at Zoro (read), shared by 2.5 people = $18-77. https://www.quill.com/3m-half-facepiece-reusable-respirator-6200-medium/cbs/51568627.html"
+    "lo": 45,
+    "mid": 57,
+    "hi": 100,
+    "tag": "guess",
+    "basis": "respiratory.json: mask $23.99 plus two pairs of filters at $16.69."
+   },
+   "fixedPrice": {
+    "lo": 18,
+    "mid": 45,
+    "hi": 193,
+    "tag": "guess",
+    "basis": "respiratory.json: fit-check kit, home-made to bought."
    },
    "lifeYears": {
     "lo": 5,
@@ -18650,9 +18518,9 @@
      },
      "group": "respirator",
      "fraction": {
-      "lo": 0.6,
-      "mid": 0.9,
-      "hi": 0.985,
+      "lo": 0.51,
+      "mid": 0.765,
+      "hi": 0.8372499999999999,
       "tag": "derived",
       "basis": "Relative to improvised masks: 1 - (1 - 0.93)/(1 - 0.2) = 0.91, from protection while worn of 0.93 (0.7-0.99). See channel infection, protectionWhileWorn.",
       "max": 1
@@ -18674,9 +18542,9 @@
      },
      "group": "respirator",
      "fraction": {
-      "lo": 0.6,
-      "mid": 0.9,
-      "hi": 0.985,
+      "lo": 0.33,
+      "mid": 0.49500000000000005,
+      "hi": 0.5417500000000001,
       "tag": "derived",
       "basis": "As for pandemicSevere.",
       "max": 1
@@ -18796,9 +18664,9 @@
      },
      "group": "respirator",
      "fraction": {
-      "lo": 0.85,
-      "mid": 0.96,
-      "hi": 0.998,
+      "lo": 0.7224999999999999,
+      "mid": 0.816,
+      "hi": 0.8482999999999999,
       "tag": "derived",
       "basis": "Relative to improvised masks: 1 - (1 - 0.97)/(1 - 0.2) = 0.96, from the OSHA protection factor of 25 as a floor.",
       "max": 1
@@ -18820,9 +18688,9 @@
      },
      "group": "respirator",
      "fraction": {
-      "lo": 0.85,
-      "mid": 0.96,
-      "hi": 0.998,
+      "lo": 0.4675,
+      "mid": 0.528,
+      "hi": 0.5489,
       "tag": "derived",
       "basis": "As for pandemicSevere.",
       "max": 1
@@ -19013,6 +18881,7 @@
     "max": 1
    },
    "lateBuyClass": "specialty",
+   "everydayUpkeep": true,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -19174,6 +19043,67 @@
    "provenance": "respiratory:far-uvc-lamp"
   },
   {
+   "id": "sick-room-plan",
+   "name": "Sick-room plan",
+   "group": "Air",
+   "spec": "Decide in advance which room a sick member would stay in, who would care for them, and that both would wear respirators; keep a few for the purpose.",
+   "units": "plan",
+   "confidence": "guess",
+   "scalesWith": "household",
+   "price": 0,
+   "lifeYears": 5,
+   "setupHours": {
+    "lo": 0.5,
+    "mid": 1,
+    "hi": 2,
+    "tag": "guess",
+    "basis": "respiratory.json, excluded items: an hour of planning."
+   },
+   "upkeepHoursPerYear": 0,
+   "upkeepUsdPerYear": 0,
+   "everydayShare": 0,
+   "volumeLitres": 0,
+   "reliability": {
+    "lo": 0.5,
+    "mid": 0.8,
+    "hi": 0.95,
+    "tag": "guess",
+    "basis": "The model's own guess.",
+    "max": 1
+   },
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "reduce",
+     "target": "infection",
+     "hazards": [
+      "pandemicModerate",
+      "pandemicSevere"
+     ],
+     "fraction": {
+      "lo": 0.02,
+      "mid": 0.075,
+      "hi": 0.15,
+      "tag": "guess",
+      "basis": "respiratory.json: a quarter of infections are caught at home; masking the sick person and the carer before symptoms spread cuts onward spread by about 0.3.",
+      "max": 1
+     },
+     "adherence": {
+      "lo": 0.15,
+      "mid": 0.4,
+      "hi": 0.7,
+      "tag": "guess",
+      "basis": "respiratory.json.",
+      "max": 1
+     }
+    }
+   ],
+   "sources": [],
+   "provenance": "config"
+  },
+  {
    "id": "shelter-plan",
    "name": "Fallout shelter plan",
    "group": "Radiation",
@@ -19233,7 +19163,7 @@
     "basis": "Chance the rule is still remembered or the card found; behaviour under stress is in adherence.",
     "max": 1
    },
-   "lateBuyClass": "none",
+   "lateBuyClass": "staple",
    "requires": [],
    "conditions": [],
    "effects": [
@@ -19730,6 +19660,7 @@
     "max": 1
    },
    "lateBuyClass": "staple",
+   "lateUptake": 0.5,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -19916,6 +19847,16 @@
     },
     {
      "type": "leave",
+     "hazards": [
+      "hurricane",
+      "wildfire",
+      "flood",
+      "earthquake",
+      "severeStorm",
+      "winterStorm",
+      "civilUnrest",
+      "cyberOutage"
+     ],
      "cost": {
       "lo": 0.02,
       "mid": 0.08,
@@ -20405,6 +20346,7 @@
     "max": 1
    },
    "lateBuyClass": "staple",
+   "lateUptake": 0.5,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -20712,6 +20654,30 @@
     },
     {
      "type": "reduce",
+     "target": "fire",
+     "hazards": [
+      "houseFire"
+     ],
+     "adherence": {
+      "lo": 0.5,
+      "mid": 0.7,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Share of owners whose copies are current and retrievable when needed.",
+      "max": 1
+     },
+     "fraction": {
+      "lo": 0.01,
+      "mid": 0.04,
+      "hi": 0.12,
+      "tag": "guess",
+      "basis": "An inventory raises the contents payout and proof of ownership unlocks aid. Only 10% (six months) to 23% (twelve months) of Los Angeles total-loss claimants got their full contents limit without an itemised inventory, and FEMA declared about 60% of Hurricane Maria applications ineligible, many for lack of ownership papers (search snippets). The size of the gain is my guess.",
+      "max": 1
+     },
+     "on": "hardship"
+    },
+    {
+     "type": "reduce",
      "target": "displacement",
      "hazards": [
       "houseFire",
@@ -20834,6 +20800,30 @@
       "max": 1
      },
      "on": "hardship"
+    },
+    {
+     "type": "reduce",
+     "target": "fire",
+     "hazards": [
+      "houseFire"
+     ],
+     "adherence": {
+      "lo": 0.5,
+      "mid": 0.7,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Share of owners who actually keep the originals in it.",
+      "max": 1
+     },
+     "fraction": {
+      "lo": 0.002,
+      "mid": 0.005,
+      "hi": 0.02,
+      "tag": "guess",
+      "basis": "Replacing passports, birth certificates and titles costs perhaps $300-600 in fees plus 10-20 hours, about $700, against an average fire claim of $101,092 (III): under 1% of the loss.",
+      "max": 1
+     },
+     "on": "hardship"
     }
    ],
    "sources": [
@@ -20903,6 +20893,7 @@
     "max": 1
    },
    "lateBuyClass": "none",
+   "everydayUpkeep": true,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -20915,6 +20906,30 @@
       "wildfire",
       "hurricane",
       "earthquake"
+     ],
+     "adherence": {
+      "lo": 0.6,
+      "mid": 0.85,
+      "hi": 0.97,
+      "tag": "guess",
+      "basis": "Share of set-ups still working when the loss happens.",
+      "max": 1
+     },
+     "fraction": {
+      "lo": 0.005,
+      "mid": 0.03,
+      "hi": 0.1,
+      "tag": "guess",
+      "basis": "Assumes a household values its photos and records at about $3,000 ($500-10,000), against an average fire claim of $101,092. The valuation is a guess; the loss is not a market loss.",
+      "max": 1
+     },
+     "on": "hardship"
+    },
+    {
+     "type": "reduce",
+     "target": "fire",
+     "hazards": [
+      "houseFire"
      ],
      "adherence": {
       "lo": 0.6,
@@ -21079,7 +21094,7 @@
   {
    "id": "pepper-spray",
    "name": "Pepper spray",
-   "group": "Security",
+   "group": "Protection",
    "spec": "One keychain canister of OC spray (about 15 g, 25 short bursts, 3 m range) per adult, kept by the door or bed, with one practice burst outdoors.",
    "units": "canister",
    "confidence": "guess",
@@ -21174,7 +21189,7 @@
   {
    "id": "firearm",
    "name": "Firearm with training and locked storage",
-   "group": "Security",
+   "group": "Protection",
    "spec": "One pump shotgun or handgun, a basic safety and handling course (4-8 hours), a quick-access lock box or cable lock, 100 rounds, and one range session a year.",
    "units": "package (firearm, course, lock box, ammunition)",
    "confidence": "derived",
@@ -21239,18 +21254,7 @@
      "type": "reduce",
      "target": "violence",
      "hazards": [
-      "localOutage",
-      "severeStorm",
-      "winterStorm",
-      "heatWave",
-      "hurricane",
-      "earthquake",
-      "wildfire",
-      "flood",
-      "waterSystemFailure",
-      "supplyShock",
-      "pandemicModerate",
-      "bankingCrisis"
+      "violentCrime"
      ],
      "adherence": {
       "lo": 0.2,
@@ -21298,12 +21302,26 @@
     },
     {
      "type": "annualRisk",
-     "micromortsPerPersonYear": {
-      "lo": 21.9,
-      "mid": 80.3,
-      "hi": 219,
-      "tag": "derived",
-      "basis": "Per household member per day the gun is in the home (365 days a year), averaged over a two-adult household. Owner: firearm suicide 14-19 per 100,000 person-years at 4-12 years after purchase and 46 at 1-3 years, against 3.1 for non-owners, less about 2 for fewer suicides by other means (HR 0.68); over 20 years, leaving out the first year, about 14 per 100,000, shaded to 120 micromorts a year for residual confounding. Other adult: suicide HR 1.43 on 5.2 per 100,000 = +22 micromorts; homicide HR 2.33 on an assumed 2 per 100,000, half taken as causal = +13. Accident: 463 deaths a year over about 140 million people in gun households = 3. (120 + 35)/2 + 3 = 80 a year = 0.22 a day. https://www.suicideinfo.ca/wp-content/uploads/2020/06/Handgun-ownership-and-suicide-in-California.pdf"
+     "micromortsOwner": {
+      "lo": 35,
+      "mid": 123,
+      "hi": 330,
+      "tag": "guess",
+      "basis": "plans-skills-security.json: firearm suicide and accident among owners (Studdert et al. 2020)."
+     },
+     "micromortsOtherAdult": {
+      "lo": 10,
+      "mid": 38,
+      "hi": 100,
+      "tag": "guess",
+      "basis": "plans-skills-security.json: risk to an adult living with an owner."
+     },
+     "micromortsChild": {
+      "lo": 1,
+      "mid": 5,
+      "hi": 20,
+      "tag": "guess",
+      "basis": "The model's own guess."
      }
     }
    ],
@@ -21322,7 +21340,7 @@
   {
    "id": "helmet",
    "name": "Protective helmet",
-   "group": "Security",
+   "group": "Protection",
    "spec": "One hard hat or bicycle helmet per person, kept with sturdy shoes by the bed or the go-bag.",
    "units": "helmet",
    "confidence": "guess",
@@ -21419,7 +21437,7 @@
   {
    "id": "door-reinforcement",
    "name": "Entry door reinforcement",
-   "group": "Security",
+   "group": "Protection",
    "spec": "For the main exterior door (and back door of a house): 75 mm screws through strike plate and hinges into the stud, a steel jamb-and-strike reinforcement kit, a deadbolt if absent, and a motion-sensor light at the entry.",
    "units": "one door reinforced",
    "confidence": "derived",
@@ -21478,6 +21496,7 @@
     "max": 1
    },
    "lateBuyClass": "staple",
+   "noReview": true,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -21516,7 +21535,7 @@
   {
    "id": "discretion",
    "name": "Keeping quiet about supplies",
-   "group": "Security",
+   "group": "Protection",
    "spec": "Do not advertise stored food, fuel, cash or a generator beyond the neighbours the household has agreed to share with; keep stores out of sight from the street.",
    "units": "habit",
    "confidence": "guess",
@@ -21605,9 +21624,9 @@
    "provenance": "plans-skills-security:discretion-about-supplies"
   },
   {
-   "id": "digital-security",
+   "id": "digital-hygiene",
    "name": "Basic digital security",
-   "group": "Security",
+   "group": "Protection",
    "spec": "A password manager with a unique password per account, two-factor authentication on email, bank and phone-carrier accounts with printed recovery codes, automatic updates on, and a free credit freeze at the three bureaus.",
    "units": "set-up",
    "confidence": "guess",
@@ -21665,6 +21684,7 @@
     "max": 1
    },
    "lateBuyClass": "none",
+   "everydayUpkeep": true,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -22007,7 +22027,9 @@
     "max": 1
    },
    "lateBuyClass": "none",
-   "requires": [],
+   "requires": [
+    "smokeAlarm"
+   ],
    "conditions": [],
    "effects": [
     {
@@ -22031,7 +22053,8 @@
       "tag": "guess",
       "basis": "No study compares fire deaths with and without a practised plan. Mechanism: people delay leaving (an NFPA survey found 8% respond to an alarm by leaving at once; search snippet). The channel owner may override.",
       "max": 1
-     }
+     },
+     "on": "mortality"
     },
     {
      "type": "reduce",
@@ -22147,6 +22170,7 @@
     "max": 1
    },
    "lateBuyClass": "none",
+   "everydayUpkeep": true,
    "requires": [],
    "conditions": [],
    "effects": [
@@ -22412,7 +22436,17 @@
      "type": "reduce",
      "target": "co",
      "hazards": [
-      "all"
+      "localOutage",
+      "severeStorm",
+      "winterStorm",
+      "heatWave",
+      "hurricane",
+      "earthquake",
+      "flood",
+      "gridLong",
+      "cyberOutage",
+      "greatPowerWar",
+      "nuclearNear"
      ],
      "adherence": {
       "lo": 0.4,
@@ -22858,29 +22892,6 @@
       "hi": 0.15,
       "tag": "guess",
       "basis": "Northridge: deaths were mainly from building collapse, which this does not touch; hospital admissions were mostly falls and being struck by objects, which it does. So a small share of deaths and a larger share of injuries.",
-      "max": 1
-     }
-    },
-    {
-     "type": "reduce",
-     "target": "fire",
-     "hazards": [
-      "earthquake"
-     ],
-     "adherence": {
-      "lo": 0.7,
-      "mid": 0.9,
-      "hi": 0.98,
-      "tag": "guess",
-      "basis": "Strapped correctly.",
-      "max": 1
-     },
-     "fraction": {
-      "lo": 0.02,
-      "mid": 0.1,
-      "hi": 0.3,
-      "tag": "guess",
-      "basis": "The US mitigation study puts water-heater strapping at 24:1 mainly through fewer fires after earthquakes; the share of post-earthquake home fires that start at a gas water heater is not given.",
       "max": 1
      }
     },
@@ -23709,110 +23720,6 @@
     "https://www.cdc.gov/healthywater/drinking/private/rainwater-collection.html"
    ],
    "provenance": "plans-skills-security:rainwater-barrel"
-  },
-  {
-   "id": "stored-petrol",
-   "name": "Extra stored petrol",
-   "group": "The home",
-   "spec": "Approved 5-gallon (19-litre) cans of stabilised petrol in a detached shed or garage, beyond the first 10 gallons counted with the generator; rotated into the car once a year.",
-   "units": "5-gallon can, filled",
-   "confidence": "guess",
-   "scalesWith": "household",
-   "ladder": [
-    {
-     "label": "5 gallons",
-     "units": 1
-    },
-    {
-     "label": "10 gallons",
-     "units": 2
-    },
-    {
-     "label": "15 gallons",
-     "units": 3
-    }
-   ],
-   "price": {
-    "lo": 35,
-    "mid": 45,
-    "hi": 60,
-    "tag": "guess",
-    "basis": "Recalled prices, not verified: can about $27, 5 gallons at about $3.10, stabiliser about $2."
-   },
-   "lifeYears": {
-    "lo": 5,
-    "mid": 10,
-    "hi": 20,
-    "tag": "guess",
-    "basis": "The can; the fuel is rotated yearly."
-   },
-   "setupHours": {
-    "lo": 0.3,
-    "mid": 0.5,
-    "hi": 1.5,
-    "tag": "guess",
-    "basis": "Buy, fill, label."
-   },
-   "upkeepHoursPerYear": {
-    "lo": 0.2,
-    "mid": 0.4,
-    "hi": 1,
-    "tag": "guess",
-    "basis": "Pour into the car and refill, per can."
-   },
-   "upkeepUsdPerYear": {
-    "lo": 1,
-    "mid": 2,
-    "hi": 5,
-    "tag": "guess",
-    "basis": "Stabiliser."
-   },
-   "everydayShare": {
-    "lo": 0.2,
-    "mid": 0.35,
-    "hi": 0.5,
-    "tag": "derived",
-    "basis": "The fuel ($15.50 of $45) is burnt in the car at full value when rotated.",
-    "max": 1
-   },
-   "volumeLitres": 22,
-   "reliability": {
-    "lo": 0.6,
-    "mid": 0.85,
-    "hi": 0.95,
-    "tag": "guess",
-    "basis": "Fuel still good: stabilised petrol keeps one to two years (recalled).",
-    "max": 1
-   },
-   "lateBuyClass": "specialty",
-   "requires": [
-    "generator"
-   ],
-   "conditions": [
-    "house"
-   ],
-   "effects": [
-    {
-     "type": "supply",
-     "need": "refrigeration",
-     "amount": 17500
-    },
-    {
-     "type": "supply",
-     "need": "medicalPower",
-     "amount": 17500
-    },
-    {
-     "type": "supply",
-     "need": "devicePower",
-     "amount": 17500
-    }
-   ],
-   "sources": [
-    "https://www.petersonschriever.spaceforce.mil/Newsroom/News/Display/Article/326626/gasoline-safety",
-    "https://www.lehi-ut.gov/departments/fire-department/fire-prevention/home-fuel-storage-limits/"
-   ],
-   "provenance": "plans-skills-security:extra-fuel-store"
   }
  ]
 }

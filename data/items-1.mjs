@@ -2,27 +2,40 @@
 // first aid, drugs and communications. Each entry names the research item it
 // comes from (`from`) and says how it acts in the engine. Numbers are the
 // researcher's unless a comment says otherwise.
+//
+// `lateUptake` is the share of households that would in fact buy the thing
+// in the days before an event, where shops still have it. The University of
+// Houston survey of Texans before the February 2021 storm found 58% bought
+// bottled water, 28% batteries, 9% propane and 6% a generator; nobody
+// reports buying bedding. The figures here are the model's own, read from that.
 
 import { guess, reduce, reduceAll } from './helpers.mjs';
 
 const days = (n, units) => ({ label: `${n} days`, units });
 
 // A reduction of deaths from injury and acute illness inside hazards applies
-// both to the hazard's own injuries and to the days without emergency care.
+// both to the hazard's own injuries and to the days without emergency care,
+// where the researcher asks for both; otherwise to those days only.
 const trauma = (src, T, hazard, opts = {}) => [
   ...reduce(src, T, 'trauma', { hazard, ...opts }),
   ...reduce(src, T, 'trauma', { hazard, as: 'emergencyCare', ...opts }),
 ];
+const careOnly = (src, T, hazard) => reduce(src, T, 'trauma', { hazard, as: 'emergencyCare' });
 
 export const items = [
   // ---- water ----
   {
-    id: 'water-bottled', from: 'bottled-water', group: 'Water',
+    id: 'water-bottled', from: 'bottled-water', group: 'Water', lateUptake: 0.6,
     ladder: [days(3, 9), days(7, 21), days(14, 42)],
     effects: () => [{ type: 'supply', need: 'water', amount: 1 }],
   },
   {
-    id: 'water-stored', from: 'stored-water', group: 'Water',
+    // Filling pots and the bath when a storm is forecast is what unprepared
+    // households do anyway, and is in the baseline; the containers are not
+    // something bought late. Rotation time is the researcher's figure for a
+    // 14-day store, scaled down for the smaller steps most would hold.
+    id: 'water-stored', from: 'stored-water', group: 'Water', lateBuyClass: 'none',
+    upkeepHoursPerYear: guess(0.1, 0.25, 0.6, 'water-sanitation.json gives 0.5 hours a year for a 14-day store and says it scales with litres.'),
     ladder: [days(3, 9), days(7, 21), days(14, 42), days(30, 90)],
     effects: () => [{ type: 'supply', need: 'water', amount: 1 }],
   },
@@ -36,15 +49,19 @@ export const items = [
     effects: () => [{ type: 'supply', need: 'water', amount: 75 }],
   },
   { id: 'water-filter', from: 'water-filter', group: 'Water', effects: () => [{ type: 'capability', capability: 'treatWater' }] },
-  { id: 'water-tablets', from: 'water-purification-tablets', group: 'Water', ladder: null, effects: () => [{ type: 'capability', capability: 'treatWater' }] },
+  {
+    // A pack treats 30 litres, and only where unsafe water can be had.
+    id: 'water-tablets', from: 'water-purification-tablets', group: 'Water', ladder: null,
+    effects: () => [{ type: 'supply', need: 'water', amount: 24 }],
+  },
   { id: 'water-bleach', from: 'bleach-for-water', group: 'Water', effects: () => [{ type: 'capability', capability: 'treatWater' }] },
   { id: 'water-carriers', from: 'water-fetch-containers', group: 'Water', effects: (s, T) => reduce(s, T, 'sanitation') },
   { id: 'emergency-toilet', from: 'emergency-toilet-kit', group: 'Sanitation', effects: (s, T) => reduce(s, T, 'sanitation') },
   { id: 'hygiene-bundle', from: 'hygiene-bundle', group: 'Sanitation', effects: (s, T) => reduce(s, T, 'sanitation') },
 
   // ---- warmth ----
-  { id: 'sleeping-bags', from: 'sleeping-bag', group: 'Warmth', effects: (s, T) => reduce(s, T, 'warmth') },
-  { id: 'warm-layers', from: 'warm-layers', group: 'Warmth', effects: (s, T) => reduce(s, T, 'warmth') },
+  { id: 'sleeping-bags', from: 'sleeping-bag', group: 'Warmth', lateUptake: 0.05, effects: (s, T) => reduce(s, T, 'warmth') },
+  { id: 'warm-layers', from: 'warm-layers', group: 'Warmth', lateUptake: 0.05, effects: (s, T) => reduce(s, T, 'warmth') },
   { id: 'warm-room-plan', from: 'one-warm-room-plan', group: 'Warmth', effects: (s, T) => reduce(s, T, 'warmth') },
   {
     // The heater and its fuel are one entry: the heater is the fixed price,
@@ -52,7 +69,7 @@ export const items = [
     // about 14; a covered day removes about 85% of the harm, entered as 0.85
     // of a day. Steps above two cylinders exceed the usual limit for storage
     // inside a dwelling.
-    id: 'propane-heater', from: 'heater-fuel-propane', group: 'Warmth',
+    id: 'propane-heater', from: 'heater-fuel-propane', group: 'Warmth', lateUptake: 0.1,
     name: 'Indoor-rated propane heater with fuel',
     spec: 'A catalytic or radiant heater rated for indoor use, with oxygen-depletion and tip-over cut-offs, and 1-lb propane cylinders.',
     units: 'cylinders',
@@ -95,25 +112,25 @@ export const items = [
 
   // ---- light and power ----
   {
-    id: 'flashlight', from: 'flashlight', group: 'Light and power',
+    id: 'flashlight', from: 'flashlight', group: 'Light and power', lateUptake: 0.3,
     name: 'A second flashlight or headlamp',
-    note: 'Nearly every household already has a light; that is in the baseline.',
+    note: 'Nearly every household already has a light; that is in the baseline. This entry is a second one.',
     effects: () => [{ type: 'capability', capability: 'light' }, { type: 'supply', need: 'light', amount: 5 }],
   },
   {
-    id: 'spare-batteries', from: 'spare-batteries', group: 'Light and power', requires: [],
+    id: 'spare-batteries', from: 'spare-batteries', group: 'Light and power', requires: [], lateUptake: 0.3,
     ladder: [{ label: '24 AA cells', units: 1 }, { label: '48 cells', units: 2 }, { label: '96 cells', units: 4 }],
     effects: () => [{ type: 'supply', need: 'light', amount: 60 }],
   },
   {
-    id: 'candles', from: 'candles', group: 'Light and power',
+    id: 'candles', from: 'candles', group: 'Light and power', lateUptake: 0.3,
     effects: () => [
       { type: 'supply', need: 'light', amount: 80 },
       { type: 'sideRisk', need: 'light', channel: 'fire', micromortsPerDay: 'SIDE:candles' },
     ],
   },
   {
-    id: 'power-bank', from: 'power-bank', group: 'Light and power', units: 'watt-hours',
+    id: 'power-bank', from: 'power-bank', group: 'Light and power', units: 'watt-hours', lateUptake: 0.3,
     ladder: [{ label: '10,000 mAh', units: 37 }, { label: '20,000 mAh', units: 74 }, { label: '40,000 mAh', units: 148 }],
     effects: () => [{ type: 'capability', capability: 'chargePhone' }, { type: 'supply', need: 'devicePower', amount: 1 }],
   },
@@ -124,7 +141,8 @@ export const items = [
   {
     // One stock serves phones, the fridge and a medical device. The engine
     // credits it to each need separately, which overstates it a little for a
-    // household that has all three.
+    // household that has all three. It is not credited with running a heater
+    // blower or a fan: no researcher gave an effect size for that.
     id: 'power-station', from: 'power-station', group: 'Light and power', units: 'watt-hours',
     ladder: [{ label: '256 Wh', units: 256 }, { label: '1 kWh', units: 1024 }, { label: '2 kWh', units: 2048 }],
     effects: () => [
@@ -132,17 +150,6 @@ export const items = [
       { type: 'supply', need: 'devicePower', amount: 1 },
       { type: 'supply', need: 'medicalPower', amount: 0.85 },
       { type: 'supply', need: 'refrigeration', amount: 0.85 },
-    ],
-  },
-  {
-    id: 'generator', from: 'generator-fuel', group: 'Light and power',
-    effects: () => [
-      { type: 'capability', capability: 'mainsPower' }, { type: 'capability', capability: 'chargePhone' },
-      { type: 'supply', need: 'devicePower', amount: 35000 },
-      { type: 'supply', need: 'medicalPower', amount: 35000 },
-      { type: 'capability', capability: 'generator' },
-      { type: 'supply', need: 'refrigeration', amount: 35000 },
-      { type: 'sideRisk', need: 'refrigeration', channel: 'co', micromortsPerDay: 'SIDE:generator' },
     ],
   },
   {
@@ -162,7 +169,7 @@ export const items = [
   // ---- first aid ----
   {
     id: 'first-aid-kit', from: 'home-first-aid-kit', group: 'First aid',
-    effects: (s, T) => [...reduce(s, T, 'trauma', { hazard: 'homeMedicalEmergency' }), ...trauma(s, T, 'severeStorm')],
+    effects: (s, T) => [...reduce(s, T, 'trauma', { hazard: 'homeMedicalEmergency' }), ...careOnly(s, T, 'severeStorm')],
   },
   {
     id: 'bleeding-control-kit', from: 'bleeding-control-kit', group: 'First aid',
@@ -182,55 +189,60 @@ export const items = [
   },
   {
     id: 'cpr-self-training', from: 'hands-only-cpr-video', group: 'First aid',
-    scalesWith: 'household', conditions: ['severalPeople'],
+    scalesWith: 'household', conditions: ['severalPeople'], noReview: true,
     spec: 'One adult watches a hands-only CPR video and practises for half an hour a year.',
     effects: (s, T) => reduce(s, T, 'trauma', { hazard: 'homeMedicalEmergency', othersOnly: true, group: 'cpr' }),
   },
   {
+    // Either member can use the device on the other.
     id: 'home-aed', from: 'home-aed', group: 'First aid', conditions: ['severalPeople'],
-    effects: (s, T) => reduce(s, T, 'trauma', { hazard: 'homeMedicalEmergency', othersOnly: true }),
+    effects: (s, T) => reduce(s, T, 'trauma', { hazard: 'homeMedicalEmergency' }),
   },
   {
     // Not a hazard effect: everyday infection risk. The channel's baseline is
-    // the deaths that vaccination averts, so the item removes all of it.
-    id: 'vaccinations', from: 'routine-vaccinations', group: 'First aid',
+    // the deaths that vaccination averts, so the item removes all of it. The
+    // price is nil where insurance or the state pays, as in all three places
+    // modelled; the cost is the time, which each person spends.
+    id: 'vaccinations', from: 'routine-vaccinations', group: 'First aid', price: 0, hoursPerPerson: true, noReview: true,
     note: 'Worth nothing extra to people who already keep up to date. Shown as a benchmark.',
     effects: () => [{ type: 'reduce', target: 'seasonalInfection', hazards: ['seasonalIllness'], fraction: 1 }],
   },
 
   // ---- drugs ----
   {
+    // The arranging is done once and lasts until the regimen changes, which
+    // the yearly upkeep covers; it is spread over ten years, not the two-year
+    // life of the tablets.
     id: 'prescription-buffer', from: 'prescription-buffer', group: 'Drugs',
-    scalesWith: 'person', scalesWho: 'onMedication', conditions: ['onMedication'],
+    scalesWith: 'person', scalesWho: 'onMedication', conditions: ['onMedication'], hoursPerPerson: true, setupLifeYears: 10,
+    note: 'For someone on a drug that is dangerous to miss, most of the value comes from the longest shortages: nuclear war and war between great powers.',
     ladder: [days(7, 7), days(14, 14), days(30, 30), days(60, 60), days(90, 90)],
     effects: () => [{ type: 'supply', need: 'medication', amount: 1 }],
   },
   {
-    id: 'medication-list', from: 'medication-list', group: 'Drugs', conditions: ['onMedication'],
-    effects: (s, T) => reduce(s, T, 'medication'),
-  },
-  {
     // The kit relieves about $0.70 of the $1.10 a day of minor illness that
-    // goes untreated when pharmacies are out of reach; the aspirin in it acts
-    // on heart attacks.
+    // goes untreated when pharmacies are out of reach. The aspirin in it acts
+    // on heart attacks: the researcher applied a 1980s trial's absolute
+    // benefit to adults under 60, whose heart-attack deaths in hospital are
+    // now about a fifth of the trial's, so the fraction is cut to a quarter.
     id: 'otc-core-kit', from: 'otc-core-kit', group: 'Drugs',
     effects: (s, T) => [
       { type: 'reduce', target: 'minorIllness', hazards: ['all'], on: 'hardship', fraction: 0.64 },
-      ...reduce(s, T, 'trauma', { hazard: 'homeMedicalEmergency' }),
-      ...trauma(s, T, 'gridLong'),
+      ...reduce(s, T, 'trauma', { hazard: 'homeMedicalEmergency', fraction: guess(0.0005, 0.0025, 0.02, 'drugs.json aspirin effect, recomputed at present-day case fatality for adults under 60 (Gupta et al. 2014: 1.8 to 2.3% in hospital at ages 30 to 54).', 1) }),
+      ...careOnly(s, T, 'gridLong'),
     ],
   },
   {
     id: 'otc-wider-kit', from: 'otc-wider-kit', group: 'Drugs',
     effects: () => [{ type: 'reduce', target: 'minorIllness', hazards: ['all'], on: 'hardship', fraction: 0.36 }],
   },
-  { id: 'emergency-antibiotics', from: 'emergency-antibiotic-pack', group: 'Drugs', effects: (s, T) => trauma(s, T, 'gridLong') },
+  { id: 'emergency-antibiotics', from: 'emergency-antibiotic-pack', group: 'Drugs', effects: (s, T) => careOnly(s, T, 'gridLong') },
 
   // ---- communications ----
   {
     // The radio brings news but cannot call for help: the researcher applies
     // it to hardship and to at most a fifth of the mortality.
-    id: 'radio', from: 'battery-radio', group: 'Communications',
+    id: 'radio', from: 'battery-radio', group: 'Communications', lateUptake: 0.3,
     effects: (s, T) => {
       const [r] = reduce(s, T, 'information', { on: 'hardship' });
       return [
@@ -259,7 +271,9 @@ export const dropped = {
   headlamp: 'Merged into the second-light entry.',
   lantern: 'Merged into the second-light entry.',
   'car-charging-kit': 'For car owners, charging from the car is already in the baseline for device power.',
+  'generator-fuel': 'Not ranked. No researcher gave a figure for what running a furnace blower, a fan or an air conditioner from it is worth, which is most of the reason to own one; without that the model charges its carbon monoxide risk against the fridge alone, and the result would mislead.',
   'first-aid-extras': 'Merged into the first-aid kit; its own effect is a fraction of a micromort.',
+  'medication-list': 'It helps people separated from their drugs in an evacuation, which the model does not represent; in the model its value is cents a year.',
   'spare-rescue-medicine': 'Applies to people with asthma or severe allergy, a profile the model does not have. About half a micromort per day without pharmacy or emergency care.',
   'drug-cooler': 'Applies to households holding refrigerated drugs in hot places; averts about $60 per long hot outage.',
   'spare-glasses': "On the researcher's figures, about $0.15 a year of benefit against about $5 of cost.",

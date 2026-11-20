@@ -52,7 +52,9 @@ function fixture() {
   };
 }
 const CRF10 = 0.03 / (1 - Math.pow(1.03, -10));
-const near = (a, b, tol = 1e-9) => assert.ok(Math.abs(a - b) <= tol * Math.max(1, Math.abs(b)), `${a} is not ${b}`);
+// Deaths are capped at one per person, which shaves a few parts in 100,000
+// off small risks; hand calculations are compared to that tolerance.
+const near = (a, b, tol = 2e-4) => assert.ok(Math.abs(a - b) <= tol * Math.max(1, Math.abs(b)), `${a} is not ${b}`);
 const run = (data, patch = {}) => rank(data, { ...data.defaults, ...patch });
 const entry = (r, id, level) => r.entries.find((e) => e.items.some((x) => x.id === id && (level === undefined || x.level === level)));
 
@@ -66,7 +68,7 @@ test('numeric helpers', () => {
   near(windowDays({ p50: 2, p90: 6, p99: 20 }, 0.5), 2);
   near(windowDays({ p50: 2, p90: 6, p99: 20 }, 0.9), 6, 1e-6);
   near(windowDays({ p50: 2, p90: 6, p99: 20 }, 0.99), 20, 1e-6);
-  assert.equal(windowDays({ p50: 2, p90: 6, p99: 20 }, 0.999999), 60);
+  assert.equal(windowDays({ p50: 2, p90: 6, p99: 20 }, 0.999999), 30);
   near(drawTriple({ lo: 1, mid: 2, hi: 8 }, 0), 2);
   near(drawTriple({ lo: 1, mid: 2, hi: 8 }, 1.6448536269514722), 8);
   near(drawTriple({ lo: 1, mid: 2, hi: 8 }, -1.6448536269514722), 1);
@@ -213,7 +215,7 @@ test('the option to leave caps the harm, and makes partial stocks worth less', (
 
 test('an item can make leaving likelier to be possible, and cheaper', () => {
   const d = fixture();
-  d.hazards.storm.leave = { feasible: 0.5, earliestDay: 0, fixedUsdPerHousehold: 0, usdPerPersonDay: 10 };
+  d.hazards.storm.leave = { feasible: 0.5, earliestDay: 0, fixedUsdPerHousehold: 0, usdPerPersonDay: 10, halfLifeDays: Infinity };
   d.items = [{ id: 'plan', scalesWith: 'household', price: 0, lifeYears: 5, setupHours: 2, reliability: 1, lateBuyClass: 'none', effects: [{ type: 'leave', feasible: 0.6, cost: 0.25 }] }];
   const r = run(d);
   // Unprepared: half can leave (paying $80), half stay ($400 and 40 micromorts).
@@ -293,7 +295,6 @@ test('warmth counts only in the cold, for households that say they have winters'
   d.needs.warmth = {
     per: 'person', gap: 'warmth', baselineDays: flat(0),
     hardship: { steps: [{ fromDay: 1, ...flat(40) }] }, mortality: { steps: [{ fromDay: 1, ...flat(5) }] },
-    coping: [{ channel: 'co', share: 0.1 }],
   };
   d.hazards.storm.windows = { power: { pOccur: 1, days: fixed(2) } };
   d.hazards.storm.coldShare = 0.25;
@@ -305,13 +306,13 @@ test('warmth counts only in the cold, for households that say they have winters'
   let r = run(d, { ticks: { coldWinters: true } });
   // 0.1 a year x 0.25 cold x 2 days x 2 people.
   near(r.harm.unprepared.usd, 0.1 * 0.25 * 2 * 2 * 40);
-  near(r.harm.unprepared.mm, 0.1 * 0.25 * 2 * 2 * 5 * 1.1);
+  near(r.harm.unprepared.mm, 0.1 * 0.25 * 2 * 2 * 5);
   // The heater covers one of the two days, at 2 micromorts a person for the
-  // day it runs: 5.5 averted, 2 added, per person.
-  near(entry(r, 'heater').micromorts, 0.1 * 0.25 * 2 * (5.5 - 2));
-  // A CO alarm halves both the coping risk and the heater's own.
+  // day it runs: 5 averted, 2 added, per person.
+  near(entry(r, 'heater').micromorts, 0.1 * 0.25 * 2 * (5 - 2));
+  // A CO alarm halves the heater's own risk.
   r = run(d, { ticks: { coldWinters: true }, owned: { heater: 1 } });
-  near(entry(r, 'co-alarm').micromorts, 0.1 * 0.25 * 2 * (0.5 * 0.5 + 0.5 * 2));
+  near(entry(r, 'co-alarm').micromorts, 0.1 * 0.25 * 2 * (0.5 * 2));
   near(run(d, { ticks: { coldWinters: true }, heating: 'independent' }).harm.unprepared.usd, 0);
 });
 
@@ -398,4 +399,67 @@ test('robustness: no uncertainty gives no spread; uncertainty gives some', () =>
   u = robustness(d, d.defaults, r.entries, { samples: 200 });
   assert.ok(u[0].p05 < r.entries[0].ratio && r.entries[0].ratio < u[0].p95);
   assert.ok(u[0].pAbove1 > 0.5 && u[0].pAbove1 <= 1);
+});
+
+test('nobody dies more than once', () => {
+  const d = fixture();
+  d.needs.water.mortality = { steps: [{ fromDay: 1, ...flat(2e6) }] };
+  const r = run(d);
+  // Four unmet days at 2 million micromorts a day: certain death, twice over.
+  assert.ok(r.harm.unprepared.mm < 0.1 * 2 * 1e6 && r.harm.unprepared.mm > 0.1 * 2 * 0.999e6);
+  d.hazards.fire = { probability: { us: 1 }, windows: {}, leave: noLeave, warningDays: 0, lateBuy: { staple: 0, specialty: 0 }, exposures: [{ channel: 'fire', micromortsPerPerson: 5e6 }] };
+  d.hazards.storm.probability.us = 0;
+  assert.ok(run(d).harm.unprepared.mm < 2e6);
+});
+
+test('a household short of food rations it', () => {
+  const d = fixture();
+  d.needs = {
+    food: {
+      per: 'person', gap: 'food', special: 'food', demandPerPersonDay: 1, baselineDays: flat(10),
+      hardship: { steps: [{ fromDay: 1, ...flat(100) }] }, mortality: { steps: [{ fromDay: 1, ...flat(1000) }] },
+      rationing: {
+        half: { hardship: { steps: [{ fromDay: 1, ...flat(20) }] }, mortality: { steps: [{ fromDay: 1, ...flat(1) }] } },
+        quarter: { hardship: { steps: [{ fromDay: 1, ...flat(60) }] }, mortality: { steps: [{ fromDay: 1, ...flat(5) }] } },
+      },
+    },
+  };
+  d.items = [];
+  const harm = (days) => { d.hazards.storm.windows = { food: { pOccur: 1, days: fixed(days) } }; return run(d).harm.unprepared; };
+  near(harm(8).usd, 0);
+  // 15 days on 10 days of food: half rations for 10 days.
+  near(harm(15).usd, 0.1 * 2 * 10 * 20);
+  near(harm(15).mm, 0.1 * 2 * 10 * 1);
+  // 30 days: half rations for 10 days, quarter rations for 20.
+  near(harm(30).usd, 0.1 * 2 * (10 * 20 + 20 * 60));
+  // 50 days: quarter rations for 40 days, then 10 with nothing.
+  near(harm(50).usd, 0.1 * 2 * (40 * 60 + 10 * 100));
+  // Eating in full and fasting two days would cost more than rationing here,
+  // but for a very short gap it can cost less: 11 days is 2 days on half
+  // rations ($40) against one day with nothing ($100).
+  near(harm(11).usd, 0.1 * 2 * 2 * 20);
+});
+
+test('being forced out is its own branch of an event', () => {
+  const d = fixture();
+  d.hazards.storm.windows.displacement = { pOccur: 0.25, days: fixed(30) };
+  d.needs.displacement = {
+    per: 'person', gap: 'displacement', leaveEnds: false, home: false, baselineDays: 0,
+    hardship: { steps: [{ fromDay: 1, ...flat(10) }] }, mortality: { steps: [{ fromDay: 1, ...flat(0) }] },
+  };
+  const r = run(d);
+  // A quarter of events: away for 30 days, so the 5 days without water at
+  // home do not arise, and 30 days displaced. The rest: as before.
+  near(r.harm.unprepared.usd, 0.1 * (0.75 * 400 + 0.25 * 2 * 30 * 10));
+  near(r.harm.unprepared.mm, 0.1 * 0.75 * 40);
+});
+
+test('those who cannot leave at first find a way in time', () => {
+  const d = fixture();
+  d.hazards.storm.windows.water.days = fixed(60);
+  d.hazards.storm.leave = { feasible: 0.5, earliestDay: 0, fixedUsdPerHousehold: 0, usdPerPersonDay: 1, halfLifeDays: Infinity };
+  const stuck = run(d).harm.unprepared.usd;
+  d.hazards.storm.leave.halfLifeDays = 10;
+  const moving = run(d).harm.unprepared.usd;
+  assert.ok(moving < 0.6 * stuck, `${moving} against ${stuck}`);
 });
