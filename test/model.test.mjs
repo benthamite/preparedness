@@ -3,7 +3,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { rank, robustness, cumulative, windowDays, drawTriple, resolveModel, normInv, STRATA } from '../src/model.mjs';
+import { rank, robustness, cumulative, windowDays, drawTriple, resolveModel, normInv, STRATA, arrivalCdf, atConcern } from '../src/model.mjs';
 
 const flat = (v) => ({ lo: v, mid: v, hi: v });
 const fixed = (days) => ({ p50: days, p90: days, p99: days });
@@ -324,6 +324,37 @@ test('the ranking is deterministic and, among pure substitutes, never rises', ()
   const a = run(d), b = run(d);
   assert.deepEqual(a, b);
   for (let i = 1; i < a.entries.length; i++) assert.ok(a.entries[i].ratio <= a.entries[i - 1].ratio + 1e-9);
+});
+
+test('AI timelines shift hazard probabilities', () => {
+  const d = fixture();
+  d.ai = {
+    startYear: 2027, transitionYears: 5, horizonYears: 5,
+    timelines: {
+      never: { cumulative: [{ year: 2100, p: 0 }] },
+      arrived: { cumulative: [{ year: 2026, p: 1 }] },
+      longAgo: { cumulative: [{ year: 2020, p: 1 }] },
+    },
+    hazards: { storm: { all: { baseline: [0.1, 0.1, 0.1], now: [0.1, 0.2, 0.4], transition: [0.2, 0.4, 0.8], after: [0.01, 0.05, 0.1] } } },
+  };
+  const p = (ai) => run(d, { ai }).hazards[0].p;
+  near(arrivalCdf([{ year: 2028, p: 0.5 }], 2027)(2028), 0.25);
+  near(atConcern([1, 4, 16], 0.25), 2);
+  near(atConcern([0, 4, 16], 0.25), 2);
+  near(p(undefined), 0.1);
+  near(p({ timeline: 'none' }), 0.1);
+  // AGI never arrives: today's rate throughout.
+  near(p({ timeline: 'never', concern: 0.5 }), 0.2);
+  near(p({ timeline: 'never', concern: 0 }), 0.1);
+  near(p({ timeline: 'never', concern: 1 }), 0.4);
+  // AGI arrives as the horizon starts: every year is a transition year.
+  near(p({ timeline: 'arrived', concern: 0.5 }), 0.4);
+  // Even odds by the end of 2028, nothing after.
+  near(p({ timeline: 'custom', custom: [{ year: 2028, p: 0.5 }], concern: 0.5 }), 0.28);
+  // A longer horizon reaches the years after the transition.
+  near(p({ timeline: 'arrived', concern: 0.5, horizonYears: 10 }), 0.1 + (0.5 * 0.4 + 0.5 * 0.05) - 0.1);
+  // A probability the reader sets by hand overrides all of it.
+  near(run(d, { ai: { timeline: 'arrived' }, probabilities: { storm: 0.07 } }).hazards[0].p, 0.07);
 });
 
 test('robustness: no uncertainty gives no spread; uncertainty gives some', () => {

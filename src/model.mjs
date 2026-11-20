@@ -247,6 +247,65 @@ function crf(r, years) {
 }
 
 // ---------------------------------------------------------------------------
+// Advanced AI and the hazard probabilities
+// ---------------------------------------------------------------------------
+//
+// The reader states when they expect AGI and how concerned they are. For each
+// hazard the data gives four annual rates: `baseline` (AI's effect removed),
+// `now` (before AGI), `transition` (the years just after AGI arrives) and
+// `after`. Each rate is [low, middle, high]: the view of a careful sceptic,
+// the central view, and the view of someone highly concerned. The hazard's
+// probability is shifted by the average, over the planning horizon, of the
+// rate the reader's timeline implies, less the baseline.
+
+// Value of a [low, middle, high] triple at concern c in [0, 1].
+export function atConcern(t, c) {
+  const [lo, mid, hi] = t;
+  const k = Math.max(0, Math.min(1, c));
+  const mix = (a, b, w) => (a > 0 && b > 0 ? a * Math.pow(b / a, w) : a + (b - a) * w);
+  return k <= 0.5 ? mix(lo, mid, 2 * k) : mix(mid, hi, 2 * k - 1);
+}
+
+// Cumulative probability that AGI has arrived by time y (in years, so 2028.5
+// is mid-2028), from points [{year, p}] giving the probability by the end of
+// each year. Zero at `zeroAt`, straight lines between points, flat after the last.
+export function arrivalCdf(points, zeroAt) {
+  const pts = [{ year: zeroAt - 1e-9, p: 0 }, ...points.map((x) => ({ year: x.year + 1, p: x.p })).filter((x) => x.year >= zeroAt)];
+  return (y) => {
+    if (y <= pts[0].year) return 0;
+    for (let i = 1; i < pts.length; i++) {
+      if (y <= pts[i].year) {
+        const a = pts[i - 1], b = pts[i];
+        return a.p + (b.p - a.p) * (y - a.year) / (b.year - a.year);
+      }
+    }
+    return pts[pts.length - 1].p;
+  };
+}
+
+// The shift in a hazard's annual probability, and the rates behind it.
+export function aiShift(ai, settings, hazardId, loc) {
+  const s = settings.ai;
+  if (!ai || !s || !s.timeline || s.timeline === 'none') return 0;
+  const spec = ai.hazards[hazardId];
+  const r = spec && (spec[loc] || spec.all);
+  if (!r) return 0;
+  const points = s.timeline === 'custom' ? (s.custom || []) : ai.timelines[s.timeline].cumulative;
+  const F = arrivalCdf(points, ai.startYear);
+  const c = s.concern === undefined ? 0.5 : s.concern;
+  const now = atConcern(r.now, c), during = atConcern(r.transition, c), after = atConcern(r.after, c);
+  const T = ai.transitionYears;
+  const H = Math.max(1, Math.round(s.horizonYears || ai.horizonYears));
+  let sum = 0;
+  for (let k = 0; k < H; k++) {
+    const y = ai.startYear + k + 0.5; // the middle of each year of the horizon
+    const arrived = F(y), over = F(y - T);
+    sum += (1 - arrived) * now + (arrived - over) * during + over * after;
+  }
+  return sum / H - atConcern(r.baseline, c);
+}
+
+// ---------------------------------------------------------------------------
 // The world: one resolved model applied to one household
 // ---------------------------------------------------------------------------
 
@@ -310,6 +369,7 @@ export function buildWorld(m, settings) {
     else {
       const byLoc = h.probability[loc] !== undefined ? h.probability[loc] : h.probability.all;
       p = byLoc === undefined ? 0 : (typeof byLoc === 'object' ? (byLoc[settings.outlook] !== undefined ? byLoc[settings.outlook] : byLoc.all) : byLoc);
+      p = Math.max(0, Math.min(1, (p || 0) + aiShift(m.ai, settings, id, loc)));
     }
     if (!(p > 0)) return;
     const late = h.lateBuy && (h.warningDays || 0) >= 0.5 ? h.lateBuy : { staple: 0, specialty: 0 };
