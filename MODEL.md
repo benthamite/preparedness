@@ -55,9 +55,14 @@ Canonical hazard ids:
 | `bankingCrisis` | deposit freeze, bank holiday, capital controls, or severe currency crisis |
 | `civilUnrest` | serious unrest or armed conflict disrupting daily life where the household lives |
 
-The AI research added four more: `cyberOutage` (a blackout of 1 to 14 days
-from an attack or a software failure), `paymentsOutage`, `commsOutage` and
-`greatPowerWar` (a conventional war between great powers).
+The AI research added more: `cyberOutage` (a blackout of a day or more from
+an attack or a software failure), `paymentsOutage`, `commsOutage`,
+`cyberSupplyShock` (shops or pharmacies unable to sell for a day or more
+because of an attack or a software failure), `aiFraud` (a scam or an account
+takeover) and `greatPowerWar` (a conventional war between great powers). The
+cyber rates and windows were revised on 20 November 2026 after Sentinel's
+"Consider cyberarmageddon" (`research/ai/ai-cyber.md`, section 5, and
+`research/ai/cyber-windows.md`).
 
 Everyday risks are hazards too, so that ordinary safety items compete on the
 same scale: `houseFire`, `coIncident`, `homeMedicalEmergency`,
@@ -127,6 +132,7 @@ Canonical window ids:
 | `comms` | mobile and internet service |
 | `sanitation` | a working toilet |
 | `displacement` | the home itself (ordered out, or uninhabitable) |
+| `dataAccess` | the household's own files, accounts and computer (an account locked or a device wiped). The need `dataAccess` is also unmet on 40% of days without internet and, up to a week, on 40% of displaced days |
 
 A hazard also gives `coldShare` and `hotShare` (the chance the event coincides
 with dangerous cold or heat, for a household in a climate that has them), the
@@ -163,7 +169,7 @@ when even that runs out, each stage with its own, lower, curves.
 
 Canonical need ids: `water`, `food`, `warmth`, `cooling`, `light`,
 `devicePower`, `refrigeration`, `medicalPower`, `information`, `medication`,
-`sanitation`, `payments`, `displacement`.
+`sanitation`, `payments`, `displacement`, `dataAccess`.
 
 Some harms are not day counts. They are exposures on a channel: a baseline
 risk per person or loss per household that the event imposes. Canonical
@@ -260,7 +266,21 @@ a standard of value:
 Lost work days come from unmet needs (each need has `workLoss`, the share of a
 day's work lost per unmet day, net of work made up later) and, for illness,
 fire, crime and fraud, from the hazard (`workDays`, days lost per event,
-reduced by whatever reduces the channel) (`research/impartial/`).
+reduced by whatever reduces the channel) (`research/impartial/`). Two rules
+keep them honest:
+
+- Several needs unmet on the same day do not add up to more than a day.
+  Within an event the needs a member lacks are taken to overlap as far as
+  they can (all from the first unmet day), and on a day when needs with
+  shares `w₁, w₂, …` are unmet the day costs `1 − Π(1 − wₖ)`. This is the
+  conservative choice: it gives each item the least credit for lost work.
+- Lost work falls only with items that let a member work (marked `work` in
+  the item files, so far only the spare computer), or with stocks that meet
+  the need. An item that eases a need, such as a radio, does not restore the
+  work that needs the internet.
+
+A member valued for their work also runs a laptop: 60 Wh a day of device
+power, against 15 for a phone.
 
 An hour spent on preparation is the owner's for a personal item and, for a
 shared one, that of the member whose hour is valued least.
