@@ -10,7 +10,17 @@ actions by cost-effectiveness, for a household and risk outlook the reader sets.
     `research/BRIEF.md` (14 item groups, 6 hazard groups, 1 cross-cutting).
   - `ai/`: how advanced AI changes the hazard probabilities, written to
     `research/BRIEF-AI.md` (pandemics, cyber and infrastructure, war, economy,
-    timelines).
+    timelines), with the cyber windows revised in `ai/cyber-windows.*`.
+  - `countries/`: figures of their own for 46 countries (power cuts, banking
+    crises, violence and unrest, fire, prices and incomes, nuclear war),
+    written to `research/BRIEF-COUNTRIES.md`, with the checkers' reports.
+  - `impartial/`: lost working days, the cost of saving a life, and life
+    expectancy, for valuing members impartially.
+- `data/countries.mjs`: the 46 countries, the preset each borrows, and the
+  preset for every other country.
+- `data/cities.json`: 12,396 world cities with district hazard ratings and
+  climate normals; built by `tools/build-cities.mjs` (GeoNames CC BY 4.0,
+  ThinkHazard CC BY, CHELSA CC0; downloads are cached in `cache/`).
 - `data/config.mjs`, `data/items-1.mjs`, `data/items-2.mjs`: how the model uses
   the research. Every modelling choice, and every place a researcher's number
   was adjusted, is here with its reason.
@@ -27,9 +37,10 @@ node tools/build-data.mjs            # research + config -> data/model.json
 node --test                          # engine tests
 node tools/rank.mjs --top 30         # the list for the default household
 node tools/rank.mjs --robust 60 '{"location":"buenosAires"}'
-node tools/profiles.mjs 12           # eleven test households side by side
+node tools/profiles.mjs 12           # thirteen test households side by side
 node tools/build-page.mjs            # -> dist/preparedness-list.html
-node tools/validate-research.mjs research/step3/*.json research/ai/*.json
+node tools/validate-research.mjs research/step3/*.json research/ai/*.json research/countries/*.json research/impartial/*.json
+node tools/build-cities.mjs          # cities.json; downloads 2 GB on a first run
 ```
 
 To put the page on the site, build it into the site's static files, where the

@@ -88,9 +88,14 @@ more; nothing is looked up while the page runs). The city sets:
   figures of its own and which preset it borrows;
 - the local-hazard ticks, from the World Bank's ThinkHazard ratings for the
   district (river and coastal flood, earthquake, cyclone, wildfire, extreme
-  heat) and from the mean temperatures of the coldest and warmest months.
-  `cityRules` in `data/config.mjs` says which ratings tick which box. The
-  reader can change the ticks.
+  heat) and from the mean temperatures of the coldest and warmest months
+  (CHELSA). `cityRules` in `data/config.mjs` says which ratings tick which
+  box: a high rating stands for the preset's zone; a medium earthquake or
+  cyclone rating counts at 30% of it; wildfire is never ticked from the
+  ratings, which measure fire weather and are high in four cities in five.
+  Where a city's district has no rating, the nearest rated district within
+  10 km lends its own, and the page says so. The reader can change the
+  ticks; a tick the reader sets counts in full.
 
 The country figures and the AI adjustment are combined by adding the preset's
 AI shift (section 9) to the country's own probability.
