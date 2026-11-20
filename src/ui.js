@@ -266,7 +266,7 @@ function compute() {
   render();
   save();
   // The uncertainty pass runs in slices so the page stays responsive.
-  const N = 24, SLICE = 2;
+  const N = 40, SLICE = 2;
   const order = result.entries;
   const all = order.map(() => []);
   let done = 0;
