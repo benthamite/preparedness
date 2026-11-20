@@ -4,14 +4,14 @@ Annual probability that the hazard occurs and reaches a US household. Middle val
 
 | Hazard | Baseline (AI removed) | Now | Transition, per year | After |
 |---|---|---|---|---|
-| `cyberOutage`: power out 1–14 days, attack or AI failure | 0.05% (0.005–0.25) | 0.1% (0.01–0.8) | 1% (0.05–5) | 0.03% (0.002–0.5) |
+| `cyberOutage`: power out a day or more, attack, sabotage or software failure | 0.05% (0.005–0.25) | 0.1% (0.01–0.8) | 1% (0.05–5) | 0.03% (0.002–0.5) |
 | `gridLong`: two weeks or more, all causes but nuclear | 0.012% (0.002–0.15) | 0.02% (0.002–0.2) | 0.15% (0.005–2) | 0.005% (0.0005–0.2) |
-| `waterSystemFailure`, attack-driven part | 0.005% (0.0005–0.05) | 0.03% (0.005–0.2) | 0.4% (0.02–3) | 0.01% (0.001–0.3) |
-| `paymentsOutage`: a day or more | 0.05% (0.01–0.2) | 0.15% (0.02–1) | 1% (0.05–6) | 0.03% (0.003–0.5) |
-| `commsOutage`: a day or more | 0.03% (0.003–0.2) | 0.08% (0.01–0.5) | 1% (0.05–6) | 0.03% (0.003–0.5) |
-| `cyberSupplyShock`: fuel or groceries, three days or more | 0.5% (0.1–1.5) | 1% (0.2–3) | 5% (0.5–20) | 0.3% (0.05–3) |
+| `waterSystemFailure`, attack-driven part | 0.005% (0.0005–0.05) | **0.08%** (0.01–0.5) | 0.4% (0.02–3) | 0.01% (0.001–0.3) |
+| `paymentsOutage`: a day or more | 0.05% (0.01–0.2) | **0.5%** (0.03–3) | **2.5%** (0.05–10) | 0.03% (0.003–0.5) |
+| `commsOutage`: a day or more, attack or software failure | **0.04%** (0.003–0.2) | **0.2%** (0.015–1.5) | **1.5%** (0.05–8) | 0.03% (0.003–0.5) |
+| `cyberSupplyShock`: usual shops or pharmacy stopped a day or more | **0.4%** (0.1–1.2) | **1.1%** (0.2–4) | **5.5%** (0.5–20) | 0.3% (0.05–3) |
 
-Only the `cyberOutage` and `gridLong` baseline and "now" figures, the water "now" figure and the supply baseline are derived from sources. Every transition and "after" figure is my guess.
+Figures in bold were revised on 20 November 2026 after Sentinel's forecast (section 5); the definitions of `cyberOutage`, `commsOutage` and `cyberSupplyShock` changed at the same time, and their windows are now in `cyber-windows.json`. Only the `cyberOutage` and `gridLong` baseline and "now" figures and the revised "now" figures for water, payments and communications are derived from sources. Every transition and "after" figure is my guess.
 
 ## 1. What the sources say
 
@@ -81,7 +81,7 @@ Only the `cyberOutage` and `gridLong` baseline and "now" figures, the water "now
 
 **After.** Below baseline for power, payments and supply, on the view shared by Anthropic and by Narayanan and Kapoor that audited software favours defenders. The high ends keep Hendrycks's patch-lag argument.
 
-**Duration** (days: 50th, 90th, 99th percentile, given the event):
+**Duration** (days: 50th, 90th, 99th percentile, given the event; superseded on 20 November 2026 by `cyber-windows.json`):
 - `cyberOutage`: 2, 6, 14. Days, not hours, by definition; not weeks, because cascades restore fast (2003 Northeast: 1.5 days; Iberia 2025: 90% in 14 hours). Follows: payments (0.9), comms (0.6), water (0.25, mostly treatable), heating.
 - `gridLong`: 25, 90, 300. Follows: water (0.7), comms (0.9), payments, food (0.6), medication, sanitation.
 - Water: 2, 6, 21, about 70% treatable.
@@ -104,3 +104,45 @@ On "hours, days or months": most attack-caused outages will last hours, as all t
 - The payments baseline rests on my recollection of credit-union ransomware in 2023–24.
 - The pilot behind the two central figures has 21 respondents and predates Mythos. Its 1% may be a floor forecasters will not go below.
 - The model has no hazard for a 2003-style accidental cascade, which is likelier than an attack today (see open questions).
+
+## 5. Revision of 20 November 2026: Sentinel's forecast
+
+**What the post says.** Sentinel, "Consider cyberarmageddon" (Nuño Sempere, belikewater and Vidur Kapur, with estimates from Finn Hambly and Jonathan of Samotsvety; 19 November 2026; https://blog.sentinel-team.org/p/consider-cyberarmageddon):
+- "By the end of 2028, will an outage cut power, telecoms, digital payments or water to 1M+ people in an OECD country, excluding natural disasters, for a week?" 33% (10% to 60%).
+- "In 2028, will cyberattacks cause more than 100M human-years of disruption?" 4.9%; the individual answers are 0.5%, 4%, 10%, 15% and 17%. That is "around 4.5 days lost per person" on earth.
+- A forecaster found no week-long OECD outage in 20 years, only "a few close hits": Mexico City's scheduled 6.5-day water cut (2018), a Korean bank whose customers could not use cards, ATMs or transfers for 3 to 7 days (2011), and a Japanese outage that "affected 31 million telecom users for 61h" (2022). A commenter's Laplace rule gives 9% over two years before any update for AI. "I don't think power is the most likely trigger."
+- The cause it names is today's models: "as AI capabilities are surging, cyber risks are similarly surging"; open-weight models and harnesses "democratize nation-state capabilities".
+- It does not mention AGI.
+
+**Checking the conversion to about 0.1% a year per person.**
+1. Window: 19 November 2026 to the end of 2028, 2.1 years.
+2. Events: 33% is the chance of at least one, so the Poisson rate is −ln(0.67) / 2.1 = 0.19 a year (0.05 at 10%, 0.44 at 60%).
+3. Population of the OECD: 1,402 million (World Bank, 2025, via FRED series SPPOPTOTLOED).
+4. People out for a week per event: at least 1M by definition. A bank, operator or utility big enough to qualify reaches about 10M (2–40M), and about half are still cut off on day 7: 5M (2–10M). If event sizes fall off as one over size above 1M, with a cap near 100M, the mean is 4–6M.
+5. Per person: 0.19 × 5M / 1,402M = 0.068% a year. Lockouts below 1M people (credit unions, small water systems) are outside the question but not outside a household's life; with them, about 0.09%. Range 0.007% (10%, 2M) to 0.3% (60%, 10M).
+
+So "about 0.1%" is right, at the top of my central estimate. What the model implied before, as each hazard's rate times its share of events lasting a week: power 0.1% × 8% = 0.008%; payments 0.15% × 10% = 0.015%; comms 0.08% × 7% = 0.006%, doubled to 0.011% to count people who lose their operator rather than households cut off from both mobile and home internet; water 0.03% × 9% = 0.003%. Total 0.037%. The headline is 2–2.5 times that. The "three to five times" holds once the tail is added.
+
+**The tail.** 100M human-years in one year is a thousand CrowdStrikes. In such a year most OECD households would lose cards, phone service or their usual shops for days. If a tenth of OECD residents were cut off for a week, the tail adds 4.9% × 10% = 0.5% a year for 2028. At today's capabilities I take a disruption year as 1% a year (0.1–5%): 2028 includes another year of progress and some chance of AGI. That adds 0.1%, and the per-person figure for week-plus outages becomes about 0.17%, 4–5 times the old model. Taking the disruption years (about 7 of the 33 points by the end of 2028) out of the headline leaves ordinary events at 0.16 a year, or 0.06% a person.
+
+**From week-plus outages to the model's day-or-more rates.** I split the ordinary 0.06% between utilities, adjust for small events and for what counts as cut off, and divide by the share of each hazard's events that last a week under the new windows (`cyber-windows.md`). Then I add the tail: 1% a year times the share of households that lose the service for a day in a disruption year. Shares and tail fractions are my guesses.
+
+| Hazard (US) | Share of 0.06% | Adjustment | Lasts a week | Ordinary | Tail | New now | Old now |
+|---|---|---|---|---|---|---|---|
+| `paymentsOutage` | 0.5 | ×1.3 small banks | 22% | 0.18% | 30% → 0.3% | **0.5%** | 0.15% |
+| `commsOutage` | 0.3 | ×0.5 both mobile and home | 10% | 0.09% | 10% → 0.1% | **0.2%** | 0.08% |
+| `waterSystemFailure` (attack) | 0.1 | ×1.2 small systems | 10% | 0.07% | 2% → 0.02% | **0.08%** | 0.03% |
+| `cyberOutage` | 0.1 | none | 10% | 0.06% | 3% → 0.03% | 0.1% (kept) | 0.1% |
+| `cyberSupplyShock` | not in the question | twice the 0.4% baseline | | 0.8% | 30% → 0.3% | **1.1%** | 1%, old definition |
+
+Payments get half because they are pure software and the closest precedents are bank lockouts (Korea 2011; Iran's Sepah and Pasargad, June 2025; four Iranian banks, June 2026). Power gets a tenth because the forecasters say so and because restoring it is what utilities do best. Under the new windows the model's own week-plus figure becomes 0.5% × 22% + 0.2% × 10% × 2 + 0.08% × 10% + 0.1% × 10% = 0.17%, matching the target.
+
+**Places.** Sentinel's question treats all OECD members alike, so Western Europe takes the US figures for payments and communications, three quarters for water, and keeps its power figure. Buenos Aires is outside the question but not outside a self-spreading attack: it gets the tail and its own concentration factor (payments 0.55%, power 0.04%, water 0.04%).
+
+**Transition and after.** The post says nothing about AGI, but a 4.9% disruption year before AGI implies more once such capability is widespread. At 5% a year, I raise the transition rate for payments from 1% to 2.5% (Western Europe 3%, Buenos Aires 3.5%), for communications from 1% to 1.5%, and for supply from 5% to 5.5%. Power, water and `gridLong` are unchanged, because the post gives no reason to expect physical damage. "After" is unchanged. The post's other forecasts say hardening is slow before AGI: 7.1% that over a tenth of new software carries a proof of its security properties in 2027, and 35% that memory-safe operating systems pass 5% of servers by 2030. They say nothing about the world after the transition.
+
+**Two consequences for the model.**
+- `waterSystemFailure` is not an AI-based hazard. Its probability comes from `hazards-ordinary` (3% a year), so a higher "now" only lowers the AI shift for readers who pick a timeline. To carry the revision into today's rate, add 0.05 points to the ordinary rate. That is lost inside its range.
+- Changing definitions changes rates. `commsOutage` now counts software failures of any origin, which adds about 0.01 points to the baseline. `cyberOutage` loses its 14-day ceiling, so about 3% of its events now run past two weeks. That raises its rate by 3% and makes it overlap `gridLong`'s attack part by about 0.003 points, unless `gridLong` is limited to events that destroy long-lead equipment. `cyberSupplyShock` is redefined around food and prescriptions.
+
+**What weakens this.** One post, with five answers behind its tail figure and no stated way of combining them. "Human-years of disruption" is not defined and may be mostly lost work rather than outages at home. The split between utilities, and the share of households hit in a disruption year, are my guesses. They decide more of the result than the 33% does.

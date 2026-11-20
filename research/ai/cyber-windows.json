@@ -1,0 +1,69 @@
+{
+  "group": "cyber-windows",
+  "date": "2026-11-20",
+  "about": "Proposed hazard profiles for the cyber hazards, in the form of MODEL.md section 3: for each window, the chance it opens given the event and the 50th, 90th and 99th percentile of its length in days given that it opens, net of outside relief. Rates are in ai-cyber.json (revised the same day); the reasoning is in cyber-windows.md.",
+  "hazards": {
+    "cyberOutage": {
+      "definition": "Grid power out for a day or more across a metropolitan region or larger because of a cyberattack, sabotage of grid-connected assets, or a failure of software or AI-run operations (including data-centre load events), not weather. An attack that destroys long-lead equipment (dozens of large transformers or generators) and keeps power off for weeks is gridLong.",
+      "definitionChange": "Was '1 to 14 days'. The ceiling goes because the tail below runs past two weeks: about 3% of events under these windows. The rate rises by that share, from 0.100% to about 0.103% a year (US), inside rounding, so ai-cyber.json keeps 0.1%. The split with gridLong becomes one of cause (destroyed long-lead equipment, storms, EMP) rather than length; if gridLong keeps its whole attack part, the two overlap by about 0.003 points a year.",
+      "windows": {
+        "power": {"pOccur": 1, "days": {"p50": 2.5, "p90": 7, "p99": 21}, "basis": "Given a day or more. Physical hits are repaired with spares in days: Moore County, North Carolina (gunfire, 3 December 2022, up to 40,000-45,000 customers; 'virtually all power had been restored' about four days later, https://en.wikipedia.org/wiki/Moore_County_substation_attack); Berlin (arson, September 2025, about 50,000 households and businesses for about 60 hours; January 2026, up to 45,000 households and over 2,000 businesses, all reconnected on 7 January, about four and a half days in frost; https://www.cbsnews.com/news/berlin-power-outage-vulkangruppe-left-wing-arson-attack-called-terrorism/). Cyberattacks so far were undone in hours by manual operation (Ukraine 2015, about 225,000 customers, 1-6 hours; Kyiv 2016, about 75 minutes). Accidental cascades end within a day or two (Iberia 2025: 'about ten hours in most of the Peninsula', 99% of demand back after about 18.5 hours). Tail: damage at many substations at once, or attacks repeated on restoration, short of destroying transformers. In Venezuela's national blackout of 7 March 2019, blamed by the government on sabotage, Reuters reported reliable service restored only four to six days later in most major cities (https://en.wikipedia.org/wiki/2019_Venezuelan_blackouts). Was 2, 6, 14."},
+        "water": {"pOccur": 0.25, "days": {"p50": 1, "p90": 3, "p99": 10}, "shareTreatable": 0.8, "basis": "Pressure loss and boil-water notices when pumps lose power; treatment plants and towers hold a day or more. p99 lengthened from 8 to 10 days with the power tail. Guess."},
+        "comms": {"pOccur": 0.6, "days": {"p50": 1, "p90": 4, "p99": 14}, "basis": "Cell sites run hours on batteries and 24-72 hours where a generator is fitted (comms.json); in a long blackout mobile service follows power, less the sites operators reach with portable generators. p99 lengthened from 12 to 14 days. Guess."},
+        "payments": {"pOccur": 0.9, "days": {"p50": 2, "p90": 7, "p99": 21}, "basis": "Card terminals and ATMs need power and network; shops with generators sell for cash. Follows the power window, slightly shorter. Was 2, 6, 14."},
+        "food": {"pOccur": 0.1, "days": {"p50": 1, "p90": 3, "p99": 10}, "basis": "Shops close without power and chilled stock is lost; most reopen on generators or restock within days. p99 lengthened from 7 to 10 days. Guess."},
+        "medication": {"pOccur": 0.1, "days": {"p50": 1, "p90": 4, "p99": 14}, "basis": "New: pharmacies close without power or their claims and dispensing systems; in a week-long outage the household must travel to one outside the area. Guess."},
+        "sanitation": {"pOccur": 0.1, "days": {"p50": 1, "p90": 4, "p99": 14}, "basis": "Toilets fail with water pressure in high-rise buildings and where sewage lift stations lack generators. p99 lengthened from 10 to 14 days. Guess."}
+      },
+      "leave": {"feasible": 0.85, "earliestDay": 1, "fixedUsdPerHousehold": 300, "usdPerPersonDay": 45},
+      "warningDays": 0,
+      "lateBuy": {"staple": 0, "specialty": 0},
+      "coldShare": 0.4,
+      "hotShare": 0.25,
+      "byLocation": {
+        "buenosAires": {
+          "windows": {"power": {"pOccur": 1, "days": {"p50": 2.5, "p90": 8, "p99": 25}, "basis": "Slower restoration: Edesur and Edenor already take days after heat-wave failures, and spares are imported."}},
+          "coldShare": 0,
+          "hotShare": 0.5
+        }
+      },
+      "notes": "Leave, warning, coldShare and hotShare unchanged from data/config.mjs. Events that are part of a disruption year (ai-cyber.md section 5) would hit power, communications and payments together; the model's independent hazards understate that compound case."
+    },
+    "paymentsOutage": {
+      "definition": "For a day or more the household cannot pay by card, use ATMs or reach its main bank, because of an attack on, or a software failure in, the bank, its core-banking or card processors, the card networks or interbank systems, while shops stay open and no bank is insolvent (that is bankingCrisis).",
+      "definitionChange": "None in substance: config.mjs already counts failures as well as attacks. Wording only.",
+      "windows": {
+        "payments": {"pOccur": 1, "days": {"p50": 3, "p90": 10, "p99": 35}, "basis": "Given a day or more. Bank systems wiped or encrypted come back in days for cards and cash machines and in weeks for everything. NongHyup, South Korea (12 April 2011): some 30 million account holders; ATMs and online banking back after two to three days, cards after three to four, data recovery expected by 22 April (https://spectrum.ieee.org/riskfactor/computing/it/south-korean-banks-weeklong-system-failure-affecting-30-million-an-inside-job); Sentinel's forecaster puts it at 3 to 7 days. Iran, June 2025: Pasargad limited services after about two days, Sepah basic cards after three, full recovery after ten, while online banking and ATMs were 'largely nonfunctional' twelve days on (https://www.iranintl.com/en/202507192001). Iran, June 2026: problems at four state banks from 13-14 June, failing again on 23 June, 'lasting more than two weeks'. About 60 US credit unions on one processor (from 26 November 2023): at NY Bravest FCU debit cards worked again after 12 days and online banking after 14. Coveware's last published average downtime after ransomware was 24 days (Q2 2022). Hours-long failures (Chase and Red Link, November 2026; CrowdStrike, 2024) fall below the threshold. Was 2, 7, 30."}
+      },
+      "leave": {"feasible": 0, "earliestDay": 0, "fixedUsdPerHousehold": 0, "usdPerPersonDay": 0},
+      "warningDays": 0,
+      "lateBuy": {"staple": 0, "specialty": 0},
+      "notes": "coldShare and hotShare do not apply. Leaving does not restore a bank account. The household's remedies (cash at home, a card from an unrelated bank) are items acting on the payments need."
+    },
+    "commsOutage": {
+      "definition": "Mobile and home internet both unusable for the household for a day or more, across a national operator or a metropolitan region, because of an attack on, or a software or configuration failure in, the operators or the networks and cloud services they depend on. Natural disasters and power cuts are other hazards.",
+      "definitionChange": "Was 'an attack or an AI-caused failure'. Counting software and configuration failures of any origin, as Sentinel's question does, adds about one day-long outage of a whole operator's mobile and home service every ten years in the OECD: about 0.01 points a year, which ai-cyber.json adds to the baseline (0.03% to 0.04%) and the revised 'now' (0.2%) already includes.",
+      "windows": {
+        "comms": {"pOccur": 1, "days": {"p50": 2, "p90": 7, "p99": 25}, "basis": "Given a day or more. KDDI, Japan (2 July 2022, a router replaced in maintenance): up to 39.15 million lines; the outage proper lasted 61 hours 25 minutes and full recovery was declared after about 86 (https://watch.impress.co.jp/docs/news/1428430.html). Kyivstar, Ukraine (12 December 2023, Russian attack): 24.3 million mobile subscribers and 1.1 million home-internet customers; 'without mobile signal and internet for two days', voice nationwide by 14 December, all services including 4G by 16 December, 100% by 20 December (https://therecord.media/ukraine-kyivstar-hack-high-impact). Tail: an attack that bricks equipment, as with Viasat's KA-SAT modems (24 February 2022; nearly 30,000 replacement modems shipped by 30 March; https://www.viasat.com/perspectives/corporate/2022/ka-sat-network-cyber-attack-overview/). Rogers (2022), Optus (2023) and AT&T (2024) were restored within a day and fall below the threshold. Was 1.5, 5, 14."},
+        "payments": {"pOccur": 0.3, "days": {"p50": 1, "p90": 3, "p99": 10}, "basis": "Card terminals and ATMs that ride on the failed network; shops switch to other networks or cash. p99 lengthened from 7 to 10 days with the comms tail."},
+        "emergencyCare": {"pOccur": 0.3, "days": {"p50": 1, "p90": 3, "p99": 7}, "basis": "No way to call an ambulance from the failed operator; in Europe 112 roams onto other networks, in the KDDI outage emergency calls failed. Lengthened from 1, 2, 5 with the comms tail."}
+      },
+      "leave": {"feasible": 0, "earliestDay": 0, "fixedUsdPerHousehold": 0, "usdPerPersonDay": 0},
+      "warningDays": 0,
+      "lateBuy": {"staple": 0, "specialty": 0},
+      "notes": "coldShare and hotShare do not apply. A household with a second carrier on a different network, or a satellite messenger, is largely unaffected. The comms window also opens the new dataAccess need for cloud-only files (research/step3/cyber-items.json)."
+    },
+    "cyberSupplyShock": {
+      "definition": "For a day or more, the shops the household normally uses cannot sell it most of its usual food, or its pharmacy cannot fill its prescriptions, because of an attack on, or a software failure in, a retailer, distributor, logistics provider, till or payment system, or pharmacy-claims or e-prescribing system. Motor fuel is left out: the model has no fuel window.",
+      "definitionChange": "Was 'for three days or more, motor fuel or a major class of groceries or medicines cannot be bought at the household's usual outlets'. Dropping fuel removes the Colonial-type events (about 0.5% a year); lowering the threshold to a day and counting prescriptions adds about as much. ai-cyber.json now gives 0.4% baseline and 1.1% now.",
+      "windows": {
+        "food": {"pOccur": 0.1, "days": {"p50": 2, "p90": 6, "p99": 14}, "basis": "The window opens only when no shop the household can reach sells food: a town or island served by the stricken chain, or a distributor that supplies most local shops. Coop Sweden (2 July 2021, ransomware through Kaseya): tills down, about 700 of 800 stores closed, all reopened 'within six days' (https://www.truesec.com/hub/blog/back-in-business-after-the-largest-ransomware-attack-of-all-time). UK Co-op (May 2025): about two weeks of shortages, Shetland shelves 'nearly bare', normal ordering from 14 May. UNFI (from 5 June 2025): main ordering platform back within 10 days, core ordering systems on 26 June, full core operations on 16 July, with Whole Foods stores missing items for weeks (https://www.grocerydive.com/news/unfi-cyberattack-contained-/751866/). Stop & Shop (November 2024): product shortages for about two weeks. M&S stopped online orders for 46 days (25 April to 10 June 2025), and Jaguar Land Rover's plants stopped from 1 September to 8 October 2025, with normal output only in mid-November: a firm's own recovery can take a month or more, though households switch shops or brands long before."},
+        "medication": {"pOccur": 0.35, "days": {"p50": 3, "p90": 10, "p99": 30}, "basis": "Pharmacy events are about half of the household-events counted in ai-cyber.json. Change Healthcare (21 February 2024): over 7,000 pharmacies and hospitals could not process prescriptions; more than 90% of pharmacies had workarounds within six days, and electronic prescribing with claims was 'fully functional' after 15 days (https://www.securityweek.com/change-healthcare-restores-pharmacy-services-disrupted-by-ransomware/). Hannaford's pharmacies had trouble filling prescriptions for about a day (November 2024). The tail is an attack on a pharmacy chain's own dispensing systems or on a drug wholesaler, which has not yet happened."}
+      },
+      "leave": {"feasible": 0, "earliestDay": 0, "fixedUsdPerHousehold": 0, "usdPerPersonDay": 0},
+      "warningDays": 0,
+      "lateBuy": {"staple": 0, "specialty": 0},
+      "notes": "coldShare and hotShare do not apply: the grid works. Food windows of two weeks or less rarely matter to a household with the default fourteen days of pantry; the hazard matters mostly through medication for people on daily drugs, and for households that keep little food. Overlaps supplyShock only for cyber-caused shortages of a week or more of several staples. With this profile the 'unused' note on cyberSupplyShock in data/config.mjs can be removed."
+    }
+  }
+}

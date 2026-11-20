@@ -303,6 +303,14 @@ export const items = [
     id: 'data-backup', from: 'data-backup', group: 'Money and documents', everydayUpkeep: true,
     effects: (s, T2) => { const [loss] = reduce(s, T2, 'financialLoss', { on: 'hardship' }); return [loss, { ...loss, target: 'fire', hazards: ['houseFire'] }]; },
   },
+  {
+    // research/step3/cyber-items.json. Unlike most entries it lets a member
+    // keep working (with local copies of their files and tools), so it
+    // reduces lost work as well as hardship.
+    id: 'offline-backup-computer', from: 'offline-backup-computer', group: 'Money and documents',
+    effects: (s, T2) => reduceAll(s, T2).map((e) => ({ ...e, work: true })),
+  },
+  { id: 'offline-reference', from: 'offline-reference', group: 'Communications', effects: (s, T2) => reduceAll(s, T2) },
   // Two entries that come from the AI research (research/ai/ai-economy.md),
   // not from a step 3 item. Both act on scams and account takeover.
   {

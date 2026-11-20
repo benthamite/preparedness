@@ -1,0 +1,237 @@
+{
+  "kind": "parameters",
+  "group": "impartial",
+  "parameters": [
+    {
+      "id": "workLoss.water",
+      "definition": "Share of one day's normal work output lost, net of work made up later, for each day on which the person has no safe drinking water at home (water need unmet), over and above what the same event costs a person whose drinking water is covered. Baseline: a knowledge worker who can work from home.",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.05, "mid": 0.17, "hi": 0.4, "tag": "guess", "basis": "Gross 0.24 of an eight-hour day: about 1.5 hours (0.5-3) finding, queueing for or boiling water, plus about 5% for thirst and stomach upsets from untreated water; times 0.7 for work made up later. In Texas in 2021, 53% of residents had to go and obtain drinking water (Texas Politics Project poll, https://news.utexas.edu/2021/04/02/texans-blame-variety-of-factors-for-severity-of-winter-storm-support-reform-attempts/, read). No time-use study of a rich-country water outage was found."},
+      "notes": "Flushing and washing belong to sanitation, not here. The make-up factor 0.7 (0.5-0.9) is explained in impartial.md and applies to every workLoss figure except displacement and minorIllness."
+    },
+    {
+      "id": "workLoss.food",
+      "definition": "As workLoss.water, for a day on which the person has no food at all (food need unmet, after rationing has run out).",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.03, "mid": 0.15, "hi": 0.4, "tag": "guess", "basis": "Gross 0.22: about an hour a day spent looking for food, plus about 10% lower output from hunger. Reviews of short fasts in healthy adults find mixed and mostly small effects on cognition (Benau et al. 2014, Appetite 77:52-61; the 2021 update finds some deficits; https://link.springer.com/content/pdf/10.1007/s13668-021-00370-4.pdf, search snippets). Times 0.7."},
+      "notes": "If the engine applies work losses to the rationing stages, I would use about 0.03 a day on half rations and 0.08 on quarter rations (my guess). Weakness and apathy grow after a week without food, so later days are worse than the mid."
+    },
+    {
+      "id": "workLoss.hotMeals",
+      "definition": "As workLoss.water, for a day on which the person cannot heat food or drink.",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0, "mid": 0.01, "hi": 0.04, "tag": "guess", "basis": "Eating cold takes no more time than cooking. The one real loss is caffeine withdrawal (headache, fatigue) for habitual coffee drinkers who cannot make it hot; cold instant coffee or caffeinated soft drinks avoid most of it. Guess."},
+      "notes": ""
+    },
+    {
+      "id": "workLoss.warmth",
+      "definition": "As workLoss.water, for a day on which the home is dangerously cold and the person has no source of warmth beyond clothing and bedding (warmth need unmet).",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Office studies put peak output near 22 C and find it falls on either side (Seppanen, Fisk and Lei 2006, LBNL-60946, https://www.osti.gov/servlets/purl/903490, read); a small field study found keying time 54% at 20 C against 100% at 25 C (Hedge 2004, nine workstations, https://news.cornell.edu/node/281845, search snippet). An unheated home in a cold wave falls well below 15 C, where hands stiffen and time goes to keeping warm. Gross 0.45 (0.15-0.8) x 0.7. No study measures desk work in an unheated home."},
+      "notes": ""
+    },
+    {
+      "id": "workLoss.cooling",
+      "definition": "As workLoss.water, for a day of dangerous heat on which the person has no way to cool the home or themselves (cooling need unmet).",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.05, "mid": 0.15, "hi": 0.35, "tag": "guess", "basis": "Indoor 30-34 C: office output 9-17% below its maximum (Seppanen, Fisk and Lei 2006: 91.1% of maximum at 30 C, about 2% lower per degree above 25 C; https://www.osti.gov/servlets/purl/903490, read); plus about 5% for poor sleep on hot nights and 6% (half an hour) for cooling off. Gross 0.23 x 0.7 = 0.16. The sleep and coping shares are guesses."},
+      "notes": ""
+    },
+    {
+      "id": "workLoss.light",
+      "definition": "As workLoss.water, for a day on which the person has no electric light after dark (light need unmet).",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0, "mid": 0.02, "hi": 0.08, "tag": "guess", "basis": "Knowledge work is mostly done in daylight and a charged laptop or phone lights its own screen; the loss is evening work and time fumbling in the dark, larger in winter. Guess."},
+      "notes": "Counts only if devices are charged; if devicePower is also unmet its figure already covers the day."
+    },
+    {
+      "id": "workLoss.devicePower",
+      "definition": "As workLoss.water, for a day on which the person has no charged phone or computer and no way to charge one (devicePower need unmet), compared with a person whose devices are charged and who can work over mobile data.",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "Without a working computer or phone a knowledge worker can only read on paper, think and write by hand: gross about 0.9 (0.7-1.0) of the day; x 0.7 for work made up = 0.63. Lower where an office, library or cafe with power is within reach (a local outage), higher in a regional one. No outage study isolates this. Cross-check: in a hypothetical three-day outage 21% of rural US households expect to lose income, mean $1,158 among them, about a third of three days' household income (LBNL ICE 2.0, https://eta-publications.lbl.gov/sites/default/files/2026-10/ice_2.0_nreca_final_report_28oct2026.pdf, read)."},
+      "notes": "The model's devicePower demand is 15 Wh per person-day, enough for a phone but not a laptop (about 40-80 Wh per working day; its own battery covers the first day). For this figure to be avoided by stored power, a worker's demand should be about 60 Wh on working days. See openQuestions."
+    },
+    {
+      "id": "workLoss.refrigeration",
+      "definition": "As workLoss.water, for a day on which the household's fridge or freezer contents spoil (refrigeration need unmet; charged per person).",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0, "mid": 0.02, "hi": 0.06, "tag": "guess", "basis": "About an hour per household to clear spoiled food and an extra shopping trip, on the one or two days the need counts, spread over 2.5 people and often done outside working hours. Guess."},
+      "notes": ""
+    },
+    {
+      "id": "workLoss.medicalPower",
+      "definition": "As workLoss.water, for a day on which a person who depends on a powered medical device cannot run it (medicalPower need unmet). Applies only to that person.",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.02, "mid": 0.1, "hi": 0.6, "tag": "guess", "basis": "Base case CPAP for sleep apnoea: two weeks' withdrawal raised sleepiness (Epworth +2.7) but did not worsen psychomotor or driving-simulator performance (Kohler et al. 2011, randomised, search snippet); one night's withdrawal did impair simulated driving (Filtness et al., search snippet). Add an hour or two to find somewhere to power the device. For a life-supporting device (oxygen) the day goes to reaching a hospital or a place with power: 0.6 or more, the hi."},
+      "notes": "Most people on life-supporting devices are not in work; the figure matters little for the impartial valuation."
+    },
+    {
+      "id": "workLoss.information",
+      "definition": "As workLoss.water, for a day inside a comms window (mobile and internet service down at home). Measures the work that needs the internet, whether or not a radio covers the news-and-contact part of the need.",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.2, "mid": 0.5, "hi": 0.75, "tag": "guess", "basis": "About three quarters (0.55-0.9) of a knowledge worker's output needs the internet: of time in Microsoft 365 the average user spends 57% communicating (meetings, chat, email) and 43% creating (https://news.microsoft.com/2023/05/09/introducing-the-microsoft-365-copilot-early-access-program-and-the-2023-work-trend-index/, read), and much creation uses cloud files and search; in a UK survey 28% could not work at all without the internet and 7% could manage a full day (Yesss Electrical survey, February 2022, sample not stated, https://www.itwire.com/telecoms-and-nbn/almost-50-of-brits-couldn%E2%80%99t-complete-half-a-day%E2%80%99s-work-without-the-internet.html, read). Times 0.65 because messages and meetings are easily deferred: 0.49."},
+      "notes": "Lower in a single-operator outage: during the Rogers outage of July 2022 home workers moved to cafes and libraries with other providers (Reuters, search snippet). A household-broadband outage alone stopped work for 16% of UK adults who had one (Uswitch 2022, https://www.uswitch.com/media-centre/2022/06/broadband-outage-outrage/, read), because mobile data was still available; that case is not this need."
+    },
+    {
+      "id": "workLoss.dataAccess",
+      "definition": "As workLoss.water, for a day on which the person cannot reach their own files, accounts and computer (cloud services unreachable, or the computer lost or destroyed), while devices and connectivity otherwise work.",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.25, "mid": 0.55, "hi": 0.85, "tag": "guess", "basis": "Gross about 0.8 (0.5-0.95): most knowledge work needs one's own documents, mail and logins (see workLoss.information for the internet share, about three quarters); meetings by phone, reading and planning remain. Times 0.7 for work made up. Losing the computer itself adds a day or two of buying and restoring, which is in the range; losing data with no backup costs work permanently, which is not. Guess."},
+      "notes": "MODEL.md has no window for this need; it needs a trigger (displacement without the computer, fire, theft, a cloud or account outage)."
+    },
+    {
+      "id": "workLoss.medication",
+      "definition": "As workLoss.water, for a day on which a person who takes a prescription drug has run out and cannot get more (medication need unmet). Applies only to that person.",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.01, "mid": 0.08, "hi": 0.3, "tag": "guess", "basis": "Averaged over common drugs: most (statins, blood-pressure drugs) cause no symptoms in the first days; antidepressant discontinuation, asthma and pain drugs do; insulin is serious. Plus an hour or two on the first days chasing a supply. Gross 0.12 x 0.7. Guess."},
+      "notes": ""
+    },
+    {
+      "id": "workLoss.minorIllness",
+      "definition": "As workLoss.water, for each person-day without pharmacy access and without home over-the-counter medicines (minorIllness need unmet), averaged over all such days, ill or not, as the need's hardship is.",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.001, "mid": 0.005, "hi": 0.015, "tag": "guess", "basis": "A cold costs a worker 8.7 work hours, 2.8 absent and 5.9 at reduced output (Bramley, Lerner and Sarnes 2002, J Occup Environ Med 44:822, abstract via Europe PMC); adults average two to three colds a year (https://www.cdc.gov/common-cold/about/index.html, read): 22 hours. Doubling for headaches, pain, stomach upsets and allergies gives about 45 hours, 2.5% of an 1,800-hour year. If over-the-counter drugs would relieve a fifth of that (my guess, 5-50%): 0.005."},
+      "notes": "No make-up factor: the 8.7 hours are already net losses."
+    },
+    {
+      "id": "workLoss.sanitation",
+      "definition": "As workLoss.water, for a day without a working toilet or water to wash hands (sanitation need unmet).",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.02, "mid": 0.07, "hi": 0.2, "tag": "guess", "basis": "Improvising a bucket toilet, carrying waste, walking to a public toilet and hand hygiene: about an hour (0.3-2.5) a day. Gross 0.1 x 0.7. Guess."},
+      "notes": ""
+    },
+    {
+      "id": "workLoss.payments",
+      "definition": "As workLoss.water, for a day on which the person cannot pay electronically and has no cash, while shops are open (payments need unmet).",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.005, "mid": 0.03, "hi": 0.12, "tag": "guess", "basis": "Time spent searching for a working ATM, borrowing, arranging credit with shops or queueing: about half an hour a day (0.05-1.5 h). Gross 0.05 x 0.7. Freelancers who cannot be paid lose income but not output, so that is excluded. Guess."},
+      "notes": ""
+    },
+    {
+      "id": "workLoss.displacement",
+      "definition": "As workLoss.water, for each day the person is displaced from home, compared with a person in the same event who is not; averaged over the days of displacement as the model's displacement windows distribute them.",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0.12, "mid": 0.3, "hi": 0.6, "tag": "derived", "basis": "Profile by day of displacement (guess): 0.8 for days 1-3 (leaving, travelling, finding lodging), 0.4 for days 4-14 (temporary lodging, insurance and aid paperwork, a borrowed or no workspace), 0.15 after day 14 (settled in temporary housing, working remotely). Weighted over lognormal lengths with median 5-10 days and 90th percentile 45-60 days (hazards-ordinary.json windows), mean 20-25 days: 0.28; with median 3 and 90th percentile 14: 0.49. Household Pulse Survey 2021-24: 43% of displaced households back within a week, 23% within a month, 20% longer, 14% not returned (Paul et al. 2025, Risk Analysis, https://discovery.ucl.ac.uk/id/eprint/10205868/, read)."},
+      "notes": "Already net of make-up. Florida 2004 hurricanes: 45.8% of employed adults missed work or lost a job, 39.2% of them for more than 5 days (https://www.cdc.gov/mmwr/preview/mmwrhtml/mm5428a1.htm, read). If the engine can index by day of displacement, use the profile rather than the average."
+    },
+    {
+      "id": "workLoss.emergencyCare",
+      "definition": "As workLoss.water, for a day on which emergency medical care cannot be reached (emergencyCare need unmet).",
+      "unit": "fraction of a day's work",
+      "value": {"lo": 0, "mid": 0, "hi": 0.01, "tag": "guess", "basis": "The need's harm is the risk of dying of an emergency without care; on the great majority of such days nothing happens and no time is lost. Caring for an untreated injured household member is small in expectation. Guess."},
+      "notes": ""
+    },
+    {
+      "id": "workDays.pandemicModerate",
+      "definition": "Expected working days lost per adult aged 15-59 over one COVID-scale pandemic (the two-year event of tail-pandemic.json), through own illness and caring for sick household members, unprepared household, knowledge worker who can work from home. Excludes death, school closures and lost earnings from the downturn.",
+      "unit": "working days per adult per event",
+      "value": {"lo": 0.6, "mid": 1.7, "hi": 5, "tag": "derived", "basis": "Own illness: attack rate 0.35 (tail-pandemic.json) x 4.3 days per infection = 1.5. Per infection: 0.65 symptomatic x 4 days (absence and reduced output; 3.6 in a vaccine-maker's model, Beck et al. 2025, read; median return to work 10 calendar days among 30,396 Dutch employees who reported sick, https://www.sjweh.fi/article/4077, read) = 2.6, + 1.5% hospitalised x 35 days (42 in Beck) = 0.5, + long COVID 0.65 x 6.2% ill at three months (Wulf Hanson 2022, in tail-pandemic.json) x 85 working days x a third of output lost (Brookings 2022: about a quarter out of work and 45% on reduced hours, read) = 1.1. Caring: 1.5 other members x 0.35 x 0.65 x 1 day x 0.6 borne by this adult = 0.2. Check: the illness lost-worktime rate of US full-time workers was 0.9% in 2019 and 1.3% in 2020 and 2021 (BLS CPS table 47, read): 0.8% x 250 = 2.0 days over the two years."},
+      "notes": "Range: lo is attack 0.2 and 2 days per case; hi is attack 0.6, a week per case and a heavier long-illness tail (5% of New York workers' compensation COVID claimants were still off work after a year, NYSIF 2023, read, a sample skewed to severe cases)."
+    },
+    {
+      "id": "workDays.pandemicSevere",
+      "definition": "As workDays.pandemicModerate, for a pandemic far worse than COVID-19 (tail-pandemic.json: attack rate 0.3 before a countermeasure, infection fatality about 3% at 15-59), counting survivors' illness and caring for sick household members.",
+      "unit": "working days per adult per event",
+      "value": {"lo": 1.5, "mid": 5, "hi": 15, "tag": "derived", "basis": "Own illness: 0.3 x 0.9 symptomatic x 12 working days (two to three weeks of severe illness and convalescence, tail-pandemic.json) = 3.2, plus lasting debility 0.3 x 10% x 40 days x 0.4 = 0.5 (guess). Caring with hospitals overwhelmed: 1.5 other members x 0.3 x 0.9 x 5 days x 0.6 = 1.2. Total 4.9. Checks: CBO's severe scenario (30% infected) has survivors miss three weeks for illness, fear or caring (via https://www.milliman.com/en/insight/sick-days-a-human-capital-perspective-on-pandemic-influenza, read): 0.3 x 15 = 4.5; B.F. Goodrich, Akron, lost 102 + 165 days per 100 male and 142 + 505 per 100 female employees to influenza in the years to October 1918 and 1919 (Public Health Reports 1922, https://stacks.cdc.gov/view/cdc/68112/cdc_68112_DS1.pdf, read): 2.7-6.5 days per worker."},
+      "notes": "Lo is attack 0.1; hi is attack 0.6 with longer illness and more caring. Absence from fear is excluded because the baseline worker can work from home. Every input here except the 1918 anchor is a guess; no modern society has met this hazard."
+    },
+    {
+      "id": "workDays.seasonalIllness",
+      "definition": "Working days per year that routine vaccination (influenza and updated COVID-19) would save an adult of average risk aged 15-59, through illness averted: absence plus reduced output while ill.",
+      "unit": "working days per adult per year",
+      "value": {"lo": 0.05, "mid": 0.2, "hi": 0.5, "tag": "derived", "basis": "Influenza: 6.1% of unvaccinated adults a year in moderate seasons (Tokars et al. 2018, https://stacks.cdc.gov/view/cdc/53814/cdc_53814_DS1.pdf, read) x 40% effectiveness x 2.8 days missed per episode (Keech 1998, abstract read) = 0.07, x 1.5 for reduced output at work = 0.10. COVID-19: about 12% of adults ill a year (43.6M and 33.0M illnesses in 2022-23 and 2023-24, CDC via search snippet, over 335M) x 23.5% of symptomatic infections averted x 3.6 days (Beck et al. 2025, a Moderna-authored model, read) = 0.10. Total 0.2. Lo is the Cochrane pooled result for influenza vaccine, 0.04 working days (-0.14 to 0.06) (https://www.cochrane.org/CD001269/ARI_vaccines-prevent-influenza-healthy-adults, read), with little from COVID; hi uses Nichol 1995 (52 fewer sick-leave days per 100 vaccinees, snippet)."},
+      "notes": "medical.json used 0.13 days for influenza alone; this adds COVID-19 and reduced output."
+    },
+    {
+      "id": "workDays.houseFire",
+      "definition": "Expected working days lost per adult per year to dealing with fire in a home without a working smoke alarm: chance of a fire x days lost (displacement, clean-up, insurance, repairs). Excludes death and the value of lost property.",
+      "unit": "working days per adult per year",
+      "value": {"lo": 0.005, "mid": 0.02, "hi": 0.06, "tag": "guess", "basis": "Chance: 328,590 reported home fires a year over about 131M households = 0.25% (NFPA 2019-2023, fire-co.json); homes without alarms have 3.5-5 times as many reported fires (NIST TN 2020, fire-co.json) and are 16% of homes, so 0.25% / (0.84 + 0.16 x 4) x 4 = 0.68%; I use 0.6% (0.35-0.8%). Days per reported fire, guess: half are confined fires costing about half a day; of the rest about a third displace the household for about three weeks (Red Cross House, Philadelphia, 18 nights per family, snippet), costing 7.9 days on the workLoss.displacement profile plus 2.3 of paperwork and repairs (10.2), and two thirds cost 1.5 days: 0.5 x 0.5 + 0.5 x (0.35 x 10.2 + 0.65 x 1.5) = 2.5; 3 for unalarmed homes, whose fires grow larger. 0.006 x 3 = 0.018, plus 7.4M unreported fires a year (5.6% of homes) x 0.05 days = 0.003."},
+      "notes": "No study of how long households are displaced after US home fires was found."
+    },
+    {
+      "id": "workDays.violentCrime",
+      "definition": "Expected working days lost per adult per year to burglary of the home and to robbery or assault at home by people outside the household (police, repairs, insurance, injury). Excludes death.",
+      "unit": "working days per adult per year",
+      "value": {"lo": 0.001, "mid": 0.004, "hi": 0.012, "tag": "guess", "basis": "Burglary: 8.2 per 1,000 households in 2024 (BJS, plans-skills-security.json); in 9.7% a victim lost time from work, for <1 day (29.3%), 1-5 (49.0%), 6-10 (11.1%) or 11+ (10.7%) (NCVS 2008 Statistical Tables 87 and 89, https://bjs.ojp.gov/redirect-legacy/content/pub/pdf/cvus0804.pdf, read): mean 4.4 days, so 0.43 per burglary, 0.23 per adult at 1.9 adults per household; x 0.0082 = 0.002. Violence at home by outsiders, guessed at 5 per 1,000 adults a year (about a third of a violent-victimisation rate of about 22 per 1,000, recalled, less offenders from the household); 7.2% lose time, mean 4.9 days: 0.35 per victimisation, x 0.005 = 0.002. Total 0.004."},
+      "notes": "Midpoints used for the day bands: 0.5, 3, 8 and 18. The 2008 tables are the latest with this breakdown that we found."
+    },
+    {
+      "id": "workDays.aiFraud",
+      "definition": "Expected working days lost per adult aged 15-59 per aiFraud event (someone in the household loses money to a scam or loses control of an account), dealing with banks, police, providers and recovery. Per adult in a two-adult household.",
+      "unit": "working days per adult per event",
+      "value": {"lo": 0.05, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Hours spent: identity-fraud victims averaged 10.4 hours in 2025, account takeover 17 (Javelin 2026, https://javelinstrategy.com/node/35385, read); BJS 2021: mean 3.9 hours for resolved and 9.1 for unresolved identity theft (https://bjs.ojp.gov/document/vit21.pdf, read). I take 10 hours per event, half of them in working hours (guess): 5 hours = 0.63 of an 8-hour day for the victim, 0.31 per adult."},
+      "notes": "The victim loses about twice this figure. No source was found for time spent on a scam loss as such; I assume it is similar to identity fraud."
+    },
+    {
+      "id": "costPerLifeSavedUsd",
+      "definition": "Current marginal cost of saving one life (mostly a child under five) through GiveWell's Top Charities Fund, US dollars.",
+      "unit": "USD per life saved",
+      "value": {"lo": 5000, "mid": 8000, "hi": 10000, "tag": "data", "basis": "GiveWell staff, 7 May 2025: 'Our current estimate for the marginal cost per life saved through the Top Charities Fund is approximately $8,000' and 'the actual cost might range from roughly $5,000 to $10,000' (https://blog.givewell.org/2025/03/25/march-2025-open-thread/, read in the archive.org copy of 8 June 2026; the live site returned an empty page). The range is GiveWell's own, not a 90% interval."},
+      "notes": "The Top Charities Fund funds four programs: seasonal malaria chemoprevention (Malaria Consortium), bed nets (Against Malaria Foundation), vitamin A supplementation (Helen Keller Intl) and infant-vaccination incentives (New Incentives). GiveWell's page on the cost to save a life (published April 2024, unchanged in the 14 November 2026 copy) says its models 'have typically estimated an average cost between $3,000 and $5,500'; the Top Charities page (last updated October 2026) gives average 2022-2024 costs of $4,000 (Malaria Consortium), $5,500 (AMF), $3,500 (Helen Keller) and $4,500 (New Incentives) per life saved. These are averages; the marginal dollar is less effective. No 2026 marginal figure was found."
+    },
+    {
+      "id": "lifeExpectancy.child",
+      "definition": "Remaining period life expectancy at age 7, both sexes, representative of the model's child band (under 15).",
+      "unit": "years",
+      "value": {"lo": 72, "mid": 72.5, "hi": 75.5, "tag": "data", "basis": "United States life table 2024, total population: e(7) = 72.5 (NVSR vol. 75 no. 5, 25 August 2026, Table 1, https://www.cdc.gov/nchs/data/nvsr/nvsr75/nvsr75-05.pdf, read by a research assistant). EU27 2024 (provisional): 74.9; France 76.4, Germany 74.5 (Eurostat demo_mlexpec, read). Hi allows for the higher European figure and for cohort gains."},
+      "notes": "Mid is the US table because the model's default location is the US; a Western European household would use about 75."
+    },
+    {
+      "id": "lifeExpectancy.adult",
+      "definition": "Remaining period life expectancy at age 37, both sexes, representative of the model's adult band (15-59).",
+      "unit": "years",
+      "value": {"lo": 43.3, "mid": 43.8, "hi": 46.5, "tag": "data", "basis": "United States 2024: e(37) = 43.8 (NVSR 75-5, Table 1, https://www.cdc.gov/nchs/data/nvsr/nvsr75/nvsr75-05.pdf). EU27 2024: 45.4; France 47.1, Germany 45.0, Netherlands 45.7 (Eurostat demo_mlexpec, https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/demo_mlexpec?format=JSON&geo=EU27_2020&sex=T&age=Y37, read)."},
+      "notes": ""
+    },
+    {
+      "id": "lifeExpectancy.age60to74",
+      "definition": "Remaining period life expectancy at age 67, both sexes, representative of the model's 60-74 band.",
+      "unit": "years",
+      "value": {"lo": 17.9, "mid": 18.2, "hi": 19.5, "tag": "data", "basis": "United States 2024: e(67) = 18.2 (NVSR 75-5, Table 1). EU27 2024: 18.7; France 20.3, Germany 18.1, Netherlands 18.3 (Eurostat demo_mlexpec, read)."},
+      "notes": ""
+    },
+    {
+      "id": "lifeExpectancy.age75plus",
+      "definition": "Remaining period life expectancy at age 82, both sexes, representative of the model's 75-and-over band.",
+      "unit": "years",
+      "value": {"lo": 8, "mid": 8.2, "hi": 9, "tag": "data", "basis": "United States 2024: e(82) = 8.2 (NVSR 75-5, Table 1). EU27 2024: 8.4; France 9.4, Germany 8.0, Netherlands 7.7 (Eurostat demo_mlexpec, read)."},
+      "notes": "People in this band who are frail or dependent on care have much less; the figure is for the average person of that age."
+    },
+    {
+      "id": "lifeExpectancy.reference",
+      "definition": "Remaining life expectancy at the average age of the people whose risk reductions underlie agency values of a statistical life, so that VSL can be scaled by remaining life-years: VSL x e(band) / e(reference).",
+      "unit": "years",
+      "value": {"lo": 34, "mid": 41, "hi": 45.5, "tag": "derived", "basis": "Reference age 40: HHS tells analysts to 'assume that the average individual in these studies is 40 years of age' (Guidelines for Regulatory Impact Analysis 2016, p. 20, https://aspe.hhs.gov/sites/default/files/pdf/242926/HHS_RIAGuidance.pdf, read) and in 2026 uses 'an individual 40 years of age' with 40.7 years remaining (US 2023 table; https://aspe.hhs.gov/sites/default/files/documents/2d83af5823915d81871334ee08ad03d9/Standard-RIA-Values-2026.pdf, read). On the 2024 table used for the bands, e(37) = 43.8 less about 0.95 a year gives e(40) = 41.0. Hi is age 35, the young end of the hedonic-wage samples ('on average thirty-five to forty years old', Aldy and Viscusi, search snippet): 45.7. Lo is age 48, allowing for stated-preference samples that are older (one well-known sample averaged 54; Krupnick et al. 2001, search snippet): about 34."},
+      "notes": "Use the same life table for the bands and the reference. HHS's own value per life-year discounts the remaining years (23.1 discounted years at 3%); if the model discounts the impartial stream, it should discount both numerator and denominator alike."
+    },
+    {
+      "id": "defaults.hoursPerYear",
+      "definition": "Annual hours worked by a full-time knowledge worker in a rich country.",
+      "unit": "hours per year",
+      "value": {"lo": 1600, "mid": 1800, "hi": 2000, "tag": "derived", "basis": "OECD 2025, usual weekly hours of full-time employees in the main job: OECD 40.0, US 41.0, UK 40.7, Germany 39.0, France 38.7, Netherlands 37.5; Eurostat 2025, full-time professionals: EU27 39.2 (OECD SDMX DF_AVG_USL_WK_WKD and Eurostat lfsa_ewhuis, read). Times weeks at work after leave, public holidays and sickness: about 47 in the US (41 x 47 = 1,927) and 43 in Western Europe (39 x 43 = 1,680). OECD average annual hours actually worked per worker, part-timers included: OECD 1,736, US 1,800 (https://sdmx.oecd.org/public/rest/data/OECD.ELS.SAE,DSD_HW@DF_AVG_ANN_HRS_WKD,1.0/all?startPeriod=2024&format=csvfilewithlabels, read)."},
+      "notes": "Weeks at work are my assumption. A working day is then about 8 hours (1,800 over about 225 days)."
+    }
+  ],
+  "blockedSources": [
+    "https://www.givewell.org (every page returns an empty bot-check page to automated fetches): read instead through archive.org copies of 14 November 2026 (cost to save a life), 1 November 2026 (Top Charities) and 8 June 2026 (blog thread with the marginal figure).",
+    "https://www.allconnect.com/blog/70-percent-of-americans-cant-do-their-jobs-without-home-internet-connection (403): share of US workers who cannot work without home internet; only a snippet seen.",
+    "https://openknowledge.worldbank.org/bitstreams/5b521161-e7a2-5a16-9da2-471e8ef52c3b/download (403): Hardy and McCasland on whether hours lost on blackout days are made up later.",
+    "https://www.cbo.gov (403): the 2005-06 pandemic work-loss assumptions; read through Milliman's summary.",
+    "Census Household Pulse table splitting 'sick with COVID' from 'caring for someone with COVID' (xlsx unreadable; older path 404).",
+    "https://pubmed.ncbi.nlm.nih.gov and https://pmc.ncbi.nlm.nih.gov (cookie wall, browser check): abstracts read through Europe PMC instead.",
+    "Aldy and Viscusi on the age of workers in hedonic-wage studies (scholar.harvard.edu PDF, 403): snippet only.",
+    "No time-use study of a rich-country water outage, of telework during a power or telecom outage, or of displacement after ordinary house fires was found; those figures are guesses."
+  ],
+  "openQuestions": [
+    "Combining work losses: on a day with several unmet needs the figures must not be summed (devicePower 0.6 + information 0.5 + warmth 0.3 exceeds 1). I suggest 1 - product of (1 - w) over the unmet needs, which also handles the overlap of devicePower, information and dataAccess.",
+    "information: a radio meets the news part of this need but restores no work. The work loss should apply on every comms-window day unless the household has another internet path (a second carrier, satellite internet), which calls for a new capability such as internetBackup.",
+    "devicePower: the 15 Wh per person-day demand covers a phone, not a laptop. Under the impartial valuation a worker needs about 60 Wh on working days for stored power to avert workLoss.devicePower.",
+    "dataAccess has no window in MODEL.md. It needs triggers: displacement without the computer, house fire, theft, a cloud or account outage, and aiFraud account takeovers.",
+    "Make-up factor: most workLoss figures assume 30% of deferred work is made up later (range 10-50%). Calendar-effect studies suggest more is recouped for planned, economy-wide days off; a manager survey (Nicholson et al. 2006: median cost of an absence 1.28 times the wage) suggests unplanned absences cost more than a day's wage. The factor could be a reader setting.",
+    "workDays.aiFraud is per adult in a two-adult household; the event's probability is per household, so the engine should not multiply it by more than the household's adults.",
+    "Not counted anywhere: work lost to school and day-care closures in a pandemic, and to workplace closures in regional disasters (the baseline worker works from home). Both are large in real events.",
+    "lifeExpectancy is from the US table; Western European values are 1-2 years higher at 37 and 0.2-2 at 67-82. The model could take these by location.",
+    "costPerLifeSavedUsd is GiveWell's 2025 marginal figure for the Top Charities Fund; GiveWell gave no 2026 marginal figure, and the 2025 aid cuts may have changed it."
+  ]
+}

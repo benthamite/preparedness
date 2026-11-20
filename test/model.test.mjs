@@ -590,3 +590,24 @@ test('a country with figures of its own replaces the preset', () => {
   // A country not in the data changes nothing.
   near(run(d, { country: 'YY' }).entries[0].valueUsd, base.valueUsd);
 });
+
+test('lost work from needs unmet on the same days is not double-counted', () => {
+  const d = fixture();
+  d.parameters.costPerLifeSavedUsd = 0;
+  d.needs.water.workLoss = 0.5;
+  // A second need, unmet on all five days of the same window, also costing
+  // half a day's work a day, and nothing else.
+  d.needs.heat = { per: 'person', gap: 'water', demandPerPersonDay: 1, baselineDays: 0, workLoss: 0.5,
+    hardship: { steps: [{ fromDay: 1, ...flat(0) }] }, mortality: { steps: [{ fromDay: 1, ...flat(0) }] } };
+  // One member, valued impartially, whose work day is worth $730. Water is
+  // unmet on 4 days and heat on 5; taken to overlap, that is 1 day at a half
+  // and 4 days at 1 − 0.5 × 0.5 = 0.75: 3.5 days, not 4.5.
+  const people = [adult(1, { valuation: 'impartial', hourValue: 73, hoursPerYear: 3650, impactEndYear: 2056 })];
+  const r = run(d, { people });
+  near(r.harm.unprepared.usd, 0.1 * 3.5 * 730);
+  // Two days of stored water now save half a day's work on each, but only
+  // a quarter of a day where heat is also unmet: water covers days 2 and 3,
+  // leaving water unmet 2 days; 3 days at a half and 2 at 0.75 = 3 days.
+  const w = entry(r, 'water', 1);
+  near(w.hardshipUsd, 0.1 * (3.5 - 3) * 730);
+});

@@ -2,9 +2,18 @@
 // tools/build-data.mjs combines this with research/step3 into data/model.json.
 
 import { guess } from './helpers.mjs';
+// Windows for the cyber hazards, revised on 20 November 2026 after Sentinel's
+// "Consider cyberarmageddon" (research/ai/cyber-windows.md).
+import cyber from '../research/ai/cyber-windows.json' with { type: 'json' };
 import { items as items1, dropped as dropped1 } from './items-1.mjs';
 import { items as items2, dropped as dropped2 } from './items-2.mjs';
 
+// A hazard profile as the cyber researcher gave it: windows, leaving,
+// warning, and the chance of cold or heat.
+const profileOf = (h) => {
+  const { definition, definitionChange, notes, ...rest } = h;
+  return { ...rest, lateBuy: rest.lateBuy || { staple: 0, specialty: 0 }, warningDays: rest.warningDays || 0 };
+};
 const none = { steps: [{ fromDay: 1, lo: 0, mid: 0, hi: 0 }], tag: 'derived', basis: 'None claimed.' };
 const flatCurve = (lo, mid, hi, basis) => ({ steps: [{ fromDay: 1, lo, mid, hi }], tag: 'guess', basis });
 
@@ -42,8 +51,10 @@ export default {
     // The share of a member's work that would not be done if they died. A
     // default for the reader to change.
     counterfactualShare: 0.5,
-    // Lost work per unmet day, by need, where set here instead.
-    workLoss: {},
+    // Lost work per unmet day, by need, where set here instead. Only
+    // infants are without formula, and a pet's food is felt once by the
+    // household, so neither costs a member's work.
+    workLoss: { infantFood: { lo: 0, mid: 0, hi: 0, tag: 'derived', basis: 'Only infants are members of this need.' }, petFood: { lo: 0, mid: 0, hi: 0, tag: 'guess', basis: 'Felt by the household, not by a working member.' } },
     // Hazards whose lost work runs through a channel rather than unmet
     // needs, and the channel.
     workDays: {
@@ -150,7 +161,9 @@ export default {
     warmth: { label: 'Warmth', per: 'person', gap: 'warmth', demandPerHouseholdDay: 1 },
     cooling: { label: 'Cooling', per: 'person', gap: 'cooling', demandPerHouseholdDay: 1 },
     light: { label: 'Light', per: 'person', gap: 'power', demandPerHouseholdDay: 4 },
-    devicePower: { label: 'Phone and small devices', per: 'person', gap: 'power', demandPerPersonDay: 15, baselineIf: [{ if: 'car', days: 30 }] },
+    // A member valued for their work also runs a laptop: about 60 Wh a day
+    // (research/impartial/impartial.md).
+    devicePower: { label: 'Phone and small devices', per: 'person', gap: 'power', demandPerPersonDay: 15, workerDemandPerPersonDay: 60, baselineIf: [{ if: 'car', days: 30 }] },
     refrigeration: { label: 'Refrigeration', per: 'person', gap: 'power', demandPerHouseholdDay: 1300 },
     medicalPower: { label: 'Powered medical device', per: 'person', who: 'powerDependent', gap: 'power', demandPerPersonDay: 1500 },
     information: { label: 'News and contact', per: 'person', gap: 'comms', leaveEnds: false },
@@ -163,6 +176,14 @@ export default {
     sanitation: { label: 'Toilet and washing', per: 'person', gap: 'sanitation', demandPerPersonDay: 1 },
     payments: { label: 'Ability to pay', per: 'person', gap: 'payments', demandPerPersonDay: 20, leaveEnds: false, home: false },
     displacement: { label: 'Being displaced', per: 'person', gap: 'displacement', leaveEnds: false, home: false },
+    // Reaching one's own files, accounts and computer (research/step3/cyber-items.json).
+    // Out of reach on 40% of the days without internet (cloud-only files),
+    // when an account is locked or a device wiped (the aiFraud window), and
+    // on 40% of displaced days, at most a week: the researcher's proposal.
+    dataAccess: {
+      label: 'Own files and computer', per: 'person', gap: 'dataAccess', leaveEnds: false, home: false,
+      access: { commsShare: 0.4, displacedShare: 0.4, displacedCapDays: 7 },
+    },
     emergencyCare: {
       // medical.md section 3: 1.2 micromorts a day when care cannot be
       // reached at all, 0.2 when it is slow or overwhelmed. Hazards differ in
@@ -228,19 +249,9 @@ export default {
     // research/ai/ai-cyber.json and ai-war.json.
     cyberOutage: {
       label: 'Blackout from an attack or software failure', aiBase: true,
-      definition: 'Grid power out for 1 to 14 days across a metropolitan region or larger because of a cyberattack, sabotage, or a failure of software or AI-run operations.',
+      definition: cyber.hazards.cyberOutage.definition,
       profile: {
-        windows: {
-          power: { pOccur: 1, days: { p50: 2, p90: 6, p99: 14 } },
-          water: { pOccur: 0.25, days: { p50: 1, p90: 3, p99: 8 }, shareTreatable: 0.8 },
-          comms: { pOccur: 0.6, days: { p50: 1, p90: 4, p99: 12 } },
-          payments: { pOccur: 0.9, days: { p50: 2, p90: 6, p99: 14 } },
-          food: { pOccur: 0.1, days: { p50: 1, p90: 3, p99: 7 } },
-          sanitation: { pOccur: 0.1, days: { p50: 1, p90: 4, p99: 10 } },
-        },
-        coldShare: 0.4, hotShare: 0.25,
-        leave: { feasible: 0.85, earliestDay: 1, fixedUsdPerHousehold: 300, usdPerPersonDay: 45 },
-        warningDays: 0, lateBuy: { staple: 0, specialty: 0 },
+        ...profileOf(cyber.hazards.cyberOutage),
         exposures: [
           { channel: 'co', micromortsPerPerson: guess(0.03, 0.15, 0.6, 'As for a severe storm (hazards-ordinary.json): improvised power and cooking.') },
           { channel: 'fire', micromortsPerPerson: guess(0.02, 0.1, 0.4, 'As for a severe storm (hazards-ordinary.json): candles and improvised cooking.') },
@@ -249,33 +260,28 @@ export default {
     },
     paymentsOutage: {
       label: 'Payment systems down', aiBase: true,
-      definition: 'For at least a day the household cannot pay by card, use ATMs or reach its bank, because of an attack on or failure of banks, card networks or the systems between them, while shops stay open.',
-      profile: {
-        windows: { payments: { pOccur: 1, days: { p50: 2, p90: 7, p99: 30 } } },
-        leave: { feasible: 0, earliestDay: 0, fixedUsdPerHousehold: 0, usdPerPersonDay: 0 },
-        warningDays: 0, lateBuy: { staple: 0, specialty: 0 },
-      },
+      definition: cyber.hazards.paymentsOutage.definition,
+      profile: profileOf(cyber.hazards.paymentsOutage),
     },
     commsOutage: {
       label: 'Mobile and internet down', aiBase: true,
-      definition: 'Mobile and home internet unusable for at least a day for a national operator or a metropolitan region, because of an attack or an AI-caused failure.',
-      profile: {
-        windows: {
-          comms: { pOccur: 1, days: { p50: 1.5, p90: 5, p99: 14 } },
-          payments: { pOccur: 0.3, days: { p50: 1, p90: 3, p99: 7 } },
-          emergencyCare: { pOccur: 0.3, days: { p50: 1, p90: 2, p99: 5 } },
-        },
-        leave: { feasible: 0, earliestDay: 0, fixedUsdPerHousehold: 0, usdPerPersonDay: 0 },
-        warningDays: 0, lateBuy: { staple: 0, specialty: 0 },
-      },
+      definition: cyber.hazards.commsOutage.definition,
+      profile: profileOf(cyber.hazards.commsOutage),
+    },
+    cyberSupplyShock: {
+      label: 'Shops or pharmacies down from an attack or software failure', aiBase: true,
+      definition: cyber.hazards.cyberSupplyShock.definition,
+      profile: profileOf(cyber.hazards.cyberSupplyShock),
     },
     aiFraud: {
       label: 'Scam or account takeover', aiBase: true,
       definition: 'Someone in the household loses money to an impersonation scam, or loses control of a financial, email or phone account, whether or not AI was used.',
       profile: {
         // Being locked out of one account is not being unable to pay, so the
-        // event opens no payments window.
-        windows: {},
+        // event opens no payments window. In about three in ten events an
+        // account is locked or a device wiped, and the household's own files
+        // are out of reach (research/step3/cyber-items.json, open questions).
+        windows: { dataAccess: { pOccur: 0.3, days: { p50: 3, p90: 14, p99: 60 }, tag: 'guess', basis: 'research/step3/cyber-items.json: account lockout and ransomware.' } },
         leave: { feasible: 0, earliestDay: 0, fixedUsdPerHousehold: 0, usdPerPersonDay: 0 },
         warningDays: 0, lateBuy: { staple: 0, specialty: 0 },
         exposures: [{ channel: 'financialLoss', financialUsdPerHousehold: guess(500, 2000, 6000, 'ai-economy.json: mean unreimbursed loss per event in the United States.') }],
@@ -390,7 +396,6 @@ export default {
     ],
     // Rates the researchers gave for hazards the model does not carry.
     unused: {
-      cyberSupplyShock: 'Its main effect is on motor fuel, for which the model has no window.',
       incomeShock: 'Nothing on the list addresses a lasting fall in earnings.',
       marketCrash: 'Nothing on the list addresses a fall in the value of savings.',
     },

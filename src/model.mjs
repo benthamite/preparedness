@@ -480,6 +480,7 @@ export function buildWorld(m, settings) {
       x: multiplier(n.multipliers, p, 'mortality'),
       v: p.v,
       d: p.dv * workLoss,
+      w: p.dv > 0 ? workLoss : 0,
     }));
     // A need of the household as a whole is felt once.
     if (perHousehold && members.length) members[0].h = (grown.length ? grown : people).reduce((s, p) => s + p.hw, 0) / (grown.length || people.length);
@@ -497,7 +498,10 @@ export function buildWorld(m, settings) {
       VXcap: members.reduce((s, x) => s + x.v * (cap ? Math.min(x.x, cap) : x.x), 0),
       V: members.reduce((s, x) => s + x.v, 0),
       demandPer: n.demandPerPersonDay !== undefined ? n.demandPerPersonDay : (n.demandPerHouseholdDay || 1),
-      demand: n.demandPerPersonDay !== undefined ? n.demandPerPersonDay * who.length : (n.demandPerHouseholdDay || 1),
+      // A member valued for their work runs a laptop as well as a phone.
+      demand: n.demandPerPersonDay !== undefined
+        ? who.reduce((s, p) => s + (p.dv > 0 && n.workerDemandPerPersonDay ? n.workerDemandPerPersonDay : n.demandPerPersonDay), 0)
+        : (n.demandPerHouseholdDay || 1),
       leaveEnds: n.leaveEnds !== false,
       home: n.home !== false,
       personal: false,
@@ -609,7 +613,13 @@ export function buildWorld(m, settings) {
           needs.forEach((n, k) => {
             if (n.count === 0) return;
             if (n.spec.gap === 'displacement') row[k] = D;
-            else { const raw = g[n.spec.gap] || 0; row[k] = n.home ? Math.max(0, raw - D) : raw; }
+            else if (n.spec.gap === 'dataAccess') {
+              // Own files and computer: out of reach on a share of the days
+              // without internet, when an account is locked or a device
+              // wiped, and for a while when the household is displaced.
+              const A = n.spec.access || {};
+              row[k] = Math.max(win.dataAccess || 0, (A.commsShare || 0) * (g.comms || 0), Math.min(A.displacedCapDays || 0, (A.displacedShare || 0) * D));
+            } else { const raw = g[n.spec.gap] || 0; row[k] = n.home ? Math.max(0, raw - D) : raw; }
           });
           ev.hz.push(hz.index);
           ev.w.push(hz.pw * ws * wq * pBranch * homePresence);
@@ -748,6 +758,7 @@ export function buildWorld(m, settings) {
         const red = {
           i, f: (fx.fraction || 0) * adj, on: fx.on || 'both', group: fx.group || null,
           person: owner ? person : undefined,
+          work: !!fx.work,
           exclude: fx.othersOnly ? holder : undefined,
           // A fraction that grows with the level owned (deeper stocks).
           byLevel: fx.fractionByLevel ? fx.fractionByLevel.map((x) => x * adj * (fx.levelScale === undefined ? 1 : fx.levelScale)) : null,
@@ -855,7 +866,11 @@ export function buildWorld(m, settings) {
   // of reducers, kind of harm and hazard, one per member and, last, one for
   // the household as a whole (money, which no member's own item touches).
   // keepOf returns where they start in KV; the final block is all ones.
-  const nKeep = (K + channelIds.length) * 2 * nH;
+  // Kinds of harm a reducer may act on: hardship, mortality, and lost work.
+  // Lost work falls only with items that let a member work (`work: true`):
+  // a radio eases a day without news but does not restore the internet.
+  const KINDS = { hardship: 0, mortality: 1, work: 2 };
+  const nKeep = (K + channelIds.length) * 3 * nH;
   const KV = new Float64Array((nKeep + 1) * NP1);
   const ONE = nKeep * NP1;
   KV.fill(1, ONE);
@@ -905,7 +920,7 @@ export function buildWorld(m, settings) {
     let keep = 1;
     let groups = null;
     for (const r of list) {
-      if (r.on !== 'both' && r.on !== kind) continue;
+      if (kind === 'work' ? !r.work : r.on !== 'both' && r.on !== kind) continue;
       if (r.hazards && !r.hazards.has(hz.id)) continue;
       if (r.person !== undefined && r.person !== t) continue;
       if (r.exclude !== undefined && r.exclude === t) continue;
@@ -931,7 +946,7 @@ export function buildWorld(m, settings) {
   }
   function keepOf(list, level, kind, hz) {
     if (!list || !list.length) return ONE;
-    const key = (list.id * 2 + (kind === 'mortality' ? 1 : 0)) * nH + hz.index;
+    const key = (list.id * 3 + KINDS[kind]) * nH + hz.index;
     const base = key * NP1;
     if (keepStamp[key] === version) return base;
     keepStamp[key] = version;
@@ -976,10 +991,13 @@ export function buildWorld(m, settings) {
     return plan;
   }
 
+  function workRow(wb, j, x, U, f) {
+    if (x.w > 0 && U > 0) { const o = wb + j * nPeople + x.i; scrU[o] = U; scrW[o] = x.w * f; }
+  }
   // Harm on need k in event e, for each leave option: dollars (hardship,
   // lost work), micromorts, and micromorts valued at each member's value.
   const own = new Float64Array(Math.max(1, nPeople));
-  function needRow(e, k, level, out$, outM, outV) {
+  function needRow(e, k, level, out$, outM, outV, wb) {
     const n = needs[k];
     const spec = n.spec;
     const hz = hazards[ev.hz[e]];
@@ -1021,9 +1039,13 @@ export function buildWorld(m, settings) {
     const scM = sc.mortality === undefined ? 1 : sc.mortality;
     const bH = keepOf(needReducers[k], level, 'hardship', hz);
     const bM = keepOf(needReducers[k], level, 'mortality', hz);
+    const bW = keepOf(needReducers[k], level, 'work', hz);
     // Hardship and lost work per unmet day, with each member's share kept.
-    let HK = 0, DK = 0;
-    for (const x of mem) { const kh = KV[bH + x.i]; HK += x.h * kh; DK += x.d * kh; }
+    let HK = 0;
+    for (const x of mem) HK += x.h * KV[bH + x.i];
+    // Lost work: for each option and member, the days unmet and the share of
+    // a day's work each costs, combined across needs in eventHarm.
+    if (anyWork) { scrU.fill(0, wb, wb + J * nPeople); scrW.fill(0, wb, wb + J * nPeople); }
     const risky = sideRiskOf[k];
     const cap = spec.lateMultiplierCap;
     const nj = nOpt[e];
@@ -1036,7 +1058,8 @@ export function buildWorld(m, settings) {
         const F = ready + stock + Math.min(cookBase + cookStock, cookable);
         if (gL > F) {
           const p = foodPlan(n, gL, F);
-          usd = (p.usd * HK + p.fast * DK) * scH;
+          usd = p.usd * HK * scH;
+          if (anyWork) for (const x of mem) workRow(wb, j, x, p.fast, KV[bW + x.i] * scH);
           // Each person's risk, capped at certainty.
           for (const x of mem) {
             const r = saturate((p.a * x.x + p.b * (cap ? Math.min(x.x, cap) : x.x)) * KV[bM + x.i] * scM);
@@ -1056,7 +1079,8 @@ export function buildWorld(m, settings) {
         if (!n.personal) {
           const U = Math.max(0, short);
           if (U > 0) {
-            usd = (cumulative(spec.hardship.steps, U) * HK + U * DK) * scH * untreated;
+            usd = cumulative(spec.hardship.steps, U) * HK * scH * untreated;
+            if (anyWork) for (const x of mem) workRow(wb, j, x, U, KV[bW + x.i] * scH * untreated);
             const cM = cumulative(spec.mortality.steps, U) * scM * untreated;
             if (cM > 0) for (const x of mem) { const r = saturate(cM * x.x * KV[bM + x.i]); mm += r; mmv += r * x.v; }
           }
@@ -1066,7 +1090,8 @@ export function buildWorld(m, settings) {
             const x = mem[q];
             const U = Math.max(0, short - own[q]);
             if (U <= 0) continue;
-            usd += (cumulative(spec.hardship.steps, U) * x.h + U * x.d) * KV[bH + x.i] * scH * untreated;
+            usd += cumulative(spec.hardship.steps, U) * x.h * KV[bH + x.i] * scH * untreated;
+            if (anyWork) workRow(wb, j, x, U, KV[bW + x.i] * scH * untreated);
             const r = saturate(cumulative(spec.mortality.steps, U) * x.x * KV[bM + x.i] * scM * untreated);
             mm += r; mmv += r * x.v;
           }
@@ -1103,17 +1128,79 @@ export function buildWorld(m, settings) {
   const tmp$ = new Float64Array(J), tmpM = new Float64Array(J), tmpV = new Float64Array(J);
   const tot$ = new Float64Array(J), totM = new Float64Array(J), totV = new Float64Array(J);
   const res = { usd: 0, mm: 0, mmv: 0 };
+  // Lost work, kept per row (event, need), option and member: unmet days and
+  // the share of a day's work each costs. Only households with a member
+  // valued for their work need it.
+  const anyWork = people.some((p) => p.dv > 0);
+  const RU = anyWork ? new Float32Array(E * K * J * nPeople) : null;
+  const RW = anyWork ? new Float32Array(E * K * J * nPeople) : null;
+  const scrU = new Float32Array(K * J * nPeople), scrW = new Float32Array(K * J * nPeople);
+  const fromScr = new Uint8Array(K);
+  const pairU = new Float64Array(K), pairW = new Float64Array(K);
+  // Lost work in dollars for option j: for each member, the needs unmet are
+  // taken to overlap as much as they can (all from the first unmet day), and
+  // on a day when several are unmet the shares combine as 1 − Π(1 − share),
+  // so that no day costs more than a day's work.
+  const workNeeds = needs.map((n) => n.members.some((x) => x.w > 0));
+  const activeWork = anyWork ? active.map((list) => list.filter((k) => workNeeds[k])) : null;
+  // Members who belong to the same needs, with no item of their own that
+  // restores work, lose the same days; each group is worked out once.
+  const personalWork = needReducers.some((list) => list.some((r) => r.work && r.person !== undefined));
+  const workGroups = [];
+  for (const p of people) {
+    if (!(p.dv > 0)) continue;
+    const sig = needs.map((n) => (n.slot[p.index] >= 0 ? n.members[n.slot[p.index]].w : -1)).join();
+    const g = !personalWork && workGroups.find((x) => x.sig === sig);
+    if (g) g.dv += p.dv; else workGroups.push({ sig, p, dv: p.dv });
+  }
+  function workCost(e, j) {
+    let usd = 0;
+    const list = activeWork[e];
+    for (const grp of workGroups) {
+      const p = grp.p;
+      let n = 0;
+      for (const k of list) {
+        let u, w;
+        if (fromScr[k]) { const o = (k * J + j) * nPeople + p.index; u = scrU[o]; w = scrW[o]; } else { const o = ((e * K + k) * J + j) * nPeople + p.index; u = RU[o]; w = RW[o]; }
+        if (!(u > 0 && w > 0)) continue;
+        // Insertion in order of unmet days, longest first.
+        let m = n++;
+        while (m > 0 && pairU[m - 1] < u) { pairU[m] = pairU[m - 1]; pairW[m] = pairW[m - 1]; m--; }
+        pairU[m] = u; pairW[m] = w < 1 ? w : 1;
+      }
+      let keep = 1, days = 0;
+      for (let m = 0; m < n; m++) {
+        keep *= 1 - pairW[m];
+        days += (pairU[m] - (m + 1 < n ? pairU[m + 1] : 0)) * (1 - keep);
+      }
+      usd += days * grp.dv;
+    }
+    return usd;
+  }
+  function workChanged(e, fresh, j) {
+    for (const k of fresh) {
+      if (!workNeeds[k] || !(ev.gaps[e][k] > 0)) continue;
+      const a = (k * J + j) * nPeople, b = ((e * K + k) * J + j) * nPeople;
+      for (let t = 0; t < nPeople; t++) if (scrU[a + t] !== RU[b + t] || scrW[a + t] !== RW[b + t]) return true;
+    }
+    return false;
+  }
+  // Lost work per event and option for the current kit.
+  const SW = anyWork ? new Float64Array(E * J) : null;
+  const storeWork = (e, k) => { RU.set(scrU.subarray(k * J * nPeople, (k + 1) * J * nPeople), (e * K + k) * J * nPeople); RW.set(scrW.subarray(k * J * nPeople, (k + 1) * J * nPeople), (e * K + k) * J * nPeople); };
 
   // Harm in event e. Needs in `fresh` are recomputed for `level`; the rest
   // come from the cache. With `store`, recomputed rows replace the cache.
   function eventHarm(e, fresh, level, store) {
     const nj = nOpt[e];
     const sb = e * J;
+    if (anyWork) fromScr.fill(0);
     if (fresh === null) {
       for (let j = 0; j < nj; j++) { tot$[j] = 0; totM[j] = 0; totV[j] = 0; }
       for (const k of active[e]) {
         const base = (e * K + k) * J;
-        needRow(e, k, level, tmp$, tmpM, tmpV);
+        needRow(e, k, level, tmp$, tmpM, tmpV, k * J * nPeople);
+        if (anyWork) { fromScr[k] = 1; if (store) storeWork(e, k); }
         for (let j = 0; j < nj; j++) {
           tot$[j] += tmp$[j]; totM[j] += tmpM[j]; totV[j] += tmpV[j];
           R$[base + j] = tmp$[j]; RM[base + j] = tmpM[j]; RV[base + j] = tmpV[j];
@@ -1127,13 +1214,26 @@ export function buildWorld(m, settings) {
       for (const k of fresh) {
         if (!(row[k] > 0)) continue;
         const base = (e * K + k) * J;
-        needRow(e, k, level, tmp$, tmpM, tmpV);
+        needRow(e, k, level, tmp$, tmpM, tmpV, k * J * nPeople);
+        if (anyWork) { fromScr[k] = 1; if (store) storeWork(e, k); }
         for (let j = 0; j < nj; j++) {
           tot$[j] += tmp$[j] - R$[base + j]; totM[j] += tmpM[j] - RM[base + j]; totV[j] += tmpV[j] - RV[base + j];
           if (store) { R$[base + j] = tmp$[j]; RM[base + j] = tmpM[j]; RV[base + j] = tmpV[j]; }
         }
       }
       if (store) for (let j = 0; j < nj; j++) { S$[sb + j] = tot$[j]; SM[sb + j] = totM[j]; SV[sb + j] = totV[j]; }
+    }
+    // Lost work is not additive across needs, so it is worked out afresh
+    // from the rows each time; the stored totals leave it out.
+    if (anyWork) {
+      // Recomputed only for the options in which a recomputed row's lost
+      // work differs from the stored one.
+      for (let j = 0; j < nj; j++) {
+        const redo = fresh === null || store || workChanged(e, fresh, j);
+        const w = redo ? workCost(e, j) : SW[sb + j];
+        if (redo && store) SW[sb + j] = w;
+        tot$[j] += w;
+      }
     }
     if (nj === 1) { res.usd = tot$[0]; res.mm = totM[0]; res.mmv = totV[0]; return res; }
     // Items that make leaving likelier to be possible, or cheaper.

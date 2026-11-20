@@ -1,0 +1,151 @@
+{
+  "kind": "items",
+  "group": "cyber-items",
+  "needs": [
+    {
+      "id": "dataAccess",
+      "definition": "A day on which a member of the household cannot reach the files, accounts and working computer they rely on for work, records and money: documents, photos, tax, insurance and medical records, passwords and the tools of their trade. Only what is out of reach counts; news and contact are the information need, and the ability to pay is the payments need.",
+      "baselineCoverageDays": {
+        "lo": 0, "mid": 0, "hi": 1, "tag": "guess",
+        "basis": "Nothing ordinary in a home replaces files that are out of reach. What a phone or a synced folder still holds is counted in the share of each window that opens the need (notes), not as days of cover."
+      },
+      "hardshipUsdPerPersonDay": {
+        "tag": "guess",
+        "basis": "27% of US paid workdays are worked from home (WFH Research via FRED, October 2026: 27.06%; https://fred.stlouisfed.org/series/WFHCOVIDMATQUESTION). If a fifth of those rely on the household's own computer or files, and a day without them costs about $100 after the work made up later, that is about $5 per working adult-day; with records, bills, schoolwork and personal projects ($1-2) and averaged over members, about $4 at first. It rises as bills, claims and deadlines are missed. Lo: almost everything is on the phone or the employer's machine. Hi: a self-employed member whose livelihood is on the computer.",
+        "steps": [
+          {"fromDay": 1, "lo": 1, "mid": 4, "hi": 15},
+          {"fromDay": 4, "lo": 2, "mid": 7, "hi": 25},
+          {"fromDay": 15, "lo": 3, "mid": 10, "hi": 35}
+        ]
+      },
+      "mortalityMicromortsPerPersonDay": {
+        "tag": "derived",
+        "basis": "None: being without one's files is not dangerous. Records matter for health only through medication and emergency care, which are other needs.",
+        "steps": [{"fromDay": 1, "lo": 0, "mid": 0, "hi": 0}]
+      },
+      "multipliers": [
+        {"profile": "child", "hardship": 0.3, "mortality": 0, "tag": "guess", "basis": "Children lose only schoolwork and games, and schools supply their own devices and accounts."}
+      ],
+      "openedBy": [
+        {"window": "comms", "hazards": "every hazard with a comms window (commsOutage, cyberOutage, gridLong, greatPowerWar, storms)",
+         "share": {"lo": 0.2, "mid": 0.4, "hi": 0.7, "tag": "guess", "basis": "Share of a household's essential files and tools that live only online (web documents, cloud-only photo libraries, online records, web apps). 78% of consumers use free cloud storage and 45% an external drive (Western Digital and Researchscape, 6,118 respondents, February 2025: https://www.techedt.com/most-consumers-now-back-up-their-data-but-cloud-storage-limits-push-shift-to-hybrid-solutions); synced folders keep local copies, streamed ones do not."}},
+        {"window": "dataAccess (new)", "hazards": "aiFraud: account takeover, a fraud lock or lost second factor, and ransomware on household devices",
+         "pOccur": {"lo": 0.1, "mid": 0.3, "hi": 0.5, "tag": "guess", "basis": "Share of aiFraud events (6% a year per US household, ai-economy.json) in which an email, cloud or device account holding the household's files is taken or locked, rather than money alone lost. Security.org (1,062 US adults, December 2023): 29% of adults have had an account taken over, 'about one in five victims' within the last year (about 6% of adults a year), and 23% of victims lost an email or messaging account: about 1.3% of adults, or 2.6% of two-adult households, a year (https://www.security.org/digital-safety/account-takeover-annual-report/)."},
+         "days": {"p50": 3, "p90": 14, "p99": 60},
+         "basis": "Google: 'Account recovery requests can be delayed for a few hours or a number of days, depending on a variety of risk factors' (https://support.google.com/accounts/answer/9412469); accounts without a working second factor take longer, and some are never recovered."},
+        {"window": "displacement", "hazards": "wildfire, hurricane, flood, earthquake and any hazard that displaces",
+         "share": {"lo": 0.2, "mid": 0.4, "hi": 0.7, "tag": "guess", "basis": "Chance that the household's computer is left behind or destroyed when it must leave. The unmet days are those until a replacement is bought and files restored from the cloud: the displacement days, but at most about a week."}}
+      ],
+      "notes": "Three things open the need. (1) A comms window makes cloud-only files and web-only tools unreachable, for the share above. (2) Ransomware, a wiped device or a locked account takes the files or the computer itself away; in the model this belongs in aiFraud, which has no window now, or in an everyday device-loss hazard (open questions). (3) The computer is destroyed in a fire, flood or earthquake, or left behind when the household is displaced; houseFire has no windows, so only the displacement route applies there. The existing data-backup item (money-docs.json) is a cloud and automatic backup valued on the financial loss of records and photos after a fire; it does not keep the household working while the network, the account or the computer is unavailable, and a synced cloud copy can be overwritten by encrypted files."
+    }
+  ],
+  "items": [
+    {
+      "id": "offline-backup-computer",
+      "name": "Offline backup and spare computer",
+      "spec": "A 2 TB portable drive, encrypted (BitLocker, FileVault or the drive's own password), holding the household's essential files and refreshed monthly, then unplugged and kept in the go-bag or away from home; plus a spare laptop, either an old one kept charged and updated or a cheap new one, holding the same essentials, a password-manager emergency kit, and offline copies of the tools needed to work (an office suite, a PDF reader, installers, any cloud-only documents exported to files). Both are tested twice a year by opening a few files on the spare machine with the network off.",
+      "fromLonglistRows": [103],
+      "scalesWith": "household",
+      "unit": "backup drive and spare laptop for the household",
+      "price": {
+        "usdPerUnit": {"lo": 96, "mid": 400, "hi": 750, "tag": "derived", "basis": "Read on retailer pages on 20 November 2026, when storage prices were two to three times their 2024-25 level. Drive: Seagate Expansion 2 TB $95.99 (Staples, out of stock), WD Elements 2 TB $169.99 on sale (Target), Seagate One Touch 2 TB with password $163.99 (Zones); software encryption (FileVault, BitLocker, VeraCrypt) is free. Spare laptop: refurbished Lenovo ThinkPad T490 $209.99 or T14 Gen 1 $304.99, new HP 14 (N150, 4 GB) $299.99, Acer Aspire Go 15 $459.99 (all Target). Lo: drive only, the old laptop serving as the spare. Mid: a $170 drive and a refurbished business laptop or a cheap new one, about $230 more. Hi: a 2 TB portable SSD ($458-575, SanDisk Extreme or Samsung T7 Shield) and a $300 laptop."},
+        "product": "WD Elements 2 TB portable drive and a refurbished Lenovo ThinkPad T490",
+        "source": "https://www.target.com/s?searchTerm=refurbished+thinkpad",
+        "verified": true
+      },
+      "lifeYears": {"lo": 3, "mid": 5, "hi": 7, "tag": "guess", "basis": "A portable drive and a cheap laptop each last about five years; an old laptop kept as the spare is already part-way through its life, and its operating system may stop receiving updates."},
+      "setupHours": {"lo": 2, "mid": 4, "hi": 10, "tag": "guess", "basis": "Choosing what is essential, exporting cloud-only documents, encrypting the drive, setting up the spare laptop and writing down the passwords needed to open both."},
+      "upkeepHoursPerYear": {"lo": 1, "mid": 2.5, "hi": 6, "tag": "guess", "basis": "About five minutes a month to refresh the drive and twenty minutes a quarter to update and charge the spare laptop, plus two short restore tests."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 10, "tag": "guess", "basis": "None beyond electricity; hi allows for a paid backup utility."},
+      "everydayShare": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "An offline copy and a second computer protect against drive failure, theft, breakage and ransomware, which happen far more often than any regional event: about 5% of devices a year fail or are lost (money-docs.json, data-backup, recalled), and about 6% of adults a year have an account taken over (Security.org). Lower than data-backup's 0.95 because the spare laptop and the monthly unplugging are bought for resilience, not convenience."},
+      "volumeLitresPerUnit": 2.5,
+      "reliability": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Failures: a copy months out of date, a forgotten encryption password, a spare laptop with a flat battery or an expired operating system, essentials that were never copied."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "reduce", "target": "dataAccess", "hazards": ["commsOutage", "cyberOutage", "gridLong", "greatPowerWar"],
+         "fractionRemoved": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "With the network down, a household that would otherwise improvise with its phone and whatever synced folders hold can open its cloud-only documents, records and photos and do offline work (writing, spreadsheets, accounts). Work that needs the network is not restored."},
+         "adherence": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "The household remembers the copy and the outage lasts long enough to fetch it."},
+         "notes": "Acts only on the share of comms days that opens dataAccess (needs, openedBy). In cyberOutage the spare laptop also doubles the hours of computing on battery; not claimed."},
+        {"type": "reduce", "target": "dataAccess", "hazards": ["aiFraud"],
+         "fractionRemoved": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "After ransomware, a wiped device or a locked account, an unplugged copy and a second computer restore the files and a working machine at once; what remains is the locked account itself (its email, its online services)."},
+         "adherence": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "A household locked out has every reason to use it."},
+         "notes": "Requires the dataAccess window in aiFraud proposed under needs.openedBy."},
+        {"type": "reduce", "target": "dataAccess", "hazards": ["wildfire", "hurricane", "flood", "earthquake"],
+         "fractionRemoved": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Only if the drive is in the go-bag or away from home; the spare laptop is usually left behind or lost with the main one. With the drive, any borrowed or new computer has the files the same day instead of after a cloud restore."},
+         "adherence": {"lo": 0.4, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "The drive was where the plan said when the household left."}},
+        {"type": "other", "description": "Protects the household's records and photos against loss, not just unavailability, where ransomware or a takeover destroys both the computer's copy and the synced cloud copy: CISA advises offline, encrypted backups because 'if local files are encrypted by an attacker, these files will be synced to the cloud, possibly overwriting unaffected data'. The data-backup item values that loss after a fire; here it would be a small addition to aiFraud's financialLoss, not claimed."}
+      ],
+      "evidence": [
+        {"claim": "Sentinel (19 November 2026), after forecasting 33% for a week-long OECD outage by end-2028: 'keep an offline backup of your important data and perhaps a backup computer in case your main one gets hacked.'", "source": "https://blog.sentinel-team.org/p/consider-cyberarmageddon", "year": 2026, "verified": true},
+        {"claim": "CISA, FBI, NSA and MS-ISAC, #StopRansomware Guide: 'Maintain offline, encrypted backups of critical data, and regularly test the availability and integrity of backups'; 'Automated cloud backups may not be sufficient because if local files are encrypted by an attacker, these files will be synced to the cloud, possibly overwriting unaffected data.'", "source": "https://www.cisa.gov/sites/default/files/2025-03/StopRansomware-Guide%20508.pdf", "year": 2023, "verified": true},
+        {"claim": "Western Digital and Researchscape (6,118 consumers, February 2025): 87% back up, 78% use free cloud storage, 45% use external hard drives.", "source": "https://www.techedt.com/most-consumers-now-back-up-their-data-but-cloud-storage-limits-push-shift-to-hybrid-solutions", "year": 2025, "verified": true},
+        {"claim": "Google: 'Account recovery requests can be delayed for a few hours or a number of days, depending on a variety of risk factors.'", "source": "https://support.google.com/accounts/answer/9412469", "year": 2026, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Distinct from data-backup (money-docs.json): that is a cloud service and an always-connected drive, valued on records and photos lost in a fire; it cannot be read without the network and can be overwritten by ransomware. This entry is a disconnected copy and a second machine, valued on days of access to files and a working computer. A household with an old laptop pays only for the drive."
+    },
+    {
+      "id": "offline-reference",
+      "name": "Offline reference library",
+      "spec": "Kiwix (free) on a laptop with the full English Wikipedia (119 GB) and on each phone with the 'mini' edition (13 GB) or the edition without pictures (49 GB); Wikipedia's medicine collection (WikiMed, 1.7 GB); iFixit repair guides (3.3 GB), Wikivoyage (1 GB) and Stack Exchange's DIY, cooking and gardening sites (about 3 GB); and a handful of practical books in PDF. Refreshed once a year. Plus two paper books for when the battery is flat: the SAS Survival Handbook and a home-repair manual (Black & Decker's Book of Home How-To). The paper first-aid manual and lay medical handbook are a separate entry (reference-books).",
+      "fromLonglistRows": [113, 49],
+      "scalesWith": "household",
+      "unit": "offline library for the household",
+      "price": {
+        "usdPerUnit": {"lo": 26, "mid": 66, "hi": 160, "tag": "derived", "basis": "Kiwix and its collections are free on Windows, macOS, Linux, Android and iOS (https://get.kiwix.org/en/solutions/applications/kiwix-reader/). Paperbacks at Barnes & Noble, 20 November 2026: SAS Survival Handbook $25.99, Black & Decker The Book of Home How-To $40.00, The Encyclopedia of Country Living $29.95. Lo: one book, downloads on storage the household has. Mid: two books. Hi: three books and a 256 GB microSD card for a phone too full for Wikipedia (SanDisk Ultra $62.99 at Target)."},
+        "product": "SAS Survival Handbook and Black & Decker The Book of Home How-To (paperbacks); Kiwix downloads",
+        "source": "https://www.barnesandnoble.com/w/black-decker-the-book-of-home-how-to-updated-3rd-edition-cool-springs-press/1147288768",
+        "verified": true
+      },
+      "lifeYears": {"lo": 3, "mid": 5, "hi": 10, "tag": "guess", "basis": "The downloads are refreshed yearly at no cost; the card and the paper books last five to twenty years."},
+      "setupHours": {"lo": 0.5, "mid": 1.5, "hi": 4, "tag": "guess", "basis": "Installing Kiwix, choosing and downloading collections (large downloads run unattended), buying the books and finding where the medical pages are."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "A yearly refresh of the downloads."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "Kiwix and its collections are free."},
+      "everydayShare": {"lo": 0.05, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Looking things up on flights, abroad without data or in places without signal, and reading the books."},
+      "volumeLitresPerUnit": 3,
+      "reliability": {"lo": 0.4, "mid": 0.65, "hi": 0.85, "tag": "guess", "basis": "The device must be charged and the files present; the household must remember it has them and find the right page under stress. The paper books cover a flat battery."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "reduce", "target": "information", "hazards": ["all"],
+         "fractionRemoved": {"lo": 0.01, "mid": 0.04, "hi": 0.1, "tag": "guess", "basis": "The information need's $15 day (comms.json) is news and instructions ($11.25), contact ($10.50) and ordinary use ($3.25), of which looking things up is a part. An encyclopedia and how-to library recovers perhaps a sixth of ordinary use ($0.55) plus a little practical guidance in long outages: about 4% of the day, beside offline entertainment's 5% and offline maps' 3%. Nothing for news or contact."},
+         "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Used when a question comes up and the network is down."},
+         "notes": "On hardship only: it does not let anyone call for help."},
+        {"type": "reduce", "target": "trauma", "hazards": ["gridLong", "nuclearNear", "nuclearFar", "pandemicSevere"],
+         "fractionRemoved": {"lo": 0, "mid": 0.01, "hi": 0.04, "tag": "guess", "basis": "As reference-books (0.01): only where care is out of reach for weeks. WikiMed is fuller and searchable but needs a charged screen and is slower to use in an emergency than a paper manual. No study measures the effect of owning either."},
+         "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Consulted and followed."},
+         "notes": "Near-perfect substitute for reference-books on this channel: a household that owns one gains almost nothing on trauma from the other, and the model's multiplicative combination overstates the pair."},
+        {"type": "other", "description": "In long outages, practical knowledge (treating water, cooking without power, repairing things, identifying illness) improves the improvisation that other needs' curves already assume. The model has no way to credit it; not claimed."}
+      ],
+      "evidence": [
+        {"claim": "Sentinel (19 November 2026): 'Perhaps keep offline copies of wikipedia or other' references, 'or even useful physical books'.", "source": "https://blog.sentinel-team.org/p/consider-cyberarmageddon", "year": 2026, "verified": true},
+        {"claim": "Kiwix's English Wikipedia files: with pictures 119 GB (August 2026), without pictures 49 GB (June 2026), 'mini' 13 GB (September 2026); medicine collection 1.7 GB with pictures (October 2026).", "source": "https://download.kiwix.org/zim/wikipedia/", "year": 2026, "verified": true},
+        {"claim": "Kiwix Reader is 'completely free' on Windows, macOS, Linux, Android and iOS; 'only our Hotspot packages and custom services come at a price'.", "source": "https://get.kiwix.org/en/solutions/applications/kiwix-reader/", "year": 2026, "verified": true},
+        {"claim": "No study measures any effect of owning an offline encyclopedia or reference books in a disaster; the step 2 longlist cites recommendations only (The Prepared, CDC).", "source": "https://theprepared.com/prepping-basics/guides/emergency-preparedness-checklist-prepping-beginners/", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Distinct from reference-books (plans-skills-security.json), a paper first-aid manual and lay medical handbook kept with the first-aid kit: this entry is mostly digital, general rather than medical, and needs a charged device; its paper books are practical, not medical."
+    }
+  ],
+  "excluded": [
+    {"what": "Network-attached storage or a second always-connected drive", "reason": "Reachable by ransomware on the same network and useless without power; the existing data-backup item already covers an automatic local copy."},
+    {"what": "Archival optical discs (M-DISC)", "reason": "Durable but slow to write and to read, and most new laptops have no drive; a refreshed portable drive does the same job for a household."},
+    {"what": "A shielded (Faraday) bag for the spare laptop", "reason": "Matters only for EMP in nuclearNear and gridLong; see faraday-bag in comms.json."},
+    {"what": "Kiwix Hotspot or other preloaded offline servers", "reason": "Serve many users at once (schools, clinics); a household gets the same content free on devices it owns."},
+    {"what": "Satellite internet terminal", "reason": "Restores the network rather than offline access; an information and comms item, outside this assignment."}
+  ],
+  "blockedSources": [
+    "bhphotovideo.com, newegg.com, microcenter.com, backmarket.com, adorama.com, dellrefurbished.com, lenovo.com, bookshop.org (HTTP 403); amazon.com (503); walmart.com (bot check); bestbuy.com product pages (time out): would have given more laptop, drive and book prices. Best Buy snippets show a Lenovo IdeaPad Slim 3i at $249.99 and an Acer Chromebook 311 at $159, unverified.",
+    "westerndigital.com, sandisk.com and seagate.com: no price shown or product no longer stocked. Search snippets showing 2 TB drives at $86-97 and 512 GB cards at $27-53 look stale against the pages read.",
+    "https://guidebooks.google.com/online-security/account-recovery/learn-about-account-recovery : empty page; a snippet says recovery delays run 'from 6 hours to 30 days', unverified."
+  ],
+  "openQuestions": [
+    "dataAccess needs a gap in data/config.mjs. Proposed: the comms window at a share of 0.4 (0.2-0.7); a new dataAccess window in aiFraud (pOccur 0.3, days 3, 14, 60) for account lockout and ransomware; and the displacement window at a share of 0.4, capped at about seven days per event.",
+    "Device loss in everyday life (drive failure, theft, breakage, home ransomware; about 5% of households a year, recalled) is not a hazard in the model. If it is added with a dataAccess window (days about 3, 10, 30), the everydayShare of offline-backup-computer should fall from 0.6 to about 0.2 so that the same value is not counted twice.",
+    "research/impartial/impartial.json gives workLoss.dataAccess 0.55 (0.25-0.85) of a day, for a knowledge worker whose work needs their own documents and logins. The hardship curve here ($4 a person-day at first) averages over members, of whom perhaps 5-20% of workers depend on household files or machines for work: 27% of paid days at home x about a fifth on the household's own machine. The two should agree: either scale the impartial figure by that share (to about 0.03-0.1), or raise this curve for a member who works on a personal computer (on the order of $50-150 a day).",
+    "offline-reference and reference-books substitute for each other on trauma; the engine combines reduce effects multiplicatively, which overstates owning both."
+  ]
+}
