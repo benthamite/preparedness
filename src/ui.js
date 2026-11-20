@@ -226,8 +226,8 @@ function render() {
     : '';
 
   const maxRatio = Math.max(1, ...r.entries.map((e) => (isFinite(e.ratio) ? e.ratio : 0)));
-  const barw = (x) => (x > 0 ? Math.max(2, Math.round(60 * Math.log10(1 + x) / Math.log10(1 + maxRatio))) : 0);
-  let html = `<table><thead><tr><th class="cb" title="Tick what you already have">Have</th><th class="r">#</th><th>What</th><th class="r">Upfront</th><th class="r">Cost<br>a year</th><th class="r">Hardship<br>averted a year</th><th class="r">Micromorts<br>averted a year</th><th class="r">Benefit ÷ cost</th><th class="r" title="Share of plausible parameter sets under which benefit exceeds cost">Chance<br>it pays</th><th>Mostly for</th></tr></thead><tbody>`;
+  const barw = (x) => (x > 0 ? Math.max(2, Math.round(36 * Math.log10(1 + x) / Math.log10(1 + maxRatio))) : 0);
+  let html = `<table><thead><tr><th class="cb" title="Tick what you already have">Have</th><th class="r">#</th><th>What</th><th class="r">Upfront</th><th class="r">Cost<br>a year</th><th class="r" title="Hardship averted a year">Hardship<br>averted</th><th class="r" title="Micromorts averted a year">Micro&shy;morts<br>averted</th><th class="r">Benefit<br>÷ cost</th><th class="r" title="Share of plausible parameter sets under which benefit exceeds cost">Chance<br>it pays</th><th class="for">Mostly for</th></tr></thead><tbody>`;
   r.entries.forEach((e, i) => {
     if (i === stop) {
       const why = within < cutoff ? 'Your budget ends here.' : 'Below this line, expected benefit is less than cost.';
@@ -239,7 +239,7 @@ function render() {
     const main = e.byHazard[0];
     const mainText = main && e.valueUsd > 0 && main.value > 0 ? `${esc(HAZARD_LABEL(main.id))} ${Math.round(100 * main.value / e.valueUsd)}%` : '';
     const s = sure && sure[i] ? `${Math.round(100 * sure[i].pAbove1)}%` : '…';
-    html += `<tr class="entry${i >= cutoff ? ' below' : ''}" data-key="${key}"><td class="cb"><input type="checkbox" data-own="${i}" title="I already have this"></td><td class="r">${i + 1}</td><td class="name" data-toggle="${key}">${entryName(e)}<div class="sub">${esc(ITEM[e.items[0].id].group || '')}</div></td><td class="r">${whole(e.upfrontUsd)}</td><td class="r">${money(e.annualCostUsd)}</td><td class="r">${money(e.hardshipUsd)}</td><td class="r">${num(e.micromorts, Math.abs(e.micromorts) >= 10 ? 0 : 2)}</td><td class="r"><span class="bar" style="width:${barw(e.ratio)}px"></span>${ratioText(e.ratio)}</td><td class="r">${s}</td><td>${mainText}</td></tr>`;
+    html += `<tr class="entry${i >= cutoff ? ' below' : ''}" data-key="${key}"><td class="cb"><input type="checkbox" data-own="${i}" title="I already have this"></td><td class="r">${i + 1}</td><td class="name" data-toggle="${key}">${entryName(e)}<div class="sub">${esc(ITEM[e.items[0].id].group || '')}</div></td><td class="r">${whole(e.upfrontUsd)}</td><td class="r">${money(e.annualCostUsd)}</td><td class="r">${money(e.hardshipUsd)}</td><td class="r">${num(e.micromorts, Math.abs(e.micromorts) >= 10 ? 0 : 2)}</td><td class="r"><span class="bar" style="width:${barw(e.ratio)}px"></span>${ratioText(e.ratio)}</td><td class="r">${s}</td><td class="for">${mainText}</td></tr>`;
     if (open[key]) html += `<tr class="detail"><td colspan="10">${detail(e)}</td></tr>`;
   });
   html += '</tbody></table>';
