@@ -3,7 +3,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { rank, robustness, cumulative, windowDays, drawTriple, meanTriple, resolveModel, normInv, STRATA, arrivalCdf, atConcern } from '../src/model.mjs';
+import { rank, robustness, cumulative, windowDays, drawTriple, meanTriple, resolveModel, normInv, STRATA, arrivalCdf, atConcern, valuePeople, annuity } from '../src/model.mjs';
 
 const flat = (v) => ({ lo: v, mid: v, hi: v });
 const fixed = (days) => ({ p50: days, p90: days, p99: days });
@@ -480,4 +480,113 @@ test('ranking on averages gives skewed quantities their expected value', () => {
   near(median, 60);
   near(mean, 60 * meanTriple(d.hazards.storm.probability.us) / 0.1);
   assert.ok(mean > 1.5 * median);
+});
+
+// ---------------------------------------------------------------------------
+// Members valued one by one
+// ---------------------------------------------------------------------------
+
+const adult = (id, extra = {}) => ({ id, age: 'adult', valuation: 'personal', ...extra });
+const ctx = (extra = {}) => ({
+  v: 10, timeValue: 20, rate: 0.04, life: null, costPerLife: 0, currentYear: 2026,
+  horizonYears: 5, aiOn: false, deathValue: 'lifeYears', hoursPerYear: 1800, counterfactual: 0.5, ...extra,
+});
+
+test('the impartial value of a micromort: the worked check', () => {
+  // Age 35, $100 an hour, 1,800 hours a year, half of it counterfactual, for
+  // 30 years at 4%: 90,000 x 17.292 = $1.556M, so about $1.6 per micromort.
+  const [p] = valuePeople([{ age: 'adult', valuation: 'impartial', hourValue: 100, hoursPerYear: 1800, counterfactual: 0.5, impactEndYear: 2056, flags: {} }], ctx());
+  near(annuity(0.04, 30), 17.29203, 1e-6);
+  near(p.v, 1e-6 * 90000 * annuity(0.04, 30));
+  assert.ok(p.v > 1.5 && p.v < 1.6);
+  // Its own wellbeing is priced at the cost of saving a life elsewhere: here
+  // $5,000, half a cent a micromort; and its hardship at 5,000 / 10M.
+  const [q] = valuePeople([{ age: 'adult', valuation: 'impartial', hourValue: 100, impactEndYear: 2056, flags: {} }], ctx({ costPerLife: 5000 }));
+  near(q.v, p.v + 0.005);
+  near(q.hw, 5000 / 10e6);
+  // A lost day is the average calendar day's work at the full hour value.
+  near(q.dv, 100 * 1800 / 365);
+  // Work ends with the AI horizon when a timeline is set: 5 years.
+  const [r] = valuePeople([{ age: 'adult', valuation: 'impartial', hourValue: 100, flags: {} }], ctx({ aiOn: true }));
+  near(r.v, 1e-6 * 90000 * annuity(0.04, 5));
+  assert.equal(r.impactEndYear, 2031);
+});
+
+test('the personal value of a micromort scales with income and remaining life-years', () => {
+  // Twice the local hour value, twice the value (income elasticity 1).
+  const [a, b] = valuePeople([{ age: 'adult', flags: {} }, { age: 'adult', hourValue: 40, flags: {} }], ctx());
+  near(a.v, 10);
+  near(b.v, 20);
+  near(a.hw, 1);
+  assert.equal(a.dv, 0);
+  // By remaining life-years: 10 left against 40 for the reference adult.
+  const life = { child: 70, adult: 40, age60to74: 18, age75plus: 10, reference: 40 };
+  const [c, d] = valuePeople([{ age: 'age75plus', flags: {} }, { age: 'child', flags: {} }], ctx({ life }));
+  near(c.v, 10 * annuity(0.04, 10) / annuity(0.04, 40));
+  near(d.v, 10 * annuity(0.04, 70) / annuity(0.04, 40));
+  // Or the same for everyone.
+  const [e] = valuePeople([{ age: 'age75plus', flags: {} }], ctx({ life, deathValue: 'equal' }));
+  near(e.v, 10);
+});
+
+test('each member is valued at their own figure in the ranking', () => {
+  // Person 2 earns twice the local wage: their micromorts are worth $20.
+  // Unprepared: 0.1 x (2 x 4 x $50 + 2 days x 10 x ($10 + $20)) = $100.
+  const r = run(fixture(), { people: [adult(1), adult(2, { hourValue: 40 })] });
+  near(r.harm.unprepared.usd, 40);
+  near(r.harm.unprepared.mm, 4);
+  near(r.entries[0].valueUsd, 0.1 * (2 * 2 * 50 + 2 * 10 * 30));
+  near(r.people[1].micromortValueUsd, 20);
+});
+
+test('a personal item is offered to each member and acts on its owner alone', () => {
+  const d = fixture();
+  d.channels.infection = {};
+  d.hazards.flu = {
+    probability: { us: 1 }, windows: {}, leave: noLeave, warningDays: 0, lateBuy: { staple: 0, specialty: 0 },
+    exposures: [{ channel: 'infection', micromortsPerPerson: 100 }],
+  };
+  d.items.push({
+    id: 'mask', perPerson: true, price: 10, fixedPrice: 30, lifeYears: 10, reliability: 1, lateBuyClass: 'none',
+    effects: [{ type: 'reduce', target: 'infection', hazards: ['flu'], fraction: 0.5 }],
+  });
+  const r = run(d, { people: [adult(1), adult(2, { hourValue: 40 })] });
+  const masks = r.entries.filter((e) => e.items[0].id === 'mask');
+  assert.equal(masks.length, 2);
+  const forWhom = Object.fromEntries(masks.map((e) => [e.items[0].person, e]));
+  // Half of 100 micromorts, at each owner's value.
+  near(forWhom['1'].micromorts, 50);
+  near(forWhom['1'].valueUsd, 500);
+  near(forWhom['2'].valueUsd, 1000);
+  // The $30 fixed price (say, a fit-check kit) is paid with the first copy only.
+  const first = masks[0], second = masks[1];
+  near(first.upfrontUsd, 40);
+  near(second.upfrontUsd, 10);
+  assert.equal(first.items[0].person, '2');
+});
+
+test('impartial members lose work on unmet days; their comfort counts little', () => {
+  const d = fixture();
+  d.needs.water.workLoss = 0.5;
+  d.parameters.costPerLifeSavedUsd = 0;
+  // An impartial member at $73 an hour and 3,650 hours a year: a day's work
+  // is $730; four unmet days cost 4 x 0.5 x $730 = $1,460, and their
+  // hardship, at a cost per life of nil, nothing. The personal member's
+  // hardship is 4 x $50.
+  const people = [adult(1, { valuation: 'impartial', hourValue: 73, hoursPerYear: 3650, impactEndYear: 2056 }), adult(2)];
+  const r = run(d, { people });
+  near(r.people[0].workDayUsd, 730);
+  near(r.harm.unprepared.usd, 0.1 * (4 * 0.5 * 730 + 4 * 50));
+});
+
+test('a country with figures of its own replaces the preset', () => {
+  const d = fixture();
+  d.countries = { XX: { values: { 'storm.probability': 0.3, priceIndex: 2 } } };
+  d.parameters.priceIndex = { us: 1 };
+  const base = run(d).entries[0];
+  const own = run(d, { country: 'XX' }).entries[0];
+  near(own.valueUsd, 3 * base.valueUsd);
+  near(own.upfrontUsd, 2 * base.upfrontUsd);
+  // A country not in the data changes nothing.
+  near(run(d, { country: 'YY' }).entries[0].valueUsd, base.valueUsd);
 });
