@@ -47,7 +47,7 @@ console.log('');
 console.log(['#', 'entry', 'upfront $', 'hours', 'cost $/y', 'hardship $/y', 'mm/y', 'ratio', robust ? 'P(>1)' : '', 'main hazard', 'break-even'].join('\t'));
 r.entries.forEach((e, i) => {
   if (top && i >= top) return;
-  const label = e.items.map((x) => names[x.id] + (x.label ? ` (${x.label})` : '')).join(' + ');
+  const label = e.items.map((x) => names[x.id] + (x.label ? ` (${x.label})` : '') + (x.person ? ` [${x.person}]` : '')).join(' + ');
   const h = e.byHazard[0];
   const share = h && e.valueUsd > 0 ? `${h.id} ${Math.round(100 * h.value / e.valueUsd)}%` : '';
   const be = e.breakEven ? `${(100 * e.breakEven.probability).toPrecision(2)}% vs ${(100 * e.breakEven.current).toPrecision(2)}%` : '';
