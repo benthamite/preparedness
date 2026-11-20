@@ -16,7 +16,9 @@ details.panel summary { cursor: pointer; font-size: 12px; text-transform: upperc
                         color: #666; font-weight: 700; }
 details.panel[open] summary { margin-bottom: 8px; }
 .hazards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2px 20px; }
-.hazards .field input { width: 84px; }
+.hazards .field input { width: 64px; }
+/* A number and its unit stay on one line; the label wraps instead. */
+.field > span { white-space: nowrap; flex-shrink: 0; }
 .hazards .off label { color: #aaa; }
 .summary { margin: 12px 0; font-size: 14px; }
 .summary b { font-weight: 600; }
