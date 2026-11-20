@@ -440,7 +440,8 @@ export function buildWorld(m, settings) {
   const useAiTimeline = aiOn(m.ai, settings);
   valuePeople(people, {
     v, timeValue, rate,
-    life: m.lifeExpectancy || null,
+    // Remaining life expectancy by age band, where the data give it.
+    life: m.lifeExpectancy && m.lifeExpectancy.reference > 0 ? m.lifeExpectancy : null,
     costPerLife: pick('costPerLifeSavedUsd') || 0,
     currentYear: m.currentYear || 2026,
     horizonYears: Math.max(1, Math.round((settings.ai && settings.ai.horizonYears) || (m.ai && m.ai.horizonYears) || 5)),

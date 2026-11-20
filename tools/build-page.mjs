@@ -3,7 +3,7 @@
 // HTML file, which the note embeds in an iframe.
 // Usage: node tools/build-page.mjs [--data FILE] [--out FILE]
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -29,6 +29,13 @@ function slim(node) {
 }
 
 const data = slim(JSON.parse(readFileSync(dataFile, 'utf8')));
+// The city list: name, region, country, district hazard ratings, and the
+// coldest and warmest months' mean temperatures. Latitude, longitude and
+// population are not needed by the page.
+const cityFile = join(root, 'data', 'cities.json');
+if (existsSync(cityFile) && data.places) {
+  data.places.cities = JSON.parse(readFileSync(cityFile, 'utf8')).cities.map((c) => [c[0], c[1], c[2], c[6], c[7], c[8]]);
+}
 const engine = readFileSync(join(root, 'src', 'model.mjs'), 'utf8').replace(/^export /gm, '');
 const ui = readFileSync(join(root, 'src', 'ui.js'), 'utf8');
 const css = readFileSync(join(root, 'src', 'ui.css'), 'utf8');

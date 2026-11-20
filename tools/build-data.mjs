@@ -12,6 +12,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import config from '../data/config.mjs';
+import { COUNTRIES, COUNTRY_FIELDS, presetFor } from '../data/countries.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dir = join(root, 'research', 'step3');
@@ -268,6 +269,9 @@ for (const spec of config.items) {
     confidence: spec.confidence || src.confidence || 'guess',
     scalesWith: spec.scalesWith || src.scalesWith || 'household',
     scalesWho: spec.scalesWho,
+    // Offered once per member, acting on that member alone.
+    perPerson: spec.perPerson,
+    perPersonWho: spec.perPersonWho,
     ladder: spec.ladder !== undefined ? spec.ladder : src.ladder,
     price,
     fixedPrice: spec.fixedPrice,
@@ -327,9 +331,74 @@ if (config.ai && Object.keys(AI.rates).length) {
   }
 }
 
+// ---- the impartial valuation (research/impartial/) ----
+const impFile = join(root, 'research', 'impartial', 'impartial.json');
+const IMP = {};
+if (existsSync(impFile)) for (const p of JSON.parse(readFileSync(impFile, 'utf8')).parameters) IMP[p.id] = p.value;
+else warn('research/impartial/impartial.json missing: no lost work, life-years or impartial values');
+const imp = (id) => { if (!IMP[id]) { if (existsSync(impFile)) warn(`impartial parameter ${id} not found`); return undefined; } return T(IMP[id]); };
+// Work lost per unmet day of each need, and per event through a channel.
+for (const [id, n] of Object.entries(needs)) {
+  const w = (config.impartial.workLoss || {})[id] !== undefined ? config.impartial.workLoss[id] : imp(`workLoss.${id}`);
+  if (w !== undefined) n.workLoss = { ...w, max: 1, lo: Math.min(1, w.lo), mid: Math.min(1, w.mid), hi: Math.min(1, w.hi) };
+}
+for (const [hz, channel] of Object.entries(config.impartial.workDays)) {
+  const d = imp(`workDays.${hz}`);
+  if (d !== undefined && hazards[hz]) hazards[hz].workDays = { channel, days: d };
+}
+const lifeExpectancy = {};
+for (const band of ['child', 'adult', 'age60to74', 'age75plus', 'reference']) {
+  const x = imp(`lifeExpectancy.${band}`);
+  if (x !== undefined) lifeExpectancy[band] = x;
+}
+if (imp('costPerLifeSavedUsd')) parameters.costPerLifeSavedUsd = imp('costPerLifeSavedUsd');
+if (imp('defaults.hoursPerYear')) parameters.hoursPerYear = imp('defaults.hoursPerYear');
+parameters.counterfactualShare = config.impartial.counterfactualShare;
+
+// ---- countries (research/countries/) ----
+// Each listed country gets the figures of every family researched; the
+// United States is the preset itself, and so is the city of Buenos Aires.
+const countryDir = join(root, 'research', 'countries');
+const countries = {};
+for (const [family, fields] of Object.entries(COUNTRY_FIELDS)) {
+  const f = join(countryDir, `${family}.json`);
+  if (!existsSync(f)) { warn(`country research ${family} missing`); continue; }
+  const d = JSON.parse(readFileSync(f, 'utf8'));
+  for (const c of d.countries) {
+    const listed = COUNTRIES.find((x) => x.iso2 === c.iso2);
+    if (!listed) { warn(`country ${c.iso2} in ${family} is not listed`); continue; }
+    if (config.places.presetCountries.includes(c.iso2)) continue;
+    const e = (countries[c.iso2] ||= { name: listed.name, preset: listed.preset, families: [], values: {} });
+    for (const field of fields) {
+      const q = (config.places.adjust[c.iso2] || {})[field] || c.values[field];
+      if (!q) { warn(`country ${c.iso2}: ${field} missing`); continue; }
+      e.values[field] = T(q, /forecast|pessimistic|probability/.test(field) ? { max: 1 } : {});
+    }
+    e.families.push(family);
+  }
+}
+// Every country the city list names, with its preset.
+const cityFile = join(root, 'data', 'cities.json');
+const places = { hazardOrder: [], rules: config.places.cityRules, countries: {} };
+if (existsSync(cityFile)) {
+  const C = JSON.parse(readFileSync(cityFile, 'utf8'));
+  places.hazardOrder = C.hazardOrder;
+  places.attribution = C.attribution;
+  for (const [iso2, [name, continent]] of Object.entries(C.countries)) {
+    const own = countries[iso2];
+    places.countries[iso2] = {
+      name, preset: presetFor(iso2, continent),
+      ...(own ? { researched: true, families: own.families } : {}),
+      ...(config.places.presetCities[iso2] ? { presetCities: config.places.presetCities[iso2] } : {}),
+    };
+  }
+} else warn('data/cities.json missing: the page will have no city box');
+
 const model = {
   version: config.version,
+  currentYear: config.currentYear,
   ai,
+  countries, places, lifeExpectancy,
   locations: config.locations,
   outlooks: config.outlooks,
   defaults: config.defaults,

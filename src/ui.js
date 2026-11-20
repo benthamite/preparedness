@@ -1,14 +1,32 @@
 // The page. Assumes the engine (rank, robustness, defaultSettings) and DATA
 // are in scope: tools/build-page.mjs puts them in the same script.
 
-const STORE = 'preparedness-settings-v2';
+const STORE = 'preparedness-settings-v3';
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
+// Settings from before members were listed one by one carry counts; they
+// become a list of members. Fields added since get their default values.
+function migrate(old) {
+  const s = { ...defaultSettings(DATA), ...old };
+  if (!Array.isArray(old.people) && old.household) {
+    const h = old.household;
+    const people = [];
+    let id = 0;
+    const add = (age, n) => { for (let i = 0; i < (n || 0); i++) people.push({ id: ++id, age, valuation: 'personal' }); };
+    add('age75plus', h.age75plus); add('age60to74', h.age60to74); add('adult', h.adults); add('child', h.children);
+    const mark = (flag, n) => { for (let i = 0; i < Math.min(people.length, n || 0); i++) people[i][flag] = true; };
+    mark('powerDependent', h.powerDependent); mark('criticalDrug', h.criticalDrug); mark('onMedication', Math.max(h.onMedication || 0, h.criticalDrug || 0));
+    for (let i = 0, j = people.length - 1; i < (h.infants || 0) && j >= 0 && people[j].age === 'child'; i++, j--) people[j].infant = true;
+    if (people.length) s.people = people;
+    s.household = { pets: h.pets || 0 };
+  }
+  return s;
+}
 let settings = defaultSettings(DATA);
 try {
   const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
-  if (saved && saved.version === DATA.version) settings = saved.settings;
+  if (saved && saved.version === DATA.version) settings = migrate(saved.settings);
 } catch (e) { /* storage unavailable: start from the defaults */ }
 
 // A shared link carries its settings after "#list=" in the address of the
@@ -33,7 +51,7 @@ try {
     const shared = decodeSettings(hash.slice(at + LINK_KEY.length));
     // Settings from an older version of the model are merged onto today's
     // defaults, so fields it added get their default values.
-    settings = { ...defaultSettings(DATA), ...shared.settings };
+    settings = migrate(shared.settings);
   }
 } catch (e) { /* a damaged link: keep the saved or default settings */ }
 
@@ -50,6 +68,8 @@ let result = null;
 let settingsTouched = false;
 let sure = null;
 let open = {};
+let showAll = false;
+const SHORT_LIST = 20;
 let timer = null;
 let job = 0;
 
@@ -75,16 +95,12 @@ const CUSTOM_YEARS = [2028, 2030, 2035];
 
 // ---- controls ----
 
-const HOUSEHOLD = [
-  ['adults', 'Adults aged 15–59'],
-  ['children', 'Children under 15'],
-  ['age60to74', 'People aged 60–74'],
-  ['age75plus', 'People aged 75 or over'],
-  ['onMedication', 'People on daily prescription medicine'],
-  ['criticalDrug', '…whose medicine is dangerous to miss'],
-  ['powerDependent', 'People who depend on a powered medical device'],
-  ['infants', 'Infants (counted among the children)'],
-  ['pets', 'Pets'],
+const AGE_OPTIONS = [['adult', '15–59'], ['child', 'under 15'], ['age60to74', '60–74'], ['age75plus', '75 or over']];
+const PERSON_FLAGS = [
+  ['onMedication', 'takes a daily prescription drug'],
+  ['criticalDrug', '…that is dangerous to miss'],
+  ['powerDependent', 'depends on a powered medical device'],
+  ['infant', 'is an infant'],
 ];
 const TICKS = [
   ['coldWinters', 'Cold winters'],
@@ -95,6 +111,113 @@ const TICKS = [
   ['flood', 'Flood zone'],
 ];
 const HOME = ['cooking', 'heating', 'airConditioning', 'pumpedWater', 'car'];
+const PLACES = DATA.places || { countries: {}, cities: [], hazardOrder: [] };
+const CURRENT_YEAR = DATA.currentYear || 2026;
+const FAMILY_TEXT = {
+  grid: 'power cuts', banking: 'bank and currency crises', violence: 'crime and unrest', fire: 'fire and carbon monoxide',
+  prices: 'prices and incomes', nuclear: 'nuclear war',
+};
+
+const personName = (p, i) => (p.name && p.name.trim()) || `person ${i + 1}`;
+const nextId = () => 1 + Math.max(0, ...settings.people.map((p) => Number(p.id) || 0));
+
+// ---- the city box ----
+// Cities are matched on their name with accents removed, largest first.
+const fold = (x) => String(x).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+let folded = null;
+function cityMatches(q) {
+  const f = fold(q.trim());
+  if (!f) return [];
+  folded ||= PLACES.cities.map((c) => fold(c[0]));
+  const out = [];
+  for (let i = 0; i < folded.length && out.length < 8; i++) if (folded[i].startsWith(f)) out.push(i);
+  if (out.length < 8) {
+    const word = ' ' + f;
+    for (let i = 0; i < folded.length && out.length < 8; i++) if (!out.includes(i) && folded[i].includes(word)) out.push(i);
+  }
+  return out;
+}
+const countryName = (iso2) => (PLACES.countries[iso2] && PLACES.countries[iso2].name) || iso2;
+const cityLabel = (c) => [c[0], c[1], countryName(c[2])].filter((x, i) => x && (i !== 1 || x !== c[0])).join(', ');
+
+// Local hazards from a city's district ratings and climate (data/config.mjs,
+// `cityRules`, says how).
+function ticksFor(c) {
+  const R = PLACES.rules;
+  // c: [name, region, country, ratings, coldest month °C, warmest month °C]
+  const level = (code) => c[3][PLACES.hazardOrder.indexOf(code)] || 'N';
+  const any = (codes, levels) => codes.some((code) => levels.includes(level(code)));
+  return {
+    hurricane: any(['CY'], R.hurricane),
+    earthquake: any(['EQ'], R.earthquake),
+    wildfire: any(['WF'], R.wildfire),
+    flood: any(['FL', 'CF'], R.flood),
+    coldWinters: c[4] !== null && c[4] !== undefined ? c[4] <= R.coldWintersMaxC : false,
+    hotSummers: any(['EH'], R.hotSummersHeat) || (c[5] !== null && c[5] !== undefined && c[5] >= R.hotSummersMinC),
+  };
+}
+
+function chooseCity(i) {
+  const c = PLACES.cities[i];
+  const info = PLACES.countries[c[2]] || {};
+  settings.city = { name: c[0], admin1: c[1], iso2: c[2], label: cityLabel(c) };
+  settings.location = info.preset || 'buenosAires';
+  // A country with figures of its own; Buenos Aires itself is the preset.
+  settings.country = info.researched && !(info.presetCities || []).includes(c[0]) ? c[2] : null;
+  const loc = DATA.locations[settings.location];
+  for (const k of HOME) if (loc.home && loc.home[k] !== undefined) settings[k] = loc.home[k];
+  settings.ticks = ticksFor(c);
+  settings.cityTicks = { ...settings.ticks };
+  settings.probabilities = {};
+}
+
+function placeNote() {
+  const s = settings;
+  const preset = DATA.locations[s.location] ? DATA.locations[s.location].label : s.location;
+  if (!s.city) return `No city chosen: the figures are those for the ${preset} preset.`;
+  const iso = s.city.iso2;
+  const info = PLACES.countries[iso] || {};
+  if (s.country) {
+    return `${esc(countryName(iso))} has figures of its own for ${(info.families || []).map((f) => FAMILY_TEXT[f]).join(', ')}; everything else comes from the ${esc(preset)} preset.`;
+  }
+  if (info.presetCities && info.presetCities.includes(s.city.name)) return `${esc(s.city.name)} is one of the model's three presets.`;
+  if (iso === 'US') return 'The United States is one of the model\'s three presets.';
+  return `<b>${esc(countryName(iso))} has no figures of its own.</b> The model uses those of the ${esc(preset)} preset, the closest of its three in income and region.`;
+}
+
+function peoplePanel() {
+  const s = settings;
+  const rows = s.people.map((p, i) => {
+    const child = p.age === 'child';
+    const imp = p.valuation === 'impartial' && !child;
+    const flags = PERSON_FLAGS.filter(([k]) => k !== 'infant' || child)
+      .map(([k, label]) => `<label class="flag"><input type="checkbox" data-p="${i}" data-f="${k}"${p[k] ? ' checked' : ''}> ${label}</label>`).join('');
+    const out = result && result.people && result.people[i];
+    const valueText = out ? `${money(out.micromortValueUsd)} per micromort${out.impartial && out.workDayUsd > 0 ? `; a lost work day ${whole(out.workDayUsd)}` : ''}` : '';
+    return `<div class="person">
+      <div class="prow">
+        <input type="text" class="pname" data-p="${i}" data-f="name" value="${esc(p.name || '')}" placeholder="person ${i + 1}" aria-label="Name">
+        <select data-p="${i}" data-f="age" aria-label="Age">${AGE_OPTIONS.map(([v, t]) => `<option value="${v}"${p.age === v ? ' selected' : ''}>${t}</option>`).join('')}</select>
+        <select data-p="${i}" data-f="valuation" aria-label="Valued by"${child ? ' disabled title="Children are valued by the personal standard"' : ''}><option value="personal"${imp ? '' : ' selected'}>Personal</option><option value="impartial"${imp ? ' selected' : ''}>Impartial</option></select>
+        <label class="hour">$/hour <input type="number" min="0" step="1" data-p="${i}" data-f="hourValue" value="${p.hourValue ?? ''}" placeholder="${result ? Number(result.timeValueUsdPerHour.toPrecision(3)) : ''}"></label>
+        ${s.people.length > 1 ? `<button type="button" class="remove" data-remove="${i}" title="Remove ${esc(personName(p, i))}">×</button>` : ''}
+      </div>
+      <div class="pflags">${flags}</div>
+      ${imp ? `<div class="pimp">
+        <label>Hours of work a year <input type="number" min="0" step="50" data-p="${i}" data-f="hoursPerYear" value="${p.hoursPerYear ?? ''}" placeholder="${DATA.defaults.hoursPerYear || 1800}"></label>
+        <label>Counterfactual share <input type="number" min="0" max="100" step="5" data-p="${i}" data-f="counterfactual" value="${p.counterfactual !== undefined && p.counterfactual !== null ? Math.round(100 * p.counterfactual) : ''}" placeholder="50"> %</label>
+        <label>Impact ends in <input type="number" min="${CURRENT_YEAR}" max="2100" step="1" data-p="${i}" data-f="impactEndYear" value="${p.impactEndYear ?? ''}" placeholder="${out && out.impactEndYear ? out.impactEndYear : ''}"></label>
+      </div>` : ''}
+      <div class="meta pv">${valueText}</div>
+    </div>`;
+  }).join('');
+  return `<div class="panel people"><h3>Who lives here</h3>
+    ${rows}
+    <div class="field"><button type="button" id="add-person">Add a person</button><span></span></div>
+    <div class="field"><label for="hh-pets">Pets</label><input type="number" id="hh-pets" min="0" step="1" value="${(s.household && s.household.pets) || 0}"></div>
+    <div class="meta">Personal: a member's death and hardship are valued at what they would pay to avoid them. Impartial: at what their work would achieve for others, so lost work days count and their own comfort counts little.</div>
+  </div>`;
+}
 
 function controls() {
   const sel = (id, label, options, value) => `<div class="field"><label for="${id}">${label}</label><select id="${id}">${options.map(([v, t]) => `<option value="${v}"${String(v) === String(value) ? ' selected' : ''}>${esc(t)}</option>`).join('')}</select></div>`;
@@ -116,13 +239,13 @@ function controls() {
       ${numf('ai-horizon', 'Years you are planning for', ai.horizonYears || AI.horizonYears, 1, 30)}
       <div class="meta" id="ai-note"></div>
     </div>`;
+  const tickDiffers = s.cityTicks && TICKS.some(([k]) => !!s.ticks[k] !== !!s.cityTicks[k]);
   $('controls').innerHTML = `
   <div class="panels">
-    <div class="panel"><h3>Household</h3>
-      ${HOUSEHOLD.map(([k, label]) => numf(`hh-${k}`, label, s.household[k] || 0)).join('')}
-    </div>
+    ${peoplePanel()}
     <div class="panel"><h3>Home</h3>
-      ${sel('location', 'Location', Object.entries(DATA.locations).map(([k, v]) => [k, v.label]), s.location)}
+      <div class="field city"><label for="city">City</label><span class="citybox"><input type="text" id="city" autocomplete="off" spellcheck="false" placeholder="Type your city" value="${esc(s.city ? s.city.label : '')}"><span id="city-list" class="citylist" role="listbox"></span></span></div>
+      <div class="meta" id="place-note">${placeNote()}</div>
       ${sel('dwelling', 'Dwelling', [['apartment', 'Apartment'], ['house', 'House']], s.dwelling)}
       ${sel('cooking', 'Cooker', [['electric', 'Electric'], ['gas', 'Gas']], s.cooking)}
       ${sel('heating', 'Heating', [['electric', 'Electric, or needs electricity'], ['gas', 'Gas'], ['independent', 'Works without utilities']], s.heating)}
@@ -130,15 +253,17 @@ function controls() {
       ${chk('pumpedWater', 'Tap water needs an electric pump', s.pumpedWater)}
       ${chk('car', 'Car', s.car)}
       ${sel('pantryDays', 'Days you could eat from your kitchen now', [[3, '3'], [7, '7'], [14, '14'], [30, '30']], s.pantryDays ?? 14)}
-      <h3 style="margin-top:10px">Where you live</h3>
-      ${TICKS.map(([k, label]) => chk(`tick-${k}`, label, s.ticks[k], absent(k))).join('')}
+      <details id="ticks-panel"${s.showTicks ? ' open' : ''}><summary>Local hazards${s.city ? '' : ' (preset)'}${tickDiffers ? ', changed by you' : ''}</summary>
+        ${TICKS.map(([k, label]) => chk(`tick-${k}`, label, s.ticks[k], absent(k))).join('')}
+        <div class="meta">${s.city ? 'Filled in from the World Bank\'s ThinkHazard ratings for the district and from climate normals. They describe the district, not your street: untick a flood zone if your home is well above the flood plain.' : 'Choose a city to fill these in.'}</div>
+      </details>
     </div>
     ${aiPanel}
     <div class="panel"><h3>Values</h3>
       ${sel('rankOn', 'Rank on', [['median', 'Middle values'], ['mean', 'Averages (expected value)']], s.rankOn || 'median')}
       ${sel('outlook', 'Other risks', Object.entries(DATA.outlooks).map(([k, v]) => [k, v.label]), s.outlook)}
-      ${numf('p-micromort', 'A one-in-a-million risk of death is worth ($)', p.micromortValueUsd ?? '', 0.5)}
-      ${numf('p-time', 'An hour of your time is worth ($)', p.timeValueUsdPerHour ?? '', 1)}
+      ${sel('deathValue', 'Value each death by', [['lifeYears', 'Remaining life-years'], ['equal', 'Equal for everyone']], s.deathValue || 'lifeYears')}
+      ${numf('p-micromort', 'A one-in-a-million risk of death to an adult on the local wage is worth ($)', p.micromortValueUsd ?? '', 0.5)}
       ${numf('budget', 'Budget, upfront ($)', s.budget ?? '', 50)}
       <div class="field"><span></span><button type="button" id="reset">Reset</button></div>
     </div>
@@ -162,26 +287,39 @@ function hazardInputs() {
 
 function readControls() {
   const s = settings;
-  for (const [k] of HOUSEHOLD) s.household[k] = Math.max(0, Math.floor(Number($(`hh-${k}`).value) || 0));
-  if (s.household.adults + s.household.children + s.household.age60to74 + s.household.age75plus === 0) s.household.adults = 1;
-  for (const k of ['location', 'dwelling', 'cooking', 'heating', 'outlook', 'rankOn']) s[k] = $(k).value;
+  const num0 = (x) => (x === '' || x === undefined ? undefined : Math.max(0, Number(x)));
+  document.querySelectorAll('#controls [data-p][data-f]').forEach((el) => {
+    const p = s.people[Number(el.dataset.p)];
+    if (!p) return;
+    const f = el.dataset.f;
+    if (el.type === 'checkbox') p[f] = el.checked;
+    else if (f === 'name' || f === 'age' || f === 'valuation') p[f] = el.value;
+    else if (f === 'counterfactual') p[f] = el.value === '' ? undefined : Math.min(1, Math.max(0, Number(el.value) / 100));
+    else p[f] = num0(el.value);
+  });
+  for (const p of s.people) {
+    if (p.age !== 'child') p.infant = false;
+    if (p.age === 'child') p.valuation = 'personal';
+    if (p.criticalDrug) p.onMedication = true;
+  }
+  s.household = { ...(s.household || {}), pets: Math.max(0, Math.floor(Number($('hh-pets').value) || 0)) };
+  for (const k of ['dwelling', 'cooking', 'heating', 'outlook', 'rankOn', 'deathValue']) s[k] = $(k).value;
   for (const k of ['airConditioning', 'pumpedWater', 'car']) s[k] = $(k).checked;
   s.pantryDays = Number($('pantryDays').value);
   for (const [k] of TICKS) s.ticks[k] = $(`tick-${k}`).checked && !$(`tick-${k}`).disabled;
   s.parameters = s.parameters || {};
-  const opt = (id) => ($(id).value === '' ? undefined : Math.max(0, Number($(id).value)));
-  s.parameters.micromortValueUsd = opt('p-micromort');
-  s.parameters.timeValueUsdPerHour = opt('p-time');
-  s.budget = opt('budget');
+  s.parameters.micromortValueUsd = num0($('p-micromort').value);
+  s.budget = num0($('budget').value);
   s.showHazards = $('haz-panel').open;
+  s.showTicks = $('ticks-panel').open;
   if (AI) {
-    const points = CUSTOM_YEARS.map((y) => ({ year: y, p: opt(`ai-p-${y}`) })).filter((c) => c.p !== undefined).map((c) => ({ year: c.year, p: Math.min(1, c.p / 100) }));
+    const points = CUSTOM_YEARS.map((y) => ({ year: y, p: num0($(`ai-p-${y}`).value) })).filter((c) => c.p !== undefined).map((c) => ({ year: c.year, p: Math.min(1, c.p / 100) }));
     // Later years cannot be less likely than earlier ones.
     for (let i = 1; i < points.length; i++) points[i].p = Math.max(points[i].p, points[i - 1].p);
     s.ai = {
       timeline: $('ai-timeline').value, custom: points,
       concern: Number($('ai-concern').value) / 100,
-      horizonYears: Math.max(1, Math.min(30, Math.round(opt('ai-horizon') || AI.horizonYears))),
+      horizonYears: Math.max(1, Math.min(30, Math.round(num0($('ai-horizon').value) || AI.horizonYears))),
     };
     if (s.ai.timeline === 'custom' && !points.length) s.ai.timeline = 'none';
     $('ai-custom').style.display = $('ai-timeline').value === 'custom' ? '' : 'none';
@@ -195,11 +333,31 @@ function save() {
 
 // ---- output ----
 
+// A member's copy of a personal item is named for its owner.
+function ownerName(key) {
+  const i = settings.people.findIndex((p, j) => String(p.id !== undefined ? p.id : j + 1) === String(key));
+  return i < 0 ? '' : personName(settings.people[i], i);
+}
 function entryName(e) {
   return e.items.map((x) => {
     const it = ITEM[x.id];
-    return esc(it.name) + (x.label ? ` <span class="sub">(${esc(x.label)})</span>` : '');
+    return esc(it.name) + (x.label ? ` <span class="sub">(${esc(x.label)})</span>` : '') + (x.person !== null && x.person !== undefined ? ` <span class="who">for ${esc(ownerName(x.person))}</span>` : '');
   }).join(' + ');
+}
+const plainName = (e) => e.items.map((x) => ITEM[x.id].name + (x.label ? ` (${x.label})` : '') + (x.person !== null && x.person !== undefined ? `, for ${ownerName(x.person)}` : '')).join(' + ');
+// An owned key is an item id, or an item id, "@" and a member's key.
+function ownedName(key, lv) {
+  const [id, who] = key.split('@');
+  const it = ITEM[id];
+  if (!it) return null;
+  return `${it.name}${it.ladder ? ` (${it.ladder[lv - 1].label})` : ''}${who ? `, for ${ownerName(who)}` : ''}`;
+}
+function peopleText() {
+  return settings.people.map((p, i) => {
+    const r = result.people && result.people[i];
+    const flags = PERSON_FLAGS.filter(([k]) => p[k]).map(([, l]) => l.replace(/^…/, 'drug '));
+    return `${personName(p, i)} (${AGE_OPTIONS.find(([v]) => v === p.age)[1]}, ${p.valuation === 'impartial' && p.age !== 'child' ? 'valued impartially' : 'valued personally'}${r ? `, ${money(r.micromortValueUsd)} per micromort` : ''}${flags.length ? `; ${flags.join(', ')}` : ''})`;
+  }).join('; ');
 }
 
 function detail(e) {
@@ -233,13 +391,11 @@ function detail(e) {
 function listText() {
   const r = result;
   const s = settings;
-  const h = s.household;
   let cutoff = r.entries.findIndex((e) => !(e.ratio > 1));
   if (cutoff < 0) cutoff = r.entries.length;
-  const people = HOUSEHOLD.filter(([k]) => h[k] > 0).map(([k, label]) => `${h[k]} × ${label.replace(/^…/, '')}`).join('; ');
   const ticks = TICKS.filter(([k]) => s.ticks && s.ticks[k]).map(([, label]) => label.toLowerCase()).join(', ');
   const timeline = !AI || !s.ai || s.ai.timeline === 'none' ? 'left out' : (AI.timelines && AI.timelines[s.ai.timeline] ? AI.timelines[s.ai.timeline].label : s.ai.timeline);
-  const name = (e) => e.items.map((x) => ITEM[x.id].name + (x.label ? ` (${x.label})` : '')).join(' + ');
+  const name = plainName;
   const line = (e, i) => {
     const specs = e.items.map((x) => ITEM[x.id].spec).filter(Boolean).join(' ');
     const main = e.byHazard[0];
@@ -251,8 +407,9 @@ function listText() {
     '',
     `From ${hostLocation().origin}${hostLocation().pathname}. Each entry is valued given the ones above it, so buy in order.`,
     '',
-    `- Household: ${people}`,
-    `- Location: ${DATA.locations[s.location] ? DATA.locations[s.location].label : s.location}; ${s.dwelling}${ticks ? `; ${ticks}` : ''}`,
+    `- Household: ${peopleText()}${s.household && s.household.pets ? `; ${s.household.pets} pet${s.household.pets > 1 ? 's' : ''}` : ''}`,
+    `- Location: ${s.city ? s.city.label : `${DATA.locations[s.location] ? DATA.locations[s.location].label : s.location} (preset)`}; ${s.dwelling}${ticks ? `; ${ticks}` : ''}`,
+    `- Deaths valued by ${s.deathValue === 'equal' ? 'equal values for everyone' : 'remaining life-years'}`,
     `- Artificial intelligence: ${timeline}`,
     '',
     `## Worth buying or doing (${cutoff} entries, ${whole(cutoff ? r.entries[cutoff - 1].cumulativeUpfrontUsd : 0)} upfront)`,
@@ -263,8 +420,8 @@ function listText() {
     '',
     ...r.entries.slice(cutoff, cutoff + 10).map((e, j) => line(e, cutoff + j)),
   ];
-  const owned = Object.entries(s.owned || {}).filter(([id, lv]) => lv > 0 && ITEM[id]);
-  if (owned.length) out.push('', '## Already have', '', ...owned.map(([id, lv]) => `- ${ITEM[id].name}${ITEM[id].ladder ? ` (${ITEM[id].ladder[lv - 1].label})` : ''}`));
+  const owned = Object.entries(s.owned || {}).filter(([id, lv]) => lv > 0 && ownedName(id, lv));
+  if (owned.length) out.push('', '## Already have', '', ...owned.map(([id, lv]) => `- ${ownedName(id, lv)}`));
   out.push('', `Settings link: ${shareLink()}`, '');
   return out.join('\n');
 }
@@ -304,7 +461,7 @@ function render() {
   const annual = picked.length ? picked[picked.length - 1].cumulativeAnnualUsd : 0;
 
   $('summary').innerHTML = picked.length
-    ? `The <b>${picked.length} entries above the line</b> cost <b>${whole(upfront)} upfront</b>, or ${whole(annual)} a year with upkeep and your time. Each year they avert, in expectation, <b>${whole(averted$)} of hardship and loss and ${num(avertedM, avertedM >= 10 ? 0 : 1)} micromorts</b>: worth ${whole(averted$ + v * avertedM)} in all, at ${money(v)} per micromort.`
+    ? `The <b>${picked.length} entries above the line</b> cost <b>${whole(upfront)} upfront</b>, or ${whole(annual)} a year with upkeep and your time. Each year they avert, in expectation, <b>${whole(averted$)} of hardship and loss and ${num(avertedM, avertedM >= 10 ? 0 : 1)} micromorts</b>: worth ${whole(picked.reduce((s, e) => s + e.valueUsd, 0))} in all, with deaths valued as shown for each member.`
     : 'Nothing on the list pays for itself at these settings.';
   if (AI) {
     const on = settings.ai && settings.ai.timeline && settings.ai.timeline !== 'none';
@@ -312,18 +469,18 @@ function render() {
       : `The probabilities below now reflect your timeline.${r.survival < 0.995 ? ` Every value is scaled by ${num(r.survival, 2)}: the chance, over your horizon, that no existential catastrophe has made preparation moot.` : ''}`;
   }
 
-  const owned = Object.entries(settings.owned || {}).filter(([id, lv]) => lv > 0 && ITEM[id]);
+  const owned = Object.entries(settings.owned || {}).filter(([id, lv]) => lv > 0 && ownedName(id, lv));
   $('owned').innerHTML = owned.length
-    ? 'Already have: ' + owned.map(([id, lv]) => {
-      const it = ITEM[id];
-      return `<span>${esc(it.name)}${it.ladder ? ` (${esc(it.ladder[lv - 1].label)})` : ''}<a data-unown="${id}" title="Remove">×</a></span>`;
-    }).join('')
+    ? 'Already have: ' + owned.map(([id, lv]) => `<span>${esc(ownedName(id, lv))}<a data-unown="${esc(id)}" title="Remove">×</a></span>`).join('')
     : '';
 
   const maxRatio = Math.max(1, ...r.entries.map((e) => (isFinite(e.ratio) ? e.ratio : 0)));
   const barw = (x) => (x > 0 ? Math.max(2, Math.round(36 * Math.log10(1 + x) / Math.log10(1 + maxRatio))) : 0);
   let html = `<table><thead><tr><th class="cb" title="Tick what you already have">Have</th><th class="r">#</th><th>What</th><th class="r">Upfront</th><th class="r">Cost<br>a year</th><th class="r" title="Hardship averted a year">Hardship<br>averted</th><th class="r" title="Micromorts averted a year">Micro&shy;morts<br>averted</th><th class="r">Benefit<br>÷ cost</th><th class="r" title="Share of plausible parameter sets under which benefit exceeds cost">Chance<br>it pays</th><th class="for">Mostly for</th></tr></thead><tbody>`;
+  // The list shows its first entries until the reader asks for all.
+  const shown = showAll ? r.entries.length : Math.max(SHORT_LIST, 0);
   r.entries.forEach((e, i) => {
+    if (i >= shown) return;
     if (i === stop) {
       const why = within < cutoff ? 'Your budget ends here.' : 'Below this line, expected benefit is less than cost.';
       html += `<tr class="rule"><td colspan="10">${why}</td></tr>`;
@@ -338,8 +495,24 @@ function render() {
     if (open[key]) html += `<tr class="detail"><td colspan="10">${detail(e)}</td></tr>`;
   });
   html += '</tbody></table>';
+  if (r.entries.length > SHORT_LIST) {
+    html += `<div class="more"><button type="button" id="show-all">${showAll ? `Show the first ${SHORT_LIST}` : `Show all ${r.entries.length} entries`}</button>${!showAll && stop > SHORT_LIST ? ` <span class="meta">${stop - SHORT_LIST} more above the line.</span>` : ''}</div>`;
+  }
   $('output').innerHTML = html;
   fit();
+}
+
+// What each member's death and lost work are worth, beside their row.
+function memberValues() {
+  document.querySelectorAll('#controls .person').forEach((row, i) => {
+    const out = result.people && result.people[i];
+    if (!out) return;
+    row.querySelector('.pv').textContent = `${money(out.micromortValueUsd)} per micromort${out.impartial && out.workDayUsd > 0 ? `; an average day of work ${whole(out.workDayUsd)}` : ''}`;
+    const hour = row.querySelector('[data-f="hourValue"]');
+    if (hour) hour.placeholder = Number(result.timeValueUsdPerHour.toPrecision(3));
+    const end = row.querySelector('[data-f="impactEndYear"]');
+    if (end && out.impactEndYear) end.placeholder = out.impactEndYear;
+  });
 }
 
 function fit() {
@@ -357,8 +530,8 @@ function compute() {
   sure = null;
   // Empty value fields show the figure the model is using.
   $('p-micromort').placeholder = Number(result.micromortValueUsd.toPrecision(3));
-  $('p-time').placeholder = Number(result.timeValueUsdPerHour.toPrecision(3));
   hazardInputs();
+  memberValues();
   render();
   save();
   // The uncertainty pass runs in slices so the page stays responsive.
@@ -388,48 +561,116 @@ function changed() {
 }
 
 $('controls').addEventListener('change', (ev) => {
-  const hz = ev.target.dataset && ev.target.dataset.hazard;
+  const t = ev.target;
+  if (t.id === 'city') return; // a city is chosen from its list
+  const hz = t.dataset && t.dataset.hazard;
   if (hz) {
     settings.probabilities = settings.probabilities || {};
-    if (ev.target.value === '') delete settings.probabilities[hz];
-    else settings.probabilities[hz] = Math.min(1, Math.max(0, Number(ev.target.value) / 100));
+    if (t.value === '') delete settings.probabilities[hz];
+    else settings.probabilities[hz] = Math.min(1, Math.max(0, Number(t.value) / 100));
     changed();
     return;
   }
-  if (['outlook', 'location', 'ai-timeline', 'ai-concern', 'ai-horizon'].includes(ev.target.id) || ev.target.id.startsWith('ai-p-')) {
+  if (['outlook', 'ai-timeline', 'ai-concern', 'ai-horizon'].includes(t.id) || t.id.startsWith('ai-p-')) {
     settings.probabilities = {};
   }
-  if (ev.target.id === 'location') {
-    // A new place brings its typical home; the reader then corrects it.
+  // A member's age or standard changes which fields they have.
+  if (t.dataset && (t.dataset.f === 'age' || t.dataset.f === 'valuation')) {
     readControls();
-    const loc = DATA.locations[settings.location];
-    for (const k of HOME) if (loc.home && loc.home[k] !== undefined) settings[k] = loc.home[k];
-    if (loc.ticks) settings.ticks = { ...loc.ticks };
     controls();
   }
   changed();
 });
-$('controls').addEventListener('input', (ev) => { if (ev.target.id === 'ai-concern') changed(); });
+$('controls').addEventListener('input', (ev) => {
+  if (ev.target.id === 'ai-concern') changed();
+  else if (ev.target.id === 'city') cityList(ev.target.value);
+});
+
+// The city box: suggestions as the reader types, chosen with a click or the
+// keyboard.
+let suggestions = [];
+let picked = -1;
+function cityList(q) {
+  suggestions = cityMatches(q);
+  picked = suggestions.length ? 0 : -1;
+  drawCityList();
+}
+function drawCityList() {
+  const box = $('city-list');
+  if (!box) return;
+  box.innerHTML = suggestions.map((i, j) => `<span role="option" data-city="${i}" class="${j === picked ? 'on' : ''}">${esc(cityLabel(PLACES.cities[i]))}</span>`).join('');
+  box.style.display = suggestions.length ? '' : 'none';
+  fit();
+}
+function takeCity(i) {
+  chooseCity(i);
+  suggestions = [];
+  settingsTouched = true;
+  controls();
+  changed();
+}
+$('controls').addEventListener('keydown', (ev) => {
+  if (ev.target.id !== 'city' || !suggestions.length) return;
+  if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+    picked = (picked + (ev.key === 'ArrowDown' ? 1 : suggestions.length - 1)) % suggestions.length;
+    drawCityList();
+    ev.preventDefault();
+  } else if (ev.key === 'Enter') {
+    if (picked >= 0) takeCity(suggestions[picked]);
+    ev.preventDefault();
+  } else if (ev.key === 'Escape') {
+    suggestions = [];
+    drawCityList();
+  }
+});
+$('controls').addEventListener('mousedown', (ev) => {
+  const c = ev.target.closest('[data-city]');
+  if (c) { ev.preventDefault(); takeCity(Number(c.dataset.city)); }
+});
+$('controls').addEventListener('focusout', (ev) => {
+  if (ev.target.id === 'city') setTimeout(() => { suggestions = []; drawCityList(); if ($('city') && settings.city) $('city').value = settings.city.label; }, 150);
+});
+
 $('controls').addEventListener('click', (ev) => {
-  if (ev.target.id === 'reset') {
+  const t = ev.target;
+  if (t.id === 'reset') {
     settings = defaultSettings(DATA);
     settingsTouched = true;
     open = {};
     controls();
     compute();
-  } else if (ev.target.id === 'copy-probs') {
+  } else if (t.id === 'add-person') {
+    readControls();
+    settings.people.push({ id: nextId(), age: 'adult', valuation: 'personal' });
+    controls();
+    changed();
+  } else if (t.dataset && t.dataset.remove !== undefined) {
+    readControls();
+    const gone = settings.people.splice(Number(t.dataset.remove), 1)[0];
+    // What the member owned goes with them.
+    const key = String(gone.id !== undefined ? gone.id : Number(t.dataset.remove) + 1);
+    for (const id of Object.keys(settings.owned || {})) if (id.split('@')[1] === key) delete settings.owned[id];
+    controls();
+    changed();
+  } else if (t.id === 'copy-probs') {
     // The probabilities in use, as text: percent a year by hazard.
     const text = JSON.stringify(Object.fromEntries(result.hazards.filter((h) => !DATA.hazards[h.id].everyday).map((h) => [h.id, Number((100 * h.p).toPrecision(3))])));
     const box = $('probs-text');
     box.value = text;
     box.style.display = '';
     box.select();
-    const done = () => { ev.target.textContent = 'Copied'; setTimeout(() => { ev.target.textContent = 'Copy these numbers'; }, 1500); };
+    const done = () => { t.textContent = 'Copied'; setTimeout(() => { t.textContent = 'Copy these numbers'; }, 1500); };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => {});
   }
 });
-$('controls').addEventListener('toggle', () => { settings.showHazards = $('haz-panel').open; save(); fit(); }, true);
+$('controls').addEventListener('toggle', () => {
+  settings.showHazards = $('haz-panel').open;
+  settings.showTicks = $('ticks-panel').open;
+  save();
+  fit();
+}, true);
 $('output').addEventListener('click', (ev) => {
+  if (ev.target.id === 'show-all') { showAll = !showAll; render(); return; }
   const t = ev.target.closest('[data-toggle]');
   if (t) { open[t.dataset.toggle] = !open[t.dataset.toggle]; render(); }
 });

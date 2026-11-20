@@ -8,11 +8,49 @@ import { items as items2, dropped as dropped2 } from './items-2.mjs';
 const none = { steps: [{ fromDay: 1, lo: 0, mid: 0, hi: 0 }], tag: 'derived', basis: 'None claimed.' };
 const flatCurve = (lo, mid, hi, basis) => ({ steps: [{ fromDay: 1, lo, mid, hi }], tag: 'guess', basis });
 
-const household = { adults: 2, children: 0, age60to74: 0, age75plus: 0, onMedication: 0, criticalDrug: 0, powerDependent: 0, infants: 0, pets: 0 };
+// The household: its members one by one, and its pets.
+const people = [{ id: 1, age: 'adult', valuation: 'personal' }, { id: 2, age: 'adult', valuation: 'personal' }];
+const household = { pets: 0 };
 const ticks = { coldWinters: false, hotSummers: false, hurricane: false, earthquake: false, wildfire: false, flood: false };
 
 export default {
-  version: '2026-11-19',
+  version: '2026-11-21',
+  currentYear: 2026,
+
+  // Places. Choosing a city sets the preset (data/countries.mjs), the
+  // country's own figures where it has them, and the local hazards.
+  places: {
+    // The United States preset is the United States; Buenos Aires is the
+    // preset for that city, and Argentina's own figures serve the rest of
+    // the country.
+    presetCountries: ['US'],
+    presetCities: { AR: ['Buenos Aires'] },
+    // Corrections to a country researcher's figure, with the reason.
+    adjust: {},
+    // How a city's district ratings (ThinkHazard: H high, M medium, L low,
+    // V very low) and climate normals become the local-hazard ticks. A tick
+    // stands for living in a zone with the hazard's preset probability.
+    cityRules: {
+      hurricane: ['H', 'M'], earthquake: ['H', 'M'], wildfire: ['H'], flood: ['H'],
+      hotSummersHeat: ['H'], coldWintersMaxC: 5, hotSummersMinC: 25,
+    },
+  },
+
+  // The impartial valuation (MODEL.md, section 7). Figures come from
+  // research/impartial/impartial.json unless given here.
+  impartial: {
+    // The share of a member's work that would not be done if they died. A
+    // default for the reader to change.
+    counterfactualShare: 0.5,
+    // Lost work per unmet day, by need, where set here instead.
+    workLoss: {},
+    // Hazards whose lost work runs through a channel rather than unmet
+    // needs, and the channel.
+    workDays: {
+      pandemicModerate: 'infection', pandemicSevere: 'infection', seasonalIllness: 'seasonalInfection',
+      houseFire: 'fire', violentCrime: 'violence', aiFraud: 'financialLoss',
+    },
+  },
 
   // What a typical urban apartment is like in each place. Choosing a place in
   // the page sets these; the reader then corrects them.
@@ -28,7 +66,12 @@ export default {
   defaults: {
     location: 'us', outlook: 'forecast', dwelling: 'apartment',
     cooking: 'electric', heating: 'electric', airConditioning: true, pumpedWater: false, car: true,
-    household, ticks: { ...ticks, coldWinters: true, hotSummers: true },
+    people, household, ticks: { ...ticks, coldWinters: true, hotSummers: true },
+    // No city chosen: the United States preset, with its own ticks.
+    city: null, country: null,
+    // Deaths are valued by remaining life-years unless the reader asks for
+    // equal values (the practice of US agencies).
+    deathValue: 'lifeYears',
     owned: {}, probabilities: {}, parameters: {},
     pantryDays: 14,
     // The list is ranked on the average of every input, which is what

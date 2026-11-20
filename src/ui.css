@@ -73,3 +73,33 @@ body.dark .field.off label { color: #666; }
 /* The last column wraps rather than widening the table. */
 .for { min-width: 110px; max-width: 160px; }
 .export { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 12px; }
+
+/* Members of the household. */
+.panel.people { grid-column: 1 / -1; }
+.person { border-bottom: 1px solid #eee; padding: 6px 0; }
+.prow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.prow .pname { width: 120px; }
+.prow .hour { font-size: 13px; white-space: nowrap; }
+.prow .hour input { width: 70px; }
+.prow .remove { margin-left: auto; padding: 2px 8px; font-weight: 400; }
+.pflags, .pimp { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 4px; font-size: 12px; }
+.pflags label { display: inline-flex; align-items: center; gap: 4px; }
+.pimp label { white-space: nowrap; }
+.pimp input { width: 70px; }
+.person .pv { margin: 2px 0 0; }
+.who { color: #888; font-size: 12px; }
+body.dark .person { border-bottom-color: #333; }
+/* The city box and its suggestions. */
+.field.city { position: relative; }
+.citybox { position: relative; flex: 1; display: flex; justify-content: flex-end; }
+.citybox input { width: 100%; max-width: 220px; }
+.citylist { position: absolute; top: 100%; right: 0; z-index: 5; min-width: 220px; max-width: 320px; background: #fff;
+            border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); display: none; }
+.citylist span { display: block; padding: 4px 8px; cursor: pointer; font-size: 13px; }
+.citylist span.on, .citylist span:hover { background: #e8f0fb; }
+body.dark .citylist { background: #2a2a2a; border-color: #555; }
+body.dark .citylist span.on, body.dark .citylist span:hover { background: #3b4a5e; }
+#ticks-panel { margin-top: 6px; }
+#ticks-panel summary { cursor: pointer; font-size: 13px; }
+.more { margin: 10px 0; }
+@media (max-width: 600px) { .prow .pname { width: 90px; } }

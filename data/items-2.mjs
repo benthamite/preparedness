@@ -103,7 +103,7 @@ export const items = [
   },
   {
     id: 'infant-formula', from: 'infant-formula', group: 'Food',
-    scalesWith: 'person', scalesWho: 'infant',
+    scalesWith: 'person', perPerson: true, perPersonWho: 'infant',
     ladder: [7, 14, 30].map((n) => days(n)),
     effects: () => [{ type: 'supply', need: 'infantFood', amount: 1 }],
   },
@@ -163,8 +163,8 @@ export const items = [
     // 10% for an N95 against 5% for an elastomeric; 0.75 is used here.
     // The fraction applies while the stock lasts: masks x 3 uses over the
     // roughly 90 days of outings before respirators can be bought again.
-    id: 'n95-respirators', from: 'n95-respirators', group: 'Air',
-    ladder: [5, 10, 20, 40].map((n) => ({ label: `${n} each`, units: n })),
+    id: 'n95-respirators', from: 'n95-respirators', group: 'Air', perPerson: true,
+    ladder: [5, 10, 20, 40].map((n) => ({ label: `${n} masks`, units: n })),
     effects: (s, T2) => {
       const cover = [0.17, 0.33, 0.67, 1];
       const worn = guess(0.4, 0.75, 0.9, 'Lawrence et al. 2006 fit factors, as re-read by the verifier; respiratory.json gives 0.6 net of partial wear.', 1);
@@ -180,7 +180,7 @@ export const items = [
     // The mask and filters are per person; the kit for checking the fit is
     // bought once. $45 is the researcher's price for a home-made kit; the
     // one kit whose price was read on a page costs $193.
-    id: 'elastomeric-respirator', from: 'elastomeric-respirator-p100', group: 'Air',
+    id: 'elastomeric-respirator', from: 'elastomeric-respirator-p100', group: 'Air', perPerson: true,
     price: guess(45, 57, 100, 'respiratory.json: mask $23.99 plus two pairs of filters at $16.69.'),
     fixedPrice: guess(18, 45, 193, 'respiratory.json: fit-check kit, home-made to bought.'),
     note: 'An N95 stock does much the same job. Whichever is bought first earns most of the value; the second adds a fraction of it.',
@@ -191,10 +191,10 @@ export const items = [
     ],
   },
   {
-    id: 'papr', from: 'papr', group: 'Air',
+    id: 'papr', from: 'papr', group: 'Air', perPerson: true,
     effects: (s, T2) => [...respirator(s, T2, 'pandemicSevere'), ...respirator(s, T2, 'pandemicModerate')],
   },
-  { id: 'goggles', from: 'sealed-goggles', group: 'Air', effects: (s, T2) => reduceAll(s, T2) },
+  { id: 'goggles', from: 'sealed-goggles', group: 'Air', perPerson: true, effects: (s, T2) => reduceAll(s, T2) },
   { id: 'hepa-purifier', from: 'hepa-purifier', group: 'Air', everydayUpkeep: true, effects: (s, T2) => reduceAll(s, T2) },
   { id: 'far-uvc', from: 'far-uvc-lamp', group: 'Air', effects: (s, T2) => reduceAll(s, T2) },
   {
@@ -224,7 +224,7 @@ export const items = [
     id: 'shelter-plan', from: 'fallout-shelter-plan', group: 'Radiation', lateBuyClass: 'staple',
     effects: (s, T2) => [{ type: 'capability', capability: 'shelterPlan' }, ...reduceAll(s, T2)],
   },
-  { id: 'potassium-iodide', from: 'potassium-iodide', group: 'Radiation', effects: (s, T2) => reduceAll(s, T2) },
+  { id: 'potassium-iodide', from: 'potassium-iodide', group: 'Radiation', perPerson: true, effects: (s, T2) => reduceAll(s, T2) },
   { id: 'radiation-meter', from: 'radiation-meter', group: 'Radiation', effects: (s, T2) => reduceAll(s, T2) },
   {
     id: 'seal-room-kit', from: 'seal-room-kit', group: 'Radiation',
@@ -238,7 +238,7 @@ export const items = [
 
   // ---- evacuation ----
   {
-    id: 'go-bag', from: 'go-bag', group: 'Evacuation', lateUptake: 0.5,
+    id: 'go-bag', from: 'go-bag', group: 'Evacuation', perPerson: true, lateUptake: 0.5,
     effects: (s, T2) => [
       { type: 'capability', capability: 'goBag' },
       ...reduce(s, T2, 'displacement', { on: 'hardship' }),
@@ -359,7 +359,7 @@ export const items = [
       },
     ],
   },
-  { id: 'helmet', from: 'protective-helmet', group: 'Protection', effects: (s, T2) => reduceAll(s, T2) },
+  { id: 'helmet', from: 'protective-helmet', group: 'Protection', perPerson: true, effects: (s, T2) => reduceAll(s, T2) },
   { id: 'door-reinforcement', from: 'door-reinforcement', group: 'Protection', ladder: null, noReview: true, effects: (s, T2) => reduceAll(s, T2) },
   {
     // A habit costs attention if not money: six minutes a year, the model's own figure.

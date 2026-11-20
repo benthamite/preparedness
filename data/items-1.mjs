@@ -60,8 +60,8 @@ export const items = [
   { id: 'hygiene-bundle', from: 'hygiene-bundle', group: 'Sanitation', effects: (s, T) => reduce(s, T, 'sanitation') },
 
   // ---- warmth ----
-  { id: 'sleeping-bags', from: 'sleeping-bag', group: 'Warmth', lateUptake: 0.05, effects: (s, T) => reduce(s, T, 'warmth') },
-  { id: 'warm-layers', from: 'warm-layers', group: 'Warmth', lateUptake: 0.05, effects: (s, T) => reduce(s, T, 'warmth') },
+  { id: 'sleeping-bags', from: 'sleeping-bag', group: 'Warmth', perPerson: true, lateUptake: 0.05, effects: (s, T) => reduce(s, T, 'warmth') },
+  { id: 'warm-layers', from: 'warm-layers', group: 'Warmth', perPerson: true, lateUptake: 0.05, effects: (s, T) => reduce(s, T, 'warmth') },
   { id: 'warm-room-plan', from: 'one-warm-room-plan', group: 'Warmth', effects: (s, T) => reduce(s, T, 'warmth') },
   {
     // The heater and its fuel are one entry: the heater is the fixed price,
@@ -147,13 +147,13 @@ export const items = [
   },
   {
     id: 'medical-backup-battery', from: 'medical-backup-battery', group: 'Light and power',
-    scalesWith: 'person', scalesWho: 'powerDependent', units: 'kWh',
+    scalesWith: 'person', perPerson: true, perPersonWho: 'powerDependent', units: 'kWh',
     ladder: [{ label: '1 kWh', units: 1 }, { label: '2 kWh', units: 2 }, { label: '4 kWh', units: 4 }],
     effects: () => [{ type: 'supply', need: 'medicalPower', amount: 850 }],
   },
   {
     id: 'medical-power-plan', from: 'medical-power-plan', group: 'Light and power',
-    scalesWith: 'person', scalesWho: 'powerDependent',
+    scalesWith: 'person', perPerson: true, perPersonWho: 'powerDependent',
     name: 'Medical power plan with spare oxygen',
     effects: (s, T) => [{ type: 'supply', need: 'medicalPower', amount: 750 }, ...reduce(s, T, 'medicalPower', { hazards: ['all'] })],
   },
@@ -196,7 +196,7 @@ export const items = [
     // the deaths that vaccination averts, so the item removes all of it. The
     // price is nil where insurance or the state pays, as in all three places
     // modelled; the cost is the time, which each person spends.
-    id: 'vaccinations', from: 'routine-vaccinations', group: 'First aid', price: 0, hoursPerPerson: true, noReview: true,
+    id: 'vaccinations', from: 'routine-vaccinations', group: 'First aid', price: 0, perPerson: true, noReview: true,
     note: 'Worth nothing extra to people who already keep up to date. Shown as a benchmark.',
     effects: () => [{ type: 'reduce', target: 'seasonalInfection', hazards: ['seasonalIllness'], fraction: 1 }],
   },
@@ -207,7 +207,7 @@ export const items = [
     // the yearly upkeep covers; it is spread over ten years, not the two-year
     // life of the tablets.
     id: 'prescription-buffer', from: 'prescription-buffer', group: 'Drugs',
-    scalesWith: 'person', scalesWho: 'onMedication', conditions: ['onMedication'], hoursPerPerson: true, setupLifeYears: 10,
+    scalesWith: 'person', perPerson: true, perPersonWho: 'onMedication', conditions: ['onMedication'], setupLifeYears: 10,
     note: 'For someone on a drug that is dangerous to miss, most of the value comes from the longest shortages: nuclear war and war between great powers.',
     ladder: [days(7, 7), days(14, 14), days(30, 30), days(60, 60), days(90, 90)],
     effects: () => [{ type: 'supply', need: 'medication', amount: 1 }],
@@ -250,7 +250,7 @@ export const items = [
   { id: 'two-way-radios', from: 'two-way-radios', group: 'Communications', effects: (s, T) => reduceAll(s, T) },
   { id: 'satellite-messenger', from: 'satellite-messenger', group: 'Communications', effects: (s, T) => reduceAll(s, T) },
   { id: 'maps', from: 'offline-and-paper-maps', group: 'Communications', effects: (s, T) => reduceAll(s, T) },
-  { id: 'whistle', from: 'whistle', group: 'Communications', effects: (s, T) => reduceAll(s, T) },
+  { id: 'whistle', from: 'whistle', group: 'Communications', perPerson: true, effects: (s, T) => reduceAll(s, T) },
   { id: 'faraday-bag', from: 'faraday-bag', group: 'Communications', effects: (s, T) => reduceAll(s, T) },
   { id: 'entertainment', from: 'offline-entertainment', group: 'Communications', effects: (s, T) => reduceAll(s, T, { on: 'hardship' }) },
 ];

@@ -1,5 +1,6 @@
 {
- "version": "2026-11-19",
+ "version": "2026-11-21",
+ "currentYear": 2026,
  "ai": {
   "startYear": 2027,
   "horizonYears": 5,
@@ -1006,6 +1007,33 @@
    }
   }
  },
+ "countries": {},
+ "places": {
+  "hazardOrder": [],
+  "rules": {
+   "hurricane": [
+    "H",
+    "M"
+   ],
+   "earthquake": [
+    "H",
+    "M"
+   ],
+   "wildfire": [
+    "H"
+   ],
+   "flood": [
+    "H"
+   ],
+   "hotSummersHeat": [
+    "H"
+   ],
+   "coldWintersMaxC": 5,
+   "hotSummersMinC": 25
+  },
+  "countries": {}
+ },
+ "lifeExpectancy": {},
  "locations": {
   "us": {
    "label": "United States",
@@ -1079,15 +1107,19 @@
   "airConditioning": true,
   "pumpedWater": false,
   "car": true,
+  "people": [
+   {
+    "id": 1,
+    "age": "adult",
+    "valuation": "personal"
+   },
+   {
+    "id": 2,
+    "age": "adult",
+    "valuation": "personal"
+   }
+  ],
   "household": {
-   "adults": 2,
-   "children": 0,
-   "age60to74": 0,
-   "age75plus": 0,
-   "onMedication": 0,
-   "criticalDrug": 0,
-   "powerDependent": 0,
-   "infants": 0,
    "pets": 0
   },
   "ticks": {
@@ -1098,6 +1130,9 @@
    "wildfire": false,
    "flood": false
   },
+  "city": null,
+  "country": null,
+  "deathValue": "lifeYears",
   "owned": {},
   "probabilities": {},
   "parameters": {},
@@ -1210,7 +1245,8 @@
    "hi": 80,
    "tag": "guess",
    "basis": "The discomfort of being away from home when leaving by choice, over and above what it costs. The model's own guess, set below the displaced-day hardship in mobility.json because the move is chosen and planned."
-  }
+  },
+  "counterfactualShare": 0.5
  },
  "needs": {
   "water": {
@@ -12506,6 +12542,7 @@
    "units": "sleeping bag for one person",
    "confidence": "guess",
    "scalesWith": "person",
+   "perPerson": true,
    "price": {
     "lo": 33,
     "mid": 60,
@@ -12630,6 +12667,7 @@
    "units": "set of layers for one person",
    "confidence": "guess",
    "scalesWith": "person",
+   "perPerson": true,
    "price": {
     "lo": 20,
     "mid": 45,
@@ -13989,7 +14027,8 @@
    "units": "kWh",
    "confidence": "derived",
    "scalesWith": "person",
-   "scalesWho": "powerDependent",
+   "perPerson": true,
+   "perPersonWho": "powerDependent",
    "ladder": [
     {
      "label": "1 kWh",
@@ -14084,7 +14123,8 @@
    "units": "plan, per device-dependent person",
    "confidence": "guess",
    "scalesWith": "person",
-   "scalesWho": "powerDependent",
+   "perPerson": true,
+   "perPersonWho": "powerDependent",
    "price": {
     "lo": 0,
     "mid": 10,
@@ -15073,6 +15113,7 @@
    "note": "Worth nothing extra to people who already keep up to date. Shown as a benchmark.",
    "confidence": "derived",
    "scalesWith": "person",
+   "perPerson": true,
    "price": 0,
    "lifeYears": {
     "lo": 1,
@@ -15120,7 +15161,6 @@
     "max": 1
    },
    "lateBuyClass": "none",
-   "hoursPerPerson": true,
    "noReview": true,
    "requires": [],
    "conditions": [],
@@ -15151,7 +15191,8 @@
    "note": "For someone on a drug that is dangerous to miss, most of the value comes from the longest shortages: nuclear war and war between great powers.",
    "confidence": "derived",
    "scalesWith": "person",
-   "scalesWho": "onMedication",
+   "perPerson": true,
+   "perPersonWho": "onMedication",
    "ladder": [
     {
      "label": "7 days",
@@ -15227,7 +15268,6 @@
     "max": 1
    },
    "lateBuyClass": "staple",
-   "hoursPerPerson": true,
    "setupLifeYears": 10,
    "requires": [],
    "conditions": [
@@ -16299,6 +16339,7 @@
    "units": "whistle",
    "confidence": "guess",
    "scalesWith": "person",
+   "perPerson": true,
    "price": {
     "lo": 1.5,
     "mid": 3,
@@ -17438,7 +17479,8 @@
    "units": "infant-day of formula",
    "confidence": "guess",
    "scalesWith": "person",
-   "scalesWho": "infant",
+   "perPerson": true,
+   "perPersonWho": "infant",
    "ladder": [
     {
      "label": "7 days",
@@ -18160,21 +18202,22 @@
    "units": "one respirator",
    "confidence": "derived",
    "scalesWith": "person",
+   "perPerson": true,
    "ladder": [
     {
-     "label": "5 each",
+     "label": "5 masks",
      "units": 5
     },
     {
-     "label": "10 each",
+     "label": "10 masks",
      "units": 10
     },
     {
-     "label": "20 each",
+     "label": "20 masks",
      "units": 20
     },
     {
-     "label": "40 each",
+     "label": "40 masks",
      "units": 40
     }
    ],
@@ -18342,6 +18385,7 @@
    "note": "An N95 stock does much the same job. Whichever is bought first earns most of the value; the second adds a fraction of it.",
    "confidence": "derived",
    "scalesWith": "person",
+   "perPerson": true,
    "price": {
     "lo": 45,
     "mid": 57,
@@ -18495,6 +18539,7 @@
    "units": "one complete unit",
    "confidence": "guess",
    "scalesWith": "person",
+   "perPerson": true,
    "price": {
     "lo": 400,
     "mid": 1800,
@@ -18613,6 +18658,7 @@
    "units": "one pair",
    "confidence": "guess",
    "scalesWith": "person",
+   "perPerson": true,
    "price": {
     "lo": 3,
     "mid": 11,
@@ -19117,6 +19163,7 @@
    "units": "pack of 14 tablets",
    "confidence": "guess",
    "scalesWith": "person",
+   "perPerson": true,
    "price": {
     "lo": 12.95,
     "mid": 12.95,
@@ -19510,6 +19557,7 @@
    "units": "bag per household member (a child's share is smaller)",
    "confidence": "guess",
    "scalesWith": "person",
+   "perPerson": true,
    "price": {
     "lo": 50,
     "mid": 130,
@@ -21248,6 +21296,7 @@
    "units": "helmet",
    "confidence": "guess",
    "scalesWith": "person",
+   "perPerson": true,
    "price": {
     "lo": 12,
     "mid": 20,
