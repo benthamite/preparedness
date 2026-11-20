@@ -161,19 +161,82 @@ const J = LEAVE_OFFSETS.length + 1; // option 0 is "stay"
 
 const AGES = ['age75plus', 'age60to74', 'adult', 'child'];
 const FLAGS = ['powerDependent', 'criticalDrug', 'limitedMobility'];
+export const AGE_LABELS = { child: 'under 15', adult: '15–59', age60to74: '60–74', age75plus: '75 or over' };
 
-function peopleOf(settings) {
-  const h = settings.household;
-  const counts = { age75plus: h.age75plus || 0, age60to74: h.age60to74 || 0, adult: h.adults || 0, child: h.children || 0 };
-  const list = [];
-  for (const age of AGES) for (let i = 0; i < counts[age]; i++) list.push({ age, flags: {} });
-  // Conditions are assigned to the oldest members first.
-  const mark = (flag, n) => { for (let i = 0; i < Math.min(list.length, n || 0); i++) list[i].flags[flag] = true; };
-  for (const f of FLAGS) mark(f, h[f]);
-  mark('onMedication', Math.max(h.onMedication || 0, h.criticalDrug || 0));
-  // Infants are the youngest children.
-  for (let i = 0; i < Math.min(counts.child, h.infants || 0); i++) list[list.length - 1 - i].flags.infant = true;
-  return list;
+// The members of the household. Settings give them one by one (`people`);
+// older settings give counts (`household`), which are turned into people.
+export function peopleOf(settings) {
+  let list;
+  if (Array.isArray(settings.people) && settings.people.length) {
+    list = settings.people.map((p) => {
+      const age = AGES.includes(p.age) ? p.age : 'adult';
+      return {
+        ...p, age,
+        flags: {
+          powerDependent: !!p.powerDependent, criticalDrug: !!p.criticalDrug, limitedMobility: !!p.limitedMobility,
+          onMedication: !!(p.onMedication || p.criticalDrug), infant: age === 'child' && !!p.infant,
+        },
+      };
+    });
+  } else {
+    const h = settings.household || {};
+    const counts = { age75plus: h.age75plus || 0, age60to74: h.age60to74 || 0, adult: h.adults || 0, child: h.children || 0 };
+    list = [];
+    for (const age of AGES) for (let i = 0; i < counts[age]; i++) list.push({ age, flags: {} });
+    // Conditions are assigned to the oldest members first.
+    const mark = (flag, n) => { for (let i = 0; i < Math.min(list.length, n || 0); i++) list[i].flags[flag] = true; };
+    for (const f of FLAGS) mark(f, h[f]);
+    mark('onMedication', Math.max(h.onMedication || 0, h.criticalDrug || 0));
+    // Infants are the youngest children.
+    for (let i = 0; i < Math.min(counts.child, h.infants || 0); i++) list[list.length - 1 - i].flags.infant = true;
+  }
+  return list.map((p, index) => ({ ...p, index, key: p.id !== undefined ? String(p.id) : String(index + 1), label: p.name || `person ${index + 1}` }));
+}
+
+// Present value of one a year for n years at rate r.
+export const annuity = (r, n) => (n <= 0 ? 0 : r > 0 ? (1 - Math.pow(1 + r, -n)) / r : n);
+
+// What each member's death, hardship, lost work and time are worth, in
+// dollars. Two standards (MODEL.md, section 7):
+// - personal (the default): the value of a statistical life, scaled by the
+//   member's hour value relative to the local default (income elasticity 1)
+//   and, unless the reader asks for equal values, by remaining life-years;
+// - impartial: what the member's work would achieve for others, discounted,
+//   plus their own wellbeing priced at what it costs to produce wellbeing
+//   elsewhere (the cost of saving a life through the most cost-effective
+//   charities). Short disruptions then cost the work days they take.
+export function valuePeople(people, ctx) {
+  const { v, timeValue, rate, life, costPerLife, currentYear, horizonYears, aiOn, deathValue, hoursPerYear, counterfactual } = ctx;
+  const lifeYears = deathValue !== 'equal' && life;
+  const lyFactor = (age) => (lifeYears ? annuity(rate, life[age]) / annuity(rate, life.reference) : 1);
+  for (const p of people) {
+    const hour = p.hourValue > 0 ? p.hourValue : timeValue;
+    const personal = v * lyFactor(p.age);
+    if (p.valuation === 'impartial' && p.age !== 'child') {
+      const rep = { adult: 37, age60to74: 67, age75plus: 82 }[p.age];
+      const end = p.impactEndYear > 0 ? p.impactEndYear : currentYear + (aiOn ? horizonYears : Math.max(5, 65 - rep));
+      const years = Math.max(0, Math.min(end - currentYear, life ? life[p.age] : Infinity));
+      const hpy = p.hoursPerYear > 0 ? p.hoursPerYear : hoursPerYear;
+      const cf = p.counterfactual >= 0 && p.counterfactual <= 1 ? p.counterfactual : counterfactual;
+      p.v = 1e-6 * (hour * hpy * cf * annuity(rate, years) + costPerLife);
+      p.hw = personal > 0 ? costPerLife / (1e6 * personal) : 0;
+      // A day lost to a disruption is the average calendar day's work, at the
+      // full hour value: nobody replaces a lost day. Days after the member's
+      // impact ends are worth nothing; with an AI timeline, the share of the
+      // planning horizon before that point counts.
+      const share = aiOn ? Math.min(1, years / Math.max(1, horizonYears)) : (years > 0 ? 1 : 0);
+      p.dv = hour * hpy / 365 * share;
+      p.impactEndYear = end;
+      p.impartial = true;
+    } else {
+      p.v = personal * (hour / timeValue);
+      p.hw = 1;
+      p.dv = 0;
+      p.impartial = false;
+    }
+    p.hv = hour;
+  }
+  return people;
 }
 
 function multiplier(mults, person, kind) {
@@ -187,22 +250,21 @@ function multiplier(mults, person, kind) {
   return x;
 }
 
-function holds(condition, settings) {
+function holds(condition, settings, people) {
   const s = settings;
-  const h = s.household;
-  const size = (h.adults || 0) + (h.children || 0) + (h.age60to74 || 0) + (h.age75plus || 0);
+  const any = (flag) => people.some((p) => p.flags[flag]);
   switch (condition) {
     case 'house': return s.dwelling === 'house';
     case 'apartment': return s.dwelling === 'apartment';
     case 'car': return !!s.car;
-    case 'infant': return (h.infants || 0) > 0;
-    case 'pet': return (h.pets || 0) > 0;
-    case 'powerDependent': return (h.powerDependent || 0) > 0;
-    case 'criticalDrug': return (h.criticalDrug || 0) > 0;
-    case 'onMedication': return Math.max(h.onMedication || 0, h.criticalDrug || 0) > 0;
-    case 'age60plus': return (h.age60to74 || 0) + (h.age75plus || 0) > 0;
-    case 'livesAlone': return size === 1;
-    case 'severalPeople': return size > 1;
+    case 'infant': return any('infant');
+    case 'pet': return ((s.household && s.household.pets) || 0) > 0;
+    case 'powerDependent': return any('powerDependent');
+    case 'criticalDrug': return any('criticalDrug');
+    case 'onMedication': return any('onMedication');
+    case 'age60plus': return people.some((p) => p.age === 'age60to74' || p.age === 'age75plus');
+    case 'livesAlone': return people.length === 1;
+    case 'severalPeople': return people.length > 1;
     case 'airConditioning': return !!s.airConditioning;
     case 'noAirConditioning': return !s.airConditioning;
     case 'allElectric': return s.cooking !== 'gas' && s.heating !== 'gas';
@@ -354,8 +416,13 @@ export function buildWorld(m, settings) {
   const P = m.parameters;
   const loc = settings.location;
   const over = settings.parameters || {};
+  // A country with figures of its own replaces some of the preset's
+  // (data/countries.mjs, research/countries/).
+  const country = settings.country && m.countries && m.countries[settings.country] ? m.countries[settings.country].values : null;
+  const cv = (field) => (country && country[field] !== undefined && country[field] !== null ? country[field] : undefined);
   const pick = (id) => {
     if (over[id] !== undefined && over[id] !== null) return over[id];
+    if (cv(id) !== undefined) return cv(id);
     const x = P[id];
     return x !== null && typeof x === 'object' ? (x[loc] !== undefined ? x[loc] : x[settings.dwelling]) : x;
   };
@@ -369,7 +436,27 @@ export function buildWorld(m, settings) {
 
   const people = peopleOf(settings);
   const nPeople = people.length;
-  const nAdults = people.filter((p) => p.age !== 'child').length;
+  const NP1 = nPeople + 1; // per-person slots, then one for the household as a whole
+  const useAiTimeline = aiOn(m.ai, settings);
+  valuePeople(people, {
+    v, timeValue, rate,
+    life: m.lifeExpectancy || null,
+    costPerLife: pick('costPerLifeSavedUsd') || 0,
+    currentYear: m.currentYear || 2026,
+    horizonYears: Math.max(1, Math.round((settings.ai && settings.ai.horizonYears) || (m.ai && m.ai.horizonYears) || 5)),
+    aiOn: useAiTimeline,
+    deathValue: settings.deathValue || 'lifeYears',
+    hoursPerYear: pick('hoursPerYear') || 1800,
+    counterfactual: pick('counterfactualShare') === undefined ? 0.5 : pick('counterfactualShare'),
+  });
+  // Time spent on something the household shares is taken to be spent by
+  // the member whose hour is valued least; on something one member owns, by
+  // that member.
+  const grown = people.filter((p) => p.age !== 'child');
+  const sharedHour = Math.min(...(grown.length ? grown : people).map((p) => p.hv));
+  // The holder of a skill (first aid, CPR): the first member aged 15–59, or
+  // the first member.
+  const holder = Math.max(0, people.findIndex((p) => p.age === 'adult'));
 
   // ---- needs ----
   const needIds = Object.keys(m.needs);
@@ -378,19 +465,41 @@ export function buildWorld(m, settings) {
   const needs = needIds.map((id) => {
     const n = m.needs[id];
     // A need may apply to some people only, or to some households only.
-    const who = n.if && !holds(n.if, settings) ? [] : people.filter((p) => !n.who || n.who === 'all' || p.flags[n.who]);
-    let baseline = (n.baselineIf || []).reduce((b, x) => (holds(x.if, settings) ? Math.max(b, x.days) : b), n.baselineDays || 0);
+    const who = n.if && !holds(n.if, settings, people) ? [] : people.filter((p) => !n.who || n.who === 'all' || p.flags[n.who]);
+    let baseline = (n.baselineIf || []).reduce((b, x) => (holds(x.if, settings, people) ? Math.max(b, x.days) : b), n.baselineDays || 0);
     // The reader may say how much they hold already (food in the kitchen).
     if (n.baselineSetting && settings[n.baselineSetting] !== undefined && settings[n.baselineSetting] !== null) baseline = Number(settings[n.baselineSetting]);
+    const perHousehold = n.per === 'household';
+    const workLoss = n.workLoss || 0;
+    // Each member's weights: hardship (in dollars per dollar of the curve),
+    // mortality multiplier, value of a micromort, and lost work per unmet day.
+    const members = who.map((p) => ({
+      i: p.index,
+      h: perHousehold ? 0 : multiplier(n.multipliers, p, 'hardship') * p.hw,
+      x: multiplier(n.multipliers, p, 'mortality'),
+      v: p.v,
+      d: p.dv * workLoss,
+    }));
+    // A need of the household as a whole is felt once.
+    if (perHousehold && members.length) members[0].h = (grown.length ? grown : people).reduce((s, p) => s + p.hw, 0) / (grown.length || people.length);
+    const slot = new Int32Array(nPeople).fill(-1);
+    members.forEach((x, j) => { slot[x.i] = j; });
+    const cap = n.lateMultiplierCap;
     return {
       id,
       spec: n,
       count: who.length,
-      Mh: n.per === 'household' ? (who.length > 0 ? 1 : 0) : who.reduce((s, p) => s + multiplier(n.multipliers, p, 'hardship'), 0),
-      mm: who.map((p) => multiplier(n.multipliers, p, 'mortality')),
+      members, slot,
+      H: members.reduce((s, x) => s + x.h, 0),
+      D: members.reduce((s, x) => s + x.d, 0),
+      VX: members.reduce((s, x) => s + x.v * x.x, 0),
+      VXcap: members.reduce((s, x) => s + x.v * (cap ? Math.min(x.x, cap) : x.x), 0),
+      V: members.reduce((s, x) => s + x.v, 0),
+      demandPer: n.demandPerPersonDay !== undefined ? n.demandPerPersonDay : (n.demandPerHouseholdDay || 1),
       demand: n.demandPerPersonDay !== undefined ? n.demandPerPersonDay * who.length : (n.demandPerHouseholdDay || 1),
       leaveEnds: n.leaveEnds !== false,
       home: n.home !== false,
+      personal: false,
       baseline,
     };
   });
@@ -419,14 +528,21 @@ export function buildWorld(m, settings) {
       const outlook = useAi && m.ai.hazards[id] ? 'forecast' : settings.outlook;
       const byLoc = h.probability[loc] !== undefined ? h.probability[loc] : h.probability.all;
       p = byLoc === undefined ? 0 : (typeof byLoc === 'object' ? (byLoc[outlook] !== undefined ? byLoc[outlook] : byLoc.all) : byLoc);
+      const own = cv(`${id}.probability`) !== undefined ? cv(`${id}.probability`) : cv(`${id}.${outlook}`);
+      if (own !== undefined) p = own;
       p = Math.max(0, Math.min(1, (p || 0) + aiShift(m.ai, settings, id, loc)));
     }
     if (!(p > 0)) return;
     const late = h.lateBuy && (h.warningDays || 0) >= 0.5 ? h.lateBuy : { staple: 0, specialty: 0 };
     const es = h.exposureScale || {};
-    let xScale = (es.dwelling && es.dwelling[settings.dwelling] !== undefined ? es.dwelling[settings.dwelling] : 1)
-      * (es.location && es.location[loc] !== undefined ? es.location[loc] : 1);
-    for (const c of es.conditions || []) if (holds(c.if, settings)) xScale *= c.factor;
+    let xScale = es.dwelling && es.dwelling[settings.dwelling] !== undefined ? es.dwelling[settings.dwelling] : 1;
+    for (const c of es.conditions || []) if (holds(c.if, settings, people)) xScale *= c.factor;
+    // Work lost to illness or to dealing with a loss does not follow the
+    // differences in death rates between places that the location factor
+    // carries.
+    const workScale = xScale;
+    xScale *= cv(`${id}.scale`) !== undefined ? cv(`${id}.scale`) : (es.location && es.location[loc] !== undefined ? es.location[loc] : 1);
+    const wd = h.workDays || null;
     // Where leaving is held up by roads, fuel and transport, time brings a
     // way out; where few can leave because there is nowhere better to go
     // (a nuclear war, a pandemic), it does not.
@@ -442,17 +558,24 @@ export function buildWorld(m, settings) {
       // still stuck halves every `half` days.
       halfLife: half > 0 && isFinite(half) ? half : 0,
       scale: h.needScale || {},
-      exposures: (h.exposures || []).map((x) => {
+      exposures: (h.exposures || []).map((x, xi) => {
         const ch = (m.channels || {})[x.channel] || {};
         const mults = { ...(ch.multipliers || {}), ...(x.multipliers || {}) };
-        const perPerson = x.micromortsPerPersonByLocation && x.micromortsPerPersonByLocation[loc] !== undefined
-          ? x.micromortsPerPersonByLocation[loc] : (x.micromortsPerPerson || 0);
+        const byL = x.micromortsPerPersonByLocation || {};
+        let perPerson = byL[loc] !== undefined ? byL[loc] : (x.micromortsPerPerson || 0);
+        // A country's own fallout figure is relative to the United States.
+        if (x.channel === 'fallout' && cv(`${id}.falloutScale`) !== undefined) perPerson = (byL.us !== undefined ? byL.us : (x.micromortsPerPerson || 0)) * cv(`${id}.falloutScale`);
+        // Lost work goes with the first exposure on the hazard's work channel.
+        const work = wd && wd.channel === x.channel && (h.exposures || []).findIndex((y) => y.channel === wd.channel) === xi ? workScale * (wd.days || 0) : 0;
         return {
           c: channelIndex[x.channel],
           mmBase: xScale * perPerson,
           mm: people.map((q) => multiplier(mults, q, 'mortality')),
-          usd: xScale * ((x.hardshipUsdPerPerson || 0) * people.reduce((s, q) => s + multiplier(mults, q, 'hardship'), 0)
-            + (x.financialUsdPerHousehold || 0)),
+          // Hardship per person, by member; money lost, by household.
+          hard: (x.hardshipUsdPerPerson || 0) ? people.map((q) => xScale * x.hardshipUsdPerPerson * multiplier(mults, q, 'hardship') * q.hw) : null,
+          fin: xScale * (x.financialUsdPerHousehold || 0),
+          work,
+          workOnMortality: x.channel === 'infection' || x.channel === 'seasonalInfection',
         };
       }),
     };
@@ -461,7 +584,7 @@ export function buildWorld(m, settings) {
     let hot = settings.ticks && settings.ticks.hotSummers ? (h.hotShare || 0) : 0;
     if (cold + hot > 1) { const t = cold + hot; cold /= t; hot /= t; }
     const states = [['mild', 1 - cold - hot], ['cold', cold], ['hot', hot]];
-    const scale = h.durationScale === undefined ? 1 : h.durationScale;
+    const scale = (h.durationScale === undefined ? 1 : h.durationScale) * (cv(`${id}.durationFactor`) !== undefined ? cv(`${id}.durationFactor`) : 1);
     // Being forced out of the home is its own branch of each event: it may
     // or may not happen however severe the event, and when it does, what is
     // stored at home is out of reach for as long as it lasts.
@@ -540,12 +663,21 @@ export function buildWorld(m, settings) {
   const chanReducers = channelIds.map(() => []);
   const capNeeds = { cook: ['food'], campStove: ['food'], treatWater: ['water'] };
 
-  const items = m.items.map((it, i) => {
-    const applicable = (it.conditions || []).every((c) => holds(c, settings));
+  // An item marked `perPerson` is offered once for each member it suits
+  // (`perPersonWho`: only those with a stated condition), and each copy acts
+  // on its owner alone. Its id is the item's id, "@", and the member's key.
+  const specs = [];
+  for (const it of m.items) {
+    if (!it.perPerson) { specs.push({ it, person: undefined }); continue; }
+    for (const p of people) if (!it.perPersonWho || p.flags[it.perPersonWho]) specs.push({ it, person: p.index });
+  }
+  const items = specs.map(({ it, person }, i) => {
+    const owner = person === undefined ? null : people[person];
+    const applicable = (it.conditions || []).every((c) => holds(c, settings, people));
     const ladder = it.ladder && it.ladder.length ? it.ladder : null;
     // Units are per person for items that scale with people: everyone, or
     // only those with a stated condition (the people on medication, say).
-    const scale = it.scalesWith === 'person'
+    const scale = owner ? 1 : it.scalesWith === 'person'
       ? Math.max(1, it.scalesWho ? people.filter((p) => p.flags[it.scalesWho]).length : nPeople)
       : 1;
     const life = it.lifeYears;
@@ -557,17 +689,19 @@ export function buildWorld(m, settings) {
     const perUnit = (it.capitalFree ? 0 : unitUsd * capital)
       + (it.upkeepUsdPerUnitYear || 0) + (it.volumeLitres || 0) * storage;
     // A fixed price is paid once, with the first level (a heater, as against
-    // the fuel that is the item's ladder).
+    // the fuel that is the item's ladder), and once for all the members'
+    // copies of a personal item (the kit for checking a mask's fit).
     const fixedUsd = (it.fixedPrice || 0) * priceIndex;
     // Time: setting up (spread over the item's life, or longer where the
     // set-up outlasts the stock), and upkeep. Charged per person where each
     // person must spend it; and, like money upkeep, cut by the everyday
-    // share where the upkeep is itself everyday use.
+    // share where the upkeep is itself everyday use. An hour is the owner's,
+    // or for shared things that of the member whose hour is valued least.
     const hours = ((it.setupHours || 0) * crf(rate, it.setupLifeYears || life) + (it.upkeepHoursPerYear || 0))
-      * timeValue * (it.hoursPerPerson ? scale : 1);
+      * (owner ? owner.hv : sharedHour) * (it.hoursPerPerson ? scale : 1);
     const running = (hours + (it.upkeepUsdPerYear || 0)) * (it.everydayUpkeep ? 1 - e : 1);
     const item = {
-      i, id: it.id, spec: it, applicable, ladder, scale,
+      i, id: owner ? `${it.id}@${owner.key}` : it.id, baseId: it.id, person, spec: it, applicable, ladder, scale,
       maxLevel: ladder ? ladder.length : 1,
       unitsAt: (level) => (level <= 0 ? 0 : (ladder ? ladder[Math.min(level, ladder.length) - 1].units : 1)),
       lateLevel: it.lateBuyLevel === undefined ? 1 : it.lateBuyLevel,
@@ -576,7 +710,8 @@ export function buildWorld(m, settings) {
       reliability: it.reliability === undefined ? 1 : it.reliability,
       lateClass: it.lateBuyClass || 'none',
       requires: it.requires || [],
-      unitUsd, perUnit, fixed: fixedUsd * capital + running, fixedUsd,
+      unitUsd, perUnit, fixedCapital: fixedUsd * capital, running, fixedUsd,
+      siblings: [],
       setupHours: (it.setupHours || 0) * (it.hoursPerPerson ? scale : 1),
       leave: false,
       needSet: new Set(),
@@ -595,29 +730,29 @@ export function buildWorld(m, settings) {
       } else if (fx.type === 'supply') {
         const k = needIndex[fx.need];
         if (k === undefined || needs[k].count === 0) continue;
-        suppliers[k].push({ i, days: fx.amount * scale / needs[k].demand, pool: fx.pool || 'main', renew: !!fx.renewable });
+        if (owner) {
+          // A member's own stock covers that member's days only.
+          if (needs[k].slot[person] < 0) continue;
+          suppliers[k].push({ i, days: fx.amount / needs[k].demandPer, pool: 'main', renew: !!fx.renewable, person });
+          needs[k].personal = true;
+        } else suppliers[k].push({ i, days: fx.amount * scale / needs[k].demand, pool: fx.pool || 'main', renew: !!fx.renewable });
         item.needSet.add(k);
       } else if (fx.type === 'capability') {
         (capProviders[fx.capability] ||= []).push(i);
         for (const nid of capNeeds[fx.capability] || []) if (nid in needIndex) item.needSet.add(needIndex[nid]);
       } else if (fx.type === 'reduce') {
         // `othersOnly`: the item protects everyone but the member who holds
-        // it (someone trained in CPR cannot resuscitate themselves). The
-        // holder is taken to be an adult under 60 where there is one.
-        let adj = fx.adherence === undefined ? 1 : fx.adherence;
-        if (fx.othersOnly) {
-          const mults = ((m.channels || {})[fx.target] || {}).multipliers || (m.needs[fx.target] || {}).multipliers;
-          const ws = people.map((p) => multiplier(mults, p, 'mortality'));
-          const holder = Math.max(0, people.findIndex((p) => p.age === 'adult'));
-          const sum = ws.reduce((a, b) => a + b, 0);
-          adj *= sum > 0 && people.length > 1 ? (sum - ws[holder]) / sum : 0;
-        }
+        // it (someone trained in CPR cannot resuscitate themselves).
+        const adj = fx.adherence === undefined ? 1 : fx.adherence;
         const red = {
           i, f: (fx.fraction || 0) * adj, on: fx.on || 'both', group: fx.group || null,
+          person: owner ? person : undefined,
+          exclude: fx.othersOnly ? holder : undefined,
           // A fraction that grows with the level owned (deeper stocks).
           byLevel: fx.fractionByLevel ? fx.fractionByLevel.map((x) => x * adj * (fx.levelScale === undefined ? 1 : fx.levelScale)) : null,
           hazards: !fx.hazards || fx.hazards.includes('all') ? null : new Set(fx.hazards),
         };
+        if (fx.othersOnly && people.length < 2) continue;
         if (fx.target in needIndex) {
           needReducers[needIndex[fx.target]].push(red);
           item.needSet.add(needIndex[fx.target]);
@@ -638,11 +773,12 @@ export function buildWorld(m, settings) {
       } else if (fx.type === 'annualRisk') {
         // A risk of owning the thing at all, every year (a firearm at home):
         // one figure for the owner, one for each other adult, one per child.
-        const owner = fx.micromortsOwner !== undefined ? fx.micromortsOwner : (fx.micromortsPerPersonYear || 0);
+        // The owner is the holder (see above).
+        const own = fx.micromortsOwner !== undefined ? fx.micromortsOwner : (fx.micromortsPerPersonYear || 0);
         const other = fx.micromortsOtherAdult !== undefined ? fx.micromortsOtherAdult : (fx.micromortsPerPersonYear || 0);
         const child = fx.micromortsChild !== undefined ? fx.micromortsChild : (fx.micromortsPerPersonYear || 0);
-        const adults = Math.max(1, nAdults);
-        item.annual = { mm: owner + (adults - 1) * other + (nPeople - nAdults) * child, usd: fx.usdPerHouseholdYear || 0 };
+        const risk = people.map((p) => (p.index === holder ? own : p.age === 'child' ? child : other));
+        item.annual = { mm: risk.reduce((a, b) => a + b, 0), mmv: risk.reduce((a, r, j) => a + r * people[j].v, 0), usd: fx.usdPerHouseholdYear || 0 };
       } else if (fx.type === 'review') {
         // Practice makes every other item likelier to work when needed.
         review = { i, factor: fx.failureFactor };
@@ -650,6 +786,8 @@ export function buildWorld(m, settings) {
     }
     return item;
   });
+  // The members' copies of one personal item.
+  for (const it of items) if (it.person !== undefined) it.siblings = items.filter((x) => x.baseId === it.baseId && x !== it).map((x) => x.i);
   // An item that requires a capability is touched by whatever provides it.
   for (const it of items) {
     for (const cap of it.requires) {
@@ -708,9 +846,19 @@ export function buildWorld(m, settings) {
   const nH = hazards.length;
   const memo = (size) => ({ v: new Float64Array(size), s: new Int32Array(size) });
   const unitsMemo = memo(items.length * nH), haveMemo = memo(items.length * nH), worksMemo = memo(items.length * nH);
-  needReducers.forEach((list, k) => { list.id = k; });
-  chanReducers.forEach((list, c) => { list.id = K + c; });
-  const keepMemo = memo((K + channelIds.length) * 2 * nH);
+  const personalList = (list) => list.some((r) => r.person !== undefined || r.exclude !== undefined);
+  needReducers.forEach((list, k) => { list.id = k; list.personal = personalList(list); });
+  chanReducers.forEach((list, c) => { list.id = K + c; list.personal = personalList(list); });
+  const EMPTY = [];
+  // Shares of a harm that remain after the items acting on it: for each list
+  // of reducers, kind of harm and hazard, one per member and, last, one for
+  // the household as a whole (money, which no member's own item touches).
+  // keepOf returns where they start in KV; the final block is all ones.
+  const nKeep = (K + channelIds.length) * 2 * nH;
+  const KV = new Float64Array((nKeep + 1) * NP1);
+  const ONE = nKeep * NP1;
+  KV.fill(1, ONE);
+  const keepStamp = new Int32Array(nKeep);
   function reliabilityOf(it, level) {
     if (level[it.i] <= 0) return 0;
     if (review && review.i !== it.i && !it.spec.noReview && level[review.i] > 0) {
@@ -750,16 +898,16 @@ export function buildWorld(m, settings) {
     return (worksMemo.v[key] = p);
   }
   const fractionAt = (r, lv) => (r.byLevel ? (lv > 0 ? r.byLevel[Math.min(lv, r.byLevel.length) - 1] : 0) : r.f);
-  // Expected share of a harm that remains after the items acting on it.
-  function keepOf(list, level, kind, hz) {
-    if (!list.length) return 1;
-    const key = (list.id * 2 + (kind === 'mortality' ? 1 : 0)) * nH + hz.index;
-    if (keepMemo.s[key] === version) return keepMemo.v[key];
+  // Expected share of a harm that remains for member t (or, with t = -1, for
+  // the household as a whole) after the items acting on it.
+  function keepOne(list, level, kind, hz, t) {
     let keep = 1;
     let groups = null;
     for (const r of list) {
       if (r.on !== 'both' && r.on !== kind) continue;
       if (r.hazards && !r.hazards.has(hz.id)) continue;
+      if (r.person !== undefined && r.person !== t) continue;
+      if (r.exclude !== undefined && r.exclude === t) continue;
       const it = items[r.i];
       if (!it.applicable) continue;
       const rel = reliabilityOf(it, level), pl = lateP(it, hz);
@@ -778,60 +926,78 @@ export function buildWorld(m, settings) {
         keep *= 1 - removed;
       }
     }
-    keepMemo.s[key] = version;
-    return (keepMemo.v[key] = keep);
+    return keep;
+  }
+  function keepOf(list, level, kind, hz) {
+    if (!list || !list.length) return ONE;
+    const key = (list.id * 2 + (kind === 'mortality' ? 1 : 0)) * nH + hz.index;
+    const base = key * NP1;
+    if (keepStamp[key] === version) return base;
+    keepStamp[key] = version;
+    if (!list.personal) KV.fill(keepOne(list, level, kind, hz, -1), base, base + NP1);
+    else for (let t = 0; t < NP1; t++) KV[base + t] = keepOne(list, level, kind, hz, t === nPeople ? -1 : t);
+    return base;
   }
 
   // Food. A household with F days of full rations facing a window of W days
   // does not eat normally and then starve: it stretches what it has. The
   // cheaper of two plans is taken: eat in full and then go without, or
   // ration (half rations while that lasts the window; else quarter rations;
-  // else quarter rations and then nothing). Returns dollars per person and
-  // two mortality sums: `a`, to which each person's multiplier applies in
-  // full, and `b`, the part of a long fast on which age adds less.
-  const plan = { usd: 0, a: 0, b: 0 };
-  function foodPlan(n, W, F, weightA, weightB) {
+  // else quarter rations and then nothing). Returns dollars per person, two
+  // mortality sums (`a`, to which each person's multiplier applies in full,
+  // and `b`, the part of a long fast on which age adds less), and the days
+  // without food, which cost work.
+  const plan = { usd: 0, a: 0, b: 0, fast: 0 };
+  function foodPlan(n, W, F) {
     const spec = n.spec;
     const fast = (d, out) => {
       if (d <= 0) return;
       const all = cumulative(spec.mortality.steps, d), early = cumulative(spec.mortality.steps, Math.min(d, 30));
-      out.usd += cumulative(spec.hardship.steps, d); out.a += early; out.b += all - early;
+      out.usd += cumulative(spec.hardship.steps, d); out.a += early; out.b += all - early; out.fast += d;
     };
     const part = (curve, d, out) => {
       if (d <= 0) return;
       out.usd += cumulative(curve.hardship.steps, d); out.a += cumulative(curve.mortality.steps, d);
     };
-    const p1 = { usd: 0, a: 0, b: 0 };
+    const p1 = { usd: 0, a: 0, b: 0, fast: 0 };
     fast(W - F, p1);
     const R = spec.rationing;
-    if (!R || F <= 0) { plan.usd = p1.usd; plan.a = p1.a; plan.b = p1.b; return plan; }
-    const p2 = { usd: 0, a: 0, b: 0 };
-    if (W <= 2 * F) part(R.half, 2 * (W - F), p2);
-    else if (W <= 4 * F) { part(R.half, 4 * F - W, p2); part(R.quarter, 2 * W - 4 * F, p2); }
-    else { part(R.quarter, 4 * F, p2); fast(W - 4 * F, p2); }
-    const cost = (p) => p.usd * n.Mh + v * (p.a * weightA + p.b * weightB);
-    const best = cost(p2) < cost(p1) ? p2 : p1;
-    plan.usd = best.usd; plan.a = best.a; plan.b = best.b;
+    let best = p1;
+    if (R && F > 0) {
+      const p2 = { usd: 0, a: 0, b: 0, fast: 0 };
+      if (W <= 2 * F) part(R.half, 2 * (W - F), p2);
+      else if (W <= 4 * F) { part(R.half, 4 * F - W, p2); part(R.quarter, 2 * W - 4 * F, p2); }
+      else { part(R.quarter, 4 * F, p2); fast(W - 4 * F, p2); }
+      const cost = (p) => p.usd * n.H + p.a * n.VX + p.b * n.VXcap + p.fast * n.D;
+      if (cost(p2) < cost(p1)) best = p2;
+    }
+    plan.usd = best.usd; plan.a = best.a; plan.b = best.b; plan.fast = best.fast;
     return plan;
   }
 
-  // Harm on need k in event e, for each leave option, into out$ and outM.
-  function needRow(e, k, level, out$, outM) {
+  // Harm on need k in event e, for each leave option: dollars (hardship,
+  // lost work), micromorts, and micromorts valued at each member's value.
+  const own = new Float64Array(Math.max(1, nPeople));
+  function needRow(e, k, level, out$, outM, outV) {
     const n = needs[k];
     const spec = n.spec;
     const hz = hazards[ev.hz[e]];
     const g = ev.gaps[e][k];
+    const mem = n.members;
+    const nm = mem.length;
     let stock = 0, cookStock = 0, renew = 0;
+    if (n.personal) own.fill(0);
     for (const s of suppliers[k]) {
       const it = items[s.i];
       const u = unitsIn(it, level, hz) * pWorks(it, level, hz);
       if (u <= 0) continue;
-      if (s.renew) renew += u * s.days;
+      if (s.person !== undefined) own[n.slot[s.person]] += u * s.days;
+      else if (s.renew) renew += u * s.days;
       else if (s.pool === 'cook') cookStock += u * s.days;
       else stock += u * s.days;
     }
     const food = spec.special === 'food';
-    let fuelDays = 0, ready = 0, cookBase = 0, cookOut = 0, wA = 0, wB = 0, pTreat = 0;
+    let fuelDays = 0, ready = 0, cookBase = 0, cookOut = 0, pTreat = 0;
     if (food) {
       for (const f of capFuel.cook || []) {
         const it = items[f.i];
@@ -846,27 +1012,38 @@ export function buildWorld(m, settings) {
       cookBase = B * cookShare;
       const improvise = spec.improviseCookDays ? (spec.improviseCookDays[settings.dwelling] || Infinity) : Infinity;
       cookOut = Math.min(ev.cookOut[e], improvise);
-      for (const x of n.mm) { wA += x; wB += Math.min(x, spec.lateMultiplierCap || x); }
     } else if (spec.special === 'water') {
       pTreat = pCap('treatWater', level, hz);
     }
     const sc = hz.scale[n.id] || {};
-    const rH = keepOf(needReducers[k], level, 'hardship', hz) * (sc.hardship === undefined ? 1 : sc.hardship);
-    const rM = keepOf(needReducers[k], level, 'mortality', hz) * (sc.mortality === undefined ? 1 : sc.mortality);
+    const scH = sc.hardship === undefined ? 1 : sc.hardship;
+    const scM = sc.mortality === undefined ? 1 : sc.mortality;
+    const bH = keepOf(needReducers[k], level, 'hardship', hz);
+    const bM = keepOf(needReducers[k], level, 'mortality', hz);
+    // Hardship and lost work per unmet day, with each member's share kept.
+    let HK = 0, DK = 0;
+    for (const x of mem) { const kh = KV[bH + x.i]; HK += x.h * kh; DK += x.d * kh; }
     const risky = sideRiskOf[k];
+    const cap = spec.lateMultiplierCap;
     const nj = nOpt[e];
     for (let j = 0; j < nj; j++) {
       const L = Lopt[e * J + j];
       const gL = n.leaveEnds ? Math.min(g, L) : g;
-      let usd, a, b = 0, untreated = 1;
+      let usd = 0, mm = 0, mmv = 0;
       if (food) {
         const cookable = Math.max(0, gL - cookOut) + fuelDays;
         const F = ready + stock + Math.min(cookBase + cookStock, cookable);
-        if (gL <= F) { usd = 0; a = 0; } else { const p = foodPlan(n, gL, F, wA, wB); usd = p.usd; a = p.a; b = p.b; }
+        if (gL > F) {
+          const p = foodPlan(n, gL, F);
+          usd = (p.usd * HK + p.fast * DK) * scH;
+          // Each person's risk, capped at certainty.
+          for (const x of mem) {
+            const r = saturate((p.a * x.x + p.b * (cap ? Math.min(x.x, cap) : x.x)) * KV[bM + x.i] * scM);
+            mm += r; mmv += r * x.v;
+          }
+        }
       } else {
-        const U = Math.max(0, gL * (1 - Math.min(1, renew)) - n.baseline - stock);
-        usd = cumulative(spec.hardship.steps, U);
-        a = cumulative(spec.mortality.steps, U);
+        let untreated = 1;
         if (spec.special === 'water' && ev.share[e] > 0) {
           // Where unsafe water can still be had, treating it ends the harm:
           // with a filter or tablets, or by boiling on the days the cooker
@@ -874,11 +1051,26 @@ export function buildWorld(m, settings) {
           const boil = gL > 0 ? Math.max(0, gL - ev.cookOut[e]) / gL : 0;
           untreated = 1 - ev.share[e] * (pTreat + (1 - pTreat) * boil);
         }
+        const short = gL * (1 - Math.min(1, renew)) - n.baseline - stock;
+        if (!n.personal) {
+          const U = Math.max(0, short);
+          if (U > 0) {
+            usd = (cumulative(spec.hardship.steps, U) * HK + U * DK) * scH * untreated;
+            const cM = cumulative(spec.mortality.steps, U) * scM * untreated;
+            if (cM > 0) for (const x of mem) { const r = saturate(cM * x.x * KV[bM + x.i]); mm += r; mmv += r * x.v; }
+          }
+        } else {
+          // Members with stocks of their own run short on different days.
+          for (let q = 0; q < nm; q++) {
+            const x = mem[q];
+            const U = Math.max(0, short - own[q]);
+            if (U <= 0) continue;
+            usd += (cumulative(spec.hardship.steps, U) * x.h + U * x.d) * KV[bH + x.i] * scH * untreated;
+            const r = saturate(cumulative(spec.mortality.steps, U) * x.x * KV[bM + x.i] * scM * untreated);
+            mm += r; mmv += r * x.v;
+          }
+        }
       }
-      // Each person's risk, capped at certainty.
-      let mm = 0;
-      const cap = spec.lateMultiplierCap;
-      for (const x of n.mm) mm += saturate((a * x + b * (cap ? Math.min(x, cap) : x)) * rM * untreated);
       for (const it of risky) {
         const have = pHave(it, level, hz);
         if (have <= 0) continue;
@@ -886,25 +1078,30 @@ export function buildWorld(m, settings) {
           if (s.k !== k) continue;
           const sup = suppliers[k].find((x) => x.i === it.i);
           const used = Math.min(Math.max(0, gL - n.baseline), sup ? unitsIn(it, level, hz) * sup.days : Infinity);
-          mm += s.mm * used * n.count * have * keepOf(chanReducers[s.c] || [], level, 'mortality', hz);
+          const r = s.mm * used * have * KV[keepOf(chanReducers[s.c], level, 'mortality', hz) + nPeople];
+          mm += r * n.count; mmv += r * n.V;
         }
       }
-      out$[j] = usd * n.Mh * rH * untreated;
+      out$[j] = usd;
       outM[j] = mm;
+      outV[j] = mmv;
     }
   }
 
   // ---- state for the current kit ----
   const R$ = new Float64Array(E * K * J);
   const RM = new Float64Array(E * K * J);
+  const RV = new Float64Array(E * K * J);
   // Totals over needs, per event and leave option.
   const S$ = new Float64Array(E * J);
   const SM = new Float64Array(E * J);
+  const SV = new Float64Array(E * J);
   const cur$ = new Float64Array(E);
   const curM = new Float64Array(E);
-  const tmp$ = new Float64Array(J), tmpM = new Float64Array(J);
-  const tot$ = new Float64Array(J), totM = new Float64Array(J);
-  const res = { usd: 0, mm: 0 };
+  const curV = new Float64Array(E);
+  const tmp$ = new Float64Array(J), tmpM = new Float64Array(J), tmpV = new Float64Array(J);
+  const tot$ = new Float64Array(J), totM = new Float64Array(J), totV = new Float64Array(J);
+  const res = { usd: 0, mm: 0, mmv: 0 };
 
   // Harm in event e. Needs in `fresh` are recomputed for `level`; the rest
   // come from the cache. With `store`, recomputed rows replace the cache.
@@ -912,29 +1109,32 @@ export function buildWorld(m, settings) {
     const nj = nOpt[e];
     const sb = e * J;
     if (fresh === null) {
-      for (let j = 0; j < nj; j++) { tot$[j] = 0; totM[j] = 0; }
+      for (let j = 0; j < nj; j++) { tot$[j] = 0; totM[j] = 0; totV[j] = 0; }
       for (const k of active[e]) {
         const base = (e * K + k) * J;
-        needRow(e, k, level, tmp$, tmpM);
-        for (let j = 0; j < nj; j++) { tot$[j] += tmp$[j]; totM[j] += tmpM[j]; R$[base + j] = tmp$[j]; RM[base + j] = tmpM[j]; }
+        needRow(e, k, level, tmp$, tmpM, tmpV);
+        for (let j = 0; j < nj; j++) {
+          tot$[j] += tmp$[j]; totM[j] += tmpM[j]; totV[j] += tmpV[j];
+          R$[base + j] = tmp$[j]; RM[base + j] = tmpM[j]; RV[base + j] = tmpV[j];
+        }
       }
-      for (let j = 0; j < nj; j++) { S$[sb + j] = tot$[j]; SM[sb + j] = totM[j]; }
+      for (let j = 0; j < nj; j++) { S$[sb + j] = tot$[j]; SM[sb + j] = totM[j]; SV[sb + j] = totV[j]; }
     } else {
       // Start from the stored totals and swap in the rows that changed.
-      for (let j = 0; j < nj; j++) { tot$[j] = S$[sb + j]; totM[j] = SM[sb + j]; }
+      for (let j = 0; j < nj; j++) { tot$[j] = S$[sb + j]; totM[j] = SM[sb + j]; totV[j] = SV[sb + j]; }
       const row = ev.gaps[e];
       for (const k of fresh) {
         if (!(row[k] > 0)) continue;
         const base = (e * K + k) * J;
-        needRow(e, k, level, tmp$, tmpM);
+        needRow(e, k, level, tmp$, tmpM, tmpV);
         for (let j = 0; j < nj; j++) {
-          tot$[j] += tmp$[j] - R$[base + j]; totM[j] += tmpM[j] - RM[base + j];
-          if (store) { R$[base + j] = tmp$[j]; RM[base + j] = tmpM[j]; }
+          tot$[j] += tmp$[j] - R$[base + j]; totM[j] += tmpM[j] - RM[base + j]; totV[j] += tmpV[j] - RV[base + j];
+          if (store) { R$[base + j] = tmp$[j]; RM[base + j] = tmpM[j]; RV[base + j] = tmpV[j]; }
         }
       }
-      if (store) for (let j = 0; j < nj; j++) { S$[sb + j] = tot$[j]; SM[sb + j] = totM[j]; }
+      if (store) for (let j = 0; j < nj; j++) { S$[sb + j] = tot$[j]; SM[sb + j] = totM[j]; SV[sb + j] = totV[j]; }
     }
-    if (nj === 1) { res.usd = tot$[0]; res.mm = totM[0]; return res; }
+    if (nj === 1) { res.usd = tot$[0]; res.mm = totM[0]; res.mmv = totV[0]; return res; }
     // Items that make leaving likelier to be possible, or cheaper.
     const hz = hazards[ev.hz[e]];
     let f0 = hz.feasible;
@@ -949,52 +1149,68 @@ export function buildWorld(m, settings) {
     }
     // The share able to leave grows with time. Those who become able on a
     // given day take the best of that day and the later ones, or stay.
-    let best = 0, bestCost = tot$[0] + v * totM[0], bestUsd = tot$[0];
-    let usd = 0, mm = 0, later = 1 - (1 - f0) * stuckBy[sb + nj - 1];
+    let best = 0, bestCost = tot$[0] + totV[0], bestUsd = tot$[0];
+    let usd = 0, mm = 0, mmv = 0, later = 1 - (1 - f0) * stuckBy[sb + nj - 1];
     const stuck = 1 - later;
     for (let j = nj - 1; j >= 1; j--) {
       const u = tot$[j] + keep * leaveCost[sb + j];
-      const c = u + v * totM[j];
+      const c = u + totV[j];
       if (c < bestCost) { bestCost = c; best = j; bestUsd = u; }
       const before = j === 1 ? 0 : 1 - (1 - f0) * stuckBy[sb + j - 1];
       const mass = later - before;
-      usd += mass * bestUsd; mm += mass * totM[best];
+      usd += mass * bestUsd; mm += mass * totM[best]; mmv += mass * totV[best];
       later = before;
     }
     res.usd = usd + stuck * tot$[0];
     res.mm = mm + stuck * totM[0];
+    res.mmv = mmv + stuck * totV[0];
     return res;
   }
 
-  // Exposure harm of one hazard under a kit: [usd, mm] per year.
-  function exposureHarm(hz, level) {
-    let usd = 0, mm = 0;
+  // Exposure harm of one hazard under a kit, per year, into `out`:
+  // [dollars, micromorts, valued micromorts].
+  function exposureHarm(hz, level, out) {
+    let usd = 0, mm = 0, mmv = 0;
     for (const x of hz.exposures) {
-      if (x.usd) usd += x.usd * keepOf(chanReducers[x.c], level, 'hardship', hz);
+      const list = chanReducers[x.c] || EMPTY;
+      if (x.hard || x.fin || x.work) {
+        const bH = keepOf(list, level, 'hardship', hz);
+        if (x.hard) for (let t = 0; t < nPeople; t++) usd += x.hard[t] * KV[bH + t];
+        if (x.fin) usd += x.fin * KV[bH + nPeople];
+        if (x.work) {
+          const b = x.workOnMortality ? keepOf(list, level, 'mortality', hz) : bH;
+          for (const p of people) usd += x.work * p.dv * KV[b + p.index];
+        }
+      }
       if (x.mmBase) {
-        const keep = keepOf(chanReducers[x.c], level, 'mortality', hz);
-        for (const w of x.mm) mm += saturate(x.mmBase * w) * keep;
+        const bM = keepOf(list, level, 'mortality', hz);
+        for (const p of people) {
+          const r = saturate(x.mmBase * x.mm[p.index]) * KV[bM + p.index];
+          mm += r; mmv += r * p.v;
+        }
       }
     }
-    return [hz.pw * usd, hz.pw * mm];
+    out[0] = hz.pw * usd; out[1] = hz.pw * mm; out[2] = hz.pw * mmv;
+    return out;
   }
-  const curX = hazards.map(() => [0, 0]);
+  const curX = hazards.map(() => new Float64Array(3));
+  const tmpX = new Float64Array(3);
 
   function refresh(level) {
     version++;
     for (let e = 0; e < E; e++) {
       const r = eventHarm(e, null, level, true);
-      cur$[e] = r.usd; curM[e] = r.mm;
+      cur$[e] = r.usd; curM[e] = r.mm; curV[e] = r.mmv;
     }
-    hazards.forEach((hz, h) => { curX[h] = exposureHarm(hz, level); });
+    hazards.forEach((hz, h) => { exposureHarm(hz, level, curX[h]); });
   }
 
   function total(level) {
-    let usd = 0, mm = 0;
-    for (let e = 0; e < E; e++) { usd += ev.w[e] * cur$[e]; mm += ev.w[e] * curM[e]; }
-    for (const x of curX) { usd += x[0]; mm += x[1]; }
-    if (level) for (const it of items) if (it.annual && level[it.i] > 0) { usd += it.annual.usd; mm += it.annual.mm; }
-    return { usd, mm };
+    let usd = 0, mm = 0, mmv = 0;
+    for (let e = 0; e < E; e++) { usd += ev.w[e] * cur$[e]; mm += ev.w[e] * curM[e]; mmv += ev.w[e] * curV[e]; }
+    for (const x of curX) { usd += x[0]; mm += x[1]; mmv += x[2]; }
+    if (level) for (const it of items) if (it.annual && level[it.i] > 0) { usd += it.annual.usd; mm += it.annual.mm; mmv += it.annual.mmv; }
+    return { usd, mm, mmv };
   }
 
   // Harm averted per year by raising items to new levels. `add` is a list of
@@ -1013,40 +1229,45 @@ export function buildWorld(m, settings) {
     }
     for (const [i, lv] of add) level[i] = lv;
     version++;
-    let usd = 0, mm = 0;
-    const per = byHazard ? hazards.map(() => [0, 0]) : null;
+    let usd = 0, mm = 0, mmv = 0;
+    const per = byHazard ? hazards.map(() => [0, 0, 0]) : null;
     for (const e of events) {
       const r = eventHarm(e, needSet, level, commit);
-      const dU = ev.w[e] * (cur$[e] - r.usd), dM = ev.w[e] * (curM[e] - r.mm);
-      usd += dU; mm += dM;
-      if (per) { per[ev.hz[e]][0] += dU; per[ev.hz[e]][1] += dM; }
-      if (commit) { cur$[e] = r.usd; curM[e] = r.mm; }
+      const dU = ev.w[e] * (cur$[e] - r.usd), dM = ev.w[e] * (curM[e] - r.mm), dV = ev.w[e] * (curV[e] - r.mmv);
+      usd += dU; mm += dM; mmv += dV;
+      if (per) { const q = per[ev.hz[e]]; q[0] += dU; q[1] += dM; q[2] += dV; }
+      if (commit) { cur$[e] = r.usd; curM[e] = r.mm; curV[e] = r.mmv; }
     }
     if (chans.size) {
       hazards.forEach((hz, h) => {
         if (!hz.exposures.some((x) => chans.has(x.c))) return;
-        const x = exposureHarm(hz, level);
-        usd += curX[h][0] - x[0]; mm += curX[h][1] - x[1];
-        if (per) { per[h][0] += curX[h][0] - x[0]; per[h][1] += curX[h][1] - x[1]; }
-        if (commit) curX[h] = x;
+        const x = exposureHarm(hz, level, tmpX);
+        const c = curX[h];
+        usd += c[0] - x[0]; mm += c[1] - x[1]; mmv += c[2] - x[2];
+        if (per) { per[h][0] += c[0] - x[0]; per[h][1] += c[1] - x[1]; per[h][2] += c[2] - x[2]; }
+        if (commit) c.set(x);
       });
     }
     add.forEach(([i, lv], n) => {
       const a = items[i].annual;
-      if (a && old[n] === 0 && lv > 0) { usd -= a.usd; mm -= a.mm; }
+      if (a && old[n] === 0 && lv > 0) { usd -= a.usd; mm -= a.mm; mmv -= a.mmv; }
     });
     if (!commit) { add.forEach(([i], n) => { level[i] = old[n]; }); version++; }
-    return { usd, mm, per };
+    return { usd, mm, mmv, per };
   }
 
-  // Annual cost and upfront outlay of raising an item from one level to another.
-  function cost(i, from, to) {
+  // Annual cost and upfront outlay of raising an item from one level to
+  // another. A personal item's fixed price is paid with the first member's
+  // copy only.
+  function cost(i, from, to, level) {
     const it = items[i];
     const units = (it.unitsAt(to) - it.unitsAt(from)) * it.scale;
+    const first = from === 0;
+    const fixed = first && !(level && it.siblings.some((s) => level[s] > 0));
     return {
-      annual: units * it.perUnit + (from === 0 ? it.fixed : 0),
-      upfront: units * it.unitUsd + (from === 0 ? it.fixedUsd : 0),
-      hours: from === 0 ? it.setupHours : 0,
+      annual: units * it.perUnit + (first ? it.running : 0) + (fixed ? it.fixedCapital : 0),
+      upfront: units * it.unitUsd + (fixed ? it.fixedUsd : 0),
+      hours: first ? it.setupHours : 0,
       units,
     };
   }
@@ -1086,7 +1307,7 @@ function candidates(W, level) {
       const providers = (W.capProviders[cap] || []).filter((p) => W.items[p].applicable);
       if (providers.some((p) => level[p] > 0 || extra.some(([i]) => i === p))) continue;
       if (!providers.length) return false;
-      const cheapest = providers.reduce((a, b) => (W.cost(a, 0, 1).annual <= W.cost(b, 0, 1).annual ? a : b));
+      const cheapest = providers.reduce((a, b) => (W.cost(a, 0, 1, level).annual <= W.cost(b, 0, 1, level).annual ? a : b));
       if (cheapest !== it.i) extra.push([cheapest, 1]);
     }
     return true;
@@ -1114,7 +1335,7 @@ function candidates(W, level) {
 function costOf(W, level, add) {
   const c = { annual: 0, upfront: 0, hours: 0 };
   for (const [i, lv] of add) {
-    const x = W.cost(i, level[i], lv);
+    const x = W.cost(i, level[i], lv, level);
     c.annual += x.annual; c.upfront += x.upfront; c.hours += x.hours;
   }
   return c;
@@ -1162,11 +1383,11 @@ export function rank(data, settings) {
       let hit = cache.get(key);
       if (!hit) {
         const x = W.delta(level, add);
-        hit = { usd: x.usd, mm: x.mm, t: touched(add) };
+        hit = { usd: x.usd, mm: x.mm, mmv: x.mmv, t: touched(add) };
         cache.set(key, hit);
       }
       const c = costOf(W, level, add);
-      const value = hit.usd + W.v * hit.mm;
+      const value = hit.usd + hit.mmv;
       const ratio = ratioOf(value, c.annual);
       if (!best || ratio > best.ratio || (ratio === best.ratio && value > best.value)) best = { add, c, value, ratio };
     }
@@ -1179,9 +1400,9 @@ export function rank(data, settings) {
       if (stale) cache.delete(key);
     }
     cumUpfront += c.upfront; cumAnnual += c.annual;
-    const value = d.usd + W.v * d.mm;
+    const value = d.usd + d.mmv;
     const byHazard = W.hazards
-      .map((hz, h) => ({ id: hz.id, p: hz.p, value: d.per[h][0] + W.v * d.per[h][1] }))
+      .map((hz, h) => ({ id: hz.id, p: hz.p, value: d.per[h][0] + d.per[h][2] }))
       .filter((x) => Math.abs(x.value) > 1e-12)
       .sort((a, b) => b.value - a.value);
     // The annual probability of the main hazard at which this entry breaks even.
@@ -1194,7 +1415,7 @@ export function rank(data, settings) {
     entries.push({
       items: add.map(([i, lv]) => {
         const it = W.items[i];
-        return { id: it.id, level: lv, label: it.ladder ? it.ladder[lv - 1].label : null, units: it.unitsAt(lv) * it.scale };
+        return { id: it.baseId, key: it.id, person: it.person === undefined ? null : W.people[it.person].key, level: lv, label: it.ladder ? it.ladder[lv - 1].label : null, units: it.unitsAt(lv) * it.scale };
       }),
       add: add.map(([i, lv]) => [W.items[i].id, lv]),
       upfrontUsd: c.upfront, setupHours: c.hours, annualCostUsd: c.annual,
@@ -1211,6 +1432,7 @@ export function rank(data, settings) {
     survival: W.survival,
     harm: { unprepared: baseline, start, end: W.total(level) },
     hazards: W.hazards.map((hz) => ({ id: hz.id, p: hz.p })),
+    people: W.people.map((p) => ({ key: p.key, label: p.label, age: p.age, impartial: p.impartial, micromortValueUsd: p.v, hourValueUsd: p.hv, workDayUsd: p.dv, impactEndYear: p.impartial ? p.impactEndYear : null })),
     events: W.E,
   };
 }
@@ -1229,9 +1451,9 @@ export function robustness(data, settings, order, { samples = 200, seed = 1, raw
       const add = step.add.map(([id, lv]) => [W.itemIndex[id], lv]);
       const c = costOf(W, level, add);
       const d = W.delta(level, add, { commit: true });
-      ratios[n].push(ratioOf(d.usd + W.v * d.mm, c.annual));
+      ratios[n].push(ratioOf(d.usd + d.mmv, c.annual));
       // For checking averages: total value and total cost over the samples.
-      if (sums) { sums[n] ||= { value: 0, cost: 0 }; sums[n].value += d.usd + W.v * d.mm; sums[n].cost += c.annual; }
+      if (sums) { sums[n] ||= { value: 0, cost: 0 }; sums[n].value += d.usd + d.mmv; sums[n].cost += c.annual; }
     });
   }
   if (raw) return ratios;
