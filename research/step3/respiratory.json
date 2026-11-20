@@ -1,0 +1,1493 @@
+{
+ "kind": "items",
+ "group": "respiratory",
+ "channels": [
+  {
+   "id": "infection",
+   "definition": "Infection of household members with an airborne pandemic pathogen. The pandemic hazard supplies the baseline (attack rate x fatality, plus illness hardship) for a household living as people did in COVID: some masking with cloth or surgical masks, fewer outings. Items here change the chance of infection, not the outcome once infected.",
+   "everydayAnnualMicromortsPerPerson": {
+    "lo": 30,
+    "mid": 55,
+    "hi": 100,
+    "tag": "derived",
+    "basis": "Adult 15-59. Influenza 2023-24: 1.9 deaths per 100,000 at 18-49 and 9.1 at 50-64 (CDC), about 35 micromorts weighted over 15-59; plus about 20 for endemic COVID (guess). https://archive.cdc.gov/www_cdc_gov/flu-burden/php/data-vis/2023-2024.html"
+   },
+   "everydayAnnualUsdPerHousehold": {
+    "lo": 200,
+    "mid": 700,
+    "hi": 2000,
+    "tag": "guess",
+    "basis": "About 2-3 respiratory infections per person a year x 2.5 people x roughly $100 each in lost time and misery."
+   },
+   "inHazards": "Every infection enters from outside. About 25% (15-45%) of members' infections come from another household member and 75% from their own outside contacts, but the first kind needs an introduction, so cutting every member's outside hazard by x cuts the household total by about x. Only home-side measures (air cleaning, isolating the sick) are capped by the 25%. A mask worn by one member alone removes at most that member's outside share. Reduce effects act on the hazard rate: with baseline attack rate A and realised reduction r = fractionRemoved x adherence, P(infected) = 1 - (1 - A)^(1 - r). Respirators, staying home and home air cleaning multiply (remaining = product of 1 - r); the respirator items are substitutes, so take the best one worn, not the product. Avoided infection is worth the full harm only if the pandemic ends or fatality falls later (COVID vaccines came after 13 months).",
+   "householdShareOfInfections": {
+    "lo": 0.15,
+    "mid": 0.25,
+    "hi": 0.45,
+    "tag": "data",
+    "basis": "Geneva serosurvey 22.5% (20.1-24.2), 23.2% in two-person and 41.2% in five-person households; Virus Watch 18%; Singapore 19-34%, rising to 25-50% under lockdown (Curmei 2022). https://pmc.ncbi.nlm.nih.gov/articles/PMC8206123"
+   },
+   "householdSecondaryAttackRate": {
+    "lo": 0.15,
+    "mid": 0.25,
+    "hi": 0.45,
+    "tag": "data",
+    "basis": "17.3% per infected member in Geneva, 23.0% in Beijing (Wang 2020), pooled 24% corrected (Curmei 2022); Omicron 42.7% (Madewell 2022, search snippet). https://pmc.ncbi.nlm.nih.gov/articles/PMC8344712"
+   },
+   "protectionWhileWorn": {
+    "note": "Share of the infectious dose (and, at low doses, of infection risk) removed while the device is on, against wearing nothing. Lab figure = 1 - mean(1/protection factor), computed from the geometric mean and 5th percentile assuming a lognormal spread.",
+    "cloth": {
+     "lo": 0,
+     "mid": 0.15,
+     "hi": 0.4,
+     "tag": "derived",
+     "basis": "Fit factor about 2 for fabric masks on fine aerosol (mean 2.1, O'Kelly 2021; total-inward-leakage protection factor <2.3, Duncan 2021) caps the lab figure near 50%; Andrejko 2022 adjusted odds ratio 0.44 (0.17-1.17). https://europepmc.org/article/PMC/PMC7822328"
+    },
+    "surgical": {
+     "lo": 0.05,
+     "mid": 0.3,
+     "hi": 0.55,
+     "tag": "derived",
+     "basis": "Lab: geometric-mean protection factor 3, 5th percentile 1 (Lawrence 2006) gives mean leakage 42%. Trials: DANMASK odds ratio 0.82 (0.54-1.23); Bangladesh prevalence ratio 0.91 (0.82-1.00) for a 29-point rise in wearing; Cochrane 0.95 (0.84-1.09). https://europepmc.org/article/MED/16857645"
+    },
+    "n95Unfitted": {
+     "lo": 0.4,
+     "mid": 0.7,
+     "hi": 0.9,
+     "tag": "derived",
+     "basis": "Lab: geometric mean 21, 5th percentile 3 without fit testing (Lawrence 2006) gives mean leakage 9.5%; untrained wearers got median fit factors of 5.6-64 by model (O'Kelly 2021) and about 2 before reading instructions (Kelly 2020). Trials against surgical masks show little: hazard ratio 1.14 (0.77-1.69) for surgical (Loeb 2022). Mid sits between lab (0.85-0.9) and trials. https://europepmc.org/article/MED/16857645"
+    },
+    "n95FitTested": {
+     "lo": 0.6,
+     "mid": 0.88,
+     "hi": 0.97,
+     "tag": "derived",
+     "basis": "5th-percentile protection factor 20.5 after a quantitative fit test (Lawrence 2006), so mean leakage under 3%; the low end reflects the health-worker trials, which used fit-tested N95s. https://europepmc.org/article/MED/16857645"
+    },
+    "elastomericP100FitChecked": {
+     "lo": 0.7,
+     "mid": 0.93,
+     "hi": 0.99,
+     "tag": "derived",
+     "basis": "Elastomeric half-masks without fit testing: geometric mean 36, 5th percentile 7 (mean leakage 4.6%); 11-13 after a qualitative fit test (Lawrence 2006). OSHA assigned protection factor 10. No study measures infections. https://europepmc.org/article/MED/16857645"
+    },
+    "paprLooseHood": {
+     "lo": 0.9,
+     "mid": 0.97,
+     "hi": 0.999,
+     "tag": "derived",
+     "basis": "OSHA assigned protection factor 25 for a loose-fitting hood (4% leakage as the regulatory floor); no face seal to fail. No study measures infections. https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.134"
+    },
+    "improvisedBaseline": {
+     "lo": 0.05,
+     "mid": 0.2,
+     "hi": 0.4,
+     "tag": "guess",
+     "basis": "What a household without a stock wears while respirators are unobtainable: cloth at first, then surgical masks and KN95s of mixed quality (KN95 fit factor 2.2 in O'Kelly 2021)."
+    }
+   },
+   "stayHome": {
+    "definition": "Share of a household's pandemic infection risk avoided by not leaving home for D days = (share of exposure removed while at home) x (share of the pandemic's pre-vaccine hazard that falls inside the D days).",
+    "shareOfExposureRemovedWhileHome": {
+     "nobodyLeavesHouse": {
+      "lo": 0.9,
+      "mid": 0.97,
+      "hi": 0.995,
+      "tag": "guess",
+      "basis": "Sequestered communities in 1918 had zero cases while closed (Yerba Buena, Gunnison; Markel 2006). Residual: contact-free deliveries, lapses. https://wwwnc.cdc.gov/eid/article/12/12/06-0506-t1"
+     },
+     "nobodyLeavesApartment": {
+      "lo": 0.8,
+      "mid": 0.93,
+      "hi": 0.99,
+      "tag": "guess",
+      "basis": "As for a house, less shared corridors, lifts and air leakage between flats."
+     },
+     "oneAdultWorksOnSite": {
+      "lo": 0.55,
+      "mid": 0.78,
+      "hi": 0.9,
+      "tag": "derived",
+      "basis": "Worker keeps a share w = 0.5 (0.3-0.75) of normal outside exposure (work and commute, no shops or social life); everyone else is exposed only through the worker. Expected infections fall to w/n of baseline: 1 - 0.5/2 = 0.75 for two people, 0.83 for three, 0.88 for four. The worker's own risk falls by only 1 - w."
+     }
+    },
+    "shareOfHazardInsideWindow": {
+     "multiWaveCovidLike": {
+      "days30": {
+       "lo": 0.03,
+       "mid": 0.15,
+       "hi": 0.45,
+       "tag": "derived",
+       "basis": "Share of March 2020 - April 2021 COVID deaths in one 30-day window (CDC weekly counts): best-timed 0.17 US, 0.18 Texas, 0.51 New York City; first 30 days of the local epidemic 0.02-0.32. https://data.cdc.gov/resource/r8kw-7aab.json"
+      },
+      "days90": {
+       "lo": 0.1,
+       "mid": 0.4,
+       "hi": 0.7,
+       "tag": "derived",
+       "basis": "Same data: best-timed 0.46 US and Texas, 0.71 New York City; first 90 days 0.06 Texas, 0.21 US, 0.71 New York City."
+      },
+      "days180": {
+       "lo": 0.33,
+       "mid": 0.6,
+       "hi": 0.75,
+       "tag": "derived",
+       "basis": "Same data: best-timed 0.61 US, 0.65 Texas, 0.73 New York City; first 180 days 0.33-0.73."
+      }
+     },
+     "singleSharpWave": {
+      "days30": {
+       "lo": 0.25,
+       "mid": 0.5,
+       "hi": 0.8,
+       "tag": "guess",
+       "basis": "1918 autumn wave: most of a city's deaths fell within 4-10 weeks. Recalled from Markel 2007 (JAMA), table not opened."
+      },
+      "days90": {
+       "lo": 0.6,
+       "mid": 0.85,
+       "hi": 0.97,
+       "tag": "guess",
+       "basis": "As above."
+      },
+      "days180": {
+       "lo": 0.85,
+       "mid": 0.95,
+       "hi": 0.99,
+       "tag": "guess",
+       "basis": "As above; the remainder is later waves."
+      }
+     }
+    },
+    "shareOfRiskAvoidedMid": {
+     "multiWaveCovidLike": {
+      "nobodyLeaves": {
+       "days30": 0.14,
+       "days90": 0.38,
+       "days180": 0.57
+      },
+      "oneAdultWorksOnSite": {
+       "days30": 0.12,
+       "days90": 0.31,
+       "days180": 0.47
+      }
+     },
+     "singleSharpWave": {
+      "nobodyLeaves": {
+       "days30": 0.48,
+       "days90": 0.81,
+       "days180": 0.9
+      },
+      "oneAdultWorksOnSite": {
+       "days30": 0.39,
+       "days90": 0.66,
+       "days180": 0.74
+      }
+     }
+    },
+    "partialVersion": "Short of full sequestration, a food stock removes shopping trips. In the second English lockdown, shopping more than once a week carried an adjusted odds ratio of 1.69 (1.29-2.21) and accounted for 35% of infections acquired outside the home (Virus Watch). https://europepmc.org/article/MED/36874571"
+   },
+   "multipliers": [
+    {
+     "profile": "child",
+     "mortality": 0.02,
+     "hardship": 0.7,
+     "tag": "derived",
+     "basis": "COVID-like pandemic. US COVID deaths per 100,000 through 2023: 2.2 at 0-14 against 92 at 15-59 (CDC counts over approximate populations of 60M and 197M). Hardship guess. https://data.cdc.gov/resource/9bhg-hcku.json"
+    },
+    {
+     "profile": "age60to74",
+     "mortality": 8,
+     "hardship": 1.3,
+     "tag": "derived",
+     "basis": "COVID-like pandemic. US COVID deaths per 100,000: about 650 at 60-74 against 92 at 15-59, ratio 7; fatality per infection alone gives 15 (Levin 2020: 0.14% averaged over 15-59, 2.1% over 60-74), offset by lower infection rates in the old (seroprevalence 33% at 65+ against 64% at 18-49). Range 6-15. https://europepmc.org/article/MED/33289900"
+    },
+    {
+     "profile": "age75plus",
+     "mortality": 35,
+     "hardship": 1.5,
+     "tag": "derived",
+     "basis": "COVID-like pandemic. US COVID deaths per 100,000: about 2,660 at 75+ against 92, ratio 29; fatality per infection alone gives about 90. Range 25-90. https://data.cdc.gov/resource/9bhg-hcku.json"
+    },
+    {
+     "profile": "criticalDrug",
+     "mortality": 2,
+     "tag": "guess",
+     "basis": "Stands in for chronic disease (diabetes, heart disease), which roughly doubled COVID fatality at a given age; recalled, not sourced."
+    },
+    {
+     "profile": "powerDependent",
+     "mortality": 4,
+     "tag": "guess",
+     "basis": "Home oxygen or ventilation implies severe lung disease; no source found."
+    }
+   ],
+   "multipliersByHazard": {
+    "pandemicModerate": "Use the multipliers above.",
+    "pandemicSevere": [
+     {
+      "profile": "child",
+      "mortality": 0.35,
+      "tag": "guess",
+      "basis": "Equal-weight mix of a COVID-like pattern (0.02) and a 1918-like one (about 0.65, recalled). Range 0.02-1.5."
+     },
+     {
+      "profile": "age60to74",
+      "mortality": 4,
+      "tag": "guess",
+      "basis": "Mix of COVID-like (8) and 1918-like (about 0.25: the old were spared, recalled). Range 0.3-15."
+     },
+     {
+      "profile": "age75plus",
+      "mortality": 17,
+      "tag": "guess",
+      "basis": "Mix of COVID-like (35) and 1918-like (about 0.15, recalled). Range 0.1-90."
+     }
+    ]
+   }
+  },
+  {
+   "id": "smoke",
+   "definition": "Inhaled wildfire-smoke PM2.5. Exposure unit: one person-day of heavy smoke, meaning outdoor 24-hour PM2.5 about 100 micrograms per cubic metre above normal (US air quality index roughly 150-200), with the household behaving as people do: mostly indoors, windows shut, no purifier.",
+   "everydayAnnualMicromortsPerPerson": {
+    "lo": 4,
+    "mid": 16,
+    "hi": 60,
+    "tag": "derived",
+    "basis": "Under-65s, any US household, from smoke carried long distances. Ma 2024: 11,415 smoke deaths a year (6,754-16,075), of which about 38% under 65 on its age-specific coefficients: 4,340 / 274M = 16. Qiu 2025 implies 3.6 times more (about 41,000 a year in 2011-2020, from a search snippet). https://europepmc.org/article/PMC/PMC11459178"
+   },
+   "everydayAnnualUsdPerHousehold": {
+    "lo": 5,
+    "mid": 40,
+    "hi": 200,
+    "tag": "guess",
+    "basis": "Roughly half a heavy-smoke day a year per person outside wildfire regions x $40 x 2.5 people."
+   },
+   "inHazards": "The wildfire hazard should supply person-days of heavy smoke; scale linearly with concentration between about 35 and 250 micrograms per cubic metre. Per person-day at 100, adult 15-59: 1.5 micromorts (0.3-5) and $40 of hardship (8-130). All ages together: about 5 on the acute route (19% of 25 micromorts a day) and about 10 on the long-term route. About 70% (50-85%) of the inhaled dose on such days is taken inside the home, which bounds what a purifier can do; 10-25% is taken outdoors and in transit, which bounds a respirator worn only outside.",
+   "perPersonDayHeavySmoke": {
+    "micromorts": {
+     "lo": 0.3,
+     "mid": 1.5,
+     "hi": 5,
+     "tag": "derived",
+     "basis": "Three routes, adult under 65, 100 micrograms per cubic metre for one day. (1) Acute: relative risk 1.019 per 10 of 3-day mean (Chen 2021, snippet) = 19% of one day's 5 non-accidental micromorts = 1.0. (2) Long-term, ages 0-64 (Ma 2024): +0.55 deaths per 100,000 a month at annual smoke of 5+ (taken as 7) = 0.026 per microgram-day = 2.6; +0.07 at 1-5 (taken as 2) = 1.2. (3) Generic PM2.5 coefficient of about 0.7% per microgram annual (recalled) = 3.8. https://europepmc.org/article/PMC/PMC11459178"
+    },
+    "hardshipUsd": {
+     "lo": 8,
+     "mid": 40,
+     "hi": 130,
+     "tag": "guess",
+     "basis": "Willingness to pay $87-95 per smoke symptom-day avoided (Richardson, Loomis and Champ 2013, 2009 fire; search snippet), about $135 today; assume a third of people have symptoms on a heavy day, plus $5-10 for staying in. https://pubs.usgs.gov/publication/70118043"
+    },
+    "micromortsPerMicrogramDay": {
+     "lo": 0.003,
+     "mid": 0.015,
+     "hi": 0.05,
+     "tag": "derived",
+     "basis": "The micromort figure divided by 100."
+    }
+   },
+   "homeShareOfDose": {
+    "lo": 0.5,
+    "mid": 0.7,
+    "hi": 0.85,
+    "tag": "derived",
+    "basis": "Time at home 80% x infiltration 0.4 = 0.32; other buildings 12% x 0.4 = 0.05; outdoors and in transit 8% x 1 = 0.08; home = 0.32/0.45. Infiltration on fire days 0.2 against 0.4 normally in 1,400 Californian buildings with sensors (Liang 2021), higher in leaky homes or with windows open. https://europepmc.org/article/MED/34465624"
+   },
+   "multipliers": [
+    {
+     "profile": "age60to74",
+     "mortality": 5,
+     "hardship": 1.3,
+     "tag": "derived",
+     "basis": "Ma 2024 coefficients are 8-13 times larger at 65+ than at 0-64 (2.34 against 0.30, and 7.08 against 0.55, deaths per 100,000 a month); 60-74 has about 0.4 of the 65+ baseline death rate. https://europepmc.org/article/PMC/PMC11459178"
+    },
+    {
+     "profile": "age75plus",
+     "mortality": 15,
+     "hardship": 1.5,
+     "tag": "derived",
+     "basis": "Same source; 75+ has about 1.9 times the 65+ average death rate, shaded down."
+    },
+    {
+     "profile": "child",
+     "mortality": 0.3,
+     "hardship": 1.5,
+     "tag": "guess",
+     "basis": "Low baseline mortality; more asthma and more time outdoors."
+    },
+    {
+     "profile": "powerDependent",
+     "mortality": 5,
+     "hardship": 2,
+     "tag": "guess",
+     "basis": "Home oxygen implies severe lung disease; no source found."
+    }
+   ]
+  }
+ ],
+ "items": [
+  {
+   "id": "n95-respirators",
+   "name": "Disposable N95 respirators",
+   "spec": "NIOSH-approved flat-fold N95 with head straps (3M Aura 9205+ or equivalent; FFP2 in Europe), stored sealed, with one practice donning per person.",
+   "fromLonglistRows": [
+    71
+   ],
+   "scalesWith": "person",
+   "unit": "one respirator",
+   "ladder": [
+    {
+     "label": "5 per person",
+     "units": 5
+    },
+    {
+     "label": "10 per person",
+     "units": 10
+    },
+    {
+     "label": "20 per person",
+     "units": 20
+    },
+    {
+     "label": "40 per person",
+     "units": 40
+    },
+    {
+     "label": "80 per person",
+     "units": 80
+    }
+   ],
+   "price": {
+    "usdPerUnit": {
+     "lo": 0.9,
+     "mid": 1.5,
+     "hi": 2.4,
+     "tag": "derived",
+     "basis": "$38.99 per 20 at Quill = $1.95 each, read on the page; search snippets show $19-25 per 20 at Amazon and $44-48 at Home Depot and Staples. https://www.quill.com/3m-aura-n95-particulate-respirator-white-20-pack-9205p-20-dc/cbs/55413177.html"
+    },
+    "product": "3M Aura N95 Particulate Respirator 9205+, pack of 20",
+    "source": "https://www.quill.com/3m-aura-n95-particulate-respirator-white-20-pack-9205p-20-dc/cbs/55413177.html",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 3,
+    "mid": 5,
+    "hi": 10,
+    "tag": "guess",
+    "basis": "Step 2 longlist gives 3-5 years (The Prepared); straps and nose foam age before the filter does."
+   },
+   "setupHours": {
+    "lo": 0.2,
+    "mid": 0.5,
+    "hi": 1.5,
+    "tag": "guess",
+    "basis": "Buy, try one on each person, watch a donning video. Instructions matter: untrained wearers got a fit factor near 2, about 10 after reading them (Kelly 2020)."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0,
+    "mid": 0.05,
+    "hi": 0.2,
+    "tag": "guess",
+    "basis": "Glance at the expiry date."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 2,
+    "tag": "guess",
+    "basis": "None beyond replacement at end of life."
+   },
+   "everydayShare": {
+    "lo": 0,
+    "mid": 0.1,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "Dusty jobs, a smoke day, visiting someone ill."
+   },
+   "volumeLitresPerUnit": 0.16,
+   "reliability": {
+    "lo": 0.75,
+    "mid": 0.9,
+    "hi": 0.97,
+    "tag": "guess",
+    "basis": "Poor face fit for some, beards, perished straps, cannot find the box."
+   },
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "reduce",
+     "target": "infection",
+     "hazards": [
+      "pandemicModerate"
+     ],
+     "fractionRemoved": {
+      "lo": 0.2,
+      "mid": 0.6,
+      "hi": 0.87,
+      "tag": "derived",
+      "basis": "Relative to improvised masks: 1 - (1 - 0.7)/(1 - 0.2) = 0.625, from protection while worn of 0.7 (0.4-0.9) for an unfitted N95 and 0.2 (0.05-0.4) for cloth or surgical. See channel infection, protectionWhileWorn."
+     },
+     "adherence": {
+      "lo": 0.25,
+      "mid": 0.5,
+      "hi": 0.75,
+      "tag": "guess",
+      "basis": "Share of outside exposure actually spent in a correctly worn respirator over a year: self-reported masking peaked near 89% in the US in late 2020 (search snippet), but much transmission happens where masks come off (meals, friends, break rooms), small children cannot wear them, and 'always' maskers in Andrejko 2022 had an odds ratio of only 0.44."
+     },
+     "coverage": {
+      "personDaysOfOutingsPerMask": {
+       "lo": 1,
+       "mid": 3,
+       "hi": 7,
+       "tag": "guess",
+       "basis": "Fit holds for about five donnings before fit factors fall below 100 (NIOSH 2012, search snippet); CDC advised a limit of five reuses."
+      },
+      "shareOfDaysWithAnOuting": {
+       "lo": 0.2,
+       "mid": 0.45,
+       "hi": 0.75,
+       "tag": "guess",
+       "basis": "About 0.2 for someone working from home who shops once or twice a week, 0.7 for a commuter."
+      },
+      "daysUntilRespiratorsCanBeBought": {
+       "lo": 90,
+       "mid": 200,
+       "hi": 420,
+       "tag": "guess",
+       "basis": "N95s were 'still rarely available to consumers' in late January 2021, eleven months in (NPR, search snippet); KN95s of mixed quality from about month four."
+      },
+      "use": "Share of the shortage covered = min(1, masks x days per mask / (shortage days x share of days with an outing)). At the mid values a commuter needs about 48 masks and a home worker about 14."
+     },
+     "notes": "Applies only while the stock lasts and respirators cannot be bought; after that both worlds own them."
+    },
+    {
+     "type": "reduce",
+     "target": "infection",
+     "hazards": [
+      "pandemicSevere"
+     ],
+     "fractionRemoved": {
+      "lo": 0.2,
+      "mid": 0.6,
+      "hi": 0.87,
+      "tag": "derived",
+      "basis": "As for pandemicModerate."
+     },
+     "adherence": {
+      "lo": 0.5,
+      "mid": 0.75,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Fear of a far deadlier pathogen removes most unmasked outings; no data."
+     },
+     "coverage": {
+      "personDaysOfOutingsPerMask": {
+       "lo": 1,
+       "mid": 3,
+       "hi": 7,
+       "tag": "guess",
+       "basis": "Fit holds for about five donnings before fit factors fall below 100 (NIOSH 2012, search snippet); CDC advised a limit of five reuses."
+      },
+      "shareOfDaysWithAnOuting": {
+       "lo": 0.2,
+       "mid": 0.45,
+       "hi": 0.75,
+       "tag": "guess",
+       "basis": "About 0.2 for someone working from home who shops once or twice a week, 0.7 for a commuter."
+      },
+      "daysUntilRespiratorsCanBeBought": {
+       "lo": 90,
+       "mid": 200,
+       "hi": 420,
+       "tag": "guess",
+       "basis": "N95s were 'still rarely available to consumers' in late January 2021, eleven months in (NPR, search snippet); KN95s of mixed quality from about month four."
+      },
+      "use": "Share of the shortage covered = min(1, masks x days per mask / (shortage days x share of days with an outing)). At the mid values a commuter needs about 48 masks and a home worker about 14."
+     },
+     "notes": "Substitute for the elastomeric respirator: count whichever is worn, not both."
+    },
+    {
+     "type": "reduce",
+     "target": "smoke",
+     "hazards": [
+      "wildfire"
+     ],
+     "fractionRemoved": {
+      "lo": 0.08,
+      "mid": 0.2,
+      "hi": 0.45,
+      "tag": "derived",
+      "basis": "Outdoors and in transit is about 18% of the dose (0.08/0.45); an N95 removes about 80% of that (modelled protection factor 16 with 5% leakage, Kodros 2021) = 0.14; wearing it for part of the waking day indoors adds up to 0.1-0.3. https://europepmc.org/article/PMC/PMC8438762"
+     },
+     "adherence": {
+      "lo": 0.2,
+      "mid": 0.5,
+      "hi": 0.8,
+      "tag": "guess",
+      "basis": "Worn for most outdoor time, seldom indoors."
+     },
+     "notes": "Two or three masks per person cover a typical smoke episode; the first ladder step is enough."
+    },
+    {
+     "type": "other",
+     "description": "At home when a member falls ill: a respirator on the sick person and on whoever cares for them cuts within-household spread. Families who masked at home before the first case showed symptoms had an odds ratio of 0.21 (0.06-0.79) for onward spread in Beijing; masking after symptoms began showed no significant effect. Rough size: household share 0.25 x efficacy 0.3 x adherence 0.3 = 2% of total risk. Not included in the reduce effects above."
+    },
+    {
+     "type": "other",
+     "description": "Also filters fallout and volcanic or demolition dust while outdoors; inhaled dose is a minor part of fallout harm and is not quantified here."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "Without fit testing, N95 filtering facepieces had a geometric-mean protection factor of 21 and a 5th percentile of 3; surgical masks 3 and 1; elastomeric N95s 36 and 7. After a quantitative fit test the N95 5th percentile was 20.5.",
+     "source": "https://europepmc.org/article/MED/16857645",
+     "year": 2006,
+     "verified": true
+    },
+    {
+     "claim": "Seven untrained wearers, five N95 models: 6 of 35 combinations reached fit factor 100; model medians 5.6-64. KN95 mean 2.2, surgical 3.2, fabric 2.1. Self-judged fit was right 35% of the time.",
+     "source": "https://europepmc.org/article/PMC/PMC7822328",
+     "year": 2021,
+     "verified": true
+    },
+    {
+     "claim": "Untrained lay people mostly achieved a fit factor of 2 with an N95, and at least 10 after reading a factsheet or the maker's instructions.",
+     "source": "https://digital.lib.washington.edu/researchworks/items/ce197d09-53ca-4ba0-b90b-222522e0af9c",
+     "year": 2020,
+     "verified": true
+    },
+    {
+     "claim": "Health workers randomised to medical masks or fit-tested N95s: COVID-19 in 10.46% against 9.27%, hazard ratio 1.14 (0.77-1.69).",
+     "source": "https://europepmc.org/article/MED/36442064",
+     "year": 2022,
+     "verified": true
+    },
+    {
+     "claim": "Cochrane: N95 against medical masks, risk ratio 0.70 (0.45-1.10) for clinical respiratory illness, 0.82 (0.66-1.03) for influenza-like illness, 1.10 (0.90-1.34) for confirmed influenza. Medical masks against none, 0.95 (0.84-1.09).",
+     "source": "https://www.cochrane.org/CD006207/ARI_physical-interventions-to-interrupt-or-reduce-the-spread-of-respiratory-viruses",
+     "year": 2023,
+     "verified": true
+    },
+    {
+     "claim": "California case-control study: adjusted odds of a positive test 0.17 (0.05-0.64) for N95 or KN95, 0.34 (0.13-0.90) surgical, 0.44 (0.17-1.17) cloth, against no mask; 0.44 (0.24-0.82) for always masking.",
+     "source": "https://www.cdc.gov/mmwr/volumes/71/wr/mm7106e1.htm",
+     "year": 2022,
+     "verified": true
+    },
+    {
+     "claim": "DANMASK-19: infection in 1.8% with a surgical-mask recommendation against 2.1%, odds ratio 0.82 (0.54-1.23).",
+     "source": "https://europepmc.org/article/MED/33205991",
+     "year": 2021,
+     "verified": true
+    },
+    {
+     "claim": "Bangladesh: proper mask-wearing rose from 13.3% to 42.3%; symptomatic seroprevalence ratio 0.91 (0.82-1.00).",
+     "source": "https://europepmc.org/article/MED/34855513",
+     "year": 2022,
+     "verified": true
+    },
+    {
+     "claim": "N95s were still rarely available to US consumers in late January 2021.",
+     "source": "https://www.npr.org/sections/health-shots/2021/01/27/960336778/why-n95-masks-are-still-in-short-supply-in-the-u-s",
+     "year": 2021,
+     "verified": false
+    },
+    {
+     "claim": "Five consecutive donnings can be performed before fit factors consistently drop below 100.",
+     "source": "https://stacks.cdc.gov/view/cdc/193543",
+     "year": 2012,
+     "verified": false
+    },
+    {
+     "claim": "Mask use by the family before the first case's symptoms: odds ratio 0.21 (0.06-0.79); household secondary attack rate 23.0%.",
+     "source": "https://europepmc.org/article/PMC/PMC7264640",
+     "year": 2020,
+     "verified": true
+    }
+   ],
+   "confidence": "derived",
+   "notes": "Protection is well measured in the lab and poorly confirmed by trials; the range spans both. KN95s are excluded as a spec because of fit (ear loops) and counterfeits."
+  },
+  {
+   "id": "elastomeric-respirator-p100",
+   "name": "Elastomeric half-mask with P100 filters and fit check",
+   "spec": "One reusable half-facepiece per person in the right size (3M 6000 or 6500 series or similar), two pairs of P100 particulate filters each, and one household fit-check kit (saccharin or Bitrex aerosol and a hood).",
+   "fromLonglistRows": [
+    72
+   ],
+   "scalesWith": "person",
+   "unit": "respirator set for one person, including a share of the household fit-check kit",
+   "price": {
+    "usdPerUnit": {
+     "lo": 40,
+     "mid": 70,
+     "hi": 135,
+     "tag": "derived",
+     "basis": "Facepiece $23.99 and P100 filters $16.69 a pair at Quill (read on the pages) x 2 pairs = $57; fit check $45 home-made (guess) to $192.99 for a Gerson kit at Zoro (read), shared by 2.5 people = $18-77. https://www.quill.com/3m-half-facepiece-reusable-respirator-6200-medium/cbs/51568627.html"
+    },
+    "product": "3M 6200 half facepiece + 2 pairs 3M 2091 P100 filters + share of a qualitative fit-test kit",
+    "source": "https://www.quill.com/3m-half-facepiece-reusable-respirator-6200-medium/cbs/51568627.html",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 5,
+    "mid": 8,
+    "hi": 15,
+    "tag": "guess",
+    "basis": "Elastomer and sealed filters keep for years; no dated source read."
+   },
+   "setupHours": {
+    "lo": 1,
+    "mid": 2,
+    "hi": 4,
+    "tag": "guess",
+    "basis": "Choose sizes, fit-check each person, learn the seal check and strap settings."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0.1,
+    "mid": 0.3,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "Yearly re-check of fit and valves; children outgrow sizes."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 2,
+    "hi": 8,
+    "tag": "guess",
+    "basis": "Occasional valves and filters."
+   },
+   "everydayShare": {
+    "lo": 0,
+    "mid": 0.1,
+    "hi": 0.35,
+    "tag": "guess",
+    "basis": "Sanding, insulation and other dusty work; smoke days."
+   },
+   "volumeLitresPerUnit": 2,
+   "reliability": {
+    "lo": 0.6,
+    "mid": 0.8,
+    "hi": 0.93,
+    "tag": "guess",
+    "basis": "No size fits small children; beards break the seal; a Bitrex test wrongly rejected adequate fits in 41% of tests in a NIOSH study (search snippet), so some owners will give up."
+   },
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "reduce",
+     "target": "infection",
+     "hazards": [
+      "pandemicSevere"
+     ],
+     "fractionRemoved": {
+      "lo": 0.6,
+      "mid": 0.9,
+      "hi": 0.985,
+      "tag": "derived",
+      "basis": "Relative to improvised masks: 1 - (1 - 0.93)/(1 - 0.2) = 0.91, from protection while worn of 0.93 (0.7-0.99). See channel infection, protectionWhileWorn."
+     },
+     "adherence": {
+      "lo": 0.45,
+      "mid": 0.75,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Comfortable for hours and filters last months, but it muffles speech and cannot be worn while eating; assumes a pathogen deadly enough that appearance stops mattering."
+     },
+     "notes": "Filters need no resupply for the length of a pandemic, so there is no ladder."
+    },
+    {
+     "type": "reduce",
+     "target": "infection",
+     "hazards": [
+      "pandemicModerate"
+     ],
+     "fractionRemoved": {
+      "lo": 0.6,
+      "mid": 0.9,
+      "hi": 0.985,
+      "tag": "derived",
+      "basis": "As for pandemicSevere."
+     },
+     "adherence": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "In COVID almost nobody wore one in public even when they owned one; workplaces and schools often would not accept it."
+     },
+     "notes": "Most models have an unfiltered exhalation valve and so do not protect others."
+    },
+    {
+     "type": "reduce",
+     "target": "smoke",
+     "hazards": [
+      "wildfire"
+     ],
+     "fractionRemoved": {
+      "lo": 0.1,
+      "mid": 0.25,
+      "hi": 0.5,
+      "tag": "derived",
+      "basis": "As for the N95 with a better seal: 18% of dose outdoors x 0.95, plus part of indoor waking time."
+     },
+     "adherence": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Few people wear one for days on end at home."
+     },
+     "notes": "With organic-vapour/P100 combination cartridges it also removes smoke odour and irritant gases."
+    },
+    {
+     "type": "other",
+     "description": "Also filters fallout dust outdoors (minor share of fallout harm; not quantified)."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "Elastomeric N95 half-masks without fit testing: geometric-mean protection factor 36, 5th percentile 7; 11.1-13.0 after passing a fit test.",
+     "source": "https://europepmc.org/article/MED/16857645",
+     "year": 2006,
+     "verified": true
+    },
+    {
+     "claim": "OSHA assigned protection factors: half mask 10 (includes filtering facepieces), loose-fitting powered respirator 25, full facepiece 50.",
+     "source": "https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.134",
+     "year": 2006,
+     "verified": true
+    },
+    {
+     "claim": "3M 6200 facepiece $23.99; 3M 2091 P100 filter pack $16.69.",
+     "source": "https://www.quill.com/3m-particulate-filter-2091-p100/cbs/251589.html",
+     "year": 2026,
+     "verified": true
+    },
+    {
+     "claim": "Gerson QLFT50 saccharin fit-test kit $192.99.",
+     "source": "https://zoro.com/gerson-fit-test-kit-qlft50-qualitative-saccharin-065000/i/G011634574",
+     "year": 2026,
+     "verified": true
+    }
+   ],
+   "confidence": "derived",
+   "notes": "The largest effect in this file rests on lab protection factors; nobody has measured infections in elastomeric wearers. Dominates the N95 ladder in a severe pandemic and loses to it in a moderate one on adherence."
+  },
+  {
+   "id": "papr",
+   "name": "Powered air-purifying respirator",
+   "spec": "Belt-mounted blower with HEPA filter and loose-fitting hood (3M Versaflo TR-300N+ kit or similar), one per person who needs it, with a spare filter.",
+   "fromLonglistRows": [
+    74
+   ],
+   "scalesWith": "person",
+   "unit": "one complete unit",
+   "price": {
+    "usdPerUnit": {
+     "lo": 400,
+     "mid": 1800,
+     "hi": 2400,
+     "tag": "derived",
+     "basis": "$2,315 for the 3M Versaflo TR-300N+ kit at Uline, read on the page; $1,818 at Zoro (search snippet); unapproved powered hoods from a few hundred dollars (guess). https://www.uline.com/Product/Detail/H-11268/Reusable-Respirators/3M-Versaflo-PAPR-TR-300N-Kit"
+    },
+    "product": "3M Versaflo PAPR TR-300N+ Easy Clean kit",
+    "source": "https://www.uline.com/Product/Detail/H-11268/Reusable-Respirators/3M-Versaflo-PAPR-TR-300N-Kit",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 5,
+    "mid": 8,
+    "hi": 12,
+    "tag": "guess",
+    "basis": "Limited by the lithium battery and parts supply."
+   },
+   "setupHours": {
+    "lo": 1,
+    "mid": 2,
+    "hi": 4,
+    "tag": "guess",
+    "basis": "Assemble, charge, learn the airflow check."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0.5,
+    "mid": 1,
+    "hi": 2,
+    "tag": "guess",
+    "basis": "Top up the battery every few months and run the flow check."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 10,
+    "mid": 30,
+    "hi": 80,
+    "tag": "guess",
+    "basis": "Battery and filter replacement spread over the years."
+   },
+   "everydayShare": {
+    "lo": 0,
+    "mid": 0.02,
+    "hi": 0.1,
+    "tag": "guess",
+    "basis": "Almost none outside a workshop."
+   },
+   "volumeLitresPerUnit": 25,
+   "reliability": {
+    "lo": 0.5,
+    "mid": 0.75,
+    "hi": 0.9,
+    "tag": "guess",
+    "basis": "Flat or dead battery after years in a cupboard; 8-12 hours a charge."
+   },
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "reduce",
+     "target": "infection",
+     "hazards": [
+      "pandemicSevere"
+     ],
+     "fractionRemoved": {
+      "lo": 0.85,
+      "mid": 0.96,
+      "hi": 0.998,
+      "tag": "derived",
+      "basis": "Relative to improvised masks: 1 - (1 - 0.97)/(1 - 0.2) = 0.96, from the OSHA protection factor of 25 as a floor."
+     },
+     "adherence": {
+      "lo": 0.25,
+      "mid": 0.55,
+      "hi": 0.8,
+      "tag": "guess",
+      "basis": "Bulky, noisy, conspicuous, needs charging."
+     },
+     "notes": "Adds little over a well-fitting elastomeric (0.96 against 0.9); the case for it is a household member who cannot get a seal: beard, facial shape, or a child old enough for a hood."
+    },
+    {
+     "type": "reduce",
+     "target": "infection",
+     "hazards": [
+      "pandemicModerate"
+     ],
+     "fractionRemoved": {
+      "lo": 0.85,
+      "mid": 0.96,
+      "hi": 0.998,
+      "tag": "derived",
+      "basis": "As for pandemicSevere."
+     },
+     "adherence": {
+      "lo": 0.01,
+      "mid": 0.08,
+      "hi": 0.25,
+      "tag": "guess",
+      "basis": "Very few would wear one in public for a COVID-scale threat."
+     },
+     "notes": "Substitute for the other respirators."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "3M Versaflo TR-300N+ kit: $2,315, NIOSH approved, assigned protection factor 25, battery run time 8-12 hours.",
+     "source": "https://www.uline.com/Product/Detail/H-11268/Reusable-Respirators/3M-Versaflo-PAPR-TR-300N-Kit",
+     "year": 2026,
+     "verified": true
+    },
+    {
+     "claim": "A $40 'mini-PAPR' could not keep up with breathing (Jeff Kaufman, via the step 2 longlist).",
+     "source": "research/step2/item-longlist.md row 74",
+     "year": 2025,
+     "verified": false
+    }
+   ],
+   "confidence": "guess",
+   "notes": "Expected to rank far below the elastomeric for most households."
+  },
+  {
+   "id": "sealed-goggles",
+   "name": "Sealed goggles",
+   "spec": "One pair of indirect-vent or unvented anti-fog safety goggles per person, to wear with a respirator.",
+   "fromLonglistRows": [
+    73
+   ],
+   "scalesWith": "person",
+   "unit": "one pair",
+   "price": {
+    "usdPerUnit": {
+     "lo": 3,
+     "mid": 11,
+     "hi": 27,
+     "tag": "data",
+     "basis": "$11 each at Uline (minimum two), read on the page; $2.25 economy and $27 3M GoggleGear from search snippets. https://www.uline.com/Product/Detail/S-22179/Safety-Glasses/Uline-Cruze-Safety-Goggles"
+    },
+    "product": "Uline Cruze safety goggles, indirect vent, anti-fog",
+    "source": "https://www.uline.com/Product/Detail/S-22179/Safety-Glasses/Uline-Cruze-Safety-Goggles",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 5,
+    "mid": 10,
+    "hi": 20,
+    "tag": "guess",
+    "basis": "Anti-fog coating and strap age slowly."
+   },
+   "setupHours": {
+    "lo": 0.1,
+    "mid": 0.2,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Buy and try with the respirator."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0.1,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "everydayShare": {
+    "lo": 0,
+    "mid": 0.2,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Ordinary eye protection for DIY."
+   },
+   "volumeLitresPerUnit": 0.8,
+   "reliability": {
+    "lo": 0.6,
+    "mid": 0.85,
+    "hi": 0.95,
+    "tag": "guess",
+    "basis": "Fogging, poor fit over glasses."
+   },
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "reduce",
+     "target": "infection",
+     "hazards": [
+      "pandemicSevere"
+     ],
+     "fractionRemoved": {
+      "lo": 0,
+      "mid": 0.04,
+      "hi": 0.15,
+      "tag": "guess",
+      "basis": "Extra share of risk removed on top of a respirator. The one community trial (glasses, Norway, 3,717 people) found 3.7% against 3.5% positive tests in the registry and a relative risk of 0.83 (0.69-1.00) on self-report (search snippet); the hospital meta-analysis figure of 0.22 (0.12-0.39) is low-certainty and confounded."
+     },
+     "adherence": {
+      "lo": 0.2,
+      "mid": 0.5,
+      "hi": 0.8,
+      "tag": "guess",
+      "basis": "Worn with the respirator by those frightened enough."
+     },
+     "notes": "Worth more for a pathogen that infects through the eye; unknown in advance."
+    },
+    {
+     "type": "reduce",
+     "target": "infection",
+     "hazards": [
+      "pandemicModerate"
+     ],
+     "fractionRemoved": {
+      "lo": 0,
+      "mid": 0.04,
+      "hi": 0.15,
+      "tag": "guess",
+      "basis": "As for pandemicSevere."
+     },
+     "adherence": {
+      "lo": 0.03,
+      "mid": 0.15,
+      "hi": 0.4,
+      "tag": "guess",
+      "basis": "Rarely worn in COVID."
+     },
+     "notes": "Substitute for a full-face respirator, which is excluded."
+    },
+    {
+     "type": "other",
+     "description": "Relieves stinging eyes in heavy smoke: a small part of smoke hardship, no effect on mortality."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "Eye protection: adjusted odds ratio 0.22 (0.12-0.39), low certainty, mostly health-care settings.",
+     "source": "https://europepmc.org/article/MED/32497510",
+     "year": 2020,
+     "verified": true
+    },
+    {
+     "claim": "GLASSY trial: positive test in 3.7% (68/1,852) with glasses against 3.5% (65/1,865); self-reported positive test relative risk 0.83 (0.69-1.00).",
+     "source": "https://www.medrxiv.org/content/10.1101/2022.07.31.22278223v1",
+     "year": 2022,
+     "verified": false
+    }
+   ],
+   "confidence": "guess",
+   "notes": "Cheap, so it may still rank; the effect could be zero."
+  },
+  {
+   "id": "gloves-and-gowns",
+   "name": "Disposable gloves and gowns for home nursing",
+   "spec": "One box of 100 nitrile exam gloves and about 10 disposable isolation gowns per household, for caring for a sick member.",
+   "fromLonglistRows": [
+    53,
+    73
+   ],
+   "scalesWith": "household",
+   "unit": "bundle",
+   "price": {
+    "usdPerUnit": {
+     "lo": 25,
+     "mid": 40,
+     "hi": 75,
+     "tag": "derived",
+     "basis": "Gloves $17 per 100 and gowns $57 per 50 ($1.14 each) at Uline, read on the pages: $28 if gowns could be bought by the ten, $74 with a full box. https://www.uline.com/Product/Detail/S-12549L/Nitrile-Gloves/Uline-Exam-Grade-Nitrile-Gloves-Powder-Free-Large"
+    },
+    "product": "Uline exam-grade nitrile gloves (100) + Uline isolation gowns",
+    "source": "https://www.uline.com/Product/Detail/S-12549L/Nitrile-Gloves/Uline-Exam-Grade-Nitrile-Gloves-Powder-Free-Large",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 3,
+    "mid": 5,
+    "hi": 8,
+    "tag": "guess",
+    "basis": "Nitrile is usually dated five years."
+   },
+   "setupHours": {
+    "lo": 0.1,
+    "mid": 0.2,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Buy and shelve."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0,
+    "mid": 0.05,
+    "hi": 0.2,
+    "tag": "guess",
+    "basis": "Replace gloves used around the house."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 2,
+    "hi": 6,
+    "tag": "guess",
+    "basis": "Gloves used for cleaning."
+   },
+   "everydayShare": {
+    "lo": 0.2,
+    "mid": 0.4,
+    "hi": 0.7,
+    "tag": "guess",
+    "basis": "Gloves get used for cleaning and first aid; gowns do not."
+   },
+   "volumeLitresPerUnit": 6,
+   "reliability": {
+    "lo": 0.7,
+    "mid": 0.9,
+    "hi": 0.97,
+    "tag": "guess",
+    "basis": "Simple to use; torn gloves, wrong size."
+   },
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "reduce",
+     "target": "infection",
+     "hazards": [
+      "pandemicModerate",
+      "pandemicSevere"
+     ],
+     "fractionRemoved": {
+      "lo": 0,
+      "mid": 0.01,
+      "hi": 0.05,
+      "tag": "guess",
+      "basis": "Household share of infections 0.25 x share of household spread through hands and soiled surfaces (0.05-0.2, guess) x efficacy 0.5 = 0.6-2.5% of total risk. Daily disinfection had an odds ratio of 0.23 (0.07-0.84) in Beijing households, likely confounded."
+     },
+     "adherence": {
+      "lo": 0.2,
+      "mid": 0.5,
+      "hi": 0.8,
+      "tag": "guess",
+      "basis": "Used when someone is visibly ill."
+     },
+     "notes": "Matters far more for a pathogen spread by body fluids, which the airborne pandemic hazards do not describe."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "Beijing households: daily disinfection odds ratio 0.23 (0.07-0.84); frequent close contact 18.26 (3.93-84.79).",
+     "source": "https://europepmc.org/article/PMC/PMC7264640",
+     "year": 2020,
+     "verified": true
+    },
+    {
+     "claim": "Gloves $17 per carton of 100; isolation gowns $57 per box of 50.",
+     "source": "https://www.uline.com/Product/Detail/S-24019BLU/Disposable-Clothing/Uline-Isolation-Gowns-Blue",
+     "year": 2026,
+     "verified": true
+    }
+   ],
+   "confidence": "guess",
+   "notes": "Overlaps longlist row 53 (nitrile gloves), which the medical group may also carry; keep one."
+  },
+  {
+   "id": "hepa-purifier",
+   "name": "HEPA air purifier",
+   "spec": "One portable HEPA purifier or fan-and-filter box with a smoke clean-air delivery rate of 170-350 cubic feet a minute, for the room the household sleeps or sits in, plus one spare filter set.",
+   "fromLonglistRows": [
+    76
+   ],
+   "scalesWith": "household",
+   "unit": "one purifier with a spare filter set",
+   "price": {
+    "usdPerUnit": {
+     "lo": 90,
+     "mid": 180,
+     "hi": 340,
+     "tag": "derived",
+     "basis": "$203.99 Honeywell HPA5100B and $334.99 HPA5300B at Quill, read on the page; $159.99 AirFanta 3Pro and $269.99 Coway Airmega Mighty2 in HouseFresh's October 2026 guide (read); about $90 for a box fan and four MERV-13 filters (guess). https://www.quill.com/search?keywords=hepa+air+purifier"
+    },
+    "product": "Honeywell InSight HPA5100B HEPA purifier (or AirFanta 3Pro)",
+    "source": "https://www.quill.com/search?keywords=hepa+air+purifier",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 4,
+    "mid": 8,
+    "hi": 12,
+    "tag": "guess",
+    "basis": "Fan motor life."
+   },
+   "setupHours": {
+    "lo": 0.2,
+    "mid": 0.5,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "Choose, unbox, place."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0.2,
+    "mid": 0.5,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "Filter changes and dusting the pre-filter."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 25,
+    "mid": 65,
+    "hi": 140,
+    "tag": "derived",
+    "basis": "If run daily: a filter set a year at $35 (Honeywell HRF-R1, read at Quill) to $70, plus 15-45 W x 8,760 h x $0.17/kWh = $22-67. Near zero if kept in a cupboard for emergencies."
+   },
+   "everydayShare": {
+    "lo": 0.3,
+    "mid": 0.8,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "Everyday PM2.5: a purifier removed 64-79% of particles in the rooms it ran in (Lu 2024, search snippet); if that lowers personal exposure by 1.5 micrograms per cubic metre and mortality falls 0.7% per microgram (recalled coefficient), an adult gains about 28 micromorts a year, worth more than the roughly $95 annual cost per household. Shaded below 1 because no trial shows the mortality gain and units get switched off for noise."
+   },
+   "volumeLitresPerUnit": 40,
+   "reliability": {
+    "lo": 0.75,
+    "mid": 0.9,
+    "hi": 0.97,
+    "tag": "guess",
+    "basis": "Clogged or missing filter, wrong room, door and windows open. Needs mains power (15-50 W)."
+   },
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "reduce",
+     "target": "smoke",
+     "hazards": [
+      "wildfire"
+     ],
+     "fractionRemoved": {
+      "lo": 0.15,
+      "mid": 0.33,
+      "hi": 0.55,
+      "tag": "derived",
+      "basis": "Home share of dose 0.71 x reduction in the purified room 0.6 (48-78% in seven Seattle homes in the 2020 smoke, Xiang 2021, search snippet; 64-79% in Lu 2024) x share of home time spent in that room 0.75 = 0.32. A second unit or a closed 'clean room' reaches about 0.5."
+     },
+     "adherence": {
+      "lo": 0.6,
+      "mid": 0.85,
+      "hi": 0.95,
+      "tag": "guess",
+      "basis": "Owners run it when the air is visibly bad."
+     },
+     "notes": "Acts on mortality and hardship alike."
+    },
+    {
+     "type": "reduce",
+     "target": "infection",
+     "hazards": [
+      "pandemicModerate",
+      "pandemicSevere"
+     ],
+     "fractionRemoved": {
+      "lo": 0,
+      "mid": 0.03,
+      "hi": 0.12,
+      "tag": "derived",
+      "basis": "Household share of infections 0.25 (0.15-0.45) x reduction in within-household spread 0.12 (0-0.4). The second factor = share of household spread through room air beyond arm's length (0.45, guess) x 0.7 cut in that room's aerosol (7-10 air changes added to 1-2) x 0.5 of shared time spent there = 0.16, shaded for the trials: care-home odds ratio 0.57 (0.32-1.04) in one trial of 135 residents, no difference in another of 1,158."
+     },
+     "adherence": {
+      "lo": 0.3,
+      "mid": 0.7,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Running in the right room; best placed in the sick person's room with the door shut."
+     },
+     "notes": "Capped by the household share: it does nothing about infections caught outside."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "Randomised crossover trial, 135 aged-care residents, HEPA-14 purifiers in private rooms: acute respiratory infection in 24.8% against 34.2%, odds ratio 0.57 (0.32-1.04); completers 0.53 (0.28-1.00).",
+     "source": "https://europepmc.org/article/PMC/PMC11555545",
+     "year": 2024,
+     "verified": true
+    },
+    {
+     "claim": "AFRI-c cluster trial, 91 English care homes, 1,158 residents: portable HEPA filters made no difference to respiratory infections.",
+     "source": "https://www.bristol.ac.uk/news/2026/july/portable-air-filters.html",
+     "year": 2026,
+     "verified": true
+    },
+    {
+     "claim": "Homes of 17 people with COVID-19: SARS-CoV-2 RNA in 44% of air samples with a sham filter against 25% with HEPA (p = 0.23).",
+     "source": "https://pubmed.ncbi.nlm.nih.gov/35481935/",
+     "year": 2022,
+     "verified": false
+    },
+    {
+     "claim": "Two HEPA cleaners cut exposure to simulated exhaled aerosol in a conference room by up to 65%, 90% with masks.",
+     "source": "https://www.cdc.gov/mmwr/volumes/70/wr/mm7027e1.htm",
+     "year": 2021,
+     "verified": false
+    },
+    {
+     "claim": "Infiltration ratio of outdoor PM2.5 was 0.2 on wildfire days against 0.4 on other days in over 1,400 Californian buildings.",
+     "source": "https://europepmc.org/article/MED/34465624",
+     "year": 2021,
+     "verified": true
+    },
+    {
+     "claim": "Portable air cleaners in auto mode cut indoor PM2.5 by 48-78% in seven Seattle homes during the 2020 smoke episode.",
+     "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8026580",
+     "year": 2021,
+     "verified": false
+    },
+    {
+     "claim": "AirFanta 3Pro $159.99 (353 cfm); Coway Airmega Mighty2 $269.99 (260 cfm).",
+     "source": "https://housefresh.com/best-air-purifiers/",
+     "year": 2026,
+     "verified": true
+    }
+   ],
+   "confidence": "derived",
+   "notes": "The smoke effect is well grounded in particle measurements; the infection effect is small and may be zero."
+  },
+  {
+   "id": "far-uvc-lamp",
+   "name": "Far-UVC lamp",
+   "spec": "One filtered 222 nm krypton-chloride lamp (Aerolamp DevKit or similar) for the main shared room, about 250 square feet.",
+   "fromLonglistRows": [
+    77
+   ],
+   "scalesWith": "household",
+   "unit": "one lamp",
+   "price": {
+    "usdPerUnit": {
+     "lo": 400,
+     "mid": 500,
+     "hi": 900,
+     "tag": "guess",
+     "basis": "$500 shipped for the Aerolamp DevKit according to a December 2025 LessWrong post (read); the maker's page was not reached and a mirror showed it sold out. https://www.lesswrong.com/posts/fMbk6tFH7KPJEwcdi/you-can-just-buy-far-uvc"
+    },
+    "product": "Aerolamp DevKit (Ushio Care222 B1 module)",
+    "source": "https://www.lesswrong.com/posts/fMbk6tFH7KPJEwcdi/you-can-just-buy-far-uvc",
+    "verified": false
+   },
+   "lifeYears": {
+    "lo": 1.2,
+    "mid": 6,
+    "hi": 12,
+    "tag": "guess",
+    "basis": "Emitter rated 10,000+ hours to 70% output (unofficial mirror of the product page): 14 months if run continuously, many years if kept for a pandemic."
+   },
+   "setupHours": {
+    "lo": 0.5,
+    "mid": 1,
+    "hi": 3,
+    "tag": "guess",
+    "basis": "Mount high, aim away from where people sit for hours, read the exposure guidance."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0,
+    "mid": 0.1,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Dusting."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 3,
+    "hi": 20,
+    "tag": "guess",
+    "basis": "About 10-15 W if run."
+   },
+   "everydayShare": {
+    "lo": 0,
+    "mid": 0.1,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "Run in cold-and-flu season it might remove a few percent of a household's ordinary infections (about $700 a year in this file), against lamp wear of over $300 a year."
+   },
+   "volumeLitresPerUnit": 3,
+   "reliability": {
+    "lo": 0.5,
+    "mid": 0.8,
+    "hi": 0.95,
+    "tag": "guess",
+    "basis": "Young product category, one small maker, long-term eye and skin safety still under study."
+   },
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "reduce",
+     "target": "infection",
+     "hazards": [
+      "pandemicModerate",
+      "pandemicSevere"
+     ],
+     "fractionRemoved": {
+      "lo": 0,
+      "mid": 0.04,
+      "hi": 0.15,
+      "tag": "derived",
+      "basis": "Household share of infections 0.25 x reduction in within-household spread 0.15 (0-0.45): share through room air beyond arm's length 0.45 (guess) x 0.9 inactivation in the lit room (98.4% in a chamber, 99.8% for a test virus in an occupied room) x 0.4 of shared time spent in that one room. No household or care-home trial of far-UVC; conventional germicidal UV in care-home common areas gave a rate ratio of 0.91, not significant."
+     },
+     "adherence": {
+      "lo": 0.3,
+      "mid": 0.7,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Left switched on in the room people share."
+     },
+     "notes": "Does nothing for smoke or for infections caught outside the home."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "Far-UVC in a room-sized chamber at 3 air changes an hour cut airborne S. aureus by 98.4%, equal to 184 extra air changes.",
+     "source": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8943125/",
+     "year": 2022,
+     "verified": false
+    },
+    {
+     "claim": "Overhead 222 nm lamps cut infectious airborne murine norovirus by 99.8% in an occupied animal-cage cleaning room.",
+     "source": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10954628/",
+     "year": 2024,
+     "verified": false
+    },
+    {
+     "claim": "Germicidal UV in common areas of four Australian care homes: 3.81 against 4.17 infections per zone per cycle, rate ratio 0.91, not significant; about 9-12% fewer infections overall in a secondary analysis.",
+     "source": "https://www.cidrap.umn.edu/healthcare-associated-infections/germ-killing-uv-lights-modestly-cut-overall-rates-respiratory",
+     "year": 2025,
+     "verified": false
+    },
+    {
+     "claim": "Aerolamp DevKit sells for $500 shipped; maker suggests one per 250 square feet.",
+     "source": "https://www.lesswrong.com/posts/fMbk6tFH7KPJEwcdi/you-can-just-buy-far-uvc",
+     "year": 2025,
+     "verified": true
+    }
+   ],
+   "confidence": "guess",
+   "notes": "A purifier does a similar job for infection at a third of the price and also handles smoke and everyday dust."
+  }
+ ],
+ "excluded": [
+  {
+   "what": "Rapid antigen tests",
+   "reason": "Cannot be bought in advance for a new pathogen; stocks for known viruses expire in 1-2 years. Useful once they exist, at which point both the prepared and unprepared household buy them."
+  },
+  {
+   "what": "Row 75: full-face respirator with CBRN filters",
+   "reason": "Chemical release is not a hazard in the model. Against particles a half-mask with P100 filters and goggles does the same job for a quarter of the price."
+  },
+  {
+   "what": "Surgical and cloth masks (row 71, Swiss '50 hygiene masks')",
+   "reason": "Dominated: an N95 costs about a dollar more and removes roughly 0.7 of the dose against 0.3 and 0.15. They are what the unprepared household is assumed to improvise with."
+  },
+  {
+   "what": "KN95 masks",
+   "reason": "Fit factor 2.2 in untrained wearers (O'Kelly 2021) and widespread counterfeits; not a spec to stock."
+  },
+  {
+   "what": "Professional fit testing of N95s",
+   "reason": "Not a separate entry. It raises protection while worn from about 0.7 to 0.88 (channel infection, protectionWhileWorn) at $30-75 a person (guess); the elastomeric with a home fit check gets further for less."
+  },
+  {
+   "what": "Mini-PAPR (about $40) and unbranded PAPRs",
+   "reason": "Could not keep up with breathing in the one hands-on report (Jeff Kaufman, via the longlist)."
+  },
+  {
+   "what": "Sick-room plan (which room and bathroom, who nurses, masks on both, window open)",
+   "reason": "Belongs with the plans group (longlist rows 115 and 117). Rough size if adopted: household share 0.25 x 0.3 efficacy x 0.4 adherence = 3% of infection risk, at an hour's cost."
+  }
+ ],
+ "blockedSources": [
+  "https://pubmed.ncbi.nlm.nih.gov/ (cookie wall on every record): abstracts read through the Europe PMC API instead.",
+  "https://www.nature.com/articles/s41467-021-23733-5 and https://www.medrxiv.org/content/10.1101/2020.05.23.20111559v2.full (redirect, 403): household share of infections; read through PubMed Central instead.",
+  "https://elifesciences.org/articles/71131 (page did not load): FFP3 against surgical masks on COVID wards, 52-100% protection; snippet only, not used in a number.",
+  "https://bell-lab.yale.edu/node/609 and the Lancet Planetary Health paper (Chen 2021): relative risk 1.019 per 10 micrograms of wildfire PM2.5; snippet only.",
+  "https://news.stanford.edu/stories/2025/09/us-faces-rising-death-toll-wildfire-smoke-study-finds (403) and the Nature paper (Qiu 2025): about 41,000 US smoke deaths a year in 2011-2020; inferred from a snippet.",
+  "https://pubs.usgs.gov/publication/70118043, https://research.fs.usda.gov/treesearch/46795, https://ageconsearch.umn.edu/record/61252 (403): willingness to pay per smoke symptom-day and the share of people with symptoms.",
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC8026580 (Europe PMC returned 500 and 403): infiltration factors and purifier effect in Seattle homes; snippet only.",
+  "JAMA 2007;298:644 (Markel et al.): weekly excess deaths by city in 1918, for the single-wave timing shares; not opened.",
+  "https://www.cdc.gov/mmwr/volumes/71/wr/mm7117e3.htm: seroprevalence by age; snippet only.",
+  "https://cowaymega.com, https://www.airfanta.com, https://www.cleanairkits.com, https://levoit.com (429): purifier prices from the makers.",
+  "https://aerolamp.net (not reached): far-UVC lamp price, lifetime and stock.",
+  "https://www.zoro.com/3m-aura-particulate-respirator-9205-n95-one-size-fits-all-20pk-9205ph-20-dc/i/G423333454/ (no price shown, marked discontinued)."
+ ],
+ "openQuestions": [
+  "How does the engine combine several reduce effects on infection? The respirator items are substitutes (take the best worn); respirators, staying home and air cleaning multiply.",
+  "Reduce effects here act on the hazard rate; with a high attack rate the cut in cumulative risk is smaller: P = 1 - (1 - A)^(1 - r). Does the engine apply this?",
+  "The N95 ladder needs three numbers the schema has no field for (days of outings per mask, share of days with an outing, days until respirators can be bought); they are in effects[].coverage.",
+  "Adherence differs by hazard, so each respirator has one reduce effect per pandemic hazard. Does the pandemic researcher's baseline already assume cloth or surgical masking, as assumed here?",
+  "Age multipliers for pandemicSevere are a 50/50 mix of a COVID-like and a 1918-like age pattern (channel infection, multipliersByHazard); the pandemic researcher may have a better basis.",
+  "Per-day smoke figures are in channels[smoke].perPersonDayHeavySmoke and need person-days of heavy smoke from the wildfire researcher.",
+  "The stay-home table (channels[infection].stayHome) needs the pandemic's time profile; two shapes are given.",
+  "Should a zero-cost sick-room plan be an entry of its own under plans?"
+ ]
+}

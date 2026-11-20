@@ -1,0 +1,1028 @@
+{
+ "kind": "items",
+ "group": "plans-skills-security",
+ "channels": [
+  {
+   "id": "violence",
+   "definition": "Death, injury and property loss caused at the home by people from outside the household: burglary, home-invasion robbery and assault by an intruder. Excludes violence between household members (the larger part of homicide at home), violence away from home and self-harm; those enter the model only as the side risk of keeping a firearm.",
+   "everydayAnnualMicromortsPerPerson": {"lo": 0.8, "mid": 2, "hi": 4, "tag": "derived", "basis": "Adult 15-59, United States. NVDRS 2021: 21.9% of homicides with known circumstances were precipitated by another crime, of which burglary 11.6% and robbery 29.6%, so burglary 2.5% of homicides and robbery 6.5%; I take a quarter of the robberies as at home (guess), 4.1% in all. Times 51 micromorts a year (2024 homicide rate 5.1 per 100,000, search snippet of a BJS bulletin) = 2.1; at the 2021 rate of 7.9 it is 3.3. Cross-check: BJS counts about 430 burglary-related homicides a year in 2003-2007, about 1.5 per million residents. https://www.cdc.gov/mmwr/volumes/73/ss/ss7305a1.htm https://bjs.ojp.gov/content/pub/ascii/vdhb.txt"},
+   "everydayAnnualUsdPerHousehold": {"lo": 15, "mid": 40, "hi": 110, "tag": "derived", "basis": "8.2 burglaries per 1,000 households in 2024 (12.0 with trespassing; BJS) x [about $2,000 property loss (FBI mean for police-recorded burglaries was $2,661 in 2019, search snippet; survey burglaries include attempts and unreported cases, so lower) + about $2,000 for repairs, time and distress (guess, 500-6,000)] = $33; plus 7% of burglaries involving violence against a member (BJS 2003-2007) x $15,000 (guess, 5,000-40,000) = $9. https://bjs.ojp.gov/document/cv24.pdf"},
+   "inHazards": "Scale the everyday rate per day by the factors in inHazardScaling for the days the event lasts; a hazard researcher who has event-specific data should override. The common finding that disasters bring less crime than feared holds for short events and fails in three identifiable cases. (1) Outages, storms, heat and cold with people at home: no rise. Austin 2021 rules out any sizeable effect of outages on crime; Florida counties 1991-2005 show reported index, property and violent crime falling in disasters and domestic violence rising; New York was calm in the 1965 and 2003 blackouts. (2) Homes left empty by evacuation: burglary about three to four times normal while the area is empty (Houston before Hurricane Rita, New Orleans after Katrina); the loss is property only. (3) Police absent or overwhelmed: New York 1977 (mostly shops), Espirito Santo 2017 (violent deaths 4.5 times normal for three weeks). For weeks without power or supply there are no rich-country data and the factor is a guess. Lockdowns lower residential burglary. Most deaths in riots occur away from home, so the home-based channel rises less than homicide as a whole.",
+   "inHazardScaling": [
+    {"hazards": ["localOutage", "severeStorm", "winterStorm", "heatWave", "earthquake", "waterSystemFailure", "supplyShock", "bankingCrisis"],
+     "condition": "household at home",
+     "multiplierOnEverydayDailyRate": {"lo": 0.7, "mid": 1.0, "hi": 1.5, "tag": "derived", "basis": "Austin, February 2021: elasticity of crime to outages -0.004 to 0.002 (95% CI). https://loganmlee.sites.grinnell.edu/Power%20Outage%20Paper%20R&R.pdf Florida 1991-2005 (Zahran et al. 2009, search snippet): index, property and violent crime down in disasters, domestic violence up."}},
+    {"hazards": ["hurricane", "wildfire", "flood"],
+     "condition": "home empty after evacuation; property loss only, no risk to persons",
+     "multiplierOnEverydayDailyRate": {"lo": 1.5, "mid": 3, "hi": 5, "tag": "derived", "basis": "Houston, Hurricane Rita evacuation: 251, 428, 200 and 135 burglaries on 21-24 September 2005 against 67 on the 25th, a four-day mean 3.8 times normal. https://www.isprs.org/proceedings/XXXVIII/part4/files/Leitner.pdf New Orleans: burglary up almost 200% in the month after Katrina (Frailing and Harper, via https://pinkerton.com/our-insights/blog/hurricanes-and-crime)."}},
+    {"hazards": ["pandemicModerate"],
+     "condition": "lockdown, people at home",
+     "multiplierOnEverydayDailyRate": {"lo": 0.6, "mid": 0.8, "hi": 1.0, "tag": "derived", "basis": "Residential burglary during the 2020 Michigan lockdown: Detroit -20.5%, Grand Rapids -37.5%, two other cities not significant; Abrams 2021 reports -23.5% across 25 US cities (search snippet). https://pmc.ncbi.nlm.nih.gov/articles/PMC9754902"}},
+    {"hazards": ["civilUnrest"],
+     "condition": "police absent or overwhelmed where the household lives",
+     "multiplierOnEverydayDailyRate": {"lo": 1, "mid": 2.5, "hi": 6, "tag": "guess", "basis": "Espirito Santo police strike, February 2017: violent deaths rose from 4 to 18 a day over 21 days, 4.5 times normal for all homicide. https://scielo.br/j/csp/a/4csgJhymP8b6n37n64NdTjL/?lang=en The home-based share rises less; US riots (1977, 1992, 2020) hit shops far more than homes."}},
+    {"hazards": ["gridLong", "nuclearFar", "nuclearNear", "pandemicSevere"],
+     "condition": "from the second week, while policing and supply are degraded",
+     "multiplierOnEverydayDailyRate": {"lo": 1, "mid": 3, "hi": 10, "tag": "guess", "basis": "No rich-country event of this kind has crime data. Bounded below by the short-outage evidence (no rise) and above by police-strike evidence (4.5 times)."}}
+   ],
+   "locationMultipliers": [
+    {"location": "westernEurope", "mortality": 0.2, "usd": 1.0, "tag": "guess", "basis": "Homicide about 1 per 100,000 against 5 (recalled); burglary of the same order (England and Wales 2.1% of households a year in the survey years used by Tseloni et al.)."},
+    {"location": "buenosAires", "mortality": 1.0, "usd": 2.0, "tag": "guess", "basis": "Recalled, not checked: homicide about 4 per 100,000 nationally; household robbery and burglary several times the US rate."}
+   ],
+   "multipliers": [
+    {"profile": "child", "mortality": 0.3, "tag": "guess", "basis": "Children are rarely the target of intruders; homicide victimisation at ages 1-14 is a small fraction of the adult rate."},
+    {"profile": "limitedMobility", "mortality": 1.3, "tag": "guess", "basis": "Cannot flee or resist; no data found."}
+   ]
+  }
+ ],
+ "items": [
+  {
+   "id": "pepper-spray",
+   "name": "Pepper spray",
+   "spec": "One keychain canister of OC spray (about 15 g, 25 short bursts, 3 m range) per adult, kept by the door or bed, with one practice burst outdoors.",
+   "fromLonglistRows": [86],
+   "scalesWith": "person",
+   "unit": "canister",
+   "price": {
+    "usdPerUnit": {"lo": 8, "mid": 10, "hi": 20, "tag": "guess", "basis": "Step 2 read $9.99 on the maker's page; search snippets from Academy and Tractor Supply show the same. Retailer pages refused my fetches."},
+    "product": "SABRE Red key-ring pepper spray, 0.54 oz",
+    "source": "https://www.academy.com/p/sabre-key-chain-red-pepper-spray-with-quick-release-key-ring",
+    "verified": false
+   },
+   "lifeYears": {"lo": 3, "mid": 4, "hi": 5, "tag": "guess", "basis": "Maker's stated four-year shelf life (step 2)."},
+   "setupHours": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Buy, read the instructions, one practice burst."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "Check the date."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None beyond replacement at end of life."},
+   "everydayShare": {"lo": 0, "mid": 0.2, "hi": 0.6, "tag": "guess", "basis": "Some owners would carry it outdoors anyway; that use is outside the model."},
+   "volumeLitresPerUnit": 0.05,
+   "reliability": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "In date, within reach, and the user gets the safety off under stress."},
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "reduce", "target": "violence", "hazards": ["all"],
+     "fractionRemoved": {"lo": 0, "mid": 0.1, "hi": 0.4, "tag": "guess", "basis": "Police field data show incapacitation in 156 of 174 uses (90%), but by trained officers with back-up. No civilian outcome study exists. Most burglaries happen with nobody home (72%) and 65% of violent ones are by people the victim knows, so the spray can matter in a minority of cases."},
+     "adherence": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Share of confrontations at home in which the canister is at hand and used."},
+     "notes": "Acts on injury and death only, not on property loss. Applies to the everyday baseline and to any hazard exposure on the channel."}
+   ],
+   "evidence": [
+    {"claim": "Baltimore County police field test, 1993-94: OC spray incapacitated the subject in 156 of 174 confrontations (90%); 14 subjects had minor injuries, none needed hospital.", "source": "https://www.ojp.gov/txtfiles/162358.txt", "year": 1997, "verified": true},
+    {"claim": "Household burglary 2003-2007: a member was present in 28%, and a member was a victim of violence in 7% (26% of those with someone present); the offender was known to the victim in 65% of violent burglaries, a stranger in 28%.", "source": "https://bjs.ojp.gov/content/pub/ascii/vdhb.txt", "year": 2010, "verified": true}
+   ],
+   "confidence": "guess",
+   "notes": "At the medians it removes about 2% of a baseline of 2 micromorts and roughly $9 a year of assault harm, so its value is cents a year per person. Legal for adults across the United States with state limits on size and sale; banned for civilians in the United Kingdom and several other European countries; legal in Argentina (all recalled, not checked). Check local law."
+  },
+  {
+   "id": "firearm-with-training",
+   "name": "Firearm with training and locked storage",
+   "spec": "One pump shotgun or handgun, a basic safety and handling course (4-8 hours), a quick-access lock box or cable lock, 100 rounds, and one range session a year.",
+   "fromLonglistRows": [87],
+   "scalesWith": "household",
+   "unit": "package (firearm, course, lock box, ammunition)",
+   "price": {
+    "usdPerUnit": {"lo": 450, "mid": 560, "hi": 1100, "tag": "derived", "basis": "Shotgun $289.99 (Academy, fetched) + lock box about $110 + basic course about $110 (65-150) + 100 rounds about $50; the last three from search snippets. A handgun adds $150-400."},
+    "product": "Mossberg Maverick 88 pump shotgun, 12 gauge, with course, lock box and ammunition",
+    "source": "https://www.academy.com/p/mossberg-maverick-88-security-12-gauge-pump-action-shotgun-115458361",
+    "verified": true
+   },
+   "lifeYears": {"lo": 20, "mid": 30, "hi": 50, "tag": "guess", "basis": "Firearms last decades."},
+   "setupHours": {"lo": 6, "mid": 12, "hi": 25, "tag": "guess", "basis": "Purchase and background check, course, first range session."},
+   "upkeepHoursPerYear": {"lo": 1, "mid": 4, "hi": 12, "tag": "guess", "basis": "One range session and cleaning."},
+   "upkeepUsdPerYear": {"lo": 20, "mid": 60, "hi": 200, "tag": "guess", "basis": "Ammunition and range fee."},
+   "everydayShare": {"lo": 0, "mid": 0, "hi": 0.3, "tag": "guess", "basis": "Zero unless the household shoots for sport."},
+   "volumeLitresPerUnit": 15,
+   "reliability": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "A trained adult is home, reaches the locked gun in time and is able to use it."},
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "reduce", "target": "violence",
+     "hazards": ["localOutage", "severeStorm", "winterStorm", "heatWave", "hurricane", "earthquake", "wildfire", "flood", "waterSystemFailure", "supplyShock", "pandemicModerate", "bankingCrisis"],
+     "fractionRemoved": {"lo": 0, "mid": 0.03, "hi": 0.2, "tag": "derived", "basis": "National Crime Victimization Survey 2007-2011: 4.1% of victims were injured after defending themselves with a gun against 4.2% after any protective action; California cohort: no lower risk of being killed by strangers for people living with handgun owners. Property was lost in 38.5% of thefts resisted with a gun, 55.9% with any action, 34.9% with another weapon. So about zero for injury and death and a little for property."},
+     "adherence": {"lo": 0.2, "mid": 0.4, "hi": 0.7, "tag": "guess", "basis": "Share of home confrontations with a trained adult present and the gun reachable."},
+     "notes": "Also applies to the everyday baseline, which no hazard id covers."},
+    {"type": "reduce", "target": "violence",
+     "hazards": ["civilUnrest", "gridLong", "nuclearNear", "nuclearFar", "pandemicSevere"],
+     "fractionRemoved": {"lo": 0, "mid": 0.15, "hi": 0.5, "tag": "guess", "basis": "With police absent, deterrence may count for more than the everyday data show. No data."},
+     "adherence": {"lo": 0.3, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Household alert and at home."},
+     "notes": "Use instead of, not on top of, the everyday figure."},
+    {"type": "sideRisk", "channel": "violence",
+     "micromortsPerDayOfUse": {"lo": 0.06, "mid": 0.22, "hi": 0.6, "tag": "derived", "basis": "Per household member per day the gun is in the home (365 days a year), averaged over a two-adult household. Owner: firearm suicide 14-19 per 100,000 person-years at 4-12 years after purchase and 46 at 1-3 years, against 3.1 for non-owners, less about 2 for fewer suicides by other means (HR 0.68); over 20 years, leaving out the first year, about 14 per 100,000, shaded to 120 micromorts a year for residual confounding. Other adult: suicide HR 1.43 on 5.2 per 100,000 = +22 micromorts; homicide HR 2.33 on an assumed 2 per 100,000, half taken as causal = +13. Accident: 463 deaths a year over about 140 million people in gun households = 3. (120 + 35)/2 + 3 = 80 a year = 0.22 a day. https://www.suicideinfo.ca/wp-content/uploads/2020/06/Handgun-ownership-and-suicide-in-California.pdf"},
+     "notes": "Suicide, killing by a household member and accident; placed on the violence channel because no other fits. Several times higher where anyone in the home has a history of depression, self-harm or domestic abuse, or is an adolescent. Locked, unloaded storage lowers it; the spec assumes a lock box."}
+   ],
+   "evidence": [
+    {"claim": "26.3 million Californians followed up to 12 years: suicide 47.7 per 100,000 person-years among handgun owners against 9.4 among non-owners (adjusted HR 3.67); firearm suicide 42.3 against 3.1 (HR 9.08); suicide by other methods HR 0.68; firearm suicide 45.9 at 1-3 years, 18.6 at 4-6 years and 14.3 at 7-12 years after first purchase.", "source": "https://www.suicideinfo.ca/wp-content/uploads/2020/06/Handgun-ownership-and-suicide-in-California.pdf", "year": 2020, "verified": true},
+    {"claim": "17.6 million Californians: people living with a handgun owner died by homicide at 2.33 times the rate of neighbours in gun-free homes (firearm homicide 2.83); no evidence of lower risk of being killed by strangers.", "source": "https://med.stanford.edu/news/all-news/2022/04/handguns-homicide-risk.html", "year": 2022, "verified": true},
+    {"claim": "Women living with a handgun owner: suicide HR 1.43 (1.11-1.84), firearm suicide HR 4.32.", "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9047728", "year": 2022, "verified": false},
+    {"claim": "Meta-analysis of 16 observational studies: firearm access OR 3.24 (2.41-4.40) for suicide and 2.00 (1.56-3.02) for homicide victimisation.", "source": "https://pubmed.ncbi.nlm.nih.gov/24592495/", "year": 2014, "verified": true},
+    {"claim": "Case-control study of 388 homicides at home: keeping a gun in the home adjusted OR 2.7 (1.6-4.4), nearly all of it killing by family or intimates; no protective effect.", "source": "https://pubmed.ncbi.nlm.nih.gov/8371731/", "year": 1993, "verified": true},
+    {"claim": "NCVS 2007-2011: self-defence gun use in 127 of over 14,000 contact crimes (0.9%); injured afterwards 4.1% against 4.2% for any protective action; property lost 38.5% against 55.9% (any action) and 34.9% (other weapon).", "source": "https://pubmed.ncbi.nlm.nih.gov/25910555/", "year": 2015, "verified": true},
+    {"claim": "463 unintentional firearm deaths in the United States in 2023; about 42% of households have a gun.", "source": "https://publichealth.jhu.edu/center-for-gun-violence-solutions/data/annual-gun-violence-data-2023", "year": 2025, "verified": false}
+   ],
+   "confidence": "derived",
+   "notes": "Net harmful at any plausible setting. The side risk is about 80 micromorts a year per member; the everyday protective effect is 2 x 0.03 x 0.4 = 0.02. To break even on deaths alone the household would need about 80 / (0.15 x 0.5) = 1,100 micromorts a year of expected violence from outside, more than three times the worst year of the Northern Ireland conflict (recalled: 480 deaths among 1.5 million in 1972). Jurisdiction: practical only in the United States; most Western European countries do not accept self-defence as a ground for a licence, and Argentina requires registration as a legitimate user and a separate carry permit (recalled, not checked). The cohort studies are observational; owners may differ from non-owners in ways not measured, which the low end of the range allows for. The three PubMed abstracts were read through the Europe PMC interface."
+  },
+  {
+   "id": "protective-helmet",
+   "name": "Protective helmet",
+   "spec": "One hard hat or bicycle helmet per person, kept with sturdy shoes by the bed or the go-bag.",
+   "fromLonglistRows": [88],
+   "scalesWith": "person",
+   "unit": "helmet",
+   "price": {
+    "usdPerUnit": {"lo": 12, "mid": 20, "hi": 45, "tag": "guess", "basis": "Step 2 estimate of $20-40; basic hard hats sell for $12-25 (recalled). No retailer page would load."},
+    "product": "Basic ANSI Type I hard hat",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {"lo": 5, "mid": 8, "hi": 12, "tag": "guess", "basis": "Makers advise replacing shells after about five years of work use; stored ones last longer."},
+   "setupHours": {"lo": 0.05, "mid": 0.1, "hi": 0.5, "tag": "guess", "basis": "Buy and place."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0, "mid": 0.5, "hi": 0.9, "tag": "guess", "basis": "Many households already own bicycle helmets, which serve."},
+   "volumeLitresPerUnit": 5,
+   "reliability": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "It is found and put on in time."},
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "reduce", "target": "trauma", "hazards": ["earthquake", "severeStorm", "hurricane", "civilUnrest", "nuclearNear"],
+     "fractionRemoved": {"lo": 0, "mid": 0.02, "hi": 0.08, "tag": "guess", "basis": "Northridge 1994: the 33 deaths in Los Angeles County were mainly from building collapse; hospital admissions were mostly falls and being hit by objects. A helmet cannot be put on during 20 seconds of shaking, so it serves aftershocks, tornado sheltering and clean-up only."},
+     "adherence": {"lo": 0.05, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Worn when debris is falling."},
+     "notes": "Assumes the hazard researcher gives the event an injury exposure on the trauma channel."},
+    {"type": "other", "description": "Averts minor head injuries during clean-up and repair, which no source quantifies."}
+   ],
+   "evidence": [
+    {"claim": "Northridge earthquake: 171 fatal or hospitalised injuries in Los Angeles County (33 fatal, 138 admitted); deaths mainly from building collapse, admissions mostly from falls or being hit by objects; head and chest injuries common among the dead.", "source": "https://pubmed.ncbi.nlm.nih.gov/9698136/", "year": 1998, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Little that can be quantified. Listed only by the German civil-protection checklist. US earthquake deaths since 1990 average a handful a year (recalled), so even a large share of them is a small number."
+  },
+  {
+   "id": "door-reinforcement",
+   "name": "Entry door reinforcement",
+   "spec": "For the main exterior door (and back door of a house): 75 mm screws through strike plate and hinges into the stud, a steel jamb-and-strike reinforcement kit, a deadbolt if absent, and a motion-sensor light at the entry.",
+   "fromLonglistRows": [],
+   "scalesWith": "household",
+   "unit": "one door reinforced",
+   "ladder": [{"label": "main door", "units": 1}, {"label": "main and back door", "units": 2}],
+   "price": {
+    "usdPerUnit": {"lo": 15, "mid": 140, "hi": 300, "tag": "guess", "basis": "Jamb reinforcement kit about $100-145 (marketplace listings in search snippets; maker's page refused the fetch) plus a $25 sensor light; screws alone cost under $15."},
+    "product": "Door Armor MAX single-door kit plus a solar motion light",
+    "source": "https://armorconcepts.com/door-armor-max-complete-door-security-set/",
+    "verified": false
+   },
+   "lifeYears": {"lo": 15, "mid": 25, "hi": 40, "tag": "guess", "basis": "Steel hardware; lasts as long as the door frame."},
+   "setupHours": {"lo": 1, "mid": 2, "hi": 5, "tag": "guess", "basis": "A drill-and-screw job."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0, "mid": 0, "hi": 0.1, "tag": "guess", "basis": "All of its benefit is the everyday burglary risk, which the model counts through the violence channel; a positive share here would count it twice."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Fixed hardware."},
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "reduce", "target": "violence", "hazards": ["all"],
+     "fractionRemoved": {"lo": 0.03, "mid": 0.12, "hi": 0.3, "tag": "derived", "basis": "Dutch building code of 1999 requiring certified burglar-resistant doors and windows cut burglary of new homes by 26% (1.1% to 0.8% a year). Doors alone address less: forcible entry is 55.7% of US burglaries (FBI 2019, snippet); if half of forced entries are through a door and reinforcement defeats 45% of those net of burglars switching to a window (both guesses), 0.557 x 0.5 x 0.45 = 0.12. High end: a survey cross-section in England and Wales gives door double locks or deadlocks alone a protection factor of 2.8, inflated by confounding."},
+     "adherence": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "derived", "basis": "The door has to be locked: about 40% of unlawful entries to unoccupied homes were through an unlocked door or window (BJS)."},
+     "notes": "Acts on burglary loss and on intruder violence alike. Applies to the everyday baseline and to any hazard exposure on the channel. Second door: assume half the effect of the first."}
+   ],
+   "evidence": [
+    {"claim": "Regulation of built-in security in the Netherlands: burglary in newly built homes fell from 1.1% to 0.8% a year, a 26% reduction; social benefits likely exceed costs.", "source": "https://ojp.gov/ncjrs/virtual-library/abstracts/does-regulation-built-security-reduce-crime-evidence-natural", "year": 2011, "verified": true},
+    {"claim": "Crime Survey for England and Wales 2008-2012: door double locks or deadlocks alone give a protection factor of 2.8 and external lights 3.0 against burglary with entry; burglar alarms alone give less than 1; 4.9% of households had no device but 36.6% of burgled ones.", "source": "https://eprints.whiterose.ac.uk/116386/7/art%253A10.1057%252Fsj.2014.30.pdf", "year": 2017, "verified": true},
+    {"claim": "8.2 burglaries per 1,000 US households in 2024 (0.71% of households burgled at least once); about 42% reported to police.", "source": "https://bjs.ojp.gov/document/cv24.pdf", "year": 2025, "verified": true},
+    {"claim": "FBI 2019: 55.7% of burglaries involved forcible entry; mean loss $2,661.", "source": "https://ucr.fbi.gov/crime-in-the-u.s/2019/crime-in-the-u.s.-2019/topic-pages/burglary.pdf/at_download/file", "year": 2020, "verified": false}
+   ],
+   "confidence": "derived",
+   "notes": "Worth about 0.12 x 0.85 x ($40 + 2 micromorts per member) a year, roughly $4 plus 0.2 micromorts per person, against an annualised cost near $9. Close to break-even in an average US home and better in a high-burglary area: the survey's urban property-crime rate is nearly four times the rural one. Renters need the landlord's consent. Burglar alarms are excluded: the best survey evidence finds no protection from an alarm alone."
+  },
+  {
+   "id": "discretion-about-supplies",
+   "name": "Keeping quiet about supplies",
+   "spec": "Do not advertise stored food, fuel, cash or a generator beyond the neighbours the household has agreed to share with; keep stores out of sight from the street.",
+   "fromLonglistRows": [89],
+   "scalesWith": "household",
+   "unit": "habit",
+   "price": {
+    "usdPerUnit": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "Free."},
+    "product": "No purchase",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {"lo": 1, "mid": 10, "hi": 30, "tag": "guess", "basis": "A habit; life is immaterial at zero cost."},
+   "setupHours": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Neighbours notice deliveries, generator noise and lit windows anyway."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "reduce", "target": "violence", "hazards": ["civilUnrest", "gridLong", "nuclearNear", "nuclearFar", "pandemicSevere"],
+     "fractionRemoved": {"lo": 0, "mid": 0.1, "hi": 0.4, "tag": "guess", "basis": "No data. A household not known to hold supplies is a less likely target once scarcity lasts weeks; in short events there is nothing to reduce."},
+     "adherence": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Share of households that in fact stay unnoticed."},
+     "notes": "Works against the neighbour network, whose value comes from sharing; the two should not both be credited in full."}
+   ],
+   "evidence": [
+    {"claim": "No outcome evidence found. Recommended by The Prepared and in comments on the LessWrong nuclear-preparedness posts (step 2 longlist).", "source": "https://theprepared.com/prepping-basics/guides/emergency-preparedness-checklist-prepping-beginners/", "year": 2026, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Free, so it ranks wherever any positive effect puts it; the effect itself is a guess whose range includes zero."
+  },
+  {
+   "id": "basic-digital-security",
+   "name": "Basic digital security",
+   "spec": "A password manager with a unique password per account, two-factor authentication on email, bank and phone-carrier accounts with printed recovery codes, automatic updates on, and a free credit freeze at the three bureaus.",
+   "fromLonglistRows": [89],
+   "scalesWith": "household",
+   "unit": "set-up",
+   "price": {
+    "usdPerUnit": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "Free tiers of password managers and built-in authenticators suffice."},
+    "product": "Free password manager and authenticator app",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {"lo": 3, "mid": 8, "hi": 15, "tag": "guess", "basis": "Until accounts and devices have turned over."},
+   "setupHours": {"lo": 2, "mid": 4, "hi": 10, "tag": "guess", "basis": "Moving 50-100 accounts into a manager and enabling two-factor on the important ones."},
+   "upkeepHoursPerYear": {"lo": 0.5, "mid": 1, "hi": 4, "tag": "guess", "basis": "New accounts, device changes."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 40, "tag": "guess", "basis": "Zero on a free tier; paid family plans run to about $40 a year (recalled)."},
+   "everydayShare": {"lo": 0.7, "mid": 0.9, "hi": 1, "tag": "guess", "basis": "Nearly all the benefit is against everyday fraud, which the model has no hazard for."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Kept up, and the user does not approve a fraudulent prompt."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "other", "description": "Everyday: identity theft reached 9% of US residents aged 16 or over in 2021, with $16.4 billion of losses including amounts later reimbursed, about $125 per household a year. Most is card misuse that passwords do not touch and banks refund. I guess the set-up removes 20% (5-40%) of an out-of-pocket loss of $10-25 a year and of an hour or two of clean-up: $2-5 and 15-30 minutes a year."},
+    {"type": "reduce", "target": "financialLoss", "hazards": ["hurricane", "flood", "wildfire", "earthquake", "pandemicModerate", "pandemicSevere", "bankingCrisis"],
+     "fractionRemoved": {"lo": 0, "mid": 0.01, "hi": 0.05, "tag": "guess", "basis": "Phishing and impostor fraud rise after disasters and in financial scares; printed recovery codes keep accounts reachable when a phone is lost. No data on the size."},
+     "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Set-up still in place."},
+     "notes": "A token effect; the honest answer is that little can be quantified inside hazards."}
+   ],
+   "evidence": [
+    {"claim": "Identity theft, 2021: 23.9 million victims (9% of residents 16 or over); 59% lost $1 or more; losses totalled $16.4 billion; mean direct loss $880 ($620 card, $670 bank account, $3,430 new account); 56% spent a day or less resolving it.", "source": "https://www.bjs.ojp.gov/press-release/victims-identity-theft-2021", "year": 2023, "verified": true}
+   ],
+   "confidence": "guess",
+   "notes": "Belongs on a personal-finance list more than a preparedness list. Kept because step 2 lists it; it ranks on its cost in hours."
+  },
+  {
+   "id": "basic-tools-bundle",
+   "name": "Basic tools bundle",
+   "spec": "Multitool with pliers, a fixed or locking knife, one roll of duct tape, two pairs of leather work gloves, 30 m of paracord, a box of contractor bags and zip bags, sewing kit, notebook and pencil, in one box.",
+   "fromLonglistRows": [104, 105, 106, 107, 108],
+   "scalesWith": "household",
+   "unit": "bundle",
+   "price": {
+    "usdPerUnit": {"lo": 60, "mid": 130, "hi": 260, "tag": "guess", "basis": "Multitool $50-70 (step 2: Leatherman Wingman $50 list), knife $20, tape $7.16 (step 2), gloves $15, cord $10, bags $20, sundries $5. Maker pages refused my fetches."},
+    "product": "Leatherman Wingman, Morakniv Companion, Duck tape, leather gloves, paracord, contractor bags",
+    "source": "https://www.leatherman.com/products/wingman",
+    "verified": false
+   },
+   "lifeYears": {"lo": 8, "mid": 15, "hi": 30, "tag": "guess", "basis": "Tools last decades; tape and bags get used up."},
+   "setupHours": {"lo": 0.5, "mid": 1, "hi": 2, "tag": "guess", "basis": "Buy and box."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.5, "tag": "guess", "basis": "Replace what was borrowed."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 5, "hi": 15, "tag": "guess", "basis": "Tape and bags."},
+   "everydayShare": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Most households own and use most of this already."},
+   "volumeLitresPerUnit": 5,
+   "reliability": {"lo": 0.7, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Still together and findable."},
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "other", "description": "Lets the household improvise: tape plastic over a broken window, tie down a tarpaulin, bag waste, open cans and packaging, protect hands in debris. No study measures any outcome."},
+    {"type": "reduce", "target": "displacement", "hazards": ["severeStorm", "hurricane", "earthquake", "winterStorm"],
+     "fractionRemoved": {"lo": 0, "mid": 0.02, "hi": 0.08, "tag": "guess", "basis": "A patched window or roof keeps some homes habitable a day or two sooner. No data."},
+     "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Household has the materials (sheeting or a tarpaulin) and someone able to do it."},
+     "notes": "Low on purpose."},
+    {"type": "reduce", "target": "warmth", "hazards": ["winterStorm", "severeStorm"],
+     "fractionRemoved": {"lo": 0, "mid": 0.02, "hi": 0.06, "tag": "guess", "basis": "Sealing draughts and a broken pane in one room. Overlaps the warm-room plan."},
+     "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "As above."},
+     "notes": "Low on purpose."}
+   ],
+   "evidence": [
+    {"claim": "Hurricane Irma: 15 of 129 deaths were injuries during preparation or repair, more than the 11 direct deaths; gloves and hand tools do not address the falls and chainsaw injuries behind most such deaths (read by step 2).", "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm", "year": 2018, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Honest answer: little that can be quantified. Bin bags for sanitation and sheeting for sealing a room belong to other researchers' entries."
+  },
+  {
+   "id": "axe-shovel-saw",
+   "name": "Hatchet, shovel and folding saw",
+   "spec": "A 35 cm hatchet, a round-point shovel and a 25 cm folding pruning saw, kept where they can be reached from inside (in flood zones, the hatchet in the attic).",
+   "fromLonglistRows": [109],
+   "scalesWith": "household",
+   "unit": "set of three",
+   "price": {
+    "usdPerUnit": {"lo": 60, "mid": 95, "hi": 200, "tag": "guess", "basis": "Search snippets: Fiskars X7 hatchet $33-38, digging shovel $19-49, Corona 10-inch folding saw $20-38."},
+    "product": "Fiskars X7 hatchet, Truper round-point shovel, Corona RazorTOOTH folding saw",
+    "source": "https://www.acehardware.com/p/7218308",
+    "verified": false
+   },
+   "lifeYears": {"lo": 10, "mid": 20, "hi": 40, "tag": "guess", "basis": "Hand tools."},
+   "setupHours": {"lo": 0.3, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "Buy and store."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.5, "tag": "guess", "basis": "Sharpen, oil."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0.2, "mid": 0.5, "hi": 0.9, "tag": "guess", "basis": "Garden use in a house with trees."},
+   "volumeLitresPerUnit": 15,
+   "reliability": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "Simple tools; must be reachable."},
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": ["house"],
+   "effects": [
+    {"type": "other", "description": "Clears a fallen limb from a door or drive, digs out snow or a drain, cuts firewood for a stove, and opens a way out through a roof for a household trapped in an attic by flood water. No study measures any of it."},
+    {"type": "reduce", "target": "displacement", "hazards": ["severeStorm", "hurricane", "winterStorm", "flood"],
+     "fractionRemoved": {"lo": 0, "mid": 0.02, "hi": 0.08, "tag": "guess", "basis": "Regaining access or drainage a day sooner in a minority of events."},
+     "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Someone fit enough to use them."},
+     "notes": "Low on purpose."},
+    {"type": "reduce", "target": "trauma", "hazards": ["flood", "hurricane"],
+     "fractionRemoved": {"lo": 0, "mid": 0.01, "hi": 0.05, "tag": "guess", "basis": "Attic entrapment drownings are real (New Orleans 2005, recalled) but a small share of flood deaths, and most are averted by leaving."},
+     "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Tool is in the attic and the occupant can cut through."},
+     "notes": "Assumes the hazard carries a drowning or injury exposure on the trauma channel."},
+    {"type": "sideRisk", "channel": "trauma",
+     "micromortsPerDayOfUse": {"lo": 0.05, "mid": 0.5, "hi": 2, "tag": "guess", "basis": "Irma: 15 preparation and repair deaths among 21 million Floridians = 0.7 micromorts per resident. If 40% involved tree and debris work and one adult in a fifth of households did two days of it (0.16 person-days per resident), that is about 1.8 per day with chainsaws and ladders in the mix; hand tools at ground level perhaps a quarter of that."},
+     "notes": "Per day of clearing work by the person doing it, usually one or two days per event."}
+   ],
+   "evidence": [
+    {"claim": "Hurricane Irma: 15 of 129 deaths in Florida, Georgia and North Carolina were injuries during preparation or repair (read by step 2).", "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm", "year": 2018, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Honest answer: little that can be quantified, and the work it enables carries its own risk. Condition: a house, with trees or snow."
+  },
+  {
+   "id": "household-plan",
+   "name": "Written household plan",
+   "spec": "One page: phone numbers including a contact outside the region, two meeting points, two ways out of each bedroom, who collects the children, where the shut-offs are, medical ID set on phones; a copy in each wallet and on the fridge; walked through once a year with a fire drill.",
+   "fromLonglistRows": [115],
+   "scalesWith": "household",
+   "unit": "plan",
+   "price": {
+    "usdPerUnit": {"lo": 0, "mid": 2, "hi": 10, "tag": "guess", "basis": "Printing."},
+    "product": "Ready.gov or Red Cross family plan template",
+    "source": "https://www.ready.gov/plan",
+    "verified": false
+   },
+   "lifeYears": {"lo": 2, "mid": 5, "hi": 10, "tag": "guess", "basis": "Until the household, its phones or its address change."},
+   "setupHours": {"lo": 1, "mid": 2, "hi": 4, "tag": "guess", "basis": "Write, print, talk it through."},
+   "upkeepHoursPerYear": {"lo": 0.25, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "Yearly review and one drill."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "The contact sheet helps when a phone is lost."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "Still current and remembered: in one survey 79% said they had an escape plan but over half had never practised it."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "reduce", "target": "fire", "hazards": ["houseFire"],
+     "fractionRemoved": {"lo": 0, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "No study compares fire deaths with and without a practised plan. Mechanism: people delay leaving (an NFPA survey found 8% respond to an alarm by leaving at once; search snippet). The channel owner may override."},
+     "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Plan was practised and is followed."},
+     "notes": "Adds to working smoke alarms; worth nothing without them."},
+    {"type": "reduce", "target": "information", "hazards": ["all"],
+     "fractionRemoved": {"lo": 0.01, "mid": 0.05, "hi": 0.15, "tag": "guess", "basis": "Removes part of the distress of not knowing where family members are when phones are down, by fixing a meeting point and an outside contact."},
+     "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Members remember it."},
+     "notes": "Overlaps the communications researcher's paper contact list (longlist row 43); credit the larger, not both."},
+    {"type": "reduce", "target": "displacement", "hazards": ["all"],
+     "fractionRemoved": {"lo": 0, "mid": 0.02, "hi": 0.06, "tag": "guess", "basis": "A quicker and calmer departure. The one outcome study found no benefit."},
+     "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "As above."},
+     "notes": "The evacuation plan proper (destination, routes, triggers; row 92) belongs to another researcher."}
+   ],
+   "evidence": [
+    {"claim": "Superstorm Sandy, 1,114 New York households: having a kit, plan and medication did not reduce adverse outcomes (read by step 2, abstract only).", "source": "https://www.cambridge.org/core/journals/disaster-medicine-and-public-health-preparedness/article/does-preparedness-matter-the-influence-of-household-preparedness-on-disaster-outcomes-during-superstorm-sandy/19287028C47560A8DBF30A31AECDC9C3", "year": 2020, "verified": false},
+    {"claim": "Survey: 79% of Americans report a home escape plan; 51% of them have never practised it. NFPA: about a third of households have made and practised one.", "source": "https://prnewswire.com/news-releases/the-great-escape-survey-shows-a-majority-of-americans-have-fire-escape-plans-but-dont-practice-them-131341973.html", "year": 2011, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Costs two hours and then half an hour a year. All effects are guesses whose ranges include zero."
+  },
+  {
+   "id": "neighbour-network",
+   "name": "Neighbour network",
+   "spec": "Swap phone numbers with four to six nearby households, agree to check on one another in outages, heat and cold, note who has a generator, medical training or a frail member, and keep one shared contact sheet.",
+   "fromLonglistRows": [116],
+   "scalesWith": "household",
+   "unit": "arrangement",
+   "price": {
+    "usdPerUnit": {"lo": 0, "mid": 0, "hi": 30, "tag": "guess", "basis": "Free; perhaps a round of coffee."},
+    "product": "No purchase",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {"lo": 2, "mid": 5, "hi": 10, "tag": "guess", "basis": "Until neighbours move."},
+   "setupHours": {"lo": 2, "mid": 4, "hi": 10, "tag": "guess", "basis": "Knocking on doors, one get-together."},
+   "upkeepHoursPerYear": {"lo": 1, "mid": 4, "hi": 12, "tag": "guess", "basis": "Keeping in touch."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0.2, "mid": 0.5, "hi": 0.9, "tag": "guess", "basis": "Ordinary neighbourly value: parcels, keys, an eye on the house."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "Neighbours are present, able and willing when it counts; in a regional event they are hit too."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "reduce", "target": "water", "hazards": ["all"],
+     "fractionRemoved": {"lo": 0.02, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Pooling and lending shorten some unmet days. The need curves already assume spontaneous sharing, so this is only what prior arrangement adds."},
+     "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Network is activated."},
+     "notes": "Guess."},
+    {"type": "reduce", "target": "food", "hazards": ["all"],
+     "fractionRemoved": {"lo": 0.02, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "As for water."},
+     "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Network is activated."},
+     "notes": "Guess."},
+    {"type": "reduce", "target": "cooling", "hazards": ["heatWave", "hurricane", "localOutage", "severeStorm", "gridLong"],
+     "fractionRemoved": {"lo": 0.02, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Chicago 1995: living alone OR 2.3 and not leaving home daily OR 6.7 for heat death; social contacts protective. A check-in or a neighbour's cooled room removes part of that excess; for a member who lives alone or is over 75 I would use two to three times this."},
+     "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Someone does check."},
+     "notes": "Mortality and hardship alike."},
+    {"type": "reduce", "target": "warmth", "hazards": ["winterStorm", "localOutage", "severeStorm", "gridLong"],
+     "fractionRemoved": {"lo": 0.01, "mid": 0.08, "hi": 0.25, "tag": "guess", "basis": "Sheltering with a neighbour who has heat; a check that finds someone failing. Same reasoning as cooling, less evidence."},
+     "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Someone does check."},
+     "notes": "Guess."},
+    {"type": "reduce", "target": "trauma", "hazards": ["earthquake", "hurricane", "severeStorm", "flood", "winterStorm", "heatWave", "gridLong"],
+     "fractionRemoved": {"lo": 0.01, "mid": 0.05, "hi": 0.15, "tag": "guess", "basis": "Kobe 1995: most people pulled from rubble were rescued by residents, not services (over 70% in one source). Neighbours also drive people to care when ambulances are delayed."},
+     "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Neighbours know who is home and look."},
+     "notes": "Guess."},
+    {"type": "reduce", "target": "violence", "hazards": ["all"],
+     "fractionRemoved": {"lo": 0, "mid": 0.08, "hi": 0.25, "tag": "derived", "basis": "Neighbourhood watch schemes are associated with 16-26% less crime in a meta-analysis of 18 evaluations; an informal arrangement of a few households is weaker than an organised scheme, so about a third to a half of that."},
+     "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Neighbours do keep watch."},
+     "notes": "Applies to the everyday baseline too."},
+    {"type": "reduce", "target": "information", "hazards": ["all"],
+     "fractionRemoved": {"lo": 0.02, "mid": 0.1, "hi": 0.25, "tag": "guess", "basis": "News of where water, fuel and help are travels by word of mouth when phones are down."},
+     "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Network is activated."},
+     "notes": "Guess."}
+   ],
+   "evidence": [
+    {"claim": "Chicago heat wave 1995, case-control: living alone OR 2.3, not leaving home each day OR 6.7; a working air conditioner OR 0.3; social contacts were protective.", "source": "https://pubmed.ncbi.nlm.nih.gov/8649494/", "year": 1996, "verified": false},
+    {"claim": "British Columbia heat dome 2021: 56% of the 619 dead lived alone (read by step 2).", "source": "https://news.gov.bc.ca/releases/2022PSSG0042-000903", "year": 2022, "verified": false},
+    {"claim": "Neighbourhood watch: associated with a reduction in crime of 16% to 26% (12 studies, 18 evaluations).", "source": "https://econpapers.repec.org/RePEc:wly:camsys:v:4:y:2008:i:1:p:1-46", "year": 2008, "verified": true},
+    {"claim": "Kobe 1995: more than 70% of those rescued were rescued by people in the community.", "source": "https://iisee.kenken.go.jp/symposium/pdf/Reference_5_201202_Hanshin.pdf", "year": 2012, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "The largest-effect entry in this file and the least measured. Costs about 4 hours and then 4 hours a year, half of it arguably ordinary social life. Worth most to people who live alone or are old, which the model's profiles do not capture."
+  },
+  {
+   "id": "practice-and-yearly-review",
+   "name": "Practice and yearly review",
+   "spec": "Once a year, about three hours: check dates and rotate water, food, drugs and batteries; test alarms, lights, radio, stove and generator under load, outdoors; cook one meal without mains power; walk through the plan.",
+   "fromLonglistRows": [111],
+   "scalesWith": "household",
+   "unit": "yearly session",
+   "price": {
+    "usdPerUnit": {"lo": 0, "mid": 0, "hi": 20, "tag": "guess", "basis": "Replacements are already in each item's upkeep."},
+    "product": "No purchase",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {"lo": 1, "mid": 1, "hi": 1, "tag": "guess", "basis": "A yearly action."},
+   "setupHours": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None beyond the first session."},
+   "upkeepHoursPerYear": {"lo": 1.5, "mid": 3, "hi": 6, "tag": "guess", "basis": "One session; government sources ask for one every 6 or 12 months."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "Counted in the items."},
+   "everydayShare": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.5, "mid": 0.75, "hi": 0.95, "tag": "guess", "basis": "The session is in fact held each year."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "other", "description": "Raises the reliability of every other owned item: multiply each item's failure probability (1 - reliability) by 0.6 (0.35-0.9). Example: an item at 0.75 goes to 0.85. Worth more the more the household owns; worth nothing to a household with no kit."},
+    {"type": "reduce", "target": "co", "hazards": ["all"],
+     "fractionRemoved": {"lo": 0.03, "mid": 0.15, "hi": 0.4, "tag": "guess", "basis": "Rehearsing where the generator and stove may run removes part of the misuse behind carbon monoxide deaths: in Texas 2021, 26% of those who stayed heated with a gas oven or hob and 8% used a grill indoors (step 2). No trial of drills."},
+     "adherence": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "What was practised is done under stress."},
+     "notes": "Meant to scale the side risks of combustion items; the channel owner may override."}
+   ],
+   "reliabilityEffect": {
+    "appliesTo": "every other owned item",
+    "failureProbabilityMultiplier": {"lo": 0.35, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "No measurement exists. Other researchers put typical reliability at 0.6-0.9 and blame dead batteries, expired stock and not knowing how to use the item, all of which a yearly check addresses in part."}
+   },
+   "evidence": [
+    {"claim": "Working smoke alarms cut the risk of dying in a reported home fire by 54% (read by step 2), so a non-working alarm forfeits most of its value; upkeep is what separates the two.", "source": "https://www1.maine.gov/dps/fmo/sites/maine.gov.dps.fmo/files/inline-files/nfpa_smoke_alarms_in_u.s._home_fires.pdf", "year": 2019, "verified": false},
+    {"claim": "Generator carbon monoxide deaths 2011-2021: an alarm was known to be present in 17% (read by step 2).", "source": "https://www.cpsc.gov/s3fs-public/Fatal-Incidents-Associated-with-Non-Fire-Carbon-Monoxide-Poisioning-from-Engine-Driven-Generators-and-Other-Engine-Driven-Tools-2011-2021.pdf", "year": 2022, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Should be valued after the kit is chosen, as 0.4 x the value the kit loses to unreliability, against three hours a year."
+  },
+  {
+   "id": "learn-local-hazards",
+   "name": "Learn local hazards and warning signals",
+   "spec": "Two hours, once: look up the address's flood and evacuation zones and wildfire, earthquake, tsunami and dam maps; learn what the local sirens and alert levels mean and where the nearest shelter and cooling centre are; write the answers on the household plan.",
+   "fromLonglistRows": [112],
+   "scalesWith": "household",
+   "unit": "one-off study",
+   "price": {
+    "usdPerUnit": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "Free public maps."},
+    "product": "FEMA flood map, local emergency-management pages",
+    "source": "https://msc.fema.gov/portal/home",
+    "verified": false
+   },
+   "lifeYears": {"lo": 3, "mid": 8, "hi": 15, "tag": "guess", "basis": "Until the household moves or forgets."},
+   "setupHours": {"lo": 1, "mid": 2, "hi": 5, "tag": "guess", "basis": "Reading maps and local pages."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 0.25, "hi": 1, "tag": "guess", "basis": "A glance at the yearly review."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Remembered or written down."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "reduce", "target": "trauma", "hazards": ["hurricane", "flood", "wildfire", "severeStorm", "earthquake"],
+     "fractionRemoved": {"lo": 0.01, "mid": 0.05, "hi": 0.15, "tag": "guess", "basis": "Tornado warnings cut expected injuries by about 32%, and that is the value of the warning reaching people who act on it. Knowing in advance what the warning means and where to go is a part of that; I take a sixth."},
+     "adherence": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Household acts on what it knows."},
+     "notes": "Adds to phone alerts (communications researcher), which deliver the warning; this is knowing what to do with it."},
+    {"type": "reduce", "target": "displacement", "hazards": ["hurricane", "flood", "wildfire"],
+     "fractionRemoved": {"lo": 0, "mid": 0.03, "hi": 0.1, "tag": "guess", "basis": "Leaving in time and to the right place; not leaving when outside the zone."},
+     "adherence": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "As above."},
+     "notes": "Guess."}
+   ],
+   "evidence": [
+    {"claim": "About 18,000 US tornadoes 1986-2002: warnings reduced expected injuries by about 32% on average, over 40% at some lead times; effect on deaths mixed.", "source": "https://ams.confex.com/ams/Annual2006/techprogram/paper_104493.htm", "year": 2006, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Fallout shelter knowledge (row 81) and alert enrolment (row 42) belong to other researchers."
+  },
+  {
+   "id": "reference-books",
+   "name": "Reference books",
+   "spec": "A current first-aid manual and a lay medical handbook written for places without doctors, on paper, kept with the first-aid kit.",
+   "fromLonglistRows": [113],
+   "scalesWith": "household",
+   "unit": "two books",
+   "price": {
+    "usdPerUnit": {"lo": 0, "mid": 40, "hi": 80, "tag": "guess", "basis": "Step 2 estimate $20-40 for one; two books $40. Free PDFs exist but need a charged device. Publisher's shop returned 429."},
+    "product": "Red Cross first-aid manual and Where There Is No Doctor (Hesperian)",
+    "source": "https://store.hesperian.org/prod/Where_There_Is_No_Doctor.html",
+    "verified": false
+   },
+   "lifeYears": {"lo": 10, "mid": 20, "hi": 30, "tag": "guess", "basis": "Paper."},
+   "setupHours": {"lo": 0.5, "mid": 2, "hi": 6, "tag": "guess", "basis": "Skim so that the layout is familiar."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Occasional household use."},
+   "volumeLitresPerUnit": 2,
+   "reliability": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Found, and the right page reached, under stress."},
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "other", "description": "Guidance when phone advice lines and the internet are down. No study measures an effect of owning a book."},
+    {"type": "reduce", "target": "trauma", "hazards": ["gridLong", "nuclearNear", "nuclearFar", "pandemicSevere"],
+     "fractionRemoved": {"lo": 0, "mid": 0.01, "hi": 0.05, "tag": "guess", "basis": "Only where care is out of reach for weeks. A book adds little to a trained person and less to an untrained one."},
+     "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Consulted and followed."},
+     "notes": "Low on purpose. The first-aid course is the medical researcher's entry."}
+   ],
+   "evidence": [
+    {"claim": "No outcome evidence found. Recommended by The Prepared and CDC lists (step 2 longlist).", "source": "https://theprepared.com/prepping-basics/guides/emergency-preparedness-checklist-prepping-beginners/", "year": 2026, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Honest answer: little that can be quantified."
+  },
+  {
+   "id": "pandemic-isolation-plan",
+   "name": "Pandemic isolation plan",
+   "spec": "Confirm with each employer that work can be done from home at a day's notice (equipment, access); set up grocery and pharmacy delivery accounts; agree the household's trigger for withdrawing and how a sick member would be kept apart at home; know how many weeks of pay the household can forgo.",
+   "fromLonglistRows": [117],
+   "scalesWith": "household",
+   "unit": "plan",
+   "price": {
+    "usdPerUnit": {"lo": 0, "mid": 0, "hi": 150, "tag": "guess", "basis": "Free where the employer supplies equipment; a headset or webcam otherwise."},
+    "product": "No purchase",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {"lo": 2, "mid": 4, "hi": 8, "tag": "guess", "basis": "Until jobs change."},
+   "setupHours": {"lo": 2, "mid": 4, "hi": 10, "tag": "guess", "basis": "Conversations with employers, account set-up, a household talk."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 0.5, "hi": 2, "tag": "guess", "basis": "Check that it still holds."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Remote-work readiness and delivery accounts have ordinary uses."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.2, "mid": 0.4, "hi": 0.7, "tag": "guess", "basis": "The plan works only if every earner's job can in fact be done remotely or paused; about 37% of US jobs can be done from home (Dingel and Neiman 2020, recalled)."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "reduce", "target": "infection", "hazards": ["pandemicSevere"],
+     "fractionRemoved": {"lo": 0.02, "mid": 0.1, "hi": 0.3, "tag": "derived", "basis": "COVID-19 case-control study: going only to an office or school carried adjusted OR 1.8 against any telework, so telework removes about 44% of a worker's risk ((1.8-1)/1.8). In 2020 most remote-capable workers were sent home within two or three weeks with or without a plan, so the plan earns only the earlier start, the delivery set-up and separation of a sick member: I take a quarter."},
+     "adherence": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Household holds to isolation for as long as it matters."},
+     "notes": "Fraction of the household's infection risk over the whole event."},
+    {"type": "reduce", "target": "infection", "hazards": ["pandemicModerate"],
+     "fractionRemoved": {"lo": 0.01, "mid": 0.05, "hi": 0.15, "tag": "guess", "basis": "Same mechanism; households isolate less strictly when the disease is milder."},
+     "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Looser adherence."},
+     "notes": "Guess."},
+    {"type": "other", "description": "Delivery accounts set up in advance spare some of the food and medication hardship of the first weeks, when new customers could not get slots in 2020. Not quantified."}
+   ],
+   "evidence": [
+    {"claim": "July 2020, 153 cases and 161 controls: 35% of cases and 53% of controls teleworked; going exclusively to an office or school aOR 1.8 (1.2-2.7), 2.1 outside critical infrastructure.", "source": "https://www.cdc.gov/mmwr/volumes/69/wr/mm6944a4.htm", "year": 2020, "verified": true}
+   ],
+   "confidence": "derived",
+   "notes": "The stock of masks, food and drugs that makes isolation possible is in other entries; this is the arrangement only. For a household whose jobs cannot be done remotely the entry is worth close to nothing, which reliability carries."
+  },
+  {
+   "id": "check-home-hazard-exposure",
+   "name": "Check a home's hazard exposure before choosing it",
+   "spec": "Before signing a lease or purchase, two to three hours on the address: flood maps and a property flood score, wildfire hazard zone, fault, liquefaction and landslide maps, storm-surge and evacuation zone, building age and type; prefer the less exposed of otherwise similar homes.",
+   "fromLonglistRows": [120],
+   "scalesWith": "household",
+   "unit": "check at each move",
+   "price": {
+    "usdPerUnit": {"lo": 0, "mid": 0, "hi": 50, "tag": "guess", "basis": "Public maps and free property risk scores; a paid report at most."},
+    "product": "FEMA flood map, First Street risk score, state hazard maps",
+    "source": "https://msc.fema.gov/portal/home",
+    "verified": false
+   },
+   "lifeYears": {"lo": 3, "mid": 8, "hi": 15, "tag": "guess", "basis": "Length of a tenancy or ownership; renters move every few years, owners every decade or more."},
+   "setupHours": {"lo": 1, "mid": 3, "hi": 8, "tag": "guess", "basis": "For the shortlisted homes."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.3, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "The household has a real alternative and acts on what it finds."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {"type": "other", "description": "Acts before the model starts: it changes which local-hazard boxes the household ticks. Available only to a household that is about to move. In a field experiment on a US property site, buyers shown flood scores who had been viewing severe-risk homes went on to bid on homes scored 3.9 instead of 8.5 out of 10."},
+    {"type": "reduce", "target": "financialLoss", "hazards": ["flood", "wildfire", "hurricane", "earthquake"],
+     "fractionRemoved": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "For a household that would otherwise have chosen an exposed home: share of the exposure avoided by picking a lower-risk home in the same market. The flood experiment shows a halving of the risk score among those viewing the riskiest homes and 25% lower risk viewed after nine weeks."},
+     "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Household weighs the finding against price and location and still acts."},
+     "notes": "Part of the gain is paid for in a higher price or rent; flood risk is only partly priced, so not all."},
+    {"type": "reduce", "target": "displacement", "hazards": ["flood", "wildfire", "hurricane", "earthquake"],
+     "fractionRemoved": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "As above."},
+     "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "As above."},
+     "notes": "Same reasoning."}
+   ],
+   "evidence": [
+    {"claim": "Randomised display of flood-risk scores to 17.5 million users of a property site: users who had viewed homes averaging 8.5 (severe) bid on homes averaging 3.9 after seeing scores; after nine or more weeks those viewing extreme-risk homes viewed homes with 25% less risk than controls.", "source": "https://www.redfin.com/news/redfin-users-interact-with-flood-risk-data/", "year": 2022, "verified": false},
+    {"claim": "14.6 million US properties (10.3%) are at substantial flood risk (First Street 2020; step 2, snippet).", "source": "https://www.preventionweb.net/publications/view/72504", "year": 2020, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Better modelled as a change to the tick-boxes than as a reduce effect; see open questions. Probably one of the best buys in this file for a household that is moving, because three hours once alters every later year."
+  },
+  {
+   "id": "seismic-securing",
+   "name": "Strap the water heater and anchor tall furniture",
+   "spec": "Two metal straps on the water heater, anti-tip anchors on bookcases, wardrobes and televisions, latches on high kitchen cabinets; nothing heavy above beds.",
+   "fromLonglistRows": [121],
+   "scalesWith": "household",
+   "unit": "home secured",
+   "price": {
+    "usdPerUnit": {"lo": 40, "mid": 80, "hi": 250, "tag": "guess", "basis": "Recalled: strap kit about $20-25, anchors $10-15 per pack, latches $10-20; three to five packs. Not verified on a retailer page."},
+    "product": "Water-heater strap kit, furniture anti-tip anchors, cabinet latches",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {"lo": 10, "mid": 20, "hi": 30, "tag": "guess", "basis": "Until furniture is rearranged or the heater replaced."},
+   "setupHours": {"lo": 2, "mid": 4, "hi": 8, "tag": "guess", "basis": "Do-it-yourself with a drill and stud finder."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 0.2, "hi": 1, "tag": "guess", "basis": "Re-anchor what has moved."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Anti-tip anchors also protect small children."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "Installed into studs, still attached."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": ["earthquake"],
+   "effects": [
+    {"type": "reduce", "target": "trauma", "hazards": ["earthquake"],
+     "fractionRemoved": {"lo": 0.01, "mid": 0.05, "hi": 0.15, "tag": "guess", "basis": "Northridge: deaths were mainly from building collapse, which this does not touch; hospital admissions were mostly falls and being struck by objects, which it does. So a small share of deaths and a larger share of injuries."},
+     "adherence": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Most heavy items anchored."},
+     "notes": "Assumes an injury exposure on the trauma channel in earthquakes."},
+    {"type": "reduce", "target": "fire", "hazards": ["earthquake"],
+     "fractionRemoved": {"lo": 0.02, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "The US mitigation study puts water-heater strapping at 24:1 mainly through fewer fires after earthquakes; the share of post-earthquake home fires that start at a gas water heater is not given."},
+     "adherence": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "Strapped correctly."},
+     "notes": "Gas water heaters only."},
+    {"type": "reduce", "target": "financialLoss", "hazards": ["earthquake"],
+     "fractionRemoved": {"lo": 0.01, "mid": 0.03, "hi": 0.08, "tag": "guess", "basis": "Contents and water damage; a small part of total earthquake loss."},
+     "adherence": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "As above."},
+     "notes": "Guess."}
+   ],
+   "evidence": [
+    {"claim": "Mitigation Saves (2019): strapping water heaters 24:1, strapping bookcases 13:1, cabinet latches 8:1, strapping televisions 2:1 benefit-cost.", "source": "https://www.nibs.org/files/pdfs/ms_v3_retrofit_earthquake.pdf", "year": 2019, "verified": false},
+    {"claim": "Northridge 1994: deaths mainly from building collapse; admissions mostly from falls or being hit by objects.", "source": "https://pubmed.ncbi.nlm.nih.gov/9698136/", "year": 1998, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Applies to flats and rented homes too (with the landlord's leave to drill). The benefit-cost ratios are from a search snippet; the fact sheet itself returned 404."
+  },
+  {
+   "id": "seismic-brace-and-bolt",
+   "name": "Brace-and-bolt seismic retrofit",
+   "spec": "For a wood-frame house built before about 1980 on a raised foundation: bolt the sill to the foundation and brace the crawl-space walls with plywood, to code.",
+   "fromLonglistRows": [121],
+   "scalesWith": "household",
+   "unit": "house retrofitted",
+   "price": {
+    "usdPerUnit": {"lo": 3000, "mid": 5000, "hi": 10000, "tag": "guess", "basis": "Typical cost $3,000-7,000 according to the PEER brochure for California's programme (search snippet); grants of up to $3,000 exist."},
+    "product": "Code-compliant crawl-space retrofit by a contractor",
+    "source": "https://peer.berkeley.edu/sites/default/files/task7.3_lay-audience-report_20201016.pdf",
+    "verified": false
+   },
+   "lifeYears": {"lo": 30, "mid": 50, "hi": 80, "tag": "guess", "basis": "Life of the house."},
+   "setupHours": {"lo": 4, "mid": 10, "hi": 25, "tag": "guess", "basis": "Quotes, permit, supervising."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.4, "tag": "guess", "basis": "Part is recovered in resale value and insurance discounts."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Permitted structural work."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": ["house", "earthquake"],
+   "effects": [
+    {"type": "reduce", "target": "financialLoss", "hazards": ["earthquake"],
+     "fractionRemoved": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "The PEER-CEA project reports substantial cuts in expected loss for the vulnerable house types, larger for two-storey houses; I could not read the figures."},
+     "adherence": {"lo": 0.9, "mid": 0.97, "hi": 1, "tag": "guess", "basis": "Passive once built."},
+     "notes": "Only for the house type in the spec; zero for slab-on-grade or post-1980 houses."},
+    {"type": "reduce", "target": "displacement", "hazards": ["earthquake"],
+     "fractionRemoved": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "A house that stays on its foundation stays habitable."},
+     "adherence": {"lo": 0.9, "mid": 0.97, "hi": 1, "tag": "guess", "basis": "Passive."},
+     "notes": "As above."},
+    {"type": "reduce", "target": "trauma", "hazards": ["earthquake"],
+     "fractionRemoved": {"lo": 0.02, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Fewer collapses of the house itself; most US earthquake deaths have been in other building types."},
+     "adherence": {"lo": 0.9, "mid": 0.97, "hi": 1, "tag": "guess", "basis": "Passive."},
+     "notes": "Guess."}
+   ],
+   "evidence": [
+    {"claim": "Brace-and-bolt retrofits have been completed at a typical cost of $3,000 to $7,000; damage in a major earthquake is significantly reduced when crawl-space walls are bolted and braced.", "source": "https://peer.berkeley.edu/sites/default/files/task7.3_lay-audience-report_20201016.pdf", "year": 2020, "verified": false},
+    {"claim": "Mitigation Saves (2019): seismic retrofit of buildings saves $13 per $1 overall.", "source": "https://www.nibs.org/files/pdfs/ms_v3_retrofit_earthquake.pdf", "year": 2019, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Owner-occupiers only. Whether it pays depends almost wholly on the earthquake probability and on the house type."
+  },
+  {
+   "id": "wind-opening-protection",
+   "name": "Shutters or panels for windows and garage door",
+   "spec": "Pre-cut plywood or storm panels with fixings for every window and glazed door, and a brace kit for the garage door, stored labelled; at the next re-roofing, a sealed roof deck and stronger nailing.",
+   "fromLonglistRows": [121],
+   "scalesWith": "household",
+   "unit": "house protected",
+   "price": {
+    "usdPerUnit": {"lo": 400, "mid": 1500, "hi": 8000, "tag": "guess", "basis": "Recalled price bands, not verified: plywood for a dozen openings a few hundred dollars; metal storm panels $1,500-4,000; accordion shutters more."},
+    "product": "Storm panels or pre-cut plywood, garage-door brace",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {"lo": 10, "mid": 20, "hi": 30, "tag": "guess", "basis": "Panels last; plywood warps."},
+   "setupHours": {"lo": 4, "mid": 10, "hi": 30, "tag": "guess", "basis": "Measure, cut, fit anchors."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 1, "hi": 6, "tag": "guess", "basis": "Fitting before a storm takes half a day; averaged over years."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Insurance discounts in some states."},
+   "volumeLitresPerUnit": 150,
+   "reliability": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Fitted in time before landfall, by someone able to lift them."},
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": ["house", "hurricane"],
+   "effects": [
+    {"type": "reduce", "target": "financialLoss", "hazards": ["hurricane"],
+     "fractionRemoved": {"lo": 0.1, "mid": 0.25, "hi": 0.5, "tag": "derived", "basis": "Hurricane Sally, coastal Alabama: homes built or re-roofed to the FORTIFIED standard had 55-74% fewer claims and 14-40% lower severity than conventional homes (press reports of the state study). Opening protection is one part of that standard and nearly half the claims were fallen trees, so I take about a third."},
+     "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Panels are up when the storm arrives."},
+     "notes": "Wind damage only; does nothing for surge."},
+    {"type": "reduce", "target": "displacement", "hazards": ["hurricane"],
+     "fractionRemoved": {"lo": 0.05, "mid": 0.2, "hi": 0.4, "tag": "guess", "basis": "A house that keeps its envelope stays habitable; power and water outages displace households regardless."},
+     "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "As above."},
+     "notes": "Guess."},
+    {"type": "reduce", "target": "trauma", "hazards": ["hurricane"],
+     "fractionRemoved": {"lo": 0, "mid": 0.03, "hi": 0.1, "tag": "guess", "basis": "Fewer injuries from breaking glass for those who stay; fitting the panels has its own fall risk."},
+     "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "As above."},
+     "notes": "Guess."}
+   ],
+   "evidence": [
+    {"claim": "Alabama Department of Insurance and University of Alabama, 2025: FORTIFIED homes in Hurricane Sally had claim frequency 55-74% lower and severity 14-40% lower; nearly half of claims were from fallen trees.", "source": "https://aldoi.gov/currentnewsitem.aspx?ID=1321", "year": 2025, "verified": false},
+    {"claim": "Mitigation Saves (2019): private-sector hurricane wind retrofit 6:1 nationally, above 8:1 near the coast.", "source": "https://www.nibs.org/files/pdfs/ms_v3_retrofit_hurricane.pdf", "year": 2019, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Boarding-up materials from row 121 are here. Plywood sells out as a storm approaches, hence specialty."
+  },
+  {
+   "id": "flood-proofing-basic",
+   "name": "Basic flood-proofing",
+   "spec": "Backwater valve on the sewer line, sump pump with battery backup, boiler, electrical panel and appliances raised above expected water level, valuables off the basement floor, and deployable barriers for doors and vents.",
+   "fromLonglistRows": [121],
+   "scalesWith": "household",
+   "unit": "house protected",
+   "price": {
+    "usdPerUnit": {"lo": 500, "mid": 2500, "hi": 10000, "tag": "guess", "basis": "Recalled contractor price bands, not verified: backwater valve $1,000-2,500 installed, backup sump pump $500-1,500, raising utilities $1,000 upward."},
+    "product": "Backwater valve, battery-backup sump pump, raised utilities",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {"lo": 10, "mid": 20, "hi": 30, "tag": "guess", "basis": "Pumps 10 years, valves and raised utilities longer."},
+   "setupHours": {"lo": 4, "mid": 10, "hi": 30, "tag": "guess", "basis": "Quotes and supervision."},
+   "upkeepHoursPerYear": {"lo": 0.5, "mid": 1, "hi": 3, "tag": "guess", "basis": "Test the pump and valve."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 30, "hi": 100, "tag": "guess", "basis": "Pump battery every few years."},
+   "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "A sump pump and valve also handle ordinary heavy rain and sewer backups."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Pump runs, barriers are placed in time; overtopped in a deep flood."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": ["house", "flood"],
+   "effects": [
+    {"type": "reduce", "target": "financialLoss", "hazards": ["flood"],
+     "fractionRemoved": {"lo": 0.05, "mid": 0.2, "hi": 0.45, "tag": "guess", "basis": "Household flood measures cut building and contents damage by a fifth to a half in shallow floods and little in deep ones (recalled from studies of the 2002 Elbe flood; step 2's French study says cost-efficiency depends strongly on flood probability)."},
+     "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Measures in working order when the water comes."},
+     "notes": "Shallow flooding and sewer backup; no effect when water reaches the ground-floor ceiling."},
+    {"type": "reduce", "target": "displacement", "hazards": ["flood"],
+     "fractionRemoved": {"lo": 0.03, "mid": 0.15, "hi": 0.35, "tag": "guess", "basis": "A dry basement with working utilities shortens the time away."},
+     "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "As above."},
+     "notes": "Guess."}
+   ],
+   "evidence": [
+    {"claim": "885 French households: cost-efficiency of flood damage mitigation measures depends strongly on the flood probability the household faces (read by step 2, abstract).", "source": "https://doi.org/10.1016/j.gloenvcha.2014.12.007", "year": 2015, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Insurance is reported separately by the model. The weakest-sourced of the structural entries."
+  },
+  {
+   "id": "wildfire-home-hardening",
+   "name": "Wildfire home hardening",
+   "spec": "Ember-resistant vents, a 1.5 m strip around the house with nothing that burns, metal gutter guards, gaps under doors and eaves sealed, and vegetation cleared yearly out to 10 m.",
+   "fromLonglistRows": [121],
+   "scalesWith": "household",
+   "unit": "house hardened",
+   "price": {
+    "usdPerUnit": {"lo": 500, "mid": 3000, "hi": 15000, "tag": "guess", "basis": "Recalled, not verified: vents $50-150 each for 10-20 vents, gravel strip and gutter guards a few hundred to a few thousand dollars; more if siding or roof is replaced."},
+    "product": "Ember-resistant vents, gutter guards, non-combustible perimeter",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {"lo": 10, "mid": 20, "hi": 30, "tag": "guess", "basis": "Hardware lasts; vegetation grows back."},
+   "setupHours": {"lo": 8, "mid": 20, "hi": 60, "tag": "guess", "basis": "Much of it is the owner's labour."},
+   "upkeepHoursPerYear": {"lo": 2, "mid": 6, "hi": 16, "tag": "guess", "basis": "Yearly clearing of leaves, needles and brush."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 50, "hi": 300, "tag": "guess", "basis": "Disposal, occasional hired help."},
+   "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Insurability and premium discounts in some states."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Maintained; neighbours' houses close by can still ignite it."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": ["house", "wildfire"],
+   "effects": [
+    {"type": "reduce", "target": "financialLoss", "hazards": ["wildfire"],
+     "fractionRemoved": {"lo": 0.1, "mid": 0.3, "hi": 0.5, "tag": "guess", "basis": "The US mitigation study gives wildland-urban interface retrofit 2:1 overall and above 6:1 where fire is most likely, which implies a large cut in loss probability; post-fire surveys find homes built to ember-resistant codes surviving at two to three times the rate of older ones (recalled, Camp Fire)."},
+     "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Perimeter kept clear."},
+     "notes": "Loss of the house; smoke damage unaffected."},
+    {"type": "reduce", "target": "displacement", "hazards": ["wildfire"],
+     "fractionRemoved": {"lo": 0.05, "mid": 0.2, "hi": 0.4, "tag": "guess", "basis": "Evacuation is unchanged; the months of displacement after losing the house are what fall."},
+     "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "As above."},
+     "notes": "Guess."},
+    {"type": "reduce", "target": "fire", "hazards": ["wildfire"],
+     "fractionRemoved": {"lo": 0, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "Matters to life only for those who cannot leave."},
+     "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "As above."},
+     "notes": "Guess."}
+   ],
+   "evidence": [
+    {"claim": "Mitigation Saves (2019): retrofitting buildings in the wildland-urban interface 2:1 in aggregate, over 6:1 where fire probability is highest.", "source": "https://www.nibs.org/files/pdfs/ms_v3_retrofit_wui.pdf", "year": 2019, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Owner-occupiers; renters can do the clearing only."
+  },
+  {
+   "id": "home-solar-battery",
+   "name": "Home solar with battery backup",
+   "spec": "8 kW of rooftop solar with one 13.5 kWh battery wired for backup (islanding), with a reserve setting that keeps the battery at least half full.",
+   "fromLonglistRows": [122],
+   "scalesWith": "household",
+   "unit": "system",
+   "price": {
+    "usdPerUnit": {"lo": 24000, "mid": 34300, "hi": 50000, "tag": "derived", "basis": "8,000 W x $2.60 per watt (EnergySage, 2026, before incentives) = $20,800, plus a Tesla Powerwall 3 at $13,473 installed (EnergySage) = $34,300. The federal credit for owner-purchased systems ended in 2025 (search snippet); leases still qualify."},
+    "product": "8 kW rooftop solar plus Tesla Powerwall 3",
+    "source": "https://www.energysage.com/energy-storage/best-home-batteries/tesla-powerwall-battery-complete-review/",
+    "verified": true
+   },
+   "lifeYears": {"lo": 10, "mid": 15, "hi": 25, "tag": "guess", "basis": "Battery warranty 10 years (EnergySage); panels about 25."},
+   "setupHours": {"lo": 8, "mid": 15, "hi": 40, "tag": "guess", "basis": "Quotes, permits, utility paperwork."},
+   "upkeepHoursPerYear": {"lo": 0, "mid": 1, "hi": 4, "tag": "guess", "basis": "Monitoring."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 100, "hi": 300, "tag": "guess", "basis": "Occasional service, inverter replacement averaged."},
+   "everydayShare": {"lo": 0.35, "mid": 0.6, "hi": 0.85, "tag": "derived", "basis": "Solar pays for itself in about 10 years on bills (EnergySage), so about 0.9 of its $20,800; the battery earns little outside time-of-use tariffs, about 0.15 of $13,473 (guess). (18,700 + 2,000) / 34,300 = 0.60."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Battery charged when the outage starts; panels undamaged and not under snow or smoke."},
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": ["house"],
+   "effects": [
+    {"type": "capability", "capability": "mainsPower", "notes": "11.5 kW continuous (EnergySage): runs a fridge, furnace fan, medical devices and one air conditioner."},
+    {"type": "capability", "capability": "chargePhone", "notes": "Follows from mains power."},
+    {"type": "supply", "need": "refrigeration", "amountPerUnit": 15000, "amountUnit": "Wh per day, renewing (8 kW x about 2.5 effective sun-hours in the storm, smoke and winter conditions that go with outages; about 29,000 on an average day, under 5,000 under snow), plus about 8,000 Wh in the battery at the start", "notes": "One shared stock with the next two."},
+    {"type": "supply", "need": "medicalPower", "amountPerUnit": 15000, "amountUnit": "Wh per day, renewing (same stock)", "notes": "Same stock."},
+    {"type": "supply", "need": "devicePower", "amountPerUnit": 15000, "amountUnit": "Wh per day, renewing (same stock)", "notes": "Same stock."},
+    {"type": "reduce", "target": "cooling", "hazards": ["heatWave", "hurricane", "localOutage", "severeStorm", "gridLong"],
+     "fractionRemoved": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "Summer sun yields 30-40 kWh a day, enough to cool one or two rooms continuously."},
+     "adherence": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "System islands correctly."},
+     "notes": "Only where the outage, not the absence of an air conditioner, is the cause."},
+    {"type": "reduce", "target": "warmth", "hazards": ["winterStorm", "localOutage", "severeStorm", "gridLong"],
+     "fractionRemoved": {"lo": 0.1, "mid": 0.35, "hi": 0.7, "tag": "guess", "basis": "Runs a gas furnace's fan and controls (about 6 kWh a day) for two days from the battery alone and longer with sun; runs a heat pump for hours, not days, in deep cold."},
+     "adherence": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "As above."},
+     "notes": "Depends on the heating type; gas must still flow."}
+   ],
+   "evidence": [
+    {"claim": "Tesla Powerwall 3: about $13,473 installed before incentives, 13.5 kWh usable, 11.5 kW continuous, 10-year warranty.", "source": "https://www.energysage.com/energy-storage/best-home-batteries/tesla-powerwall-battery-complete-review/", "year": 2026, "verified": true},
+    {"claim": "Residential solar averages about $2.60 per watt before incentives in 2026 ($31,135 for 12 kW); average payback about 10 years.", "source": "https://www.energysage.com/local-data/solar-panel-cost/", "year": 2026, "verified": true}
+   ],
+   "confidence": "derived",
+   "notes": "Solar without a battery gives no backup: grid-tied inverters shut down in an outage. The preparedness purchase is therefore the battery ($13,473, everyday share about 0.15) for a house that has or wants solar; I price the pair because the longlist names them together. Rooftop systems cannot be installed in most flats."
+  },
+  {
+   "id": "rainwater-barrel",
+   "name": "Rain barrel on a downpipe",
+   "spec": "A 190-litre (50 US gallon) lidded, screened barrel with a downpipe diverter and tap; water is for flushing and washing, and for drinking only after filtering and disinfecting.",
+   "fromLonglistRows": [122],
+   "scalesWith": "household",
+   "unit": "barrel (190 litres)",
+   "ladder": [{"label": "1 barrel", "units": 1}, {"label": "2 barrels", "units": 2}, {"label": "4 barrels", "units": 4}],
+   "price": {
+    "usdPerUnit": {"lo": 35, "mid": 120, "hi": 190, "tag": "guess", "basis": "Home Depot listings in search snippets: $99 to $139 for rigid 50-gallon barrels, $34 collapsible, $190 at the top. Page not opened."},
+    "product": "50-gallon rain barrel with brass tap and diverter",
+    "source": "https://www.homedepot.com/p/317983809",
+    "verified": false
+   },
+   "lifeYears": {"lo": 5, "mid": 12, "hi": 20, "tag": "guess", "basis": "Plastic outdoors."},
+   "setupHours": {"lo": 1, "mid": 2, "hi": 4, "tag": "guess", "basis": "Level base, cut the downpipe, fit the diverter."},
+   "upkeepHoursPerYear": {"lo": 0.5, "mid": 1, "hi": 3, "tag": "guess", "basis": "Clean, drain before frost, check the screen."},
+   "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+   "everydayShare": {"lo": 0.1, "mid": 0.4, "hi": 0.8, "tag": "guess", "basis": "Garden watering."},
+   "volumeLitresPerUnit": 0,
+   "reliability": {"lo": 0.25, "mid": 0.55, "hi": 0.85, "tag": "guess", "basis": "The barrel holds water when the event begins: empty in dry spells and drained in freezing winters."},
+   "lateBuyClass": "staple",
+   "requires": ["treatWater"],
+   "conditions": ["house"],
+   "effects": [
+    {"type": "supply", "need": "water", "amountPerUnit": 190, "amountUnit": "litre, untreated; refills with about 4 mm of rain on 50 square metres of roof", "notes": "Roof run-off carries bird droppings and roofing residues; drink only after filter and disinfectant."},
+    {"type": "reduce", "target": "sanitation", "hazards": ["all"],
+     "fractionRemoved": {"lo": 0.1, "mid": 0.25, "hi": 0.5, "tag": "guess", "basis": "A flush takes about 6 litres; one barrel is some 30 flushes when taps are dry but drains work."},
+     "adherence": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Household carries the water in."},
+     "notes": "Overlaps water-fetch containers; credit the larger."}
+   ],
+   "evidence": [
+    {"claim": "Arithmetic, no source needed: 1 mm of rain on 1 square metre is 1 litre, so 4 mm on 50 square metres of roof is 200 litres, one barrel. No study of rain barrels in emergencies was found.", "source": "https://www.cdc.gov/healthywater/drinking/private/rainwater-collection.html", "year": 2026, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Collection is restricted in a few US states (recalled: Colorado caps households at two barrels). Stored tap water is cheaper per litre and potable; the barrel's case is that it refills."
+  },
+  {
+   "id": "extra-fuel-store",
+   "name": "Extra stored petrol",
+   "spec": "Approved 5-gallon (19-litre) cans of stabilised petrol in a detached shed or garage, beyond the first 10 gallons counted with the generator; rotated into the car once a year.",
+   "fromLonglistRows": [122],
+   "scalesWith": "household",
+   "unit": "5-gallon can, filled",
+   "ladder": [{"label": "1 can (5 gal)", "units": 1}, {"label": "2 cans (10 gal)", "units": 2}, {"label": "3 cans (15 gal)", "units": 3}],
+   "price": {
+    "usdPerUnit": {"lo": 35, "mid": 45, "hi": 60, "tag": "guess", "basis": "Recalled prices, not verified: can about $27, 5 gallons at about $3.10, stabiliser about $2."},
+    "product": "5-gallon approved petrol can, filled, with stabiliser",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {"lo": 5, "mid": 10, "hi": 20, "tag": "guess", "basis": "The can; the fuel is rotated yearly."},
+   "setupHours": {"lo": 0.3, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "Buy, fill, label."},
+   "upkeepHoursPerYear": {"lo": 0.2, "mid": 0.4, "hi": 1, "tag": "guess", "basis": "Pour into the car and refill, per can."},
+   "upkeepUsdPerYear": {"lo": 1, "mid": 2, "hi": 5, "tag": "guess", "basis": "Stabiliser."},
+   "everydayShare": {"lo": 0.2, "mid": 0.35, "hi": 0.5, "tag": "derived", "basis": "The fuel ($15.50 of $45) is burnt in the car at full value when rotated."},
+   "volumeLitresPerUnit": 22,
+   "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Fuel still good: stabilised petrol keeps one to two years (recalled)."},
+   "lateBuyClass": "specialty",
+   "requires": ["generator"],
+   "conditions": ["house"],
+   "effects": [
+    {"type": "supply", "need": "refrigeration", "amountPerUnit": 17500, "amountUnit": "Wh usable per can through a small generator at light load (the power researcher's 35,000 Wh per 10 gallons)", "notes": "One shared stock with the next two."},
+    {"type": "supply", "need": "medicalPower", "amountPerUnit": 17500, "amountUnit": "Wh usable per can (same stock)", "notes": "Same stock."},
+    {"type": "supply", "need": "devicePower", "amountPerUnit": 17500, "amountUnit": "Wh usable per can (same stock)", "notes": "Same stock."},
+    {"type": "other", "description": "Without a generator: one can is about 200 km of driving, which keeps the leave option open when filling stations are dry or without power. Belongs with the car-tank-half-full habit (row 40)."},
+    {"type": "sideRisk", "channel": "fire",
+     "micromortsPerDayOfUse": {"lo": 0.0003, "mid": 0.0015, "hi": 0.006, "tag": "guess", "basis": "About 110 deaths a year in US home fires involving petrol (2003-2006; search snippet), spread over perhaps 70 million households that keep some (guess) = 1.6 per household-year, 0.6 per person-year, 0.0017 per person-day. Storing several times the usual lawnmower can is assumed to add about as much again."},
+     "notes": "Per person per day the fuel is stored, all year. Never indoors or in a flat."}
+   ],
+   "evidence": [
+    {"claim": "US fire departments attended about 2,400 home fires involving petrol a year in 2003-2006, with 110 deaths and 313 injuries a year.", "source": "https://www.petersonschriever.spaceforce.mil/Newsroom/News/Display/Article/326626/gasoline-safety", "year": 2010, "verified": false},
+    {"claim": "Fire codes usually limit a homeowner to about 25 gallons in approved containers of under five gallons each (American Petroleum Institute, via search snippet); local limits run from 5 to 30 gallons.", "source": "https://www.lehi-ut.gov/departments/fire-department/fire-prevention/home-fuel-storage-limits/", "year": 2026, "verified": false}
+   ],
+   "confidence": "guess",
+   "notes": "Ladder stops at three cans so that the total with the generator's 10 gallons stays within the usual 25-gallon limit; many cities allow less. Matters only in outages longer than the first 10 gallons last, so its value rests on gridLong and the hurricane tail."
+  }
+ ],
+ "excluded": [
+  {"what": "Row 87, body armour", "reason": "No evidence of benefit to a household at home; $300 or more; step 2's own source calls the fear overblown."},
+  {"what": "Row 114, fitness and stress resilience", "reason": "Benefit is almost wholly everyday health (everyday share about 1) and far larger than anything on this list; it is a way of life, not a preparedness purchase, and the model has no channel for it."},
+  {"what": "Row 122, food growing", "reason": "Yields arrive months later and cover a small share of calories; no bearing on the windows the model evaluates. Hobby value only."},
+  {"what": "Burglar alarm or cameras (candidate not on the longlist)", "reason": "Survey evidence gives an alarm alone a protection factor below 1; monthly fees. Not added."},
+  {"what": "Row 121, boarding-up materials", "reason": "Merged into wind-opening-protection."},
+  {"what": "Rows 104-108 as separate entries", "reason": "Merged into basic-tools-bundle."},
+  {"what": "Row 89 as one entry", "reason": "Split into discretion-about-supplies and basic-digital-security, which act on different channels."}
+ ],
+ "blockedSources": [
+  "https://pubmed.ncbi.nlm.nih.gov/35377715/ (cookie wall; abstract summary read through Europe PMC): absolute homicide rates among people living with handgun owners, needed to turn HR 2.33 into micromorts.",
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC9047728 (not opened; search snippet only): suicide among women living with handgun owners.",
+  "https://ucr.fbi.gov/crime-in-the-u.s/2019/crime-in-the-u.s.-2019/topic-pages/burglary.pdf/at_download/file (403): mean loss per burglary and share with forcible entry.",
+  "https://www.nibs.org/files/pdfs/ms_v3_retrofit_earthquake.pdf, ms_v3_retrofit_hurricane.pdf, ms_v3_retrofit_wui.pdf, ms_v3_retrofit_total.pdf (404): benefit-cost ratio and cost per home for each retrofit measure.",
+  "https://aldoi.gov/currentnewsitem.aspx?ID=1321 (connection refused): FORTIFIED homes in Hurricane Sally.",
+  "https://ideas.repec.org/a/bla/ajecsc/v69y2010i2p717-735.html (abstract only): Frailing and Harper's burglary rates around the New Orleans hurricanes of 1947, 1965 and 2005.",
+  "Zahran et al. 2009, International Journal of Mass Emergencies and Disasters (not opened; search snippet only): size of the fall in crime in Florida disasters.",
+  "https://pubmed.ncbi.nlm.nih.gov/8649494/ and https://pubmed.ncbi.nlm.nih.gov/9698136/ (cookie wall; search snippets only): Chicago heat-wave risk factors; Northridge injury mechanisms.",
+  "https://peer.berkeley.edu/cw-woodframe (not opened): loss reduction from brace-and-bolt retrofit.",
+  "https://nber.org/papers/w33119 (not opened; summary in search snippet): flood-score experiment.",
+  "Retail and maker pages that refused: sabrered.com (404), academy.com pepper-spray page (bot wall), tractorsupply.com (timeout), armorconcepts.com (403), lowes.com (403), leatherman.com (429), fiskars.com (404), harborfreight.com (403), store.hesperian.org (429), api.org petrol-storage page (404). Prices for those entries are unverified."
+ ],
+ "openQuestions": [
+  "The violence channel's everyday baseline has no hazard id (there is no home-intrusion hazard to match houseFire or coIncident). I wrote reduce effects with hazards 'all' to mean the everyday baseline plus any hazard exposure on the channel; the engine needs an everyday carrier for it.",
+  "The firearm side risk is suicide, killing by a household member and accident, none of which is violence from outside. I put it on the violence channel for want of another, per member per day of ownership. It should be shown to readers as its own line.",
+  "practice-and-yearly-review acts on other items' reliability, which the effect types cannot express; I added a reliabilityEffect field (multiply each item's failure probability by 0.6).",
+  "check-home-hazard-exposure and the structural entries act on building damage and displacement. Their fractions assume the hazard researchers put building damage on financialLoss and that an injury exposure exists on trauma for earthquake, hurricane and flood. If hazard damage is not in the model, these entries have nothing to act on.",
+  "check-home-hazard-exposure is better modelled as changing the household's tick-boxes at its next move than as a reduce effect.",
+  "New capability name: generator (required by extra-fuel-store; provided by the power researcher's generator-fuel entry).",
+  "Overlaps to resolve between groups: household-plan with paper-contact-list (comms) and the evacuation plan (row 92); learn-local-hazards with phone-emergency-setup (comms); rainwater-barrel with water-fetch-containers; extra-fuel-store with generator-fuel; home-solar-battery with power-station and generator-fuel.",
+  "The neighbour network is worth several times more to a person living alone or over 75; the model's profiles have no living-alone flag.",
+  "Location presets: the violence baseline and the legality of pepper spray and firearms differ in Western Europe and Buenos Aires; my location multipliers are guesses.",
+  "For civilUnrest, gridLong and the nuclear hazards the violence exposure is the hazard researchers' to set; my scaling factors (1-6 and 1-10 times the everyday daily rate) are offered as a default."
+ ]
+}

@@ -1,0 +1,1487 @@
+{
+  "kind": "items",
+  "group": "water-sanitation",
+  "needs": [
+    {
+      "id": "water",
+      "definition": "A person-day inside a water window on which the person has no safe drinking water from the tap, from home stock (stored water, other drinks, water made safe by boiling or treatment) or from outside relief. Quantity: 3 litres per person per day for drinking and minimal cooking (range 2 to 4.5; about 4 to 5 in dangerous heat).",
+      "baselineCoverageDays": {
+        "lo": 0.5,
+        "mid": 1.5,
+        "hi": 6,
+        "tag": "guess",
+        "basis": "About 4.5 L of drinkable liquid per person that an unprepared household would in fact use: fridge and cupboard drinks, part of a case of bottled water, ice, canned-food liquid. Excludes the water heater tank, which most households do not think to use (separate item). High end: houses that use the tank. 53.6% self-report a 3-day supply, but that includes deliberate preparers: https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6136a1.htm"
+      },
+      "hardshipUsdPerPersonDay": {
+        "tag": "guess",
+        "basis": "Not FEMA's figure itself: FEMA's $74.38 (2022 dollars; about $86 now at my CPI estimate of x1.15) values lost washing and flushing and assumes 25 L a day stays purchasable (https://fema.gov/sites/default/files/documents/fema_standard-economic-values-methodology-report_2023.pdf). Day 1 = water-seeking time ($8-16) + expected non-fatal illness (1% x $500 = $5) + thirst, rationing and worry, cross-checked against Hurricane Harvey prices of $42.96 and $99 a case ($3.6-8.3 per litre, $11-25 a day; search snippets). Rises as substitutes run out, then plateaus as people adapt. Water plus sanitation together cross FEMA's value near day 3.",
+        "steps": [
+          {
+            "fromDay": 1,
+            "lo": 12,
+            "mid": 35,
+            "hi": 120
+          },
+          {
+            "fromDay": 2,
+            "lo": 20,
+            "mid": 60,
+            "hi": 220
+          },
+          {
+            "fromDay": 4,
+            "lo": 30,
+            "mid": 100,
+            "hi": 400
+          },
+          {
+            "fromDay": 8,
+            "lo": 35,
+            "mid": 130,
+            "hi": 600
+          }
+        ]
+      },
+      "mortalityMicromortsPerPersonDay": {
+        "tag": "derived",
+        "basis": "Daily chance of enteric illness from drinking unsafe water (judgment: 1%, range 0.2-5%; Norway mains-break cohort +4.7 points per household-week, outbreak attack rates of 2-7% a day) x case fatality for a healthy adult (judgment: 15 per million, range 5-100; norovirus is about 6 per million under 65 if 90% of its 900 deaths in 20 million cases are 65+, https://www.cdc.gov/norovirus/data-research/index.html) = 0.15, rounded to 0.1. Later steps: dirtier sources, failed sanitation. Checks: Puerto Rico leptospirosis, 17-26 deaths over 3.3 million people x 68 days = 0.08-0.12; Texas 2021, no attributed deaths.",
+        "steps": [
+          {
+            "fromDay": 1,
+            "lo": 0.01,
+            "mid": 0.1,
+            "hi": 1
+          },
+          {
+            "fromDay": 4,
+            "lo": 0.03,
+            "mid": 0.3,
+            "hi": 2.5
+          },
+          {
+            "fromDay": 15,
+            "lo": 0.1,
+            "mid": 1,
+            "hi": 8
+          }
+        ]
+      },
+      "multipliers": [
+        {
+          "profile": "child",
+          "hardship": 1,
+          "mortality": 2,
+          "tag": "guess",
+          "basis": "Young children dehydrate faster with diarrhoea and can develop haemolytic uraemic syndrome from E. coli O157, but enteric deaths under 15 are rare in rich countries. Infants on formula need safe water and sit above this average. No direct data."
+        },
+        {
+          "profile": "age60to74",
+          "hardship": 1.2,
+          "mortality": 8,
+          "tag": "derived",
+          "basis": "Adults 65 and over are 83% of US gastroenteritis deaths (https://archive.cdc.gov/www_cdc_gov/media/releases/2012/p0314_gastroenteritis.html): 258 per million person-years against about 7.6 for under-65s (17% of 11,255 deaths over about 250 million people), a ratio of 34. Split by judgment: 8 for ages 60-74, 40 for 75 and over."
+        },
+        {
+          "profile": "age75plus",
+          "hardship": 1.5,
+          "mortality": 40,
+          "tag": "derived",
+          "basis": "Same source and arithmetic as age60to74; the 65-and-over ratio of 34 (58 for norovirus if 90% of its deaths are 65+) is assigned mostly to the oldest. Frail elderly also dehydrate: Texas nursing homes with both power and water out had 0.60 points higher 4-week mortality (https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2832284)."
+        },
+        {
+          "profile": "limitedMobility",
+          "hardship": 1.5,
+          "mortality": 3,
+          "tag": "guess",
+          "basis": "Cannot queue, carry or search for water and depends on others to bring it; no direct data."
+        }
+      ],
+      "notes": "Deaths from thirst are essentially absent in rich-country disasters, so the mortality curve is illness from unsafe water, with dehydration of the frail in the multipliers. The curve averages days when unsafe water is obtainable (most) and days when none is; it assumes some water is found on nearly every day after the second, because three or more days with no intake would be fatal and that is not what the record shows. Treatment removes essentially all of the mortality and roughly 60-80% of the hardship on treatable days (hauling remains when the tap is dry). A household that still has power or gas can boil, so it has treatWater at baseline on those days; effective compliance with boil notices is about 68% (search snippet). No household method removes fuel, solvents, algal toxins or other chemicals. Pumped supply: US mains pressure reaches about the sixth floor; about 3.3 million US units (roughly 2.5%; undated search snippet of American Housing Survey data) are in buildings of seven or more storeys, where water stops within hours to a day of a power cut. Homes on private wells (13-17% of US households) lose water at once. In Buenos Aires nearly every multi-storey building pumps to a roof tank holding about a day of normal use, so by my estimate two thirds of city households (range 50-80%) lose water within a day of losing power. In Western Europe my guess is 10-25% of urban households, more in Spain."
+    },
+    {
+      "id": "sanitation",
+      "definition": "A person-day inside a sanitation window without a working flush toilet (no flush water, or sewer or septic unusable) or without water to wash hands, after cistern flushes are used. Covers toilet and hand and body hygiene only; lost showers, laundry and dishwashing are not assigned to any need because no listed item restores them.",
+      "baselineCoverageDays": {
+        "lo": 0.2,
+        "mid": 0.5,
+        "hi": 2,
+        "tag": "guess",
+        "basis": "One 6 L flush per cistern, stretched by not flushing every use. If the sewer works and any water can be hauled (6 L per flush), the toilet keeps working; that is improvisation inside the curve, not baseline stock."
+      },
+      "hardshipUsdPerPersonDay": {
+        "tag": "guess",
+        "basis": "FEMA gives no residential value for wastewater loss and says $0 is unlikely (https://fema.gov/sites/default/files/documents/fema_standard-economic-values-methodology-report_2023.pdf). I take toilet and hand-washing as roughly a third of FEMA's $66.26 welfare loss for all indoor water use (about $76 now), reached only after deferral runs out: $25 from day 4. Day 1 is low because one day without a flush is an inconvenience. Cross-check: Christchurch households lived with chemical toilets for months without leaving, so the daily cost sits below the cost of relocating.",
+        "steps": [
+          {
+            "fromDay": 1,
+            "lo": 2,
+            "mid": 8,
+            "hi": 30
+          },
+          {
+            "fromDay": 2,
+            "lo": 5,
+            "mid": 15,
+            "hi": 50
+          },
+          {
+            "fromDay": 4,
+            "lo": 8,
+            "mid": 25,
+            "hi": 80
+          },
+          {
+            "fromDay": 15,
+            "lo": 8,
+            "mid": 30,
+            "hi": 110
+          }
+        ]
+      },
+      "mortalityMicromortsPerPersonDay": {
+        "tag": "guess",
+        "basis": "Bounded by Christchurch 2011 (https://pmc.ncbi.nlm.nih.gov/articles/PMC3729075): 18 excess notified gastroenteritis cases; at 10-100 community cases per notification over 3-6 million person-days without sewerage that is 0.003-0.06% illness per person-day, x 5-15 deaths per million cases = 0.0002-0.01. An unpublished survey claiming a 14-fold rise would give about 0.3. Later steps rise because Christchurch had an organised response (toilets delivered, chlorination) that a long collapse would lack.",
+        "steps": [
+          {
+            "fromDay": 1,
+            "lo": 0.0005,
+            "mid": 0.005,
+            "hi": 0.1
+          },
+          {
+            "fromDay": 8,
+            "lo": 0.002,
+            "mid": 0.02,
+            "hi": 0.3
+          },
+          {
+            "fromDay": 30,
+            "lo": 0.01,
+            "mid": 0.1,
+            "hi": 1
+          }
+        ]
+      },
+      "multipliers": [
+        {
+          "profile": "child",
+          "hardship": 1,
+          "mortality": 2,
+          "tag": "guess",
+          "basis": "Same reasoning as for water: more faecal-oral exposure and faster dehydration, but few deaths in rich countries."
+        },
+        {
+          "profile": "age60to74",
+          "hardship": 1.2,
+          "mortality": 8,
+          "tag": "derived",
+          "basis": "Same age gradient of gastroenteritis deaths as for water (https://archive.cdc.gov/www_cdc_gov/media/releases/2012/p0314_gastroenteritis.html)."
+        },
+        {
+          "profile": "age75plus",
+          "hardship": 1.5,
+          "mortality": 40,
+          "tag": "derived",
+          "basis": "Same gradient as for water. In addition, older Japanese evacuees drank less to avoid unusable toilets, with dehydration and deep-vein thrombosis following (search snippet, https://www.jstage.jst.go.jp/article/tjem/227/3/227_199/_article)."
+        },
+        {
+          "profile": "limitedMobility",
+          "hardship": 2,
+          "mortality": 3,
+          "tag": "guess",
+          "basis": "Cannot use a bucket or go outside unaided, cannot haul flush water; more likely to restrict fluids. No direct data."
+        }
+      ],
+      "notes": "Enteric illness from failed sanitation at home is small in rich countries because household members mostly share their own pathogens; outbreaks appear in crowded shelters (Katrina megashelter norovirus, about 4.6 gastroenteritis clinic visits per 1,000 people per day). Whether hauled water restores the toilet depends on why the window exists: it does when water supply failed, not when the sewer failed. Hazard owners should say which."
+    }
+  ],
+  "channels": [],
+  "items": [
+    {
+      "id": "stored-water",
+      "name": "Stored tap water",
+      "spec": "Tap water in food-grade rigid containers (7 gal / 26 L jugs; a 55 gal barrel for the top steps), sanitised with bleach, kept cool and dark, refilled yearly. Ladder in litres per person at 3 L per person per day.",
+      "fromLonglistRows": [
+        1
+      ],
+      "scalesWith": "person",
+      "unit": "litre of stored water per person",
+      "ladder": [
+        {
+          "label": "3 days",
+          "units": 9
+        },
+        {
+          "label": "7 days",
+          "units": 21
+        },
+        {
+          "label": "14 days",
+          "units": 42
+        },
+        {
+          "label": "30 days",
+          "units": 90
+        }
+      ],
+      "price": {
+        "usdPerUnit": {
+          "lo": 0.2,
+          "mid": 0.85,
+          "hi": 1.3,
+          "tag": "guess",
+          "basis": "Container cost per litre: Reliance Aqua-Tainer 26 L at $19.88 (Walmart) to $24.95 (REI) = $0.76-0.96 per litre, both from search snippets because the pages refused the fetch. Low end: reused 2 L drink bottles or a 55 gal barrel at about $0.5 per litre. The water itself is under a cent."
+        },
+        "product": "Reliance Aqua-Tainer 7 gal (26 L)",
+        "source": "https://www.rei.com/product/618168/reliance-aqua-tainer-7-gal",
+        "verified": false
+      },
+      "lifeYears": {
+        "lo": 5,
+        "mid": 12,
+        "hi": 25,
+        "tag": "guess",
+        "basis": "HDPE water containers last a decade or more indoors; spigots and seals fail first."
+      },
+      "setupHours": {
+        "lo": 0.75,
+        "mid": 1.5,
+        "hi": 3,
+        "tag": "guess",
+        "basis": "Choose, buy, sanitise, fill and label four to six containers."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0.2,
+        "mid": 0.5,
+        "hi": 1.5,
+        "tag": "guess",
+        "basis": "Per household at the 14-day step: empty, rinse and refill once a year (CDC says every 6 months, The Prepared says 1 year or more). Scales with litres."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 1,
+        "hi": 3,
+        "tag": "guess",
+        "basis": "Water and a little bleach."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0.05,
+        "tag": "guess",
+        "basis": "No everyday use beyond an occasional supply interruption."
+      },
+      "volumeLitresPerUnit": 1.2,
+      "reliability": {
+        "lo": 0.75,
+        "mid": 0.9,
+        "hi": 0.97,
+        "tag": "guess",
+        "basis": "Failures: leaks, a dirty container, water never refilled after a first use. Clean chlorinated tap water sealed in the dark stays safe well past the rotation date."
+      },
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "supply",
+          "need": "water",
+          "amountPerUnit": 1,
+          "amountUnit": "litre",
+          "notes": "3 L covers one person-day. With any warning and a live tap an unprepared household can fill pots, bottles and the bathtub for nothing, so pre-stored water earns little in forewarned events; that is why the late-buy class is staple."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "CDC: store at least 1 gallon per person per day for 3 days, a 2-week supply if possible; replace self-filled water every 6 months; observe the printed date on bought water.",
+          "source": "https://www.cdc.gov/water-emergency/about/how-to-create-and-store-an-emergency-water-supply.html",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "BRFSS, 14 states, 2006-2010: 53.6% of households reported a 3-day water supply (1 gallon per person per day), self-reported and unverified; state range 45.5% to 67.1%.",
+          "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6136a1.htm",
+          "year": 2012,
+          "verified": true
+        },
+        {
+          "claim": "FEMA standard value for loss of water service is $138 per person per day (2022 dollars); the residential part is $74.38 = $66.26 welfare loss (demand cut from 160 gal to a 6.6 gal basic requirement, price elasticity -0.41) + $8.12 for 6.6 gal of bottled water. The value is flat per day and assumes the basic 25 L stays purchasable.",
+          "source": "https://fema.gov/sites/default/files/documents/fema_standard-economic-values-methodology-report_2023.pdf",
+          "year": 2023,
+          "verified": true
+        },
+        {
+          "claim": "Texas, February 2021: 49% lost running water (mean 52 h) and 63% had difficulty getting bottled water; of 246 official deaths none was attributed to thirst or waterborne disease (read by the step 2 researcher).",
+          "source": "https://www.uh.edu/hobby/winter2021/storm.pdf",
+          "year": 2021,
+          "verified": false
+        }
+      ],
+      "confidence": "derived",
+      "notes": "Valued almost entirely as hardship averted: at the median curve the mortality averted is about 0.1 micromort per unmet day."
+    },
+    {
+      "id": "bottled-water",
+      "name": "Bottled water in rotation",
+      "spec": "Factory-sealed bottled water (40 x 0.5 L case = 20 L, or 1 gal jugs) bought ahead and drunk oldest-first. Ladder in litres per person at 3 L per person per day.",
+      "fromLonglistRows": [
+        2
+      ],
+      "scalesWith": "person",
+      "unit": "litre of bottled water per person",
+      "ladder": [
+        {
+          "label": "3 days",
+          "units": 9
+        },
+        {
+          "label": "7 days",
+          "units": 21
+        },
+        {
+          "label": "14 days",
+          "units": 42
+        }
+      ],
+      "price": {
+        "usdPerUnit": {
+          "lo": 0.2,
+          "mid": 0.32,
+          "hi": 0.8,
+          "tag": "derived",
+          "basis": "Wholesale average $1.44 per gallon in 2023 = $0.38 per litre (https://bottledwater.org/how-much-does-bottled-water-cost/); Walmart 40 x 16.9 fl oz at $5.47 = $0.27 per litre (search snippet; page refused). Midpoint of the two; high end is branded or small packs."
+        },
+        "product": "Great Value purified drinking water, 40 x 16.9 fl oz",
+        "source": "https://www.walmart.com/ip/Great-Value-Purified-Drinking-Water-16-9-fl-oz-Bottles-40-Count/992524020",
+        "verified": false
+      },
+      "lifeYears": {
+        "lo": 1,
+        "mid": 2,
+        "hi": 5,
+        "tag": "guess",
+        "basis": "Printed best-by dates are typically about two years; sealed water stays safe longer but can pick up taste."
+      },
+      "setupHours": {
+        "lo": 0.1,
+        "mid": 0.3,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "One larger shopping trip and a place to keep it."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0.2,
+        "hi": 0.5,
+        "tag": "guess",
+        "basis": "Rotation happens through ordinary drinking."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "guess",
+        "basis": "Replacement cost is already in the price and life."
+      },
+      "everydayShare": {
+        "lo": 0.1,
+        "mid": 0.6,
+        "hi": 0.95,
+        "tag": "guess",
+        "basis": "Near 1 for households that drink bottled water anyway, near 0 for those that never do; the middle value is a population blend."
+      },
+      "volumeLitresPerUnit": 1.3,
+      "reliability": {
+        "lo": 0.85,
+        "mid": 0.95,
+        "hi": 0.99,
+        "tag": "guess",
+        "basis": "Sealed and portable; the main failure is drinking the stock down and not replacing it."
+      },
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "supply",
+          "need": "water",
+          "amountPerUnit": 1,
+          "amountUnit": "litre",
+          "notes": "Direct substitute for stored tap water, with no filling or rotation labour. Sells out quickly once an event is foreseeable: 63% of Texans had difficulty getting bottled water in February 2021."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "Average US wholesale price of domestic non-sparkling bottled water was $1.44 per gallon in 2023.",
+          "source": "https://bottledwater.org/how-much-does-bottled-water-cost/",
+          "year": 2023,
+          "verified": true
+        },
+        {
+          "claim": "CDC: store at least 1 gallon per person per day for 3 days, a 2-week supply if possible; replace self-filled water every 6 months; observe the printed date on bought water.",
+          "source": "https://www.cdc.gov/water-emergency/about/how-to-create-and-store-an-emergency-water-supply.html",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Texas, February 2021: 49% lost running water (mean 52 h) and 63% had difficulty getting bottled water; of 246 official deaths none was attributed to thirst or waterborne disease (read by the step 2 researcher).",
+          "source": "https://www.uh.edu/hobby/winter2021/storm.pdf",
+          "year": 2021,
+          "verified": false
+        }
+      ],
+      "confidence": "derived",
+      "notes": "The Prepared advises against bottled water as the main store (fragile, costly); at $0.3 per litre and no labour it beats self-filled containers for the first days."
+    },
+    {
+      "id": "water-heater-draw",
+      "name": "Know how to draw from the water heater",
+      "spec": "One-off action for a home with its own storage water heater: find the cold-inlet valve and the drain valve, keep a short hose and a bucket beside the tank, and write on the tank: shut inlet, switch off power or gas, open a hot tap, drain. Gives access to the 115-190 L already in the tank.",
+      "fromLonglistRows": [],
+      "scalesWith": "household",
+      "unit": "household action",
+      "price": {
+        "usdPerUnit": {
+          "lo": 0,
+          "mid": 8,
+          "hi": 15,
+          "tag": "guess",
+          "basis": "A short hose and a label; many homes already have both."
+        },
+        "product": "Short drain hose and label",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {
+        "lo": 5,
+        "mid": 10,
+        "hi": 20,
+        "tag": "guess",
+        "basis": "Lasts until the household moves or the heater is replaced."
+      },
+      "setupHours": {
+        "lo": 0.25,
+        "mid": 0.5,
+        "hi": 1.5,
+        "tag": "guess",
+        "basis": "Find the valves, try the drain valve once, write the steps."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0.1,
+        "hi": 0.5,
+        "tag": "guess",
+        "basis": "A yearly sediment flush, which manufacturers recommend anyway."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "guess",
+        "basis": "None."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0.2,
+        "hi": 0.5,
+        "tag": "guess",
+        "basis": "Knowing the shut-offs and flushing sediment have ordinary maintenance value."
+      },
+      "volumeLitresPerUnit": 0.5,
+      "reliability": {
+        "lo": 0.3,
+        "mid": 0.55,
+        "hi": 0.8,
+        "tag": "guess",
+        "basis": "Fails when unsafe water entered the tank before the inlet was shut (boil-water events), when sediment blocks the drain valve, when the tank is damaged (earthquake, flood), or when nobody remembers."
+      },
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [
+        "house"
+      ],
+      "effects": [
+        {
+          "type": "supply",
+          "need": "water",
+          "amountPerUnit": 110,
+          "amountUnit": "litre per household",
+          "notes": "Median tank about 40 gal = 150 L (RECS 2020 size bands), x 0.75 for the share of households that would not have used it unprompted (my guess: 25% would, range 10-50%). About 15 person-days for a household of 2.5."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "CDC lists the tap-water heater tank, a clear and chemically untreated toilet tank, melted ice and liquid from canned food as usable household sources; pool water for hygiene only.",
+          "source": "https://www.cdc.gov/water-emergency/about/how-to-find-clean-water-in-an-emergency.html",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "RECS 2020: of 123.5 million US homes, 13.3 million have a water heater tank of 30 gal or less, 55.4 million 31-49 gal, 46.9 million 50 gal or more, and 8.0 million are tankless.",
+          "source": "https://www.eia.gov/consumption/residential/data/2020/hc/pdf/HC%208.1.pdf",
+          "year": 2020,
+          "verified": false
+        }
+      ],
+      "confidence": "guess",
+      "notes": "Missing from the longlist. Applies to homes with an in-unit storage tank: most US houses (93.5% of US homes have a tank, 6.5% tankless), fewer apartments (shared heaters), and homes with combination boilers or instant heaters in Europe and Buenos Aires not at all."
+    },
+    {
+      "id": "water-fetch-containers",
+      "name": "Water carriers",
+      "spec": "Two closed 5 gal (19 L) carriers, collapsible or rigid, to bring water from a distribution point, neighbour, standpipe, rain or surface source; also for flush water.",
+      "fromLonglistRows": [
+        3
+      ],
+      "scalesWith": "household",
+      "unit": "set of two 19 L carriers",
+      "price": {
+        "usdPerUnit": {
+          "lo": 15,
+          "mid": 24,
+          "hi": 50,
+          "tag": "guess",
+          "basis": "Two Reliance Fold-A-Carrier 5 gal at $11.49-12.99 each (search snippets; pages refused); rigid Hedpak $23.95 each per the longlist."
+        },
+        "product": "Reliance Fold-A-Carrier 5 gal, two",
+        "source": "https://www.sportsmans.com/camping-gear-supplies/hydration/water-storage-containers/reliance-fold-a-carrier-5-gallon/p/1934407",
+        "verified": false
+      },
+      "lifeYears": {
+        "lo": 4,
+        "mid": 10,
+        "hi": 20,
+        "tag": "guess",
+        "basis": "Collapsible carriers crack at the folds sooner than rigid ones."
+      },
+      "setupHours": {
+        "lo": 0.1,
+        "mid": 0.3,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "Buy and rinse."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0.05,
+        "hi": 0.2,
+        "tag": "guess",
+        "basis": "Check for cracks."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "guess",
+        "basis": "None."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0.1,
+        "hi": 0.4,
+        "tag": "guess",
+        "basis": "Camping and garden use for some households."
+      },
+      "volumeLitresPerUnit": 4,
+      "reliability": {
+        "lo": 0.75,
+        "mid": 0.9,
+        "hi": 0.97,
+        "tag": "guess",
+        "basis": "Simple objects; failure is a split seam or not finding them."
+      },
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "capability",
+          "capability": "fetchWater",
+          "notes": "An unprepared household already has about half this capability: bottles, pots, a mop bucket, a cool box (my guess 0.5, range 0.3-0.8). The carriers roughly triple the clean volume per trip to 38 L. Credit only the increment."
+        },
+        {
+          "type": "reduce",
+          "target": "sanitation",
+          "hazards": [
+            "all"
+          ],
+          "fractionRemoved": {
+            "lo": 0.05,
+            "mid": 0.15,
+            "hi": 0.35,
+            "tag": "guess",
+            "basis": "Hauled water flushes a toilet at 6 L a flush when the sewer still works; an improvised bucket does the same less well, so the increment is small."
+          },
+          "adherence": {
+            "lo": 0.4,
+            "mid": 0.7,
+            "hi": 0.9,
+            "tag": "guess",
+            "basis": "Needs a reachable source and someone able to carry 19 kg; stairs in tall buildings cut this."
+          },
+          "notes": "Only when the sanitation window comes from loss of water, not loss of sewer."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "Hurricane Sandy: buildings over six storeys pump water to roof tanks; without power many upper-floor residents lost water to flush toilets; about 80,000 public-housing residents in about 400 buildings were affected.",
+          "source": "https://wnyc.org/story/251397-blog-public-housing-caught-guard-storm/",
+          "year": 2012,
+          "verified": false
+        },
+        {
+          "claim": "CDC lists the tap-water heater tank, a clear and chemically untreated toilet tank, melted ice and liquid from canned food as usable household sources; pool water for hygiene only.",
+          "source": "https://www.cdc.gov/water-emergency/about/how-to-find-clean-water-in-an-emergency.html",
+          "year": 2026,
+          "verified": true
+        }
+      ],
+      "confidence": "guess",
+      "notes": "Row 8 (personal 1 L bottles) is left to the go-bag entry."
+    },
+    {
+      "id": "water-filter",
+      "name": "Hollow-fibre water filter",
+      "spec": "Sawyer Mini 0.1 micron hollow-fibre filter with squeeze pouch and backflush syringe; used once on tap water to learn it.",
+      "fromLonglistRows": [
+        5
+      ],
+      "scalesWith": "household",
+      "unit": "filter",
+      "price": {
+        "usdPerUnit": {
+          "lo": 22,
+          "mid": 29,
+          "hi": 45,
+          "tag": "data",
+          "basis": "Listed at $28.99 on https://www.sawyer.com/products/mini-water-filtration-system; high end is the larger Sawyer Squeeze."
+        },
+        "product": "Sawyer Mini water filtration system",
+        "source": "https://www.sawyer.com/products/mini-water-filtration-system",
+        "verified": true
+      },
+      "lifeYears": {
+        "lo": 3,
+        "mid": 10,
+        "hi": 20,
+        "tag": "guess",
+        "basis": "No expiry dry; ruined if frozen after first use. Field units under daily use with turbid water fouled within months to two years, which a household emergency would not reach."
+      },
+      "setupHours": {
+        "lo": 0.25,
+        "mid": 0.5,
+        "hi": 1.5,
+        "tag": "guess",
+        "basis": "Buy, read the instructions, filter and backflush once."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0.1,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "Check it is dry, complete and has not frozen."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "guess",
+        "basis": "None."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0.1,
+        "hi": 0.5,
+        "tag": "guess",
+        "basis": "Real everyday value only for hikers and travellers."
+      },
+      "volumeLitresPerUnit": 0.3,
+      "reliability": {
+        "lo": 0.6,
+        "mid": 0.8,
+        "hi": 0.93,
+        "tag": "guess",
+        "basis": "Invisible fibre damage from freezing, clogging in silty water, lost syringe, dirty-side to clean-side contamination by the user."
+      },
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "capability",
+          "capability": "treatWater",
+          "notes": "Removes bacteria and protozoa, including Cryptosporidium and Giardia. Misses viruses (norovirus, hepatitis A, rotavirus), all dissolved chemicals, fuel, algal toxins, salt and dissolved radionuclides."
+        },
+        {
+          "type": "other",
+          "description": "Coverage if the engine can scale treatWater: about 0.8 (0.6-0.95) of the mortality risk and 0.65 (0.4-0.85) of the illness risk in sewage-affected surface water, because viruses pass; near 1 for rain and groundwater. My judgment, not measured. Paired with bleach or tablets the coverage is complete for pathogens."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "Sawyer Mini: 0.1 micron absolute hollow-fibre membrane; removes 99.99999% of bacteria and 99.9999% of protozoa; no claim for viruses or chemicals; replace if it may have frozen. Listed at $28.99.",
+          "source": "https://www.sawyer.com/products/mini-water-filtration-system",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "CDC: boiling is the best method; bleach dose is 8 drops per gallon at 5-9%; iodine and chlorine tablets do not kill Cryptosporidium; chlorine dioxide tablets do if instructions are followed; portable filters do not remove viruses; water with fuel or toxic chemicals cannot be made safe by boiling or disinfecting.",
+          "source": "https://www.cdc.gov/water-emergency/about/index.html",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Field studies of the Sawyer PointONE: 52% of filters tested after 23 months of household use in Honduras gave filtrate with more than 10 E. coli CFU per 100 mL; fouling within 4-6 months with surface water in South Sudan.",
+          "source": "https://washplusblog.fhi360.org/drinkingwaterupdates/2015/05/fouling-in-hollow-fiber-membrane-microfilters-used-for-household-water-treatment-2/index.html",
+          "year": 2015,
+          "verified": false
+        }
+      ],
+      "confidence": "derived",
+      "notes": "Needs water to treat: when the tap is dry it depends on fetchWater. Capacity is hundreds of litres a day, so quantity never binds."
+    },
+    {
+      "id": "water-purification-tablets",
+      "name": "Chlorine dioxide tablets",
+      "spec": "Chlorine dioxide purification tablets, pack of 30, one tablet per litre (Katadyn Micropur MP1 or Potable Aqua chlorine dioxide).",
+      "fromLonglistRows": [
+        6
+      ],
+      "scalesWith": "household",
+      "unit": "pack of 30 tablets (30 L, 10 person-days)",
+      "ladder": [
+        {
+          "label": "10 person-days",
+          "units": 1
+        },
+        {
+          "label": "30 person-days",
+          "units": 3
+        }
+      ],
+      "price": {
+        "usdPerUnit": {
+          "lo": 13,
+          "mid": 16,
+          "hi": 18,
+          "tag": "guess",
+          "basis": "Katadyn Micropur MP1 30-pack at $15.95 (Sportsman's) and $17.95 (Bass Pro, REI), $13.46 on sale; all from search snippets because the pages refused the fetch."
+        },
+        "product": "Katadyn Micropur MP1, 30 tablets",
+        "source": "https://www.sportsmans.com/camping-gear-supplies/hydration/water-filters/katadyn-micropur-mp1-purification-tablets-30-count/p/108187",
+        "verified": false
+      },
+      "lifeYears": {
+        "lo": 3,
+        "mid": 5,
+        "hi": 6,
+        "tag": "guess",
+        "basis": "Foil-sealed tablets carry roughly a five-year date (longlist; not checked on a label)."
+      },
+      "setupHours": {
+        "lo": 0.1,
+        "mid": 0.2,
+        "hi": 0.5,
+        "tag": "guess",
+        "basis": "Buy and read the wait times."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0.02,
+        "hi": 0.1,
+        "tag": "guess",
+        "basis": "Glance at the expiry date."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "guess",
+        "basis": "Replacement is in the life."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0.03,
+        "hi": 0.2,
+        "tag": "guess",
+        "basis": "Almost none outside travel and hiking."
+      },
+      "volumeLitresPerUnit": 0.05,
+      "reliability": {
+        "lo": 0.65,
+        "mid": 0.85,
+        "hi": 0.95,
+        "tag": "guess",
+        "basis": "Expired packs, users who do not wait the four hours Cryptosporidium needs, weaker action in cold or cloudy water, taste rejection."
+      },
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "capability",
+          "capability": "treatWater",
+          "notes": "Limited to 30 L per pack. Kills bacteria, viruses and Giardia within 15-30 minutes and Cryptosporidium after about 4 hours in clear water. Misses nothing microbial when used as directed; removes no chemicals, toxins or turbidity. Cheaper chlorine (NaDCC) and iodine tablets do not kill Cryptosporidium."
+        },
+        {
+          "type": "other",
+          "description": "Coverage if the engine can scale treatWater: about 0.95 (0.8-1) of pathogen risk as directed, about 0.85 when the wait is cut short. My judgment."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "CDC: boiling is the best method; bleach dose is 8 drops per gallon at 5-9%; iodine and chlorine tablets do not kill Cryptosporidium; chlorine dioxide tablets do if instructions are followed; portable filters do not remove viruses; water with fuel or toxic chemicals cannot be made safe by boiling or disinfecting.",
+          "source": "https://www.cdc.gov/water-emergency/about/index.html",
+          "year": 2026,
+          "verified": true
+        }
+      ],
+      "confidence": "derived",
+      "notes": "Wait times are from memory of the product label; CDC confirms only that chlorine dioxide kills Cryptosporidium when instructions are followed."
+    },
+    {
+      "id": "bleach-for-water",
+      "name": "Plain bleach, dropper and dosing card",
+      "spec": "One 81 fl oz bottle of plain unscented household bleach (5-9% sodium hypochlorite, not splashless or scented), replaced yearly, with a medicine dropper and a printed card: 2 drops per litre (8 per gallon), double if cloudy, wait 30 minutes.",
+      "fromLonglistRows": [
+        7,
+        70
+      ],
+      "scalesWith": "household",
+      "unit": "bottle with dropper and card",
+      "price": {
+        "usdPerUnit": {
+          "lo": 6,
+          "mid": 8,
+          "hi": 12,
+          "tag": "data",
+          "basis": "Clorox Disinfecting Bleach 81 fl oz, 7.5% sodium hypochlorite, $6.39 at Target (https://www.target.com/p/clorox-disinfecting-bleach-regular-81oz/-/A-77787198), plus about $2 for a dropper."
+        },
+        "product": "Clorox Disinfecting Bleach Regular, 81 fl oz",
+        "source": "https://www.target.com/p/clorox-disinfecting-bleach-regular-81oz/-/A-77787198",
+        "verified": true
+      },
+      "lifeYears": {
+        "lo": 0.5,
+        "mid": 1,
+        "hi": 1.5,
+        "tag": "guess",
+        "basis": "Maker gives a one-year shelf life; strength falls roughly 20% a year after the first six months (one manufacturer statement, search snippet)."
+      },
+      "setupHours": {
+        "lo": 0.1,
+        "mid": 0.3,
+        "hi": 0.75,
+        "tag": "guess",
+        "basis": "Check the label is plain bleach, print the card, tape the dropper to the bottle."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0.1,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "Swap the bottle yearly."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "guess",
+        "basis": "Replacement is in the life."
+      },
+      "everydayShare": {
+        "lo": 0.2,
+        "mid": 0.7,
+        "hi": 0.95,
+        "tag": "guess",
+        "basis": "Used for laundry and cleaning in households that buy bleach at all; zero in those that do not."
+      },
+      "volumeLitresPerUnit": 2.6,
+      "reliability": {
+        "lo": 0.45,
+        "mid": 0.7,
+        "hi": 0.9,
+        "tag": "guess",
+        "basis": "Wrong product on the shelf (scented, splashless), old bottle, dosing by guess without the dropper, not waiting, cloudy water."
+      },
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "capability",
+          "capability": "treatWater",
+          "notes": "One bottle treats thousands of litres. Kills bacteria and viruses in clear water. Misses Cryptosporidium entirely and is weak against Giardia; removes no chemicals, toxins or turbidity."
+        },
+        {
+          "type": "other",
+          "description": "Coverage if the engine can scale treatWater: about 0.85 (0.6-0.95) of pathogen mortality risk, less where Cryptosporidium or Giardia is the hazard. Also the surface disinfectant for the hygiene bundle (1,000-5,000 ppm for norovirus) and the sanitiser for water containers."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "CDC: boiling is the best method; bleach dose is 8 drops per gallon at 5-9%; iodine and chlorine tablets do not kill Cryptosporidium; chlorine dioxide tablets do if instructions are followed; portable filters do not remove viruses; water with fuel or toxic chemicals cannot be made safe by boiling or disinfecting.",
+          "source": "https://www.cdc.gov/water-emergency/about/index.html",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "CDC: hand sanitiser does not work well against norovirus and is not a substitute for handwashing; surfaces need 1,000-5,000 ppm chlorine bleach.",
+          "source": "https://www.cdc.gov/norovirus/prevention/index.html",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "One manufacturer statement relayed by a university safety office: stock bleach holds label strength about 6 months at 50-70 F, then loses roughly 20% a year.",
+          "source": "https://ehs.weill.cornell.edu/faq/how-long-does-diluted-bleach-last",
+          "year": 2003,
+          "verified": false
+        }
+      ],
+      "confidence": "derived",
+      "notes": "Complements the filter exactly: the filter takes out the protozoa bleach misses, bleach kills the viruses the filter passes."
+    },
+    {
+      "id": "bathtub-bladder",
+      "name": "Bathtub water bladder",
+      "spec": "WaterBOB 100 gal (380 L) single-use bathtub liner with siphon pump, filled from the tap when a warning arrives.",
+      "fromLonglistRows": [
+        4
+      ],
+      "scalesWith": "household",
+      "unit": "bladder",
+      "price": {
+        "usdPerUnit": {
+          "lo": 25,
+          "mid": 40,
+          "hi": 45,
+          "tag": "data",
+          "basis": "$39.99 at https://www.citymill.com/188370-water-bob; other retailers $25-40 in search snippets; the maker's site showed no price and was out of stock."
+        },
+        "product": "WaterBOB 100 gal",
+        "source": "https://www.citymill.com/188370-water-bob",
+        "verified": true
+      },
+      "lifeYears": {
+        "lo": 5,
+        "mid": 10,
+        "hi": 20,
+        "tag": "guess",
+        "basis": "Shelf life of the unused liner; one use consumes it."
+      },
+      "setupHours": {
+        "lo": 0.1,
+        "mid": 0.3,
+        "hi": 0.75,
+        "tag": "guess",
+        "basis": "Buy, read the instructions, store by the tub."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0.1,
+        "tag": "guess",
+        "basis": "None."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "guess",
+        "basis": "None."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "guess",
+        "basis": "No everyday use."
+      },
+      "volumeLitresPerUnit": 2,
+      "reliability": {
+        "lo": 0.6,
+        "mid": 0.8,
+        "hi": 0.95,
+        "tag": "guess",
+        "basis": "Punctures, a tap fitting that does not match, not finding it in time. Dependence on warning is in the supply amount, not here."
+      },
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "supply",
+          "need": "water",
+          "amountPerUnit": 75,
+          "amountUnit": "litre per household, effective",
+          "notes": "380 L x 0.5 chance the household can fill it (warning or lingering pressure, someone home, water still safe, a bathtub present; range 0.2-0.8) x 0.4 increment over the open tub an unprepared household fills for nothing, whose water stays drinkable for a few days (range 0.2-0.7). Already net of both factors: do not discount again for warning."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "WaterBOB: holds up to 100 gallons, keeps water fresh up to 16 weeks, designed for one-time use; $39.99.",
+          "source": "https://www.citymill.com/188370-water-bob",
+          "year": 2026,
+          "verified": true
+        }
+      ],
+      "confidence": "guess",
+      "notes": "In no fetched government or preparedness source; The Prepared says not to rely on the tub. Useless in pumped buildings once power is out, and in homes with a shower only."
+    },
+    {
+      "id": "emergency-toilet-kit",
+      "name": "Emergency toilet kit",
+      "spec": "5 gal bucket with snap-on seat and lid (Reliance Luggable Loo), one 6-pack of gel-lined double bags, a roll of 30 heavy 13 gal liners, 10 lb of cat litter or other absorbent, disposable gloves.",
+      "fromLonglistRows": [
+        66,
+        67
+      ],
+      "scalesWith": "household",
+      "unit": "kit",
+      "price": {
+        "usdPerUnit": {
+          "lo": 35,
+          "mid": 55,
+          "hi": 80,
+          "tag": "derived",
+          "basis": "Luggable Loo $21.99 (https://www.academy.com/p/reliance-luggable-loo-5-gallon-portable-toilet?sku=grey, read on the page) + one 6-pack of Double Doodie gel bags $17.97 (search snippet) + about $15 for liners, litter and gloves (my estimate) = $55. Only the bucket price was read on a retailer page, so the kit price is marked unverified."
+        },
+        "product": "Reliance Luggable Loo plus bags, liners and absorbent",
+        "source": "https://www.academy.com/p/reliance-luggable-loo-5-gallon-portable-toilet?sku=grey",
+        "verified": false
+      },
+      "lifeYears": {
+        "lo": 5,
+        "mid": 10,
+        "hi": 20,
+        "tag": "guess",
+        "basis": "Bucket and seat last decades; gel bags several years."
+      },
+      "setupHours": {
+        "lo": 0.2,
+        "mid": 0.5,
+        "hi": 1.5,
+        "tag": "guess",
+        "basis": "Buy, assemble, agree where waste will be kept."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0.05,
+        "hi": 0.2,
+        "tag": "guess",
+        "basis": "Check the bags."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "guess",
+        "basis": "None."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0.05,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "Camping or a bathroom renovation."
+      },
+      "volumeLitresPerUnit": 25,
+      "reliability": {
+        "lo": 0.75,
+        "mid": 0.9,
+        "hi": 0.97,
+        "tag": "guess",
+        "basis": "Little to go wrong; the limit is bags and where to put full ones."
+      },
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "sanitation",
+          "hazards": [
+            "all"
+          ],
+          "fractionRemoved": {
+            "lo": 0.15,
+            "mid": 0.35,
+            "hi": 0.6,
+            "tag": "guess",
+            "basis": "Against improvisation (bin bag in the dry bowl, any bucket, outdoors): contains waste and odour and keeps the user indoors. Does not restore flushing, hand-washing or waste collection. No measurement exists."
+          },
+          "adherence": {
+            "lo": 0.6,
+            "mid": 0.85,
+            "hi": 0.95,
+            "tag": "guess",
+            "basis": "Most households would use it once the toilet stops; some keep bucket-flushing instead."
+          },
+          "notes": "Six gel bags plus 30 liners with litter last a household about 15-30 days."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "Christchurch, February 2011: 80% of water and sewerage systems severely damaged; over 2,000 portable and 5,000 chemical toilets brought in and 20,000 more ordered; households dug emergency latrines; boil-water notice to 8 April; only a small increase in gastroenteritis, 18 notified cases above the three-year average to 22 March.",
+          "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3729075",
+          "year": 2012,
+          "verified": true
+        },
+        {
+          "claim": "FEMA assigns $0 to residential loss of wastewater service because no research value was found, while stating a true value of $0 is unlikely and that a city may need to provide portable toilets.",
+          "source": "https://fema.gov/sites/default/files/documents/fema_standard-economic-values-methodology-report_2023.pdf",
+          "year": 2023,
+          "verified": true
+        }
+      ],
+      "confidence": "guess",
+      "notes": "Christchurch is the best case study: tens of thousands of households on chemical toilets and latrines for weeks, with only a small rise in notified gastroenteritis."
+    },
+    {
+      "id": "hygiene-bundle",
+      "name": "Hygiene bundle",
+      "spec": "Two 8 oz bottles of alcohol hand sanitiser (60% or more), soap, 200 wet wipes, 20 heavy bin bags, kept in rotation. Bleach for surfaces is the separate bleach entry.",
+      "fromLonglistRows": [
+        64,
+        65,
+        66,
+        69
+      ],
+      "scalesWith": "household",
+      "unit": "bundle",
+      "price": {
+        "usdPerUnit": {
+          "lo": 18,
+          "mid": 30,
+          "hi": 50,
+          "tag": "guess",
+          "basis": "Sanitiser about $8, wet wipes $8-20 per 200 (Wet Ones $19.70 per the longlist), soap $3, bin bags $10; search snippets and longlist figures, none read on a retailer page."
+        },
+        "product": "Sanitiser, soap, wet wipes and bin bags",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {
+        "lo": 2,
+        "mid": 3,
+        "hi": 5,
+        "tag": "guess",
+        "basis": "Wipes dry out in about two years and sanitiser carries a three-year date (longlist)."
+      },
+      "setupHours": {
+        "lo": 0.1,
+        "mid": 0.3,
+        "hi": 0.75,
+        "tag": "guess",
+        "basis": "Add to an ordinary shop and set aside."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0.1,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "Use and replace."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "guess",
+        "basis": "Replacement is in the life."
+      },
+      "everydayShare": {
+        "lo": 0.4,
+        "mid": 0.7,
+        "hi": 0.95,
+        "tag": "guess",
+        "basis": "All of it is used in ordinary life if rotated."
+      },
+      "volumeLitresPerUnit": 6,
+      "reliability": {
+        "lo": 0.65,
+        "mid": 0.85,
+        "hi": 0.95,
+        "tag": "guess",
+        "basis": "Dried-out wipes, stock used up and not replaced."
+      },
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "sanitation",
+          "hazards": [
+            "all"
+          ],
+          "fractionRemoved": {
+            "lo": 0.08,
+            "mid": 0.2,
+            "hi": 0.4,
+            "tag": "guess",
+            "basis": "Handwashing promotion prevents about 30% of diarrhoea episodes where water exists (https://www.cochrane.org/evidence/CD004265_does-promoting-handwashing-reduce-diarrhoea); sanitiser and wipes are a weaker stand-in when there is none, and sanitiser does not work well against norovirus (https://www.cdc.gov/norovirus/prevention/index.html). Also restores some sense of being clean."
+          },
+          "adherence": {
+            "lo": 0.4,
+            "mid": 0.7,
+            "hi": 0.9,
+            "tag": "guess",
+            "basis": "Hand hygiene is used at well under every opportunity even when supplies are at hand."
+          },
+          "notes": "Acts on both the illness and the comfort part of the sanitation need."
+        },
+        {
+          "type": "other",
+          "description": "Hand hygiene against respiratory infection in pandemics belongs to the infection channel and is not credited here."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "Cochrane review: handwashing promotion prevents about 30% of diarrhoea episodes in child day-care centres and schools in high-income countries (IRR 0.70, 95% CI 0.58-0.85; high certainty).",
+          "source": "https://www.cochrane.org/evidence/CD004265_does-promoting-handwashing-reduce-diarrhoea",
+          "year": 2021,
+          "verified": true
+        },
+        {
+          "claim": "CDC: hand sanitiser does not work well against norovirus and is not a substitute for handwashing; surfaces need 1,000-5,000 ppm chlorine bleach.",
+          "source": "https://www.cdc.gov/norovirus/prevention/index.html",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "Katrina megashelter, Houston: 1,169 of about 6,500 clinic visitors among 24,000 evacuees reported acute gastroenteritis in 11 days; norovirus; about 4.6 visits per 1,000 persons per day.",
+          "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm5440a3.htm",
+          "year": 2005,
+          "verified": false
+        }
+      ],
+      "confidence": "guess",
+      "notes": "Row 69 (towels, detergent, household gloves, kitchen roll) is already owned by nearly every household and adds nothing beyond this bundle."
+    },
+    {
+      "id": "toilet-paper-stock",
+      "name": "Extra toilet paper",
+      "spec": "One large pack beyond the normal buying cycle (12-18 mega rolls, about 6-8 weeks for a household of 2.5), used oldest-first.",
+      "fromLonglistRows": [
+        63
+      ],
+      "scalesWith": "household",
+      "unit": "pack",
+      "price": {
+        "usdPerUnit": {
+          "lo": 10,
+          "mid": 18,
+          "hi": 27,
+          "tag": "guess",
+          "basis": "Charmin 12 mega rolls $11.94 at Walmart, 12 Mega XXL $26.49 at Target; search snippets only."
+        },
+        "product": "Charmin 12 mega rolls",
+        "source": "https://www.target.com/s/charmin",
+        "verified": false
+      },
+      "lifeYears": {
+        "lo": 5,
+        "mid": 10,
+        "hi": 20,
+        "tag": "guess",
+        "basis": "Does not perish if kept dry; in rotation the life hardly matters."
+      },
+      "setupHours": {
+        "lo": 0,
+        "mid": 0.1,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "One larger purchase."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0.1,
+        "tag": "guess",
+        "basis": "None."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "guess",
+        "basis": "None."
+      },
+      "everydayShare": {
+        "lo": 0.9,
+        "mid": 0.97,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "All of it is used eventually; the cost is the money tied up and the shelf space."
+      },
+      "volumeLitresPerUnit": 40,
+      "reliability": {
+        "lo": 0.9,
+        "mid": 0.97,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "Only failure is letting the buffer run down."
+      },
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "other",
+          "description": "Averts running out of toilet paper while shops have none (supplyShock, pandemicModerate, pandemicSevere, nuclearFar, gridLong). No canonical window covers this. My guess at the hardship: $3 (1-10) per person per day without, for the days a shop shortage outlasts the two weeks or so a typical household already holds."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "Toilet paper was out of stock at 70% of US grocers by 23 March 2020 (base-rates.md, from a search snippet).",
+          "source": "https://bain.com/about/media-center/bain-in-the-news/2020/how-the-coronavirus-exposed-us-supply-chain-flaws",
+          "year": 2020,
+          "verified": false
+        }
+      ],
+      "confidence": "guess",
+      "notes": "Cheap but bulky; storage volume is most of its cost."
+    },
+    {
+      "id": "menstrual-supplies",
+      "name": "Extra menstrual products",
+      "spec": "One cycle of tampons or pads beyond the normal buying cycle for each person who menstruates (one 32-36 count box), used oldest-first.",
+      "fromLonglistRows": [
+        68
+      ],
+      "scalesWith": "household",
+      "unit": "one extra cycle of supplies for one person",
+      "price": {
+        "usdPerUnit": {
+          "lo": 6,
+          "mid": 9,
+          "hi": 12,
+          "tag": "data",
+          "basis": "Tampax Pearl 32 count $8.99 at Target (https://target.com/p/tampax-pearl-ultra-absorbency-with-leakguard-braid-tampons-unscented/-/A-80394594)."
+        },
+        "product": "Tampax Pearl tampons, 32 count",
+        "source": "https://target.com/p/tampax-pearl-ultra-absorbency-with-leakguard-braid-tampons-unscented/-/A-80394594",
+        "verified": true
+      },
+      "lifeYears": {
+        "lo": 3,
+        "mid": 5,
+        "hi": 8,
+        "tag": "guess",
+        "basis": "Tampons carry about a five-year shelf life; in rotation it hardly matters."
+      },
+      "setupHours": {
+        "lo": 0,
+        "mid": 0.1,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "One extra box."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0.1,
+        "tag": "guess",
+        "basis": "None."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "guess",
+        "basis": "None."
+      },
+      "everydayShare": {
+        "lo": 0.9,
+        "mid": 0.97,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "All of it is used."
+      },
+      "volumeLitresPerUnit": 2,
+      "reliability": {
+        "lo": 0.9,
+        "mid": 0.97,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "Only failure is running the buffer down."
+      },
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "other",
+          "description": "Averts being without menstrual products when shops are shut, empty or out of reach. No canonical window covers this. My guess at the hardship: $10 (3-30) per affected person per day, for up to about five days a cycle; cloth and toilet paper are the fallback."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "Listed by Ready.gov, the Red Cross, BBK, the Swedish and Norwegian brochures and The Prepared (item-longlist.md row 68); no outcome evidence found.",
+          "source": "https://www.ready.gov/kit",
+          "year": 2026,
+          "verified": false
+        }
+      ],
+      "confidence": "guess",
+      "notes": "Applies only to households with someone who menstruates; there is no condition id for that."
+    }
+  ],
+  "excluded": [
+    {
+      "what": "Row 8: 1 L hard bottle per person and collapsible bottle for the go-bag",
+      "reason": "A go-bag component with no effect at home; left to the go-bag entry."
+    },
+    {
+      "what": "Row 68 (part): contraception and pregnancy tests",
+      "reason": "Not sanitation; no need or channel in the model covers them."
+    },
+    {
+      "what": "Row 69: toiletries, towels, detergent, household gloves, kitchen roll",
+      "reason": "Already in nearly every home; soap and bin bags are in the hygiene bundle."
+    },
+    {
+      "what": "Row 70: surface disinfectant as a separate purchase",
+      "reason": "Merged into the bleach entry, which is the disinfectant CDC specifies for norovirus."
+    },
+    {
+      "what": "Iodine and chlorine (NaDCC) tablets",
+      "reason": "Do not kill Cryptosporidium (CDC); iodine is unsuitable in pregnancy and thyroid disease. Chlorine dioxide tablets dominate at similar cost."
+    },
+    {
+      "what": "Filling pots and the open bathtub on warning",
+      "reason": "Free and available to prepared and unprepared households alike, so it is baseline behaviour in forewarned events, not an item. It is why stored water is classed staple for late buying."
+    },
+    {
+      "what": "Rain barrels, pool water, wells with hand pumps",
+      "reason": "House-specific installations costing hundreds of dollars; row 122 (grid independence) covers them."
+    },
+    {
+      "what": "Portable chemical or cassette toilet",
+      "reason": "Three to five times the price of the bucket kit for the same function, and needs chemicals and a dump point."
+    }
+  ],
+  "blockedSources": [
+    "https://www.axios.com/2018/07/03/leptospirosis-puerto-rico-hurricane-maria-deaths: HTTP 403; the count of 26 leptospirosis deaths after Hurricane Maria, taken from a search snippet instead.",
+    "https://pubmed.ncbi.nlm.nih.gov/22491338/: cookie wall; age-specific gastroenteritis death rates (258 and 39 per million person-years), taken from a search snippet and the CDC press release.",
+    "https://wwwnc.cdc.gov/eid/article/17/1/p1-1101_article: tables not in the page text; deaths per illness by pathogen (Scallan 2011), which would have tightened the case-fatality input.",
+    "https://www.nmhc.org/research-insight/quick-facts-figures/quick-facts-apartment-stock/characteristics-of-apartment-stock/ and the AHS Table Creator: page body empty; units by number of storeys. The 3.3 million figure for seven or more storeys is from an undated search snippet.",
+    "https://pubmed.ncbi.nlm.nih.gov/17389718/: read only as a search snippet of the abstract; illness after mains breaks.",
+    "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm5440a3.htm: read only as a search snippet; norovirus in the Katrina megashelter.",
+    "https://relianceoutdoors.com/products/aqua-tainer-26l-7g and /products/luggable-loo: HTTP 429 on four tries; maker prices for the water container and bucket toilet.",
+    "https://www.rei.com/product/618168/reliance-aqua-tainer-7-gal, https://www.sportsmans.com/camping-gear-supplies/hydration/water-filters/katadyn-micropur-mp1-purification-tablets-30-count/p/108187, https://www.cabelas.com/shop/en/reliance-double-doodie-waste-bags-with-bio-gel-6-pack, https://www.walmart.com/ip/Great-Value-Purified-Drinking-Water-16-9-fl-oz-Bottles-40-Count/992524020: HTTP 403 or bot wall; retailer prices, taken from search snippets and marked unverified.",
+    "https://www.waterbob.com/: loaded but shows no price and is out of stock until December.",
+    "Buenos Aires roof-tank sizing rule (Obras Sanitarias): not found; the one-day reserve is from a Mar del Plata ordinance in a search snippet."
+  ],
+  "openQuestions": [
+    "Boiling: I assume an unprepared household has treatWater whenever it still has power or gas, or owns a cook capability. The engine needs that rule, or treatment items will be credited with what a kettle already does.",
+    "treatWater is binary but the three treatment items differ in what they miss; each carries a suggested coverage factor in an effect of type other. Filter plus bleach is complete for pathogens; nothing here handles chemical contamination, so shareTreatable must exclude do-not-use events.",
+    "The water curves assume some unsafe water is found on nearly every day after the second. If a hazard sets shareTreatable well below 0.9 on windows longer than three days, the engine should not read the remainder as days of zero intake.",
+    "Stored tap water and the bathtub bladder depend on warning. With a live tap and a few hours, any household fills vessels for nothing. I classed stored water as staple for late buying and gave the bladder an effective 75 L already net of this; the integrator may prefer a rule keyed to warningDays.",
+    "fetchWater: unprepared households have about half of it from ordinary pots and buckets. A baseline probability of 0.5 would be more accurate than a binary capability.",
+    "Sanitation windows from loss of water differ from those from loss of sewer: hauled water restores the toilet only in the first kind. Hazard owners should say which they mean.",
+    "Water windows should depend on dwelling: buildings of seven or more storeys, Buenos Aires apartments and homes on private wells lose water when power stops. Hazard owners need a dwelling-specific probability of a water window given a power window.",
+    "No canonical need covers running out of toilet paper or menstrual products while shops are empty; I recorded those as effects of type other with dollar guesses.",
+    "Hot weather raises the water requirement from 3 to about 4-5 L per person per day; the engine could scale supply by hotShare."
+  ]
+}

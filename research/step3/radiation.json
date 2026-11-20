@@ -1,0 +1,417 @@
+{
+  "kind": "items",
+  "group": "radiation",
+  "channels": [
+    {
+      "id": "fallout",
+      "definition": "Death from radiation received from deposited fallout during the first 14 days after a nuclear detonation, by a household member who survived the first hour: acute radiation syndrome (death within about 60 days) plus later fatal cancer. Nearly all of the dose is external gamma radiation from particles lying on the ground and on roofs; inhaled or swallowed fallout is a minor part. Excludes blast, heat and prompt radiation.",
+      "everydayAnnualMicromortsPerPerson": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0.01,
+        "tag": "guess",
+        "basis": "No fallout exposure in ordinary life; the upper bound stands for reactor accidents, for which the model has no hazard."
+      },
+      "inHazards": "Arises only in nuclearNear, for households on which fallout lands; the hazard researcher supplies that chance and the unsheltered dose. Risk depends on the dose actually received, which is the unsheltered 14-day outdoor dose D times the share the household's behaviour lets through. Dose rate falls as t^-1.2 (ten times weaker for every sevenfold increase in time). With fallout arriving one hour after the burst, 57% of D arrives by hour 12, 68% by hour 24, 78% by hour 48, 84% by hour 72 and 93% by day 7 (doseTiming). An unprepared household lets through about 0.22 of D in a light-frame house with a basement, 0.28 in one without, 0.13 in a masonry house, 0.10 in a large apartment block and 0.42 in a mobile home (unpreparedDoseFraction), because about 30% have a member outdoors or in a car in the first hours and only about half of the rest use the best-shielded part of the building. Acute death without hospital care: under 5% up to 1.5 Gy, 5% at 2 Gy, 30-50% at 3 Gy, 95-100% at 6 Gy (doseResponse). Fatal cancer adds about 6% per Gy (3-10%), decades later. Worked example, light-frame house with basement: D = 1 Gy gives a mean 0.22 Gy, no acute deaths and about 13,000 cancer micromorts; D = 5 Gy gives about 2% acute deaths (21,000 micromorts) plus 66,000 cancer micromorts; D = 15 Gy gives about 50% acute deaths.",
+      "multipliers": [
+        {
+          "profile": "child",
+          "mortality": 2,
+          "tag": "derived",
+          "basis": "BEIR VII solid-cancer deaths per 100,000 per 0.1 Gy at age 10 (640 male, 1,050 female) against age 30 (320, 490): ratio 2.1. Where acute death dominates the ratio is nearer 1.3 (guess). https://www.nationalacademies.org/read/11340/chapter/14"
+        },
+        {
+          "profile": "age60to74",
+          "mortality": 0.8,
+          "tag": "guess",
+          "basis": "BEIR VII gives exposure at age 50 about 0.88 of the cancer deaths of exposure at 30, falling further with age; partly offset by lower tolerance of acute radiation sickness."
+        },
+        {
+          "profile": "age75plus",
+          "mortality": 0.7,
+          "tag": "guess",
+          "basis": "Cancer latency exceeds much of remaining life, but frailty raises acute deaths; net effect uncertain."
+        },
+        {
+          "profile": "limitedMobility",
+          "mortality": 1.3,
+          "tag": "guess",
+          "basis": "Cannot reach a basement or a better building in the minutes before fallout arrives."
+        }
+      ],
+      "protectionFactors": {
+        "note": "Outside dose rate divided by inside dose rate.",
+        "lightFrameHouseAboveGround": {"lo": 2, "mid": 3, "hi": 5, "tag": "data", "basis": "LLNL 2022 model of US single-family homes with light walls: median 3.0 (16th-84th percentile 2.4-4.0); LLNL 2009 Table 1: 2-3; IAEA 2.5 (2-5). https://www.osti.gov/servlets/purl/1880931"},
+        "masonryHouseAboveGround": {"lo": 2.5, "mid": 10, "hi": 35, "tag": "data", "basis": "LLNL 2022 heavy-walled single-family homes 14 (7.4-35); IAEA block or brick house 5 (2.5-25); brick veneer only 3.2-4.8. https://www.osti.gov/servlets/purl/1880931"},
+        "houseBasement": {"lo": 7, "mid": 20, "hi": 150, "tag": "data", "basis": "DOE planning value 10; IAEA 10 (7-30) under one storey, 20 (14-30) under two; LLNL 2009 10-20; LLNL 2022 model 100 (67-150). https://www.osti.gov/servlets/purl/1880931"},
+        "largeApartmentBlockOrdinaryRoom": {"lo": 5, "mid": 18, "hi": 94, "tag": "data", "basis": "LLNL 2022, large apartment buildings above ground with people spread evenly: 18 (5.0-94). https://www.osti.gov/servlets/purl/1880931"},
+        "largeBuildingCoreMiddleFloors": {"lo": 20, "mid": 70, "hi": 300, "tag": "data", "basis": "LLNL 2009: core of an office building halfway up 100, outer rooms and top floor 10, upper-storey apartments 100, lower storeys 10; IAEA upper floors of large buildings 100 (50-1,000). https://www.osti.gov/servlets/purl/966550"},
+        "undergroundCarParkOrMetro": {"lo": 50, "mid": 200, "hi": 1000, "tag": "data", "basis": "FEMA 2010 Figure 3.1 caption cites 200; IAEA basement of a large multi-storey building 200 (7-1,000); LLNL 2009 Table 1: 3 feet underground 5,000. https://remm.hhs.gov/PlanningGuidanceNuclearDetonation.pdf"},
+        "vehicle": {"lo": 1.5, "mid": 1.8, "hi": 2, "tag": "data", "basis": "LLNL 2009 Table 1: 1.7-2. https://www.osti.gov/servlets/purl/966550"},
+        "mobileHome": {"lo": 1.2, "mid": 2, "hi": 3, "tag": "guess", "basis": "LLNL 2022 says mobile homes do not provide adequate shelter and gives no number I read; taken as no better than a vehicle or a light house."}
+      },
+      "doseTiming": {
+        "basis": "Computed from dose rate proportional to t^-1.2: dose between hours a and b is 5 x R1 x (a^-0.2 - b^-0.2), R1 being the rate at hour 1. Reference is the outdoor dose from arrival to day 14. LLNL 2009 says about 55% of potential exposure comes in the first hour and about 80% in the first day close in, and Kearny gives 1000 R/h at 1 h falling to 100 at 7 h, 10 at 2 days and 1 at 2 weeks.",
+        "shareOf14DayOutdoorDoseReceivedBy": {
+          "arrivalAt15Minutes": {"12h": 0.71, "24h": 0.78, "48h": 0.85, "72h": 0.89, "7d": 0.95},
+          "arrivalAt1Hour": {"2h": 0.19, "3h": 0.29, "5h": 0.40, "12h": 0.57, "24h": 0.68, "48h": 0.78, "72h": 0.84, "7d": 0.93},
+          "arrivalAt4Hours": {"12h": 0.34, "24h": 0.51, "48h": 0.67, "72h": 0.75, "7d": 0.90}
+        },
+        "shareAvoidedByStayingInsideThenLivingUnshieldedInTheSameArea": {
+          "note": "Arrival at 1 hour. If the household instead leaves the fallout area on coming out, the share avoided is about 1 - 1/PF whatever the stay, provided it is at least 24 hours.",
+          "pf3": {"24h": 0.46, "48h": 0.52, "72h": 0.56, "14d": 0.67},
+          "pf10": {"24h": 0.62, "48h": 0.71, "72h": 0.75, "14d": 0.90},
+          "pf20": {"24h": 0.65, "48h": 0.75, "72h": 0.79, "14d": 0.95},
+          "pf100": {"24h": 0.68, "48h": 0.78, "72h": 0.83, "14d": 0.99}
+        },
+        "micromortsPerHourOutdoors": {
+          "note": "Cancer risk only, 6% per Sv and 1 R taken as 10 mSv: 600 x R1 x t^-1.2. R1 is the dose rate in R/h at hour 1.",
+          "r1Of10": {"24h": 132, "48h": 58, "72h": 35, "7d": 13, "14d": 6},
+          "r1Of100": {"24h": 1324, "48h": 576, "72h": 354, "7d": 128, "14d": 56}
+        }
+      },
+      "doseResponse": {
+        "acuteDeathShareWithoutMedicalCare": {"0.5Gy": 0, "1Gy": 0.03, "1.5Gy": 0.04, "2Gy": 0.05, "3Gy": 0.4, "6Gy": 0.97, "10Gy": 1},
+        "acuteBasis": "LLNL 2009 Table 2 (adapted from NCRP, AFRRI, IAEA, ICRP): <5% at 100 and 150 rad, 5% at 200, 30-50% at 300, 95-100% at 600, without treatment. FEMA 2010: LD50 350-400 rad untreated, 600-700 with vigorous care. Kearny: perhaps half die at 350 R under shelter conditions. Dose spread over days is somewhat less lethal than these single-exposure figures. https://www.osti.gov/servlets/purl/966550",
+        "fatalCancerPerGy": {"lo": 0.03, "mid": 0.06, "hi": 0.1, "tag": "data", "basis": "BEIR VII: solid cancer plus leukaemia deaths 479 (male) and 662 (female) per 100,000 per 0.1 Gy, about 5.7% per Gy with its dose-rate reduction of 1.5; FEMA 2010 gives 6-8% for 100 rad. https://www.nationalacademies.org/read/11340/chapter/14"},
+        "latentDeathWeight": {"lo": 0.25, "mid": 0.4, "hi": 0.7, "tag": "guess", "basis": "A radiation cancer death comes 10-40 years after exposure and costs roughly a third of the life-years of an immediate death; my suggested weight if the micromort value assumes immediate death."}
+      },
+      "unpreparedBehaviour": {
+        "shareWithMemberOutdoorsOrInCarInFirstHours": {"lo": 0.15, "mid": 0.3, "hi": 0.5, "tag": "derived", "basis": "2018 US surveys (n about 2,000 each): 12% would evacuate quickly and 31% reunite with family first, about 40% wrong in open answers; 2004 survey (n=2,545): 59% would stay inside as long as told, 11% leave at once. I count all who flee and half of those who reunite. https://thebulletin.org/2019/01/this-is-not-a-drill-lessons-from-the-false-hawaiian-missile-alert/"},
+        "shareOfThoseIndoorsUsingBestShieldedSpot": {"lo": 0.2, "mid": 0.45, "hi": 0.7, "tag": "guess", "basis": "30% chose 'go deep inside the nearest building' unprompted in the 2018 survey; official alerts would say basement or middle of building, and 64% had never seen such advice."},
+        "doseShareIfOutdoorsOrInCarInFirstHours": {"lo": 0.15, "mid": 0.25, "hi": 0.4, "tag": "derived", "basis": "19%, 29% and 40% of the 14-day dose arrive in the first 1, 2 and 4 hours after arrival at hour 1; a car halves it at best (PF 1.7-2); later hours are spent in some shelter."}
+      },
+      "unpreparedDoseFraction": {
+        "basis": "0.3 x 0.25 + 0.7 x (0.45 / PF of best spot + 0.55 / PF of ordinary rooms), with the mid values above; share of the 14-day outdoor dose an unprepared household member receives on average.",
+        "lightFrameHouseWithBasement": {"lo": 0.1, "mid": 0.22, "hi": 0.35, "tag": "derived", "basis": "PF 3 upstairs, 20 in the basement."},
+        "lightFrameHouseNoBasement": {"lo": 0.2, "mid": 0.28, "hi": 0.4, "tag": "derived", "basis": "PF 3 in ordinary rooms, 4 in the most central room."},
+        "masonryHouse": {"lo": 0.06, "mid": 0.13, "hi": 0.25, "tag": "derived", "basis": "PF 8 in ordinary rooms, 30 in the best spot."},
+        "largeApartmentBlock": {"lo": 0.05, "mid": 0.1, "hi": 0.2, "tag": "derived", "basis": "PF 18 in ordinary rooms, 50 in the core or basement; the dose is dominated by those who go outside."},
+        "mobileHome": {"lo": 0.3, "mid": 0.42, "hi": 0.6, "tag": "derived", "basis": "PF 2 throughout."}
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "fallout-shelter-plan",
+      "name": "Fallout shelter plan",
+      "spec": "A one-page household rule for a nuclear detonation, agreed in advance: the best-shielded spot at home (a basement corner away from windows, or the windowless core of a middle floor in a large building); the nearest better building if home is a light-frame house without a basement or a mobile home; the same for work and school; everyone shelters where they are and nobody drives to collect anyone for 24 hours; stay inside at least 24 hours and for 3 to 14 days unless told it is safe; shut windows and ventilation; on coming in from outside, bag outer clothes and wash; keep a battery radio on. About two hours to read official guidance, walk the building and agree the rule.",
+      "fromLonglistRows": [81],
+      "scalesWith": "household",
+      "unit": "plan",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0, "hi": 5, "tag": "guess", "basis": "No purchase; at most printing a card."},
+        "product": "No product: time only",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 20, "tag": "guess", "basis": "Needs redoing when the household moves or changes workplace or school."},
+      "setupHours": {"lo": 1, "mid": 2, "hi": 4, "tag": "guess", "basis": "Read FEMA or Ready.gov guidance, pick the spots at home, work and school, agree the no-pickup rule, write the card."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "A yearly reminder to the household."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "The same rule serves a chemical shelter-in-place order or a tornado warning, which are rare."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Chance the rule is still remembered or the card found; behaviour under stress is in adherence."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "capability", "capability": "shelterPlan", "notes": "Knowing where to go, how long to stay and that nobody travels to reunite."},
+        {
+          "type": "reduce",
+          "target": "fallout",
+          "hazards": ["nuclearNear"],
+          "fractionRemoved": {"lo": 0.25, "mid": 0.6, "hi": 0.85, "tag": "derived", "basis": "Dose share falls from the unprepared mix (0.22 light house with basement, 0.13 masonry house, 0.10 large apartment block) to 1/PF of the best spot (0.05, 0.033, 0.02): 77%, 75%, 81% removed; only 11-38% in a light house without a basement. Weighted 70:30 by the LLNL 2022 share of homes with adequate shelter. https://www.osti.gov/servlets/purl/1880931"},
+          "adherence": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "derived", "basis": "Full cooperation with a stay-inside order rises from 59% to 74% when people know their family is somewhere prepared (2004 survey, n=2,545); experts expect preparation to add 20-30 points to 60-70% compliance. https://webharvest.gov/peth04/20041015115419/http://www.cacsh.org/pdf/RedefiningReadinessStudy.pdf"},
+          "fractionRemovedByDwelling": {
+            "houseWithBasementOrMasonryOrLargeApartmentBlock": {"lo": 0.45, "mid": 0.78, "hi": 0.9},
+            "lightFrameHouseWithoutBasementOrMobileHome": {"lo": 0.03, "mid": 0.2, "hi": 0.5}
+          },
+          "notes": "Net of what unprepared households do anyway. Where doses are high enough to kill within weeks the fraction is higher than this dose-proportional figure, because moving from 0.22 to 0.05 of a 5-15 Gy outdoor dose crosses the lethal threshold. Check: Wein et al. model 54,600 deaths among vehicle owners when 10% shelter in basements and 23,100 when 90% do, a 58% cut."
+        },
+        {"type": "other", "description": "Includes the decontamination rule (take off and bag outer clothing, wash): removing the outer layer removes up to 90% of the dust on a person, but FEMA says decontamination of persons is generally not a lifesaving issue, so no separate credit."},
+        {"type": "other", "description": "Cost not counted here: a household that follows the plan spends 1 to 14 days confined, which draws on the water, food, sanitation and medication it has stored."}
+      ],
+      "evidence": [
+        {"claim": "Houses with basements, large multi-storey buildings, parking garages and tunnels generally cut fallout dose by a factor of 10 or more; single-storey wood-frame houses without basements and vehicles are not adequate shelter in the dangerous fallout zone. Shelter at least 12-24 hours.", "source": "https://remm.hhs.gov/PlanningGuidanceNuclearDetonation.pdf", "year": 2010, "verified": true},
+        {"claim": "Protection factors: wood-frame house 2-3, basement 10-20, vehicle 1.7-2, upper-storey apartment 100, lower storeys 10. Near St. Vincent's (Los Angeles 10 kt scenario, 1,600 rem outdoors in 24 hours) the best achievable dose is 20 rem in a PF 100 shelter, 215 rem in PF 10 and 460 rem in PF 3.", "source": "https://www.osti.gov/servlets/purl/966550", "year": 2009, "verified": true},
+        {"claim": "About 70% of people in US single-family homes and small apartment buildings, 87% in large apartment buildings and none in mobile homes can reach PF 10 or more by going to the best part of their building; basements are in 58% of north-eastern and mid-western housing and 12% of southern and western.", "source": "https://www.osti.gov/servlets/purl/1880931", "year": 2022, "verified": true},
+        {"claim": "Washington DC 10 kt model: among survivors with vehicles, 23,100 die if 90% shelter in basements and 54,600 if 10% do; of 42,600 deaths among those evacuating on foot, basement sheltering saves about a third.", "source": "https://www.gsb.stanford.edu/faculty-research/publications/analyzing-evacuation-versus-shelter-place-strategies-after-terrorist", "year": 2010, "verified": true},
+        {"claim": "US surveys, April and June 2018, about 2,000 each: 31% would reunite with family as fast as possible, 30% go deep inside the nearest building, 22% tune in, 12% evacuate quickly; about 40% of open answers were wrong; 64% had never seen advice for a nuclear attack.", "source": "https://thebulletin.org/2019/01/this-is-not-a-drill-lessons-from-the-false-hawaiian-missile-alert/", "year": 2019, "verified": true},
+        {"claim": "Dirty-bomb scenario, n=2,545: 59% would stay in the building as long as told, 68% at least initially, 11% would leave at once; knowing family were somewhere prepared and being able to reach them would raise full cooperation to 74%.", "source": "https://webharvest.gov/peth04/20041015115419/http://www.cacsh.org/pdf/RedefiningReadinessStudy.pdf", "year": 2004, "verified": true},
+        {"claim": "Expert elicitation: 60-70% compliance with an order to shelter at home; preparatory policies could raise compliance by 20-30%.", "source": "https://ideas.repec.org/a/wly/riskan/v26y2006i6p1675-1688.html", "year": 2006, "verified": false},
+        {"claim": "Washington DC 10 kt scenario, dose received while evacuating from the Capitol: 250 rem leaving at once, 130 rem at 30 minutes, 62 rem at 1 hour, 28 rem at 2 hours, 1.5 rem at 24 hours.", "source": "https://www.osti.gov/servlets/purl/966550", "year": 2009, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "The largest effect in this group and almost free. The estimate rests on stated intentions and models, not observed behaviour after a detonation. Official alerts and crisis news coverage would teach part of this late, which is why the unprepared baseline already has 70% indoors."
+    },
+    {
+      "id": "potassium-iodide",
+      "name": "Potassium iodide tablets",
+      "spec": "One pack of 14 tablets of 130 mg (iOSAT) per household member under 40: 14 daily adult doses or 28 doses for a child aged 3-12 (half a tablet). Taken only on official instruction or when radioactive iodine exposure is evident, within a few hours of exposure.",
+      "fromLonglistRows": [79],
+      "scalesWith": "person",
+      "unit": "pack of 14 tablets",
+      "price": {
+        "usdPerUnit": {"lo": 12.95, "mid": 12.95, "hi": 20, "tag": "data", "basis": "$12.95 on the maker's site, marked down from $19.95, read 19 Nov 2026; other sellers $14-21 in search snippets. https://www.anbex.com/"},
+        "product": "iOSAT potassium iodide 130 mg, 14 tablets (Anbex)",
+        "source": "https://www.anbex.com/",
+        "verified": true
+      },
+      "lifeYears": {"lo": 5, "mid": 6, "hi": 10, "tag": "data", "basis": "Stock on sale in Nov 2026 is dated July 2032, 5.7 years; the tablets are chemically stable, so the upper end is my guess. https://www.nukepills.com/shop/is1-iosat-potassium-iodide/"},
+      "setupHours": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Order, read the dosing table, store with the kit."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "Check the date when reviewing the kit."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "No everyday use."},
+      "volumeLitresPerUnit": 0.05,
+      "reliability": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Chance the pack is found, in date and dosed correctly for age."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "fallout",
+          "hazards": ["nuclearNear"],
+          "fractionRemoved": {"lo": 0.0001, "mid": 0.001, "hi": 0.006, "tag": "guess", "basis": "Adult 15-59: fatal thyroid cancer about 100 per million per Gy to the thyroid against about 60,000 per million per Gy for all cancers, internal thyroid dose taken as equal to whole-body dose for someone who shelters and avoids fresh milk, 85% blocked, 55% of this age band under 40. Arithmetic in radiation.md."},
+          "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Must be taken unprompted within hours: modelled protection is 80% at 2 hours after intake and 40% at 8 hours on an iodine-sufficient diet (Zanzonico and Becker 2000). https://pubmed.ncbi.nlm.nih.gov/10832925/"},
+          "fractionRemovedByProfile": {
+            "child": {"lo": 0.003, "mid": 0.02, "hi": 0.08},
+            "adult40plus": {"lo": 0, "mid": 0, "hi": 0.0005}
+          },
+          "notes": "Protects the thyroid from radioactive iodine and nothing else. In weapon fallout the killers are whole-body gamma dose and, later, all cancers; thyroid cancer is rarely fatal. CDC says KI will not help after a nuclear detonation and FEMA says it is not useful in the early medical response. The child figure applies the same sum with three times the thyroid dose, about ten times the risk per Gy and twice the all-cancer risk."
+        },
+        {"type": "other", "description": "Reactor accident, for which the model has no hazard and for which KI is designed. My rough sum for a child living within 50 km of a plant: about 1 in 100,000 a year that the home receives a thyroid dose above the FDA threshold (3 in 100,000 per reactor-year for a large release, two reactors, 10-30% chance the plume reaches a given home at that dose), times about 0.2 Gy averted, times about 1,000 fatal micromorts per Gy, is 0.002 micromorts a year plus a 1 in 20 million yearly chance of a non-fatal thyroid cancer. That is worth a few cents a year against about $2 a year for the pack. Many authorities also hand out KI near plants."},
+        {"type": "other", "description": "Side effects are mild and uncommon at these doses: in Poland in 1986, 17.5 million people took at least one dose; gastrointestinal upset in up to 2% of children, rash in about 1%, transient thyroid suppression in 0.37% of newborns. Adults over 40 are advised to take it only at very high projected thyroid doses (5 Gy)."}
+      ],
+      "evidence": [
+        {"claim": "KI is recommended at projected thyroid doses of 5 cGy for children, adolescents and pregnant or lactating women, 10 cGy for adults 18-40 and 500 cGy for adults over 40; protection lasts about 24 hours; risk of thyroid cancer is inversely related to age.", "source": "https://www.fda.gov/media/72510/download", "year": 2001, "verified": true},
+        {"claim": "KI protects only the thyroid, must be taken within 24 hours before or 4 hours after exposure to be most effective, and will not help after a nuclear detonation.", "source": "https://www.cdc.gov/radiation-emergencies/treatment/potassium-iodide.html", "verified": true},
+        {"claim": "Modelled protective effect of KI: 80% if given 2 hours after iodine-131 intake and 40% at 8 hours on an iodine-sufficient diet; 65% and 15% on an iodine-deficient diet.", "source": "https://pubmed.ncbi.nlm.nih.gov/10832925/", "year": 2000, "verified": true},
+        {"claim": "Chernobyl: about 20,000 thyroid cancers registered 1991-2015 among those under 18 in 1986 in the affected regions, about one in four attributable to radiation.", "source": "https://news.un.org/en/node/1008292", "year": 2018, "verified": true},
+        {"claim": "By 2005, 15 of the Chernobyl thyroid cancer cases had proved fatal.", "source": "https://unis.unvienna.org/unis/en/pressrels/2011/unisinf398.html", "year": 2011, "verified": false},
+        {"claim": "Lifetime thyroid cancer incidence per 100,000 exposed to 0.1 Gy, all ages: 21 males, 100 females.", "source": "https://www.nationalacademies.org/read/11340/chapter/14", "year": 2006, "verified": true},
+        {"claim": "Administration of KI, Prussian blue or DTPA is not useful in the early medical response to a nuclear detonation.", "source": "https://remm.hhs.gov/PlanningGuidanceNuclearDetonation.pdf", "year": 2010, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Cheap, but the expected benefit is cheaper still. For an adult it removes about a thousandth of fallout mortality; for a child about 2%. Buy it for children if at all. No condition id exists for 'under 40' or for 'near a reactor'."
+    },
+    {
+      "id": "radiation-meter",
+      "name": "Geiger counter",
+      "spec": "One battery-powered dose-rate meter that reads to at least 40 mSv/h (4 R/h), such as the GQ GMC-500 Plus, kept charged with the shelter kit. A wallet dosimeter card (RADTriage 50, about $25, unverified) is a cheaper substitute that shows accumulated dose above 50 mSv but not dose rate.",
+      "fromLonglistRows": [80],
+      "scalesWith": "household",
+      "unit": "device",
+      "price": {
+        "usdPerUnit": {"lo": 85, "mid": 124, "hi": 200, "tag": "data", "basis": "$124 on the maker's site (list $199), read 19 Nov 2026; the lower-range GMC-300E Plus was $85.50 in step 2. https://www.gqelectronicsllc.com/comersus/store/comersus_viewItem.asp?idProduct=5631"},
+        "product": "GQ GMC-500 Plus Geiger counter, range 0-42,500 uSv/h",
+        "source": "https://www.gqelectronicsllc.com/comersus/store/comersus_viewItem.asp?idProduct=5631",
+        "verified": true
+      },
+      "lifeYears": {"lo": 4, "mid": 8, "hi": 15, "tag": "guess", "basis": "Consumer electronics with a rechargeable cell; the tube itself lasts longer."},
+      "setupHours": {"lo": 0.5, "mid": 1.5, "hi": 4, "tag": "guess", "basis": "Learn the units, what readings mean for staying in or going out, and how to compare rooms."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Recharge and test twice a year."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 3, "tag": "guess", "basis": "Occasional battery."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0.05, "tag": "guess", "basis": "Curiosity only."},
+      "volumeLitresPerUnit": 0.5,
+      "reliability": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "Flat battery, forgotten units, and readings off the scale in the first hours near the burst."},
+      "lateBuyClass": "specialty",
+      "requires": ["shelterPlan"],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "fallout",
+          "hazards": ["nuclearNear"],
+          "fractionRemoved": {"lo": 0.01, "mid": 0.08, "hi": 0.25, "tag": "guess", "basis": "My judgement: in about half of events a household gets no usable official readings for days; there, measuring lets it pick the lowest-dose spot and time trips outside, worth perhaps 15% of the dose it would still receive with a plan. No study measures this."},
+          "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Share of owners who would take and act on readings correctly under stress."},
+          "notes": "Applies to the harm left after the shelter plan. Kearny held that shelter occupants need a reliable meter, or readings from one nearby, to know when it is safe to come out."
+        },
+        {"type": "other", "description": "Limit: the dangerous fallout zone is defined by 10 R/h (about 100 mSv/h) and close-in rates exceed 100 R/h; this meter stops at 4.25 R/h and cheaper ones far lower. It cannot measure the outdoor rate where and when fallout kills; it works inside a good shelter and from the second day."},
+        {"type": "other", "description": "Hardship: where no fallout fell, a meter lets the household stop sheltering days sooner, and it can settle whether food, water or clothes are contaminated. Not quantified."}
+      ],
+      "evidence": [
+        {"claim": "GQ GMC-500 Plus: $124, measures 0 to 42,500 uSv/h.", "source": "https://www.gqelectronicsllc.com/comersus/store/comersus_viewItem.asp?idProduct=5631", "year": 2026, "verified": true},
+        {"claim": "The dangerous fallout zone is bounded by 10 R/h; within a few miles of a 10 kt ground burst rates above 100 R/h may be seen for four to six hours.", "source": "https://remm.hhs.gov/PlanningGuidanceNuclearDetonation.pdf", "year": 2010, "verified": true},
+        {"claim": "Within about two weeks most shelter occupants could stop using shelters or work outside for increasing hours each day; they need a reliable fallout meter or nearby measurements to know when.", "source": "https://www.oism.org/nwss/s73p912.htm", "year": 1987, "verified": true},
+        {"claim": "RADTriage 50 card sells for about $18-35 and begins to respond at 50 mSv.", "source": "https://www.mypatriotsupply.com/products/radtriage50-personal-radiation-dosimeter", "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Value depends on official information being absent; with a working radio and working authorities it adds little. No outcome evidence."
+    },
+    {
+      "id": "seal-room-kit",
+      "name": "Plastic sheeting and tape to seal a room",
+      "spec": "One 10 ft x 25 ft roll of 6-mil polyethylene sheeting, two rolls of duct tape and scissors, with sheets pre-cut and labelled for the windows, door and vents of one interior room.",
+      "fromLonglistRows": [78],
+      "scalesWith": "household",
+      "unit": "kit",
+      "price": {
+        "usdPerUnit": {"lo": 20, "mid": 35, "hi": 55, "tag": "guess", "basis": "Step 2 longlist: $24.99 sheeting plus $7.16 tape (NBC Select, not reopened); a search snippet shows $39.78 for a 10 x 25 ft 6-mil roll at Home Depot, whose page refused the fetch."},
+        "product": "6-mil clear polyethylene sheeting 10 ft x 25 ft plus duct tape",
+        "source": "research/step2/item-longlist.md row 78",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 20, "tag": "guess", "basis": "Polyethylene keeps indoors; tape adhesive ages in 5-10 years."},
+      "setupHours": {"lo": 0.5, "mid": 1.5, "hi": 3, "tag": "guess", "basis": "Choose the room, measure, pre-cut and label sheets as Ready.gov advises."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Check the tape still sticks."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0.5, "hi": 2, "tag": "guess", "basis": "Replace tape every several years."},
+      "everydayShare": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Tape and sheeting serve for painting, repairs and draught-proofing if not kept pre-cut."},
+      "volumeLitresPerUnit": 6,
+      "reliability": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Must be found and fitted before the cloud arrives; seals fail at the edges."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "capability", "capability": "sealRoom", "notes": "No hazard in the model draws on this capability; see openQuestions."},
+        {
+          "type": "reduce",
+          "target": "fallout",
+          "hazards": ["nuclearNear"],
+          "fractionRemoved": {"lo": 0, "mid": 0.01, "hi": 0.05, "tag": "guess", "basis": "Plastic does not stop gamma rays, and FEMA puts inhaled and swallowed fallout orders of magnitude below the external dose; the only real use is covering blast-broken windows so particles do not blow in. https://remm.hhs.gov/PlanningGuidanceNuclearDetonation.pdf"},
+          "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Share who would fit it in time."},
+          "notes": "Shutting windows, doors and ventilation costs nothing and is in the shelter plan."
+        },
+        {"type": "other", "description": "Chemical release: a room sealed by volunteers following the US government instructions gave protection factors from 1.3 to 539 depending on leak-tightness, weather, and when people entered and left; sheltering can do harm if entered or left too late. The taped edges are the weak point, and the plastic matters only for large openings. My rough sum: about 35 shelter-in-place advisories a year in the US (search snippet) cover perhaps 0.1% of households a year, and deaths of members of the public indoors during them are close to nil, so the kit averts under 0.001 micromorts a year."},
+        {"type": "other", "description": "Carbon dioxide builds up in a sealed room; the test study found dangerous levels unlikely in most scenarios but possible in some. Unseal and air the room once the cloud has passed."}
+      ],
+      "evidence": [
+        {"claim": "Expedient sheltering in a residence following DHS guidance: protection factors 1.3 to 539; proper sealing makes a substantial difference; sheltering can be detrimental if entered or left too late; CO2 and O2 unlikely to reach dangerous levels in most scenarios.", "source": "https://pubmed.ncbi.nlm.nih.gov/15752846/", "year": 2005, "verified": true},
+        {"claim": "Taping is essential to reduce infiltration; plastic sheeting is not the critical element; the weakest link is the edge of the seal.", "source": "https://www.osti.gov/biblio/814573", "year": 2001, "verified": false},
+        {"claim": "The hazard from fallout is not from breathing the particles but from gamma radiation from particles settled on the ground and roofs; inhalation and ingestion are a minor, secondary concern.", "source": "https://www.osti.gov/servlets/purl/966550", "year": 2009, "verified": true},
+        {"claim": "Ready.gov: cut sheeting in advance, several inches wider than each opening, tape corners first; use when authorities say the air is badly contaminated.", "source": "https://www.ready.gov/shelter", "verified": true},
+        {"claim": "US chemical incidents, 2021 to October 2023: at least 825 incidents, 101 communities advised to shelter in place, 43 deaths (mostly at the site).", "source": "https://ej4all.org/campaigns-and-projects/chemical-disaster-prevention", "year": 2023, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "What it really achieves: nothing against the radiation that kills, a useful but unmeasured cut in indoor concentration during a short chemical cloud, at a risk that is tiny to begin with. Expect it near the bottom of the list."
+    },
+    {
+      "id": "faraday-bag-radio",
+      "name": "Faraday bag for the radio",
+      "spec": "One radio-frequency shielding bag large enough for the battery radio (phone-size or small tablet-size), or a lidded steel tin lined with cardboard; the radio is stored inside with its batteries out.",
+      "fromLonglistRows": [48],
+      "scalesWith": "household",
+      "unit": "bag",
+      "price": {
+        "usdPerUnit": {"lo": 3, "mid": 23, "hi": 60, "tag": "guess", "basis": "A phone-size Mission Darkness bag is listed at $23 in a search snippet (the maker's site returned HTTP 429); a biscuit tin or foil wrap costs a few dollars."},
+        "product": "Mission Darkness non-window Faraday bag for phones",
+        "source": "https://mosequipment.com/products/mission-darkness-non-window-faraday-bag-for-phones",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 20, "tag": "guess", "basis": "Shielding fabric wears at the folds with use; in storage it lasts."},
+      "setupHours": {"lo": 0.1, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Order and pack."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Putting the radio back after tests."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0.05, "tag": "guess", "basis": "None, and it makes the radio less handy for ordinary outages."},
+      "volumeLitresPerUnit": 0.5,
+      "reliability": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Works only if the radio is actually in the bag, closed, when the pulse comes."},
+      "lateBuyClass": "specialty",
+      "requires": ["radio"],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "information",
+          "hazards": ["nuclearNear", "nuclearFar"],
+          "fractionRemoved": {"lo": 0.001, "mid": 0.02, "hi": 0.12, "tag": "guess", "basis": "Chance a high-altitude pulse accompanies the war (about 0.4) times chance it kills a small unplugged battery radio (about 0.05, range 0.005-0.3). No test of small radios was found; the EMP Commission saw no effects on cars that were switched off at up to about 50 kV/m. http://www.empcommission.org/docs/A2473-EMP_Commission-7MB.pdf"},
+          "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Share of the time the radio is in the bag."},
+          "notes": "Only matters if broadcasters are still on air afterwards."
+        },
+        {
+          "type": "reduce",
+          "target": "information",
+          "hazards": ["gridLong"],
+          "fractionRemoved": {"lo": 0, "mid": 0.005, "hi": 0.03, "tag": "guess", "basis": "Only the share of long grid failures caused by a nuclear pulse (about 0.1, guess) matters; solar storms and cyberattacks do not damage a battery radio."},
+          "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "As above."},
+          "notes": "Geomagnetic storms induce currents in long power lines, not in handheld devices."
+        }
+      ],
+      "evidence": [
+        {"claim": "37 cars of 1986-2002 vintage tested up to about 50 kV/m: no effects in cars not running; three running cars stalled at about 30 kV/m or more; few effects expected below 25 kV/m.", "source": "http://www.empcommission.org/docs/A2473-EMP_Commission-7MB.pdf", "year": 2008, "verified": true},
+        {"claim": "Cordless and cellular phones were among the equipment tested by free-field illumination; the report gives no per-device failure rates in the passages read.", "source": "http://www.empcommission.org/docs/A2473-EMP_Commission-7MB.pdf", "year": 2008, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Insurance against a failure that is probably rare, in a scenario where stations may be off the air anyway. A second cheap radio left unshielded does as much for everyday outages and more for redundancy."
+    },
+    {
+      "id": "relocation-trigger-plan",
+      "name": "Pre-set trigger to leave before a nuclear war",
+      "spec": "A written rule, agreed in advance, to leave for a named destination well away from targets (a rural area several hours away, or abroad, ideally the Southern Hemisphere) when a stated tripwire is crossed, such as nuclear use anywhere in a conflict involving the home country or an aggregate forecast above a set level. Includes valid passports, a way to pay for tickets at short notice, somewhere to stay for three to four weeks, and an arrangement to work remotely or take leave. One unit covers one household member.",
+      "fromLonglistRows": [96],
+      "scalesWith": "person",
+      "unit": "household member covered",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0, "hi": 150, "tag": "guess", "basis": "No purchase beyond a valid passport, which the documents entry owns; the cost is the trips, counted under upkeep."},
+        "product": "No product: plan plus the expected cost of false-alarm trips",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 3, "mid": 5, "hi": 10, "tag": "guess", "basis": "Destinations, jobs and the geopolitical tripwires change."},
+      "setupHours": {"lo": 3, "mid": 8, "hi": 20, "tag": "guess", "basis": "Choose tripwires and destination, check entry rules, agree with employer and household. Per household, not per person."},
+      "upkeepHoursPerYear": {"lo": 1, "mid": 3, "hi": 10, "tag": "guess", "basis": "Watching the tripwires and keeping the arrangement current. Per household."},
+      "upkeepUsdPerYear": {"lo": 10, "mid": 80, "hi": 700, "tag": "guess", "basis": "Chance the trigger fires in a year, 2% (0.5-8%: one to three crises since 1945 would have fired a sensible tripwire, and risk is thought higher now), times $4,000 per person per trip (1,500-12,000: fares, three to four weeks' lodging, lost earnings and disruption). Nearly all firings are false alarms."},
+      "everydayShare": {"lo": 0, "mid": 0.15, "hi": 0.4, "tag": "guess", "basis": "A false-alarm trip has some holiday value and remote work continues for some."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Chance travel is still possible when the trigger fires: flights not sold out, borders open."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "fallout",
+          "hazards": ["nuclearNear"],
+          "fractionRemoved": {"lo": 0.15, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Share of nuclear wars preceded by a public escalation that crosses the tripwire at least a day or two before the home region is struck. Samotsvety (2022) gave an attentive Londoner a 75% chance of getting out in time during a crisis already under way; a surprise attack gives none. https://forum.effectivealtruism.org/posts/KRFXjCqqfGQAYirm5"},
+          "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "Share of households that would actually go when their own rule says so, given jobs, schools and relatives."},
+          "notes": "A household that has left avoids all of the fallout harm."
+        },
+        {"type": "other", "description": "The same 0.5 x 0.6 = 0.3 share applies to every other harm in nuclearNear (every window and channel), and to death in the first hour, which the hazard definition leaves out and which is most of what relocation buys. At the destination the household faces nuclearFar conditions instead."},
+        {"type": "other", "description": "Break-even: about $125 per person a year (trips $80 plus household time) against 0.3 of the yearly risk of dying in a nuclear attack on the home region. At $10 per micromort that pays above about 40 micromorts a year, roughly a 0.007% yearly chance that the home city is struck if 60% of residents would die. Step 2 base rates put a NATO big city at 0.002-0.2% a year, so the entry can fall either side of break-even; for Buenos Aires or a small town far from targets it does not pay."}
+      ],
+      "evidence": [
+        {"claim": "Samotsvety, March 2022: chance of failing to escape London before a strike, for an informed person, 0.25; 24 micromorts a month for London at the time; cost of leaving not quantified.", "source": "https://forum.effectivealtruism.org/posts/KRFXjCqqfGQAYirm5", "year": 2022, "verified": false},
+        {"claim": "Chance a given major NATO city is struck: large-scale exchange 0.01-0.4% a year times 0.2-0.5.", "source": "research/step2/base-rates.md section 5", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Expensive in expectation: the household pays for a false alarm every 12 to 200 years, and the tighter the tripwire the fewer wars it catches. Every number here is a guess; the entry's rank will follow the nuclear probability the reader chooses. Owning a retreat property is excluded as far costlier."
+    }
+  ],
+  "excluded": [
+    {"what": "Row 81, second half: spare clothes and bags kept for decontamination", "reason": "Every household already has clothes, bin bags, soap and a shower; the action (bag outer clothing, wash) is in the shelter plan, and FEMA says decontamination of persons is generally not lifesaving."},
+    {"what": "Row 80, dosimeter card as a separate entry", "reason": "Merged into radiation-meter as the cheaper substitute; it records accumulated dose above 50 mSv but cannot guide where to sit or when to go out."},
+    {"what": "Row 48, home-made shielding (plastic plus five layers of foil)", "reason": "Merged into faraday-bag-radio as the low end of the price range."},
+    {"what": "Row 96, owned or rented bug-out property", "reason": "Costs thousands of dollars a year and is bought mostly for other reasons; the relocation trigger with a rented or borrowed destination gives the same protection."},
+    {"what": "Purpose-built fallout or blast shelter", "reason": "Tens of thousands of dollars; existing basements and large buildings already give protection factors of 10 to 200."},
+    {"what": "Home-made fallout meter (Kearny) and surplus civil-defence meters", "reason": "Need skill and calibration that a typical household will not keep up."},
+    {"what": "Prussian blue, DTPA and other internal decontamination drugs", "reason": "Prescription drugs for swallowed caesium or plutonium; FEMA says they are not useful in the early response to a detonation."},
+    {"what": "Protective suits and lead-lined clothing", "reason": "Do not stop gamma radiation; dust is dealt with by removing outer clothes."},
+    {"what": "Moving mass around the shelter spot (books, water containers, sandbags)", "reason": "Raises protection in a light house, but I found no measured factor for household improvisation; noted for the shelter plan, not costed."}
+  ],
+  "blockedSources": [
+    "https://www.fema.gov/sites/default/files/documents/fema_nuc-detonation-planning-guide.pdf: FEMA planning guidance, third edition (2022); over the 10 MB fetch limit. I used the 2010 second edition, so current federal wording on shelter duration and protection factors was not checked.",
+    "https://royalsocietypublishing.org/doi/10.1098/rspa.2013.0693: Dillon 2014, optimal time to move from poor to better shelter; HTTP 403 and not in Europe PMC.",
+    "https://www.centerforhealthsecurity.org/resources/interactives/rad-resilient-city/bldgs-as-shelters/: source of the claim that sheltering in basements would save 280,000 lives in a Los Angeles 10 kt scenario; HTTP 403.",
+    "https://journals.lww.com/health-physics (Florig and Fischhoff 2007): full text with the cost-benefit sum for stocking a home shelter; only the abstract and a press report were read.",
+    "https://unis.unvienna.org/unis/en/pressrels/2011/unisinf398.html: UNSCEAR count of 15 fatal Chernobyl thyroid cancers by 2005; HTTP 403.",
+    "https://pubmed.ncbi.nlm.nih.gov/10832925/: cookie wall; abstract read through the Europe PMC API instead.",
+    "https://corpora.tika.apache.org/base/docs/govdocs1/442/442106.pdf: full text of Jetter and Whitfield 2005 with air-exchange rates for the sealed room; DNS failure.",
+    "https://www.osti.gov/biblio/814573: Sorensen and Vogt 2001 on duct tape and plastic; only search snippets read.",
+    "https://ideas.repec.org/a/wly/riskan/v26y2006i6p1675-1688.html: Dombroski, Fischhoff and Fischbeck 2006 compliance elicitation; only search snippets read.",
+    "https://apps.dtic.mil/sti/pdfs/ADA484672.pdf: EMP Commission report; HTTP 403, read from the empcommission.org mirror instead.",
+    "https://www.mypatriotsupply.com/products/radtriage50-personal-radiation-dosimeter and https://www.campingsurvival.com/products/radtriage50-personal-radiation-dosimeter: price and shelf life of the dosimeter card; HTTP 403.",
+    "https://www.homedepot.com/p/p/204711657: price of 6-mil sheeting; HTTP 403.",
+    "https://mosequipment.com/products/mission-darkness-non-window-faraday-bag-for-phones: price of the Faraday bag; HTTP 429."
+  ],
+  "openQuestions": [
+    "Two weeks of supplies (owned by the water and food researchers) have a value in fallout that their other uses lack: each trip outside to fetch water or food costs cancer risk of about 600 x R1 x t^-1.2 micromorts per hour, R1 being the dose rate in R/h at hour 1 and t the hours since the burst. At the edge of the dangerous fallout zone (R1 = 10) that is 58 micromorts an hour on day 2, 13 on day 7 and 6 on day 14; at R1 = 100 it is ten times more. Days 2-14 hold 32% of the 14-day outdoor dose and days 4-14 hold 16%. So stored water and food for the first three days are worth far more per day in nuclearNear than in any other hazard, and days 4-14 still several times more. If the household can leave the fallout area after 24-72 hours, supplies beyond three days add nothing against fallout.",
+    "The model has no hazard for a reactor accident or a chemical release, so potassium iodide and sealRoom have nowhere to earn their main benefit. My rough sums (in the item entries) put both far below break-even, but the engine cannot show that unless such hazards are added or the entries are reported outside the ranking.",
+    "Cancer deaths from fallout come 10-40 years later. If the dollar value of a micromort assumes immediate death, fallout cancer micromorts should be weighted by about 0.4 (0.25-0.7).",
+    "relocation-trigger-plan mostly averts death in the first hour, which the definition of nuclearNear excludes. Either the hazard researcher's exposures include prompt death for households that could have left, or the entry must be valued outside the engine.",
+    "Effects that differ by person or dwelling have no slot in the schema. I added fractionRemovedByProfile (potassium iodide: child 0.02, adult under 40 0.001, over 40 nil) and fractionRemovedByDwelling (shelter plan: 0.78 with a basement, masonry walls or a large apartment block; 0.2 for a light-frame house without a basement or a mobile home). Conditions for 'basement', 'child' and 'near a reactor' would be needed to use them.",
+    "The shelter plan fraction assumes the hazard researcher's fallout exposure is the mean over unprepared households, of which about 30% have someone outdoors in the first hours. If that researcher assumed everyone stays indoors, the plan's fraction should fall to about 0.35.",
+    "In a slowly building crisis much of the shelter plan would be learned late from news and official broadcasts. lateBuyClass 'none' overstates the plan's advantage in events with days of warning.",
+    "Western Europe and Buenos Aires have more masonry apartment blocks and fewer light-frame houses than the United States, so ordinary rooms already give protection factors of 10-50 and the plan works mostly by stopping people going outside. Switzerland, Finland and Sweden also have public shelters. I did not find protection-factor surveys for those housing stocks beyond the European studies cited in LLNL 2022.",
+    "No capability id exists for 'can measure radiation'; radiation-meter is written as a reduce effect that requires shelterPlan."
+  ]
+}

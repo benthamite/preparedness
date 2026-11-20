@@ -1,0 +1,3927 @@
+{
+ "kind": "hazards",
+ "group": "hazards-locations",
+ "exchangeRates": {
+  "eurUsd": 1.0992,
+  "arsPerUsd": 1585,
+  "date": "2026-11-19",
+  "sources": [
+   "https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP",
+   "https://dolarapi.com/v1/dolares/oficial"
+  ]
+ },
+ "hazards": [
+  {
+   "id": "localOutage",
+   "location": "westernEurope",
+   "tickBox": null,
+   "definition": "An unplanned loss of grid power to the home lasting four hours or more, from a local fault or a same-day system-wide blackout, and not caused by a named storm, flood, heat wave or winter storm (those are counted under their own hazards).",
+   "annualProbability": [
+    {
+     "location": "westernEurope",
+     "outlook": "all",
+     "lo": 0.012,
+     "mid": 0.03,
+     "hi": 0.07,
+     "tag": "derived",
+     "basis": "CEER Benchmarking Report 6.1, Tables 7 and 15 (unplanned, including exceptional events, 2016): SAIDI Switzerland 9, Germany 13, Denmark 15, Austria 24, Italy 37, Great Britain 38, France 49, Spain 54, Portugal 64, Ireland 80 minutes; SAIFI 0.2-1.5. Population-weighted about 35 minutes and 0.7 interruptions a year. With a log-normal spread of durations (sigma 1.1-1.3, my assumption) about 3% of interruptions last 4 h or more: 0.7 x 0.03 = 2%, cut to 1.5-2% because repeat outages cluster on the same homes. System-wide blackouts add 1.15%: Italy 2003 (56M people) and Iberia 2025 (59M) among about 390M people over 25 years. https://ceer.eu/wp-content/uploads/2024/04/C18-EQS-86-03_Benchmarking_Report_6.1.pdf"
+    }
+   ],
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.98,
+      "mid": 1,
+      "hi": 1,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.25,
+      "p90": 0.6,
+      "p99": 2
+     },
+     "tag": "guess",
+     "basis": "At least 4 h (0.17 day) by definition. Anchored on the Iberian blackout, where Spain had 35% of demand back after 7.5 h, 61% after 11.5 h, 87% after 15.5 h and 99% after 17.5 h (Red Electrica figures in press, search snippets, https://www.energias-renovables.com/panorama/el-100-de-las-subestaciones-de-la-20250429), and on rare urban cable or substation failures of one to four days (Berlin 2019, 2025 and January 2026, recalled). Same shape as the United States pattern for routine outages but with a shorter tail."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.03,
+      "hi": 0.08,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 0.6,
+      "p99": 1
+     },
+     "shareTreatable": {
+      "lo": 0.05,
+      "mid": 0.2,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "Mostly no flow rather than unsafe water; guess."
+     },
+     "tag": "guess",
+     "basis": "Municipal supply only; loss of a building pump is handled by the pumped-water setting. Waterworks have standby power, so pressure is lost only in a minority of towns in a system-wide blackout (reports from Iberia conflict: one source lists water as uninterrupted, another says mains failed widely)."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.08,
+      "mid": 0.2,
+      "hi": 0.4,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.2,
+      "p90": 0.5,
+      "p99": 1.2
+     },
+     "tag": "guess",
+     "basis": "Counted from when service is actually lost, not from the power cut. A neighbourhood fault leaves mobile coverage up; in a wide-area blackout cell-site batteries last two to four hours (more than half of mobile users in much of Spain lost all signal at the peak in April 2025, Ookla data quoted by GSMA, search snippet)."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.08,
+      "mid": 0.2,
+      "hi": 0.45,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.2,
+      "p90": 0.5,
+      "p99": 1
+     },
+     "tag": "guess",
+     "basis": "Cards and cash machines fail where the power is out; in a neighbourhood fault a working shop is a few streets away, so only wide-area blackouts count. Iberia 2025: shops shut or took cash only for about 10-16 h (press, search snippet)."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.02,
+      "mid": 0.06,
+      "hi": 0.15,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.2,
+      "p90": 0.5,
+      "p99": 1
+     },
+     "tag": "guess",
+     "basis": "Shops closed during a wide-area blackout; never more than about a day."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.1,
+      "hi": 0.25,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.2,
+      "p90": 0.5,
+      "p99": 1
+     },
+     "tag": "guess",
+     "basis": "Congested emergency lines, stuck lifts and dark junctions slow ambulances during a wide-area blackout; guess."
+    }
+   },
+   "coldShare": {
+    "lo": 0.04,
+    "mid": 0.12,
+    "hi": 0.25,
+    "tag": "guess",
+    "basis": "About 35% of outages fall in the three winter months and about a third of winter days are dangerously cold in a cold-winter part of Western Europe: 0.35 x 0.35 = 0.12. The Iberian (April) and Italian (September) blackouts were in mild weather."
+   },
+   "hotShare": {
+    "lo": 0.01,
+    "mid": 0.03,
+    "hi": 0.1,
+    "tag": "guess",
+    "basis": "Dangerous heat covers 5-15 days a year (1.5-4% of days) in a hot-summer part of Western Europe; outages inside declared heat waves are counted under heatWave."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.6,
+     "mid": 0.8,
+     "hi": 0.92,
+     "tag": "guess",
+     "basis": "A local fault leaves the rest of the city working, so nearly anyone can go to family or a hotel; in a system-wide blackout (about a third of these events) there is nowhere to go and transport stops. Guess."
+    },
+    "earliestDay": {
+     "lo": 0.1,
+     "mid": 0.25,
+     "hi": 0.5,
+     "tag": "guess",
+     "basis": "Leaving makes sense once it is clear the cut will last; a few hours."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 11,
+     "mid": 66,
+     "hi": 330,
+     "tag": "guess",
+     "basis": "Return travel for the household to relatives or a hotel, about EUR 60 (EUR 10-300) by train or car; my estimate, no price page read. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    },
+    "usdPerPersonDay": {
+     "lo": 11,
+     "mid": 82,
+     "hi": 160,
+     "tag": "guess",
+     "basis": "Half of a EUR 110 double hotel room plus EUR 20 of extra meals = EUR 75 a person a day; EUR 10 when staying with family, EUR 145 at peak prices; my estimate, no price page read. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0.1,
+    "tag": "guess",
+    "basis": "Faults and system collapses come without warning."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0,
+     "mid": 0.05,
+     "hi": 0.2,
+     "tag": "guess",
+     "basis": "No warning, so nothing can be bought ahead; the engine ignores this when warning is under half a day."
+    },
+    "specialty": {
+     "lo": 0,
+     "mid": 0.02,
+     "hi": 0.1,
+     "tag": "guess",
+     "basis": "No warning."
+    }
+   },
+   "exposures": [],
+   "dwellingNotes": "Typical urban home: a flat in a four-to-eight-storey block, often built before 1980, no generator, a shared cellar, frequently no car. Lifts and door-entry systems stop with the grid. Mains pressure usually reaches the fifth or sixth floor unaided; taller blocks, and many buildings in Spain, Italy and Portugal, rely on booster pumps or roof tanks, so their taps fail with the power (set the pumped-water option). Gas boilers and district-heating substations need electricity for pumps and controls, so heating stops in a power cut even when gas flows. Hobs are mostly electric or induction in Germany, France, Spain and the Nordic countries and mostly gas in Italy, Britain and the Netherlands. Air conditioning is rare: about 19% of European households (IEA 2022, search snippet), roughly half in Italy, a quarter in France, 4% in England. Electric roller shutters and stairwell lighting fail; emergency lighting lasts one to three hours.",
+   "evidence": [
+    {
+     "claim": "Unplanned SAIDI including exceptional events, 2016: Germany 12.8, Switzerland 9.0, Italy 37.1, Great Britain 38.4, France 48.7, Spain 53.6, Portugal 64.1, Ireland 80.1 minutes per customer. Unplanned SAIFI: Switzerland 0.20, Great Britain 0.48, Germany 0.51, Spain 1.09, Portugal 1.45, Italy 1.50 (France is listed at 0.08, which looks like a different definition).",
+     "source": "https://ceer.eu/wp-content/uploads/2024/04/C18-EQS-86-03_Benchmarking_Report_6.1.pdf",
+     "year": 2018,
+     "verified": true
+    },
+    {
+     "claim": "Spain recorded 147 excess deaths (95% CI -35 to 330), 4.2% above expected, in the three days from 28 April 2025; ages 65-84 had 94 excess deaths (63 to 125). The surveillance system cannot attribute them to causes.",
+     "source": "https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2025.30.26.2500405",
+     "year": 2025,
+     "verified": true
+    },
+    {
+     "claim": "Spain: 35% of demand restored by 20:00, 61% by 00:00, 87% by 04:00, 99.16% by 06:00 and 99.95% by 07:00 after the collapse at 12:33 on 28 April 2025.",
+     "source": "https://www.energias-renovables.com/panorama/el-100-de-las-subestaciones-de-la-20250429",
+     "year": 2025,
+     "verified": false
+    },
+    {
+     "claim": "At least seven deaths in Spain were linked by press and police to the blackout: three from generator exhaust in one house, one in a candle fire, others dependent on powered oxygen.",
+     "source": "https://www.elespectador.com/mundo/europa/apagon-en-espana-dejo-al-menos-siete-muertos-gobierno-lanza-investigacion/",
+     "year": 2025,
+     "verified": false
+    }
+   ],
+   "notes": "Probability excludes named storms (about 0.7% a year), heat-wave outages (about 0.6%) and winter storms; all four together give roughly 4.5% a year for a cut of four hours or more. The Iberian excess-death estimate works out at 147 / 48.6M = 3 micromorts per resident (interval -0.7 to 6.8) for a 10-16 hour blackout in mild weather: a check on the need curves, not an exposure entered here. No direct-harm exposure is entered; deaths in outages run through the needs and through side risks of coping."
+  },
+  {
+   "id": "localOutage",
+   "location": "buenosAires",
+   "tickBox": null,
+   "definition": "An unplanned loss of grid power to the home lasting four hours or more, from a local fault or a same-day system-wide blackout, and not caused by a named storm, flood, or a declared heat wave or cold wave (those are counted under their own hazards).",
+   "annualProbability": [
+    {
+     "location": "buenosAires",
+     "outlook": "all",
+     "lo": 0.1,
+     "mid": 0.25,
+     "hi": 0.5,
+     "tag": "derived",
+     "basis": "ENRE, September 2024 to February 2025 semester: Edenor SAIFI 1.39 and SAIDI 3.58 h, Edesur 4.12 and 7.37 h (https://econojournal.com.ar/?p=120080), so about 2.8 and 7-8.5 interruptions a year averaging 2.6 h and 1.8 h. City comunas had 25% (Edenor) and 60% (Edesur) of the company-wide frequency in ENRE semester 46 (https://www.argentina.gob.ar/sites/default/files/informesemestral_desempeno_edenoredesur_semana46.pdf): about 0.7 and 4.2 a year. With a log-normal spread of durations (sigma 1.2, my assumption) 17% and 10% of interruptions last 4 h or more, so 11% and 35% of households a year; weighted 45/55 by customers (my estimate) = 24%, or 26% with an exponential spread. Plus 5% for force-majeure blackouts that the ENRE headline figures leave out, less 7.5% counted under heatWave: 22-24%, rounded to 25% because Edesur's other semester looks worse (annual SAIDI 16.4 h). Suburbs: about 50%."
+    }
+   ],
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.98,
+      "mid": 1,
+      "hi": 1,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 1.1,
+      "p99": 5
+     },
+     "tag": "guess",
+     "basis": "At least 4 h by definition. The implied mean of about 13 h, times 0.3 events a year, gives 4 h of SAIDI, consistent with city-comuna figures once shorter cuts are added. Tail: 150,000 customers were out for up to 11 days in February 1999 (press, search snippet); about one million Edesur users lost power for up to six hours on 30-31 December 2025; the June 2019 national blackout lasted 6-14 h in the city. Longer and fatter-tailed than the United States routine-outage pattern."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.08,
+      "hi": 0.2,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 0.7,
+      "p99": 1.5
+     },
+     "shareTreatable": {
+      "lo": 0.02,
+      "mid": 0.1,
+      "hi": 0.3,
+      "tag": "guess",
+      "basis": "No flow rather than unsafe water; guess."
+     },
+     "tag": "guess",
+     "basis": "Municipal supply only; the building pump is handled by the pumped-water setting. AySA plants and pumping stations lose pressure in wide-area blackouts (June 2019; 15 January 2026, when AySA warned of low pressure or no water in parts of the city and 17 districts) and recovery lags the power by hours."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.08,
+      "mid": 0.2,
+      "hi": 0.4,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 1,
+      "p99": 3
+     },
+     "tag": "guess",
+     "basis": "Counted from loss of service. Mobile sites have short battery backup; in multi-day neighbourhood cuts coverage and data degrade. Guess; no measurement found."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.15,
+      "hi": 0.35,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 1,
+      "p99": 3
+     },
+     "tag": "guess",
+     "basis": "Local shops fall back to cash and nearby cash machines are down; outside the affected blocks everything works. Guess."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.04,
+      "hi": 0.12,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.2,
+      "p90": 0.5,
+      "p99": 1
+     },
+     "tag": "guess",
+     "basis": "Only in a city-wide blackout; neighbourhood cuts leave shops open a few blocks away."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.1,
+      "hi": 0.25,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.2,
+      "p90": 0.6,
+      "p99": 2
+     },
+     "tag": "guess",
+     "basis": "Lifts out in tall blocks and dark junctions slow ambulance crews; guess."
+    }
+   },
+   "coldShare": {
+    "lo": 0,
+    "mid": 0.02,
+    "hi": 0.08,
+    "tag": "guess",
+    "basis": "Buenos Aires has only a handful of nights near freezing each year."
+   },
+   "hotShare": {
+    "lo": 0.03,
+    "mid": 0.1,
+    "hi": 0.25,
+    "tag": "guess",
+    "basis": "Hot days outside declared heat waves; outages inside heat waves are counted under heatWave."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.75,
+     "mid": 0.9,
+     "hi": 0.97,
+     "tag": "guess",
+     "basis": "Cuts are patchy, so family or a hotel a few kilometres away usually has power; the city has opened hotels and sports centres for residents in long cuts (press, search snippet). Not feasible in a system-wide blackout."
+    },
+    "earliestDay": {
+     "lo": 0.1,
+     "mid": 0.25,
+     "hi": 0.5,
+     "tag": "guess",
+     "basis": "A few hours, once it is clear the cut will last."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 5,
+     "mid": 25,
+     "hi": 120,
+     "tag": "guess",
+     "basis": "Taxi or remis across the city, or fuel and tolls to relatives outside it, about ARS 40,000 (ARS 8,000-190,000); my estimate, no price page read. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    },
+    "usdPerPersonDay": {
+     "lo": 5,
+     "mid": 40,
+     "hi": 90,
+     "tag": "guess",
+     "basis": "Half of a three-star double room listed at ARS 77,000-128,000 a night (Despegar listings seen in a search snippet, https://www.despegar.com.ar/hoteles/hl/982/s3/i1/hoteles-3-estrellas-en-buenos+aires) = USD 24-40, plus about ARS 15,000 (USD 9) of extra meals; USD 5 when staying with family, which is the usual choice. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0.1,
+    "tag": "guess",
+    "basis": "No warning."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0,
+     "mid": 0.05,
+     "hi": 0.2,
+     "tag": "guess",
+     "basis": "No warning; ignored by the engine below half a day."
+    },
+    "specialty": {
+     "lo": 0,
+     "mid": 0.02,
+     "hi": 0.1,
+     "tag": "guess",
+     "basis": "No warning."
+    }
+   },
+   "exposures": [],
+   "dwellingNotes": "Typical urban home: a flat in an eight-to-fifteen-storey block. AySA mains fill a basement cistern; electric pumps lift water to a roof tank that feeds the flats by gravity. When power fails the roof tank keeps running until it is empty: a reserve sized at about one day of normal use (rule found only in a Mar del Plata ordinance, search snippet; the Buenos Aires rule was not found), so a few hours to two days depending on how fast neighbours draw it down; after that there is no water and no flushing on any floor. Lifts stop, which strands old people on high floors. Most flats cook with piped gas (85% of Argentine urban households cook with gas, ENGHo 2017-18), which keeps working in a power cut, but newer small flats are all-electric. About half of urban households nationally used air conditioning in 2017-18 (47.1%, same survey); the city share today is higher (my guess 65-80%). Few buildings have a generator. Separately from any hazard here, the gas utility shuts off whole buildings for months after a failed safety inspection.",
+   "evidence": [
+    {
+     "claim": "Semester 46 (March-August 2019), force-majeure events excluded: Edenor SAIFI 3.05 and SAIDI 8.01 h; Edesur 2.78 and 10.47 h. Counting every interruption (the semester of the national blackout) Edenor had 4.31 and 14.06 h. City comunas: Edenor 0.5-0.9 interruptions and 1.6-2.8 h; Edesur 0.5-2.7 and 2.4-10.8 h.",
+     "source": "https://www.argentina.gob.ar/sites/default/files/informesemestral_desempeno_edenoredesur_semana46.pdf",
+     "year": 2019,
+     "verified": true
+    },
+    {
+     "claim": "Semester 57 (September 2024 to February 2025): Edenor SAIFI 1.39, SAIDI 3.58 h; Edesur SAIFI 4.12, SAIDI 7.37 h; 155,345 and 663,042 users compensated.",
+     "source": "https://econojournal.com.ar/?p=120080",
+     "year": 2025,
+     "verified": true
+    },
+    {
+     "claim": "Edesur annual SAIDI fell from 19.5 h in 2023 to 16.4 h in 2024; about 2.5 million customers.",
+     "source": "https://www.cronista.com/negocios/aunque-perdio-29100-millones-en-2024-edesur-ve-un-claro-proceso-de-mejora-en-el-mercado",
+     "year": 2025,
+     "verified": true
+    },
+    {
+     "claim": "March-August 2025: Edenor met its SAIFI targets everywhere; Edesur missed both SAIFI and SAIDI in every city comuna but one and in every suburban district.",
+     "source": "https://www.argentina.gob.ar/enre/calidad-del-servicio/17a-revision-semestral",
+     "year": 2025,
+     "verified": true
+    },
+    {
+     "claim": "16 June 2019: about 48 million people lost power at 07:07; some of Buenos Aires was back by 10:00 and 98% of Argentina by evening; water distribution was affected and AySA asked users to cut consumption; no deaths reported.",
+     "source": "https://en.wikipedia.org/wiki/2019_Argentina,_Paraguay_and_Uruguay_blackout",
+     "year": 2019,
+     "verified": true
+    },
+    {
+     "claim": "30-31 December 2025: a substation failure cut power to 998,414 Edesur users around 04:00, 257,927 minutes later and about 19,000 by 08:00, with temperatures above 30 C.",
+     "source": "https://www.losandes.com.ar/sociedad/las-imagenes-del-apagon-masivo-buenos-aires-hubo-casi-un-millon-usuarios-afectados-plena-ola-calor-n5975300",
+     "year": 2025,
+     "verified": true
+    }
+   ],
+   "notes": "Total chance of a cut of four hours or more from all causes is about 0.25 + 0.075 (heat waves) + 0.02 (storms) = 35% a year for a city flat, against roughly 4.5% in Western Europe. Edesur territory (south and centre of the city) is about three times worse than Edenor territory (north). The ENRE headline indicators exclude events for which the companies claim force majeure."
+  },
+  {
+   "id": "severeStorm",
+   "location": "westernEurope",
+   "tickBox": null,
+   "definition": "A named regional windstorm (or a summer derecho) that cuts the household's power for six hours or more, or damages the home.",
+   "annualProbability": [
+    {
+     "location": "westernEurope",
+     "outlook": "all",
+     "lo": 0.002,
+     "mid": 0.007,
+     "hi": 0.025,
+     "tag": "guess",
+     "basis": "Customers cut off in named storms, divided by all customers and years. France: 3.45M (Lothar and Martin 1999), about 1.7M (Klaus 2009), about 1M (Xynthia 2010), 1.2M (Ciaran 2023) and smaller storms, about 10M over 27 years on 37M customers = 1.1% a year. Great Britain about 1.2% (Arwen about 1M, Eunice, St Jude, Darragh). Ireland about 8% (Ophelia 385,000, Darragh 395,000, Eowyn 768,000 on 2.4M customers in eight years). Portugal about 1.5% (Kristin about 1M of 6.4M). Germany, Italy, Spain, Benelux, Austria and Switzerland 0.2-0.5%. Population-weighted 0.74%. Counts other than Arwen, Eowyn and Kristin are recalled or from search snippets."
+    }
+   ],
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.9,
+      "mid": 0.97,
+      "hi": 1,
+      "tag": "derived",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.7,
+      "p90": 4.5,
+      "p99": 14
+     },
+     "tag": "derived",
+     "basis": "Share still without power, pooled over four storms of about a million customers each. After 1 day: Arwen 18% (Ofgem), Eowyn about 55%, Kristin and Ciaran about 45-50% (interpolated). After 3-4 days: Arwen 4%, Eowyn 27% (204,000 of 768,000). After 7 days: Arwen 0.4%, Eowyn 13%. After 14 days: Kristin 3% (30,000 of about 1M, E-Redes), Eowyn under 1%. Ciaran: 90% back within 5 days (Enedis, search snippet). Pooled 40%, 14%, 5% and 1%. https://ofgem.gov.uk/publications/ofgem-publishes-full-report-following-six-month-review-networks-response-storm-arwen https://www.thejournal.ie/around-100000-people-still-without-water-storm-eowyn-6605973-Jan2025/ https://www.e-redes.pt/en/news/2026/02/11/two-weeks-after-kristin-depression-970000-customers-power-restored"
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.04,
+      "mid": 0.12,
+      "hi": 0.3,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 7
+     },
+     "shareTreatable": {
+      "lo": 0.05,
+      "mid": 0.2,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "No flow rather than unsafe water; guess."
+     },
+     "tag": "guess",
+     "basis": "Municipal supply fails where treatment works and pumping stations lose power: in Eowyn about 84,000 people were still without water on day 3 with 100,000 more at risk, against 204,000 electricity customers out; tankers and bottled water were running by then and almost all supply was back by day 9. Far less common in large cities. Days are net of tankers and shops."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.15,
+      "mid": 0.35,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 3,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "Loss of both mobile and home internet. Eowyn day 3: eir had about 10% of its mobile network down and 77,000 broadband lines out, Vodafone 5% and 30,000, mostly from loss of power. Kristin: communications out for days around Leiria (press, search snippet)."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.15,
+      "hi": 0.35,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 1.5,
+      "p99": 4
+     },
+     "tag": "guess",
+     "basis": "Roads blocked by trees and local shops dark; guess."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.55,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 3,
+      "p99": 8
+     },
+     "tag": "guess",
+     "basis": "Cards and cash machines are out where power is out and the outage area is large; cash still works. Guess."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.15,
+      "hi": 0.35,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2,
+      "p99": 5
+     },
+     "tag": "guess",
+     "basis": "Pharmacies closed or unreachable; guess."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.08,
+      "mid": 0.2,
+      "hi": 0.45,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 1.5,
+      "p99": 4
+     },
+     "tag": "guess",
+     "basis": "Blocked roads and overloaded services; guess."
+    },
+    "sanitation": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.05,
+      "hi": 0.15,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 7
+     },
+     "tag": "guess",
+     "basis": "Loss of water for flushing where supply fails for more than a day, and sewage pumping failures; guess."
+    },
+    "displacement": {
+     "pOccur": {
+      "lo": 0.004,
+      "mid": 0.015,
+      "hi": 0.04,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 7,
+      "p90": 60,
+      "p99": 240
+     },
+     "tag": "guess",
+     "basis": "Roof or structural damage that makes the home unusable; guess."
+    }
+   },
+   "coldShare": {
+    "lo": 0.1,
+    "mid": 0.3,
+    "hi": 0.6,
+    "tag": "guess",
+    "basis": "Atlantic windstorms fall between October and March. The storm itself is mild, but Arwen (November 2021) and Eowyn (January 2025) were followed by frost while tens of thousands were still cut off. Guess."
+   },
+   "hotShare": {
+    "lo": 0,
+    "mid": 0.02,
+    "hi": 0.08,
+    "tag": "guess",
+    "basis": "Summer derechos are rare (Corsica, August 2022, recalled)."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.6,
+     "mid": 0.85,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "Unaffected towns are usually within an hour or two; roads are blocked for the first day."
+    },
+    "earliestDay": {
+     "lo": 0.5,
+     "mid": 1,
+     "hi": 2,
+     "tag": "guess",
+     "basis": "After roads are cleared."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 11,
+     "mid": 66,
+     "hi": 330,
+     "tag": "guess",
+     "basis": "Return travel for the household to relatives or a hotel, about EUR 60 (EUR 10-300) by train or car; my estimate, no price page read. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    },
+    "usdPerPersonDay": {
+     "lo": 11,
+     "mid": 82,
+     "hi": 160,
+     "tag": "guess",
+     "basis": "Half of a EUR 110 double hotel room plus EUR 20 of extra meals = EUR 75 a person a day; EUR 10 when staying with family, EUR 145 at peak prices; my estimate, no price page read. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    }
+   },
+   "warningDays": {
+    "lo": 0.5,
+    "mid": 1.5,
+    "hi": 3,
+    "tag": "guess",
+    "basis": "Named storms are forecast one to three days ahead and red warnings issued about a day ahead."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.7,
+     "mid": 0.9,
+     "hi": 0.98,
+     "tag": "guess",
+     "basis": "Shops are normally stocked on the day before a forecast storm; guess."
+    },
+    "specialty": {
+     "lo": 0.2,
+     "mid": 0.5,
+     "hi": 0.8,
+     "tag": "guess",
+     "basis": "Power banks, lamps and camping stoves sell out locally on the eve of a red warning; guess."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "trauma",
+     "description": "Killed or injured by falling trees and debris, on the road, or during repairs and clearing up, per person in an affected household.",
+     "micromortsPerPerson": {
+      "lo": 0.4,
+      "mid": 2,
+      "hi": 12,
+      "tag": "guess",
+      "basis": "Deaths divided by people in households that lost power: Arwen 3 / 2.3M = 1.3; Kristin 6 / 2.5M = 2.4; Eowyn 2 / 2M = 1; Lothar and Martin about 90 in France / 8M = 11. Death counts are recalled, not read."
+     }
+    }
+   ],
+   "dwellingNotes": "City-centre flats on underground cables see perhaps a third to a half of this probability; the long tail of the power window belongs to suburbs, villages and overhead lines. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "Storm Arwen, November 2021: nearly one million homes lost power; 82% were restored within 24 hours; nearly 4,000 were off for more than a week.",
+     "source": "https://ofgem.gov.uk/publications/ofgem-publishes-full-report-following-six-month-review-networks-response-storm-arwen",
+     "year": 2022,
+     "verified": true
+    },
+    {
+     "claim": "Storm Eowyn, Ireland: 768,000 customers without power at the peak on 24 January 2025; about 204,000 on the afternoon of 27 January; about 100,000 expected to wait into the following week. About 84,000 people without water and 100,000 at risk on 27 January; 50 tankers deployed.",
+     "source": "https://www.thejournal.ie/around-100000-people-still-without-water-storm-eowyn-6605973-Jan2025/",
+     "year": 2025,
+     "verified": true
+    },
+    {
+     "claim": "Storm Kristin, Portugal, 28 January 2026: power restored to about 970,000 customers in the worst-hit area after two weeks, with about 30,000 still without; 5,800 poles and 24 substations damaged.",
+     "source": "https://www.e-redes.pt/en/news/2026/02/11/two-weeks-after-kristin-depression-970000-customers-power-restored",
+     "year": 2026,
+     "verified": true
+    },
+    {
+     "claim": "Storm Ciaran, November 2023: 1.2 million French households cut off, 780,000 in Brittany; 90% restored within five days.",
+     "source": "https://www.enedis.fr/sites/default/files/documents/pdf/CP%20-%20CIARAN_Les%20renforts%20concentr%C3%A9s%20sur%204%20d%C3%A9partements_071123.pdf",
+     "year": 2023,
+     "verified": false
+    },
+    {
+     "claim": "Lothar and Martin, December 1999: 3.45 million French households without power at the peak on 28 December; about three weeks to restore the network.",
+     "source": "https://www.meteo-paris.com/actualites/il-y-a-20-ans-les-tempetes-lothar-et-martin-devastaient-la-france-26-decembre-2019",
+     "year": 2019,
+     "verified": false
+    },
+    {
+     "claim": "About 40,000 customers were without supply for more than three days after Storm Arwen (Ofgem final report, as quoted in search results).",
+     "source": "https://www.ofgem.gov.uk/sites/default/files/2022-06/Final%20report%20on%20the%20review%20into%20the%20networks'%20response%20to%20Storm%20Arwen.pdf",
+     "year": 2022,
+     "verified": false
+    }
+   ],
+   "notes": "The tail is much longer than for routine outages and has not shortened: Kristin (2026) left 3% of affected customers without power after two weeks. Compared with the United States, there are no ice storms or derechos of comparable reach; the pattern resembles a strong extratropical windstorm in the Pacific Northwest or New England."
+  },
+  {
+   "id": "severeStorm",
+   "location": "buenosAires",
+   "tickBox": null,
+   "definition": "A severe convective storm or squall line (gusts of about 100 km/h or more) that cuts the household's power for six hours or more, or damages the home.",
+   "annualProbability": [
+    {
+     "location": "buenosAires",
+     "outlook": "all",
+     "lo": 0.006,
+     "mid": 0.02,
+     "hi": 0.06,
+     "tag": "guess",
+     "basis": "The storm of 17 December 2023 cut power to about 400,000 users in the city and suburbs at the peak (government figure, search snippet), 7% of about 5.8M; the storm of 4 April 2012 was of similar reach (recalled). Storms that leave 50,000-200,000 users out (1-3%) come once or twice a year. That gives 4-6% a year for the metropolitan area; a city flat on underground low-voltage cables sees perhaps half or less."
+    }
+   ],
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.9,
+      "mid": 0.96,
+      "hi": 1,
+      "tag": "derived",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3.3,
+      "p99": 9
+     },
+     "tag": "derived",
+     "basis": "About 36 hours after the December 2023 storm 143,339 users were still out (Edenor 70,428, Edesur 72,911; La Nacion, read), which is 24-36% of the 400,000-600,000 reported at the peak (search snippets); Edenor said 94% of its affected customers were back within 96 hours (search snippet); the Tigre delta took weeks. So about 30% remain after 1.5 days and 6% after 4. https://www.lanacion.com.ar/sociedad/mas-de-180000-usuarios-de-la-ciudad-y-el-conurbano-siguen-sin-luz-tras-la-tormenta-nid18122023/"
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.1,
+      "hi": 0.25,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 1.5,
+      "p99": 4
+     },
+     "shareTreatable": {
+      "lo": 0.02,
+      "mid": 0.1,
+      "hi": 0.3,
+      "tag": "guess",
+      "basis": "No flow rather than unsafe water; guess."
+     },
+     "tag": "guess",
+     "basis": "Municipal supply only (building pumps are handled by the pumped-water setting): pumping stations without power; in December 2023 a cooperative serving 130,000 people in Zarate went 48 hours without power, endangering supply."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.55,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2.5,
+      "p99": 7
+     },
+     "tag": "guess",
+     "basis": "Loss of both mobile and home internet where the outage is wide; guess."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.1,
+      "hi": 0.25,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 1,
+      "p99": 3
+     },
+     "tag": "guess",
+     "basis": "Streets blocked by trees and shops dark; guess."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.08,
+      "mid": 0.25,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2.5,
+      "p99": 7
+     },
+     "tag": "guess",
+     "basis": "Cards, QR payments and cash machines down across the outage area; cash works. Guess."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.1,
+      "hi": 0.25,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 1.5,
+      "p99": 4
+     },
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.08,
+      "mid": 0.2,
+      "hi": 0.45,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 1,
+      "p99": 3
+     },
+     "tag": "guess",
+     "basis": "Blocked streets and overloaded services; guess."
+    },
+    "displacement": {
+     "pOccur": {
+      "lo": 0.002,
+      "mid": 0.01,
+      "hi": 0.03,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 5,
+      "p90": 45,
+      "p99": 180
+     },
+     "tag": "guess",
+     "basis": "Roof loss; mostly houses with sheet-metal roofs, rarely flats. Guess."
+    }
+   },
+   "coldShare": {
+    "lo": 0,
+    "mid": 0.02,
+    "hi": 0.06,
+    "tag": "guess",
+    "basis": "These are warm-season storms."
+   },
+   "hotShare": {
+    "lo": 0.05,
+    "mid": 0.2,
+    "hi": 0.45,
+    "tag": "guess",
+    "basis": "The front usually breaks the heat, but December and January storms can be followed by days above 30 C while power is still out. Guess."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.6,
+     "mid": 0.85,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "Damage is patchy; family elsewhere in the city usually has power."
+    },
+    "earliestDay": {
+     "lo": 0.3,
+     "mid": 0.5,
+     "hi": 1.5,
+     "tag": "guess",
+     "basis": "After streets are cleared."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 5,
+     "mid": 25,
+     "hi": 120,
+     "tag": "guess",
+     "basis": "Taxi or remis across the city, or fuel and tolls to relatives outside it, about ARS 40,000 (ARS 8,000-190,000); my estimate, no price page read. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    },
+    "usdPerPersonDay": {
+     "lo": 5,
+     "mid": 40,
+     "hi": 90,
+     "tag": "guess",
+     "basis": "Half of a three-star double room listed at ARS 77,000-128,000 a night (Despegar listings seen in a search snippet, https://www.despegar.com.ar/hoteles/hl/982/s3/i1/hoteles-3-estrellas-en-buenos+aires) = USD 24-40, plus about ARS 15,000 (USD 9) of extra meals; USD 5 when staying with family, which is the usual choice. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    }
+   },
+   "warningDays": {
+    "lo": 0.1,
+    "mid": 0.5,
+    "hi": 1.5,
+    "tag": "guess",
+    "basis": "The weather service issues storm alerts some hours to a day ahead; the worst cells give little notice."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.5,
+     "mid": 0.8,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "Short notice, often at night or on a weekend; guess."
+    },
+    "specialty": {
+     "lo": 0.1,
+     "mid": 0.35,
+     "hi": 0.7,
+     "tag": "guess",
+     "basis": "Guess."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "trauma",
+     "description": "Killed or injured by falling trees, roofs and debris or on the road, per person in an affected household.",
+     "micromortsPerPerson": {
+      "lo": 0.3,
+      "mid": 2,
+      "hi": 15,
+      "tag": "guess",
+      "basis": "April 2012: 17 deaths in the metropolitan area, perhaps 2M people in affected households = 8; December 2023: one or two deaths in the metropolitan area among about 1.5M = 1 (and 13 in Bahia Blanca, population 300,000 = 43). Counts recalled, not read."
+     }
+    }
+   ],
+   "dwellingNotes": "Flats are sheltered from wind damage; the exposure is the power cut and, through it, the water pumps and lifts. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "On 18 December 2023 at 15:42, about 36 hours after the storm, 70,428 Edenor and 72,911 Edesur users were still without power; the energy secretariat had reported nearly a million affected users nationally and expected most service back in 24 hours and the rest in 48-72 hours; gusts reached 150 km/h in the province.",
+     "source": "https://www.lanacion.com.ar/sociedad/mas-de-180000-usuarios-de-la-ciudad-y-el-conurbano-siguen-sin-luz-tras-la-tormenta-nid18122023/",
+     "year": 2023,
+     "verified": true
+    },
+    {
+     "claim": "Peak of about one million households without electricity after the storm, 400,000 of them in the city and Greater Buenos Aires (government statement).",
+     "source": "https://www.lanacion.com.ar/politica/temporal-y-tragedia-el-gobierno-importara-energia-por-el-temporal-para-restablecer-el-suministro-nid17122023/",
+     "year": 2023,
+     "verified": false
+    },
+    {
+     "claim": "Edenor: 94% of affected customers recovered supply within the first 96 hours; 4,078 still without at the end of December; delta customers out for weeks.",
+     "source": "https://www.a24.com/actualidad/lograron-reestablecer-el-servicio-electrico-mas-la-mitad-los-clientes-del-delta-n1271630/amp",
+     "year": 2023,
+     "verified": false
+    }
+   ],
+   "notes": "Assumes the utilities claim force majeure for storms of this size, so they are not also inside the ENRE indicators behind localOutage; if they are, the overlap is at most two percentage points."
+  },
+  {
+   "id": "winterStorm",
+   "location": "westernEurope",
+   "tickBox": "coldWinters",
+   "definition": "Heavy snow, ice or a severe cold wave that cuts the household's power, gas or water for six hours or more, or makes its streets impassable for two days or more.",
+   "annualProbability": [
+    {
+     "location": "westernEurope",
+     "outlook": "all",
+     "lo": 0.0003,
+     "mid": 0.001,
+     "hi": 0.004,
+     "tag": "guess",
+     "basis": "Exposed means a place with regular frost and snow: Germany, Benelux, Britain, Ireland, Austria, Switzerland, northern and upland France, Italy and Spain; about 130M households. Household-events over 25 years: Munsterland 2005 (about 100,000 households), Girona 2010 (220,000 customers), Northern Ireland 2010 (40,000 without water), Italy 2012 (120,000), Abruzzo 2017 (300,000), Britain and Ireland 2018 (about 330,000 without water or power), south-east France 2019 (330,000) = about 1.5M, plus about 2.5M households snowed in around Madrid in January 2021. 4M / 130M / 25 = 0.12% a year. Counts recalled or from search snippets."
+    }
+   ],
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.4,
+      "mid": 0.65,
+      "hi": 0.85,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 4,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "Wet snow and ice bring down overhead lines: Munsterland 2005 up to six days (one source says two weeks), south-east France 2019 and Girona 2010 up to about a week (recalled). Same mechanism as United States ice storms on a smaller scale; no European event resembles the Texas 2021 generation failure."
+    },
+    "gas": {
+     "pOccur": {
+      "lo": 0,
+      "mid": 0.02,
+      "hi": 0.08,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 7
+     },
+     "tag": "guess",
+     "basis": "Piped gas has held through European cold waves, including the 2022 supply scare, in which no household was curtailed; EU rules make households protected customers who are cut last. Local pressure failures only. Guess."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.25,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 8
+     },
+     "shareTreatable": {
+      "lo": 0.05,
+      "mid": 0.2,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "No flow rather than unsafe water; snow can be melted. Guess."
+     },
+     "tag": "guess",
+     "basis": "Frozen and burst pipes and mains: Northern Ireland, December 2010, about 40,000 properties for up to 12 days; Britain, March 2018, about 200,000 customers for up to four or five days (recalled). Days are net of bottled-water stations."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.15,
+      "mid": 0.35,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 6
+     },
+     "tag": "guess",
+     "basis": "Streets impassable and shelves thin: Madrid after the January 2021 snowfall had three to five days of very limited movement (recalled)."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.08,
+      "mid": 0.25,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 3,
+      "p99": 8
+     },
+     "tag": "guess",
+     "basis": "Follows the power cut where it is wide; guess."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.2,
+      "hi": 0.45,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 3,
+      "p99": 8
+     },
+     "tag": "guess",
+     "basis": "Follows the power cut; guess."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.55,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 6
+     },
+     "tag": "guess",
+     "basis": "Pharmacies unreachable; guess."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.25,
+      "mid": 0.5,
+      "hi": 0.75,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 6
+     },
+     "tag": "guess",
+     "basis": "Ambulances cannot get through snow and ice; guess."
+    },
+    "displacement": {
+     "pOccur": {
+      "lo": 0.002,
+      "mid": 0.01,
+      "hi": 0.03,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 3,
+      "p90": 14,
+      "p99": 60
+     },
+     "tag": "guess",
+     "basis": "Burst pipes flooding the home; guess."
+    }
+   },
+   "coldShare": {
+    "lo": 0.75,
+    "mid": 0.92,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "Cold by definition; a few events are wet snow near freezing with a quick thaw."
+   },
+   "hotShare": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.4,
+     "mid": 0.7,
+     "hi": 0.9,
+     "tag": "guess",
+     "basis": "Roads and railways are shut at first; unaffected areas are usually within 100 km."
+    },
+    "earliestDay": {
+     "lo": 0.5,
+     "mid": 1.5,
+     "hi": 3,
+     "tag": "guess",
+     "basis": "When roads reopen."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 11,
+     "mid": 66,
+     "hi": 330,
+     "tag": "guess",
+     "basis": "Return travel for the household to relatives or a hotel, about EUR 60 (EUR 10-300) by train or car; my estimate, no price page read. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    },
+    "usdPerPersonDay": {
+     "lo": 11,
+     "mid": 82,
+     "hi": 160,
+     "tag": "guess",
+     "basis": "Half of a EUR 110 double hotel room plus EUR 20 of extra meals = EUR 75 a person a day; EUR 10 when staying with family, EUR 145 at peak prices; my estimate, no price page read. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    }
+   },
+   "warningDays": {
+    "lo": 0.5,
+    "mid": 1.5,
+    "hi": 3,
+    "tag": "guess",
+    "basis": "Snow and cold waves are forecast days ahead, though the damage to power lines is not."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.6,
+     "mid": 0.85,
+     "hi": 0.97,
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "specialty": {
+     "lo": 0.15,
+     "mid": 0.4,
+     "hi": 0.7,
+     "tag": "guess",
+     "basis": "Heaters, gas canisters and grit sell out; guess."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "trauma",
+     "description": "Falls on ice, road crashes and exertion while clearing snow, per person in an affected household.",
+     "micromortsPerPerson": {
+      "lo": 0.3,
+      "mid": 1.5,
+      "hi": 10,
+      "tag": "guess",
+      "basis": "Texas 2021: vehicle crashes 22 and falls 9 of 246 deaths among 29M people = 1.1 (prior-art.md); Madrid January 2021: four or five deaths among 6.7M (recalled). Higher among households actually cut off."
+     }
+    }
+   ],
+   "dwellingNotes": "Flats lose heat more slowly than detached houses, and a mid-floor flat between heated neighbours stays above 10 C for days; top-floor and corner flats cool fastest. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "Munsterland, 25 November 2005: more than 250,000 people without power after pylons collapsed under wet snow; other sources give 850,000 people and outages of six days to two weeks.",
+     "source": "https://www.wetteronline.de/extremwetter/schneechaos-in-westdeutschland-hunderttausende-ohne-strom-2005-11-25-ms",
+     "year": 2005,
+     "verified": false
+    },
+    {
+     "claim": "Unplanned gas SAIDI is small: Great Britain 13-16 minutes per customer a year in 2010-2016, the Netherlands 4-7.",
+     "source": "https://ceer.eu/wp-content/uploads/2024/04/C18-EQS-86-03_Benchmarking_Report_6.1.pdf",
+     "year": 2018,
+     "verified": true
+    }
+   ],
+   "notes": "About a tenth of my first guess; the event list does not support more. The household's own heating is the usual failure in a cold wave without any utility cut (boiler breakdown), which this hazard does not cover."
+  },
+  {
+   "id": "winterStorm",
+   "location": "buenosAires",
+   "tickBox": "coldWinters",
+   "definition": "A cold wave (several days with lows near or below 0 C in the suburbs and highs of 12 C or less) during which the household loses power or piped gas for six hours or more. Snow and ice storms are essentially absent: snow last settled in the city on 9 July 2007, for the first time in 89 years.",
+   "annualProbability": [
+    {
+     "location": "buenosAires",
+     "outlook": "all",
+     "lo": 0.002,
+     "mid": 0.008,
+     "hi": 0.03,
+     "tag": "guess",
+     "basis": "Exposed means the whole metropolitan area. Guess. Cold-wave gas emergencies came in May 2024 and July 2025; in both, industry and vehicle-gas stations were cut to protect homes, and no residential supply was cut in the city, but several thousand homes in Mar del Plata lost gas for more than a day in July 2025 (press, search snippets). Winter power faults during demand peaks are already inside the localOutage figure; this entry adds only the gas route and the coincidence with cold."
+    }
+   ],
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.35,
+      "mid": 0.6,
+      "hi": 0.85,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.4,
+      "p90": 1.2,
+      "p99": 3
+     },
+     "tag": "guess",
+     "basis": "Demand-peak faults on cold nights; shorter than summer heat-wave outages. Guess."
+    },
+    "gas": {
+     "pOccur": {
+      "lo": 0.2,
+      "mid": 0.45,
+      "hi": 0.7,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3.5,
+      "p99": 8
+     },
+     "tag": "guess",
+     "basis": "Based on Mar del Plata, July 2025: once pressure is lost every home must be visited before reconnection, which took several days (press, search snippet). Has not happened in the city itself."
+    }
+   },
+   "coldShare": {
+    "lo": 0.1,
+    "mid": 0.35,
+    "hi": 0.7,
+    "tag": "guess",
+    "basis": "Set well below 1 on purpose. Outdoor temperatures of 0-10 C leave an unheated flat at roughly 10-14 C, far milder than the Texas 2021 conditions behind the warmth curve; a share of 0.35 stands in for a severity discount. Guess."
+   },
+   "hotShare": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.75,
+     "mid": 0.9,
+     "hi": 0.97,
+     "tag": "guess",
+     "basis": "Family elsewhere in the city; gas and power losses are local."
+    },
+    "earliestDay": {
+     "lo": 0.1,
+     "mid": 0.3,
+     "hi": 1,
+     "tag": "guess",
+     "basis": "Same day."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 5,
+     "mid": 25,
+     "hi": 120,
+     "tag": "guess",
+     "basis": "Taxi or remis across the city, or fuel and tolls to relatives outside it, about ARS 40,000 (ARS 8,000-190,000); my estimate, no price page read. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    },
+    "usdPerPersonDay": {
+     "lo": 5,
+     "mid": 40,
+     "hi": 90,
+     "tag": "guess",
+     "basis": "Half of a three-star double room listed at ARS 77,000-128,000 a night (Despegar listings seen in a search snippet, https://www.despegar.com.ar/hoteles/hl/982/s3/i1/hoteles-3-estrellas-en-buenos+aires) = USD 24-40, plus about ARS 15,000 (USD 9) of extra meals; USD 5 when staying with family, which is the usual choice. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    }
+   },
+   "warningDays": {
+    "lo": 1,
+    "mid": 2,
+    "hi": 4,
+    "tag": "guess",
+    "basis": "Cold waves are forecast days ahead."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.85,
+     "mid": 0.95,
+     "hi": 0.99,
+     "tag": "guess",
+     "basis": "Shops work normally."
+    },
+    "specialty": {
+     "lo": 0.2,
+     "mid": 0.5,
+     "hi": 0.8,
+     "tag": "guess",
+     "basis": "Electric heaters and gas cylinders sell out in cold snaps; guess."
+    }
+   },
+   "exposures": [],
+   "dwellingNotes": "Heating is by piped-gas room heaters or split air conditioners; a flat with both has a fallback for either utility. Carbon monoxide from faulty gas heaters is the main cold-season killer (about 200 deaths a year nationally, recalled) and belongs to the carbon monoxide hazard. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "July 2025 cold wave: national cuts to industry and vehicle-gas stations to protect homes; Mar del Plata homes without gas for more than 24 hours; the distributor later spoke of 2,700 users, 1% of 270,000, still awaiting reconnection.",
+     "source": "https://www.forbesargentina.com/today/la-crisis-falta-gas-profundiza-ya-hay-cortes-hogares-mar-plata-n74767",
+     "year": 2025,
+     "verified": false
+    }
+   ],
+   "notes": "Included rather than omitted because a reader may tick cold winters; its contribution should be small. If the engine cannot discount cold severity, drop the cold share to 0.2."
+  },
+  {
+   "id": "heatWave",
+   "location": "westernEurope",
+   "tickBox": "hotSummers",
+   "definition": "The summer's main spell of dangerous heat where the household lives: at least three consecutive days with highs of about 33-35 C or more and warm nights (national heat-health alert at its top two levels).",
+   "annualProbability": [
+    {
+     "location": "westernEurope",
+     "outlook": "all",
+     "lo": 0.3,
+     "mid": 0.6,
+     "hi": 0.9,
+     "tag": "guess",
+     "basis": "Exposed means lowland Western Europe south of about 52 N plus the hot interiors further north. Years with such a spell since 2015: nearly every year in Madrid, Rome and Milan; about half in Paris and Frankfurt (2015, 2018, 2019, 2020, 2022, 2025, recalled); about one in eight in London. Check: with the heat window below, 0.6 x about 65 all-ages micromorts = 39 a year under the cooling curve for people without air conditioning, against roughly 90-100 observed across Western Europe in 2024 (Italy 19,038, Spain 6,743, Germany 6,282, France 2,451 from a search snippet, plus my allowance of 4,500 for the rest, in 390M people) and 37-323 by country."
+    }
+   ],
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.002,
+      "mid": 0.01,
+      "hi": 0.04,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 1,
+      "p99": 3
+     },
+     "tag": "guess",
+     "basis": "Heat-driven cable faults; multi-day cuts with loss of pumped water hit Catania in July 2023 and several Italian cities in July 2025 (recalled). Rare elsewhere. Much less common than in Buenos Aires or in United States heat waves, where air-conditioning load is the driver."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.1,
+      "hi": 0.3,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 7
+     },
+     "tag": "guess",
+     "basis": "Ambulance and emergency departments saturated in major heat waves (France 2003, England July 2022, recalled); guess."
+    }
+   },
+   "extraWindows": {
+    "heat": {
+     "pOccur": {
+      "lo": 0.98,
+      "mid": 1,
+      "hi": 1,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 5,
+      "p90": 12,
+      "p99": 22
+     },
+     "tag": "guess",
+     "basis": "Days of dangerous heat in the year's spell: Paris had nine consecutive days at 35 C or more in August 2003 and three- to six-day spells in 2019, 2020 and 2022; Spain had an 18-day wave in July 2022; Italy two to three weeks in 2023 and 2024 (recalled). Not a canonical window id."
+    }
+   },
+   "coldShare": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "hotShare": {
+    "lo": 0.95,
+    "mid": 1,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "Hot by definition."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.5,
+     "mid": 0.8,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "A cooler or air-conditioned place: family, the coast or hills, a hotel. Hard for the frail people most at risk."
+    },
+    "earliestDay": {
+     "lo": 0,
+     "mid": 0,
+     "hi": 0.5,
+     "tag": "guess",
+     "basis": "Forecast days ahead, so possible from the first day."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 13,
+     "mid": 79,
+     "hi": 396,
+     "tag": "guess",
+     "basis": "Return travel for the household to relatives or a hotel, about EUR 60 (EUR 10-300) by train or car; my estimate, no price page read. Scaled by 1.2 here because the affected area is wide and nearby rooms are scarce. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    },
+    "usdPerPersonDay": {
+     "lo": 13,
+     "mid": 98,
+     "hi": 192,
+     "tag": "guess",
+     "basis": "Half of a EUR 110 double hotel room plus EUR 20 of extra meals = EUR 75 a person a day; EUR 10 when staying with family, EUR 145 at peak prices; my estimate, no price page read. Scaled by 1.2 here because the affected area is wide and nearby rooms are scarce. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    }
+   },
+   "warningDays": {
+    "lo": 1,
+    "mid": 3,
+    "hi": 5,
+    "tag": "guess",
+    "basis": "Heat waves are forecast three to five days ahead."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.85,
+     "mid": 0.95,
+     "hi": 0.99,
+     "tag": "guess",
+     "basis": "Shops work normally."
+    },
+    "specialty": {
+     "lo": 0.15,
+     "mid": 0.4,
+     "hi": 0.7,
+     "tag": "guess",
+     "basis": "Fans and portable air conditioners sell out within days in European heat waves; guess."
+    }
+   },
+   "exposures": [],
+   "dwellingNotes": "Risk concentrates in top-floor flats under uninsulated roofs, in flats without external shutters (most of Britain and Germany), and among old people living alone; nights stay hot in city centres. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "An estimated 62,775 heat-related deaths in Europe in summer 2024 (61,672 in 2022); Italy 19,038 (323 per million), Spain 6,743, Germany 6,282, France 2,451.",
+     "source": "https://www.isglobal.org/en/-/62.700-muertes-asociadas-con-el-calor-del-verano-de-2024",
+     "year": 2025,
+     "verified": false
+    },
+    {
+     "claim": "Air conditioning in about 19% of European households in 2022 (IEA); about half of Italian households, 25% of French households (2020), about 4% in England.",
+     "source": "https://www.carbonbrief.org/eight-facts-about-air-conditioning-amid-an-overheated-global-debate",
+     "year": 2025,
+     "verified": false
+    }
+   ],
+   "notes": "The engine reads a window called heat (days of dangerous heat) that the validator does not accept inside windows, so it is given in extraWindows.heat. Because few homes have air conditioning, almost every household has an unmet cooling need on every dangerous-heat day whether or not the grid holds; this is the main difference from the United States. Outages inside heat waves are counted here, not under localOutage."
+  },
+  {
+   "id": "heatWave",
+   "location": "buenosAires",
+   "tickBox": "hotSummers",
+   "definition": "The summer's main spell of dangerous heat: at least three consecutive days with highs of about 34-35 C or more and nights above 22 C (red or orange alert from the weather service).",
+   "annualProbability": [
+    {
+     "location": "buenosAires",
+     "outlook": "all",
+     "lo": 0.25,
+     "mid": 0.5,
+     "hi": 0.8,
+     "tag": "guess",
+     "basis": "Exposed means the whole metropolitan area. The weather service's own definition (maximum and minimum both above the 90th percentile, 32.3 C and 22 C, for three days) was met 17 times in 2005-2015, 1.5 a year (Chesini et al. 2019, https://www.scielo.br/j/csp/a/LQhDy3myvTsfK7vdNxyJckM/?lang=es). Spells at my stricter threshold: December 2013, January 2022, March 2023, February 2024, January 2025, December 2025 to January 2026 (all but the first recalled or from search snippets): six in thirteen summers, five of them in the last five. Check: 0.5 x about 50 all-ages micromorts = 25 a year under the cooling curve, against about 29 a year observed in the city in 2005-2015."
+    }
+   ],
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.07,
+      "mid": 0.15,
+      "hi": 0.3,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 3,
+      "p99": 9
+     },
+     "tag": "guess",
+     "basis": "Share of city households that lose power for four hours or more during the spell. ENRE ordered compensation for 202,287 Edesur users (8% of 2.5M) for cuts between 6 and 20 March 2023, and 339,609 across three heat events from December 2022 to March 2023 (Cronista, read); the qualifying duration was not stated there (a government page describes a prolonged cut as 15 hours, search snippet). Counting shorter cuts and Edenor: 10-20%. Days: if a third of cuts over 4 h exceed 15 h the median is about 12 h; tail from February 1999 (11 days) and December 2013 (up to two weeks, recalled). https://www.cronista.com/economia-politica/edesur-debera-devolver-dinero-a-los-usuarios-por-los-cortes-de-luz-en-marzo"
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.02,
+      "mid": 0.06,
+      "hi": 0.15,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 1.5,
+      "p99": 4
+     },
+     "shareTreatable": {
+      "lo": 0.02,
+      "mid": 0.1,
+      "hi": 0.3,
+      "tag": "guess",
+      "basis": "No flow rather than unsafe water; guess."
+     },
+     "tag": "guess",
+     "basis": "Municipal supply only: low pressure at demand peaks and when plants or pumping stations lose power. The building pump is handled by the pumped-water setting."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.04,
+      "hi": 0.1,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 1.5,
+      "p99": 5
+     },
+     "tag": "guess",
+     "basis": "Only where the power cut is wide and long; guess."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.02,
+      "mid": 0.06,
+      "hi": 0.2,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 6
+     },
+     "tag": "guess",
+     "basis": "Ambulance service under strain; lifts out in blocks without power. Guess."
+    }
+   },
+   "extraWindows": {
+    "heat": {
+     "pOccur": {
+      "lo": 0.98,
+      "mid": 1,
+      "hi": 1,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 5,
+      "p90": 10,
+      "p99": 16
+     },
+     "tag": "guess",
+     "basis": "The December 2013 wave lasted 9 days with a mean maximum of 36.1 C and followed a 4-day wave by three days (Chesini 2019, read); March 2023 had about two weeks above the alert threshold (press, search snippet); January 2022 and February 2024 about five days (recalled). Not a canonical window id."
+    }
+   },
+   "coldShare": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "hotShare": {
+    "lo": 0.95,
+    "mid": 1,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "Hot by definition."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.5,
+     "mid": 0.8,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "Family or a hotel with air conditioning and power; the Atlantic coast is four hours away."
+    },
+    "earliestDay": {
+     "lo": 0,
+     "mid": 0,
+     "hi": 0.5,
+     "tag": "guess",
+     "basis": "Forecast days ahead."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 6,
+     "mid": 30,
+     "hi": 144,
+     "tag": "guess",
+     "basis": "Taxi or remis across the city, or fuel and tolls to relatives outside it, about ARS 40,000 (ARS 8,000-190,000); my estimate, no price page read. Scaled by 1.2 for this hazard. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    },
+    "usdPerPersonDay": {
+     "lo": 6,
+     "mid": 48,
+     "hi": 108,
+     "tag": "guess",
+     "basis": "Half of a three-star double room listed at ARS 77,000-128,000 a night (Despegar listings seen in a search snippet, https://www.despegar.com.ar/hoteles/hl/982/s3/i1/hoteles-3-estrellas-en-buenos+aires) = USD 24-40, plus about ARS 15,000 (USD 9) of extra meals; USD 5 when staying with family, which is the usual choice. Scaled by 1.2 for this hazard. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    }
+   },
+   "warningDays": {
+    "lo": 1,
+    "mid": 3,
+    "hi": 5,
+    "tag": "guess",
+    "basis": "Forecast three to five days ahead."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.85,
+     "mid": 0.95,
+     "hi": 0.99,
+     "tag": "guess",
+     "basis": "Shops work normally."
+    },
+    "specialty": {
+     "lo": 0.3,
+     "mid": 0.6,
+     "hi": 0.85,
+     "tag": "guess",
+     "basis": "Fans are stocked everywhere; air conditioners cannot be installed within days in summer. Guess."
+    }
+   },
+   "exposures": [],
+   "dwellingNotes": "In a heat-wave power cut the flat loses air conditioning, fans, the fridge, the lift and, within a day, water; this combination, not the heat alone, is what distinguishes Buenos Aires. Top floors under flat roofs are hottest. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "Buenos Aires city, 2005-2015: 17 heat waves, median 3 days; deaths rose 14% during heat waves (RR 1.140, 1.108-1.173) and 43% during the 9-day wave of December 2013 (RR 1.428, 1.399-1.457; ages 85+ RR 1.515); the city averages 89 deaths a day and heat waves add about 11 a day.",
+     "source": "https://www.scielo.br/j/csp/a/LQhDy3myvTsfK7vdNxyJckM/?lang=es",
+     "year": 2019,
+     "verified": true
+    },
+    {
+     "claim": "ENRE ordered Edesur to pay ARS 471 million to 202,287 users affected by cuts between 6 and 20 March 2023; with two earlier sanctions, 339,609 users compensated for December 2022 to March 2023.",
+     "source": "https://www.cronista.com/economia-politica/edesur-debera-devolver-dinero-a-los-usuarios-por-los-cortes-de-luz-en-marzo",
+     "year": 2023,
+     "verified": true
+    },
+    {
+     "claim": "February 1999: a substation fire left about 150,000 Edesur customers (600,000 people) in ten neighbourhoods without power for up to 11 days in temperatures above 30 C, many also without water.",
+     "source": "https://www.diariodecuyo.com.ar/noticias/el-verano-del-99-que-dejo-a-varios-argentinos-sin-energia-por-11-dias-322044.html",
+     "year": 2019,
+     "verified": false
+    },
+    {
+     "claim": "47.1% of Argentine urban households used air conditioning in 2017-18; 84.8% used some cooling appliance.",
+     "source": "https://www.argentina.gob.ar/node/356456",
+     "year": 2022,
+     "verified": true
+    }
+   ],
+   "notes": "The engine reads a window called heat (days of dangerous heat) that the validator does not accept inside windows, so it is given in extraWindows.heat. Mortality arithmetic from Chesini: an ordinary 3-day wave adds 3 x 11 = 33 deaths among 2.9M residents, 11 micromorts each, which matches the cooling curve (1.5 + 3 + 6 = 10.5); December 2013 added 0.428 x 89 x 9 = 343 deaths, 118 micromorts. Heat-wave outages are counted here and removed from localOutage, so the Buenos Aires preset should have hot summers ticked by default or it loses them."
+  },
+  {
+   "id": "flood",
+   "location": "westernEurope",
+   "tickBox": "flood",
+   "definition": "Flood water (river, flash, surface-water or coastal) enters the household's building or cuts off its street.",
+   "annualProbability": [
+    {
+     "location": "westernEurope",
+     "outlook": "all",
+     "lo": 0.002,
+     "mid": 0.005,
+     "hi": 0.015,
+     "tag": "derived",
+     "basis": "Exposed means living in a mapped flood-prone area: about 12% of Europeans, 52M people (EEA, 2021, search snippet, https://climate-adapt.eea.europa.eu/en/observatory/publications-data/analysis-data/exposure-to-potential-flood-prone-areas). People flooded each year in the EU and UK: 172,000 by rivers and 100,000 by the sea (JRC figures on the EEA page, read, https://climate-adapt.eea.europa.eu/en/observatory/topics/health-impacts/flooding). 272,000 / 52M = 0.52% a year. The range allows for ground floors against upper floors and for places with weak defences."
+    }
+   ],
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.4,
+      "mid": 0.65,
+      "hi": 0.85,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1.5,
+      "p90": 6,
+      "p99": 28
+     },
+     "tag": "guess",
+     "basis": "Valencia, October 2024: about 155,000 households cut off, 3,000 (2%) still out on day 5 and 1% in early November. Ahr valley, July 2021: about 65,400 households, most reconnected within two weeks, the last in mid-August. Both from search snippets. Longer than the usual United States river-flood pattern because flash floods destroyed substations."
+    },
+    "gas": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.15,
+      "hi": 0.35,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 10,
+      "p90": 60,
+      "p99": 150
+     },
+     "tag": "guess",
+     "basis": "Ahr valley: 8,250 gas connections cut off, restored over the following months (search snippet); water in low-pressure mains takes weeks to clear."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.2,
+      "mid": 0.4,
+      "hi": 0.65,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1.5,
+      "p90": 5,
+      "p99": 14
+     },
+     "shareTreatable": {
+      "lo": 0.3,
+      "mid": 0.5,
+      "hi": 0.8,
+      "tag": "guess",
+      "basis": "Roughly half no flow, half unsafe but flowing; guess."
+     },
+     "tag": "guess",
+     "basis": "Ahr: about 5,000 of one utility's 10,800 households lost mains water; Valencia: tap water unfit to drink in several towns for weeks. Days are net of tankers and bottled water, which took one to three days to reach people."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.2,
+      "mid": 0.4,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 6
+     },
+     "tag": "guess",
+     "basis": "Shops flooded and roads cut; in the Valencia towns organised aid took two to four days and volunteers arrived on foot (recalled)."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.3,
+      "mid": 0.5,
+      "hi": 0.75,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 5,
+      "p99": 14
+     },
+     "tag": "guess",
+     "basis": "Valencia, day 5: about half of mobile lines in the area still without service (headline, search snippet)."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.2,
+      "mid": 0.4,
+      "hi": 0.65,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 5,
+      "p99": 14
+     },
+     "tag": "guess",
+     "basis": "Follows power and communications; guess."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.2,
+      "mid": 0.4,
+      "hi": 0.65,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 4,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "Ground-floor pharmacies and surgeries flooded; guess."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.3,
+      "mid": 0.5,
+      "hi": 0.75,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2,
+      "p99": 5
+     },
+     "tag": "guess",
+     "basis": "Streets impassable and services overwhelmed; guess."
+    },
+    "sanitation": {
+     "pOccur": {
+      "lo": 0.25,
+      "mid": 0.45,
+      "hi": 0.7,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 2,
+      "p90": 14,
+      "p99": 60
+     },
+     "tag": "guess",
+     "basis": "Sewers and pumping stations out of action and, where water is off, no flushing; months in the Ahr valley. Sewer loss is the larger part. Guess."
+    },
+    "displacement": {
+     "pOccur": {
+      "lo": 0.15,
+      "mid": 0.35,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 14,
+      "p90": 150,
+      "p99": 500
+     },
+     "tag": "guess",
+     "basis": "Ground-floor flats and houses are usually uninhabitable for months while they dry and are refitted; upper-floor flats mostly stay usable unless the building's plant is destroyed. Guess."
+    }
+   },
+   "coldShare": {
+    "lo": 0.1,
+    "mid": 0.25,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Winter river floods in Britain, Germany and France; the two deadliest recent floods were in July and late October. Guess."
+   },
+   "hotShare": {
+    "lo": 0,
+    "mid": 0.05,
+    "hi": 0.15,
+    "tag": "guess",
+    "basis": "Guess."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.6,
+     "mid": 0.85,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "Dry ground is usually a few kilometres away; not during the first hours of a flash flood."
+    },
+    "earliestDay": {
+     "lo": 0,
+     "mid": 0.5,
+     "hi": 1.5,
+     "tag": "guess",
+     "basis": "Before the water with a river-flood warning; after it falls in a flash flood."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 14,
+     "mid": 86,
+     "hi": 429,
+     "tag": "guess",
+     "basis": "Return travel for the household to relatives or a hotel, about EUR 60 (EUR 10-300) by train or car; my estimate, no price page read. Scaled by 1.3 here because the affected area is wide and nearby rooms are scarce. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    },
+    "usdPerPersonDay": {
+     "lo": 14,
+     "mid": 107,
+     "hi": 208,
+     "tag": "guess",
+     "basis": "Half of a EUR 110 double hotel room plus EUR 20 of extra meals = EUR 75 a person a day; EUR 10 when staying with family, EUR 145 at peak prices; my estimate, no price page read. Scaled by 1.3 here because the affected area is wide and nearby rooms are scarce. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 0.5,
+    "hi": 3,
+    "tag": "guess",
+    "basis": "River floods give one to three days; flash floods give hours, and the Valencia phone alert arrived after the water."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.3,
+     "mid": 0.6,
+     "hi": 0.85,
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "specialty": {
+     "lo": 0.05,
+     "mid": 0.25,
+     "hi": 0.5,
+     "tag": "guess",
+     "basis": "Pumps, sandbags and waders are gone within hours; guess."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "trauma",
+     "description": "Drowning or injury in the home, the garage, the street or a car, per person in a flooded household.",
+     "micromortsPerPerson": {
+      "lo": 10,
+      "mid": 120,
+      "hi": 1500,
+      "tag": "derived",
+      "basis": "5,213 flood deaths in the 32 EEA countries in 1980-2025 = 113 a year; 272,000 people flooded a year; 113 / 272,000 = 416 micromorts per flooded person at all ages (country sets differ slightly). The mean is driven by flash floods: Valencia 2024 about 225 deaths among 306,000 affected = 735; ordinary river floods are nearer 100 (Britain 2007: 13 deaths, about 130,000 people flooded, recalled). For a healthy adult, mid 120. https://climate-adapt.eea.europa.eu/en/observatory/topics/health-impacts/flooding"
+     },
+     "multipliers": [
+      {
+       "profile": "age75plus",
+       "mortality": 6,
+       "tag": "guess",
+       "basis": "About half of the Valencia 2024 victims were aged 70 or more against about 15% of the population, a ratio near 5 (recalled); most died on ground floors, in garages or in cars."
+      },
+      {
+       "profile": "age60to74",
+       "mortality": 2,
+       "tag": "guess",
+       "basis": "Interpolated."
+      },
+      {
+       "profile": "limitedMobility",
+       "mortality": 4,
+       "tag": "guess",
+       "basis": "Cannot climb to an upper floor unaided; guess."
+      },
+      {
+       "profile": "child",
+       "mortality": 0.5,
+       "tag": "guess",
+       "basis": "Children are under-represented among European flood deaths; guess."
+      }
+     ]
+    },
+    {
+     "channel": "financialLoss",
+     "description": "Contents and repairs not met by insurance or state aid, per flooded household.",
+     "financialUsdPerHousehold": {
+      "lo": 500,
+      "mid": 6000,
+      "hi": 60000,
+      "tag": "guess",
+      "basis": "Guess. Cover is near-universal in France, Spain and Britain, about half of homes in Germany and under a tenth in Italy (recalled); upper-floor flats lose little."
+     }
+    }
+   ],
+   "dwellingNotes": "For flats above the ground floor the direct danger is small; what matters is the cellar and ground-floor plant (meters, boilers, lift machinery, pumps), which can leave an undamaged flat without power, heat, water or lift for weeks. Underground garages are death traps. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "172,000 people in the EU and UK are exposed to river flooding each year and 100,000 to coastal flooding (JRC); 5,213 flood deaths in the 32 EEA countries in 1980-2025; at least 212 deaths in the July 2021 floods.",
+     "source": "https://climate-adapt.eea.europa.eu/en/observatory/topics/health-impacts/flooding",
+     "year": 2025,
+     "verified": true
+    },
+    {
+     "claim": "About 12% of Europe's population, 52 million people, lived in potentially flood-prone areas in 2021.",
+     "source": "https://climate-adapt.eea.europa.eu/en/observatory/publications-data/analysis-data/exposure-to-potential-flood-prone-areas",
+     "year": 2024,
+     "verified": false
+    },
+    {
+     "claim": "Valencia, 29 October 2024: about 156,000 households without electricity at first, 3,000 on day 5; half of mobile lines without service on day 5.",
+     "source": "https://valenciaplaza.com/dia-5-dana-3000-hogares-sin-electricidad-mitad-moviles-sin-servicio",
+     "year": 2024,
+     "verified": false
+    },
+    {
+     "claim": "Valencia regional government: more than 306,000 people affected, 224 dead and 3 missing, 11,200 homes affected.",
+     "source": "https://theobjective.com/espana/comunidad-valenciana/2025-03-21/numeros-dana-millones-coches-viviendas/",
+     "year": 2025,
+     "verified": false
+    },
+    {
+     "claim": "Ahr valley, July 2021: about 65,400 households cut off from electricity, most reconnected within two weeks.",
+     "source": "https://heimatjahrbuch.kreis-ahrweiler.de/wp-content/uploads/2023/12/westenergie.pdf",
+     "year": 2023,
+     "verified": false
+    },
+    {
+     "claim": "Ahr valley: 8,250 gas connections in the district cut off after the flood.",
+     "source": "https://www.energieagentur.rlp.de/fileadmin/user_upload/Waermewende/Abschlussbericht_2021_Waerme-und_Gasversorgung_im_Ahrtal_nach_der_Flutkatastrophe.pdf",
+     "year": 2021,
+     "verified": false
+    }
+   ],
+   "notes": "Death risk spans two orders of magnitude between a slow river flood with warning and a night-time flash flood without one; the high bound is the Ahr valley (about 135 deaths among roughly 42,000 residents, recalled)."
+  },
+  {
+   "id": "flood",
+   "location": "buenosAires",
+   "tickBox": "flood",
+   "definition": "Storm rain or a river surge (sudestada) floods the street deeply enough to enter the building's ground floor or basement, or to cut the block off.",
+   "annualProbability": [
+    {
+     "location": "buenosAires",
+     "outlook": "all",
+     "lo": 0.008,
+     "mid": 0.025,
+     "hi": 0.07,
+     "tag": "guess",
+     "basis": "Exposed means the low parts of the Maldonado, Vega, Medrano, Cildanez and Riachuelo basins in the city, and the Reconquista, Matanza and Lujan flood plains in the suburbs. The city had damaging floods in 2001, 2010, 2012 and 2013 (recalled apart from 2013): four in thirteen years. None of that scale has been reported in the city since the Maldonado (2012) and Vega (2019) relief tunnels, while suburbs flooded in 2014, 2015, 2024 and 2025. So about one year in 25-60 for an exposed city block now, more often in the suburban flood plains. Guess."
+    }
+   ],
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.4,
+      "mid": 0.6,
+      "hi": 0.85,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.6,
+      "p90": 2.5,
+      "p99": 7
+     },
+     "tag": "guess",
+     "basis": "2 April 2013: cuts of up to 15 hours in at least 11 city neighbourhoods, 70,000 households at the peak (Wikipedia, search snippet); buildings whose basement switch rooms flood wait days."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.15,
+      "hi": 0.35,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.7,
+      "p90": 2.5,
+      "p99": 7
+     },
+     "shareTreatable": {
+      "lo": 0.2,
+      "mid": 0.5,
+      "hi": 0.8,
+      "tag": "guess",
+      "basis": "Guess."
+     },
+     "tag": "guess",
+     "basis": "Municipal supply only. A flooded basement pump room keeps a building dry at the tap for days after the power returns, which the pumped-water setting does not capture."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.2,
+      "hi": 0.4,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 1.5,
+      "p99": 4
+     },
+     "tag": "guess",
+     "basis": "Streets impassable for a day or so; in La Plata in 2013 aid took days. Guess."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.55,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2,
+      "p99": 6
+     },
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.55,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2.5,
+      "p99": 7
+     },
+     "tag": "guess",
+     "basis": "Follows power; guess."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.2,
+      "hi": 0.4,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2,
+      "p99": 5
+     },
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.25,
+      "mid": 0.45,
+      "hi": 0.7,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 1,
+      "p99": 3
+     },
+     "tag": "guess",
+     "basis": "Ambulances cannot pass flooded streets; guess."
+    },
+    "sanitation": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.55,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 4,
+      "p99": 14
+     },
+     "tag": "guess",
+     "basis": "Sewers back up into ground floors; upper floors lose flushing when the pumps are out. Guess."
+    },
+    "displacement": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.15,
+      "hi": 0.4,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 5,
+      "p90": 45,
+      "p99": 200
+     },
+     "tag": "guess",
+     "basis": "Ground-floor flats and houses; upper floors rarely. Guess."
+    }
+   },
+   "coldShare": {
+    "lo": 0,
+    "mid": 0.05,
+    "hi": 0.15,
+    "tag": "guess",
+    "basis": "Floods come mostly from warm-season storms; winter surges are mild."
+   },
+   "hotShare": {
+    "lo": 0.02,
+    "mid": 0.1,
+    "hi": 0.25,
+    "tag": "guess",
+    "basis": "Summer storms, followed by cooler air; guess."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.6,
+     "mid": 0.85,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "Higher ground is a few blocks to a few kilometres away."
+    },
+    "earliestDay": {
+     "lo": 0.2,
+     "mid": 0.5,
+     "hi": 1.5,
+     "tag": "guess",
+     "basis": "When the water falls, usually within a day."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 5,
+     "mid": 25,
+     "hi": 120,
+     "tag": "guess",
+     "basis": "Taxi or remis across the city, or fuel and tolls to relatives outside it, about ARS 40,000 (ARS 8,000-190,000); my estimate, no price page read. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    },
+    "usdPerPersonDay": {
+     "lo": 5,
+     "mid": 40,
+     "hi": 90,
+     "tag": "guess",
+     "basis": "Half of a three-star double room listed at ARS 77,000-128,000 a night (Despegar listings seen in a search snippet, https://www.despegar.com.ar/hoteles/hl/982/s3/i1/hoteles-3-estrellas-en-buenos+aires) = USD 24-40, plus about ARS 15,000 (USD 9) of extra meals; USD 5 when staying with family, which is the usual choice. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 0.3,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "Storm alerts some hours ahead; river surges are forecast a day or two ahead. La Plata in 2013 had no specific warning system (university report, search snippet)."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.2,
+     "mid": 0.5,
+     "hi": 0.8,
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "specialty": {
+     "lo": 0.03,
+     "mid": 0.15,
+     "hi": 0.4,
+     "tag": "guess",
+     "basis": "Guess."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "trauma",
+     "description": "Drowning, electrocution or injury on ground floors, in basements and garages or in the street, per person in a flooded household.",
+     "micromortsPerPerson": {
+      "lo": 3,
+      "mid": 40,
+      "hi": 600,
+      "tag": "guess",
+      "basis": "La Plata, April 2013: 89 deaths (court finding) among perhaps 200,000-300,000 flooded residents = 300-450 at all ages; the city of Buenos Aires the day before: about 8 deaths among perhaps 350,000 affected = 23; Bahia Blanca, March 2025: 16 deaths among 300,000 = 53. Denominators recalled. Mid 40 for a healthy adult."
+     },
+     "multipliers": [
+      {
+       "profile": "age75plus",
+       "mortality": 6,
+       "tag": "guess",
+       "basis": "Most La Plata victims were old people in ground-floor homes (recalled); ratio taken from Valencia 2024."
+      },
+      {
+       "profile": "age60to74",
+       "mortality": 2,
+       "tag": "guess",
+       "basis": "Interpolated."
+      },
+      {
+       "profile": "limitedMobility",
+       "mortality": 4,
+       "tag": "guess",
+       "basis": "Cannot climb to an upper floor unaided; guess."
+      },
+      {
+       "profile": "child",
+       "mortality": 0.5,
+       "tag": "guess",
+       "basis": "Children are under-represented among European flood deaths; guess."
+      }
+     ]
+    },
+    {
+     "channel": "financialLoss",
+     "description": "Contents and repairs, per flooded household; home contents insurance is uncommon.",
+     "financialUsdPerHousehold": {
+      "lo": 100,
+      "mid": 1500,
+      "hi": 15000,
+      "tag": "guess",
+      "basis": "Guess; upper-floor flats lose little, ground floors lose furniture and appliances. Cars are not counted."
+     }
+    }
+   ],
+   "dwellingNotes": "Upper-floor flats stay dry; the exposure is the basement: pump room, cisterns, electrical boards and garage. Ground-floor flats and houses in the low basins take the water directly. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "1-3 April 2013: 89 deaths in La Plata confirmed by the administrative court; 392 mm of rain in a day; in the city of Buenos Aires power cuts of up to 15 hours in at least 11 neighbourhoods, 70,000 households at the peak.",
+     "source": "https://www.lanacion.com.ar/seguridad/los-muertos-por-el-temporal-fueron-89-nid1707297/",
+     "year": 2013,
+     "verified": false
+    },
+    {
+     "claim": "The city government has built the main relief works in the Maldonado, Medrano, Vega and Cildanez basins (over USD 562 million); about 70% of flood impact was concentrated in the Maldonado, Vega and Medrano basins.",
+     "source": "https://www.lanacion.com.ar/buenos-aires/lluvias-en-aumento-estas-son-las-obras-que-la-ciudad-preve-para-contener-el-agua-y-evitar-nid17062024/",
+     "year": 2024,
+     "verified": false
+    }
+   ],
+   "notes": "A flat above the ground floor in an exposed block should count the utility windows but only a small part of the trauma and displacement figures."
+  },
+  {
+   "id": "earthquake",
+   "location": "westernEurope",
+   "tickBox": "earthquake",
+   "definition": "Shaking of intensity VII or more at the home: damage to ordinary buildings.",
+   "annualProbability": [
+    {
+     "location": "westernEurope",
+     "outlook": "all",
+     "lo": 0.0005,
+     "mid": 0.002,
+     "hi": 0.006,
+     "tag": "guess",
+     "basis": "Exposed means a high-hazard zone: Italian seismic zones 1 and 2 (the Apennines, Calabria, eastern Sicily, Friuli; about 23M people), and smaller areas around Granada and Murcia, Lisbon and the Algarve, the Pyrenees and Basel. Italy 1976-2025: Friuli, Irpinia, Umbria-Marche, Molise, L'Aquila, Emilia and central Italy left about 600,000 people homeless (recalled; L'Aquila 55,000-65,000 and Amatrice 4,500 from search snippets): 12,000 a year / 23M = 0.05% a year made homeless; three to five times as many feel damaging shaking: 0.15-0.25%."
+    }
+   ],
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.5,
+      "mid": 0.7,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.7,
+      "p90": 4,
+      "p99": 20
+     },
+     "tag": "guess",
+     "basis": "Restored within days outside the collapsed centres; guess. Same pattern as a moderate United States earthquake."
+    },
+    "gas": {
+     "pOccur": {
+      "lo": 0.3,
+      "mid": 0.55,
+      "hi": 0.8,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 7,
+      "p90": 45,
+      "p99": 150
+     },
+     "tag": "guess",
+     "basis": "Networks are shut for safety and reopened street by street after inspection; one to three months in L'Aquila (recalled)."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.3,
+      "mid": 0.5,
+      "hi": 0.75,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1.5,
+      "p90": 7,
+      "p99": 30
+     },
+     "shareTreatable": {
+      "lo": 0.2,
+      "mid": 0.4,
+      "hi": 0.7,
+      "tag": "guess",
+      "basis": "Guess."
+     },
+     "tag": "guess",
+     "basis": "Broken mains; days are net of tankers. Guess."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.15,
+      "mid": 0.3,
+      "hi": 0.55,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 2.5,
+      "p99": 5
+     },
+     "tag": "guess",
+     "basis": "Italian civil protection has field kitchens running within one to three days; guess."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.35,
+      "mid": 0.6,
+      "hi": 0.85,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 3,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "Congestion at once, then loss of sites; guess."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.2,
+      "mid": 0.4,
+      "hi": 0.65,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 4,
+      "p99": 14
+     },
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.2,
+      "mid": 0.4,
+      "hi": 0.65,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 4,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.4,
+      "mid": 0.65,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 7
+     },
+     "tag": "guess",
+     "basis": "Local hospitals damaged or overwhelmed (the L'Aquila hospital was evacuated, recalled)."
+    },
+    "sanitation": {
+     "pOccur": {
+      "lo": 0.2,
+      "mid": 0.4,
+      "hi": 0.65,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 2,
+      "p90": 10,
+      "p99": 45
+     },
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "displacement": {
+     "pOccur": {
+      "lo": 0.15,
+      "mid": 0.3,
+      "hi": 0.55,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 60,
+      "p90": 700,
+      "p99": 3500
+     },
+     "tag": "guess",
+     "basis": "Homes are closed until inspected; in L'Aquila tens of thousands stayed out for years and parts of the centre for more than a decade (recalled)."
+    }
+   },
+   "coldShare": {
+    "lo": 0.1,
+    "mid": 0.25,
+    "hi": 0.45,
+    "tag": "guess",
+    "basis": "Apennine towns are cold from November to April: L'Aquila was in April with frost at night, the January 2017 shocks came during heavy snow. Guess."
+   },
+   "hotShare": {
+    "lo": 0.03,
+    "mid": 0.1,
+    "hi": 0.25,
+    "tag": "guess",
+    "basis": "Amatrice was in August. Guess."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.6,
+     "mid": 0.8,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "The damaged area is tens of kilometres across; the state houses people in hotels on the coast."
+    },
+    "earliestDay": {
+     "lo": 0.3,
+     "mid": 1,
+     "hi": 3,
+     "tag": "guess",
+     "basis": "Once roads are checked."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 17,
+     "mid": 99,
+     "hi": 495,
+     "tag": "guess",
+     "basis": "Return travel for the household to relatives or a hotel, about EUR 60 (EUR 10-300) by train or car; my estimate, no price page read. Scaled by 1.5 here because the affected area is wide and nearby rooms are scarce. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    },
+    "usdPerPersonDay": {
+     "lo": 17,
+     "mid": 123,
+     "hi": 240,
+     "tag": "guess",
+     "basis": "Half of a EUR 110 double hotel room plus EUR 20 of extra meals = EUR 75 a person a day; EUR 10 when staying with family, EUR 145 at peak prices; my estimate, no price page read. Scaled by 1.5 here because the affected area is wide and nearby rooms are scarce. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0,
+     "mid": 0,
+     "hi": 0.05,
+     "tag": "guess",
+     "basis": "No warning."
+    },
+    "specialty": {
+     "lo": 0,
+     "mid": 0,
+     "hi": 0.02,
+     "tag": "guess",
+     "basis": "No warning."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "trauma",
+     "description": "Death or injury from building collapse and falling masonry, per person in a household that feels intensity VII or more.",
+     "micromortsPerPerson": {
+      "lo": 30,
+      "mid": 300,
+      "hi": 3000,
+      "tag": "guess",
+      "basis": "Italian earthquake deaths since 1990: 11 + 30 + 309 + 27 + 299 + 2 = 678 (recalled, the two large figures from search snippets) = 19 a year / 23M exposed = 0.85 micromorts a year; divided by 0.002 events a year = 420 per event. L'Aquila alone: 309 / about 100,000 strongly shaken = 3,000; Emilia 2012: 27 / about 500,000 = 54."
+     }
+    },
+    {
+     "channel": "financialLoss",
+     "description": "Contents, temporary costs and the uninsured share of repairs, per household.",
+     "financialUsdPerHousehold": {
+      "lo": 500,
+      "mid": 8000,
+      "hi": 80000,
+      "tag": "guess",
+      "basis": "Guess. Earthquake insurance is rare in Italy; the state pays for most reconstruction, slowly."
+     }
+    }
+   ],
+   "dwellingNotes": "Risk is set by the building: unreinforced masonry and reinforced-concrete frames from before the 1980s codes do worst, and historic centres are mostly such buildings. From an upper floor the stairs are the only way out. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "L'Aquila, 6 April 2009: magnitude 6.3, about 300 deaths, 55,000 or more homeless (USGS; Wikipedia gives about 65,000 displaced). Amatrice, 24 August 2016: 299 deaths, about 4,500 homeless.",
+     "source": "https://en.wikipedia.org/wiki/August_2016_Central_Italy_earthquake",
+     "year": 2016,
+     "verified": false
+    }
+   ],
+   "notes": "Unlike California, Western Europe's exposed population lives largely in old masonry towns, so deaths per damaging event are higher and return to the home takes far longer. Most of Western Europe (Britain, northern France, northern Germany, the Low Countries) has essentially no such risk and should leave the box unticked."
+  },
+  {
+   "id": "earthquake",
+   "location": "buenosAires",
+   "tickBox": "earthquake",
+   "definition": "Shaking of intensity VII or more at the home. Essentially absent in Buenos Aires.",
+   "annualProbability": [
+    {
+     "location": "buenosAires",
+     "outlook": "all",
+     "lo": 0.000003,
+     "mid": 0.00003,
+     "hi": 0.0003,
+     "tag": "guess",
+     "basis": "Essentially absent. The city lies in the national code's lowest seismic zone (recalled); the only damaging shock on record is the Rio de la Plata earthquake of 5 June 1888, about magnitude 5.5, which cracked walls (recalled). One event of intensity VII in perhaps 30,000 years is a guess entered so that the model does not fall back on another location's figure."
+    }
+   ],
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.2,
+      "mid": 0.5,
+      "hi": 0.8,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 1.5,
+      "p99": 5
+     },
+     "tag": "guess",
+     "basis": "Scaled-down copy of the Western Europe profile; no local evidence exists."
+    },
+    "gas": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 3,
+      "p90": 20,
+      "p99": 90
+     },
+     "tag": "guess",
+     "basis": "Scaled-down copy; guess."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 4,
+      "p99": 14
+     },
+     "shareTreatable": {
+      "lo": 0.2,
+      "mid": 0.4,
+      "hi": 0.7,
+      "tag": "guess",
+      "basis": "Guess."
+     },
+     "tag": "guess",
+     "basis": "Scaled-down copy; guess."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.2,
+      "mid": 0.5,
+      "hi": 0.8,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 1.5,
+      "p99": 5
+     },
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.3,
+      "mid": 0.6,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2,
+      "p99": 5
+     },
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "displacement": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.15,
+      "hi": 0.4,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 30,
+      "p90": 300,
+      "p99": 1500
+     },
+     "tag": "guess",
+     "basis": "Guess."
+    }
+   },
+   "coldShare": {
+    "lo": 0,
+    "mid": 0.03,
+    "hi": 0.1,
+    "tag": "guess",
+    "basis": "Guess."
+   },
+   "hotShare": {
+    "lo": 0.05,
+    "mid": 0.15,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "Guess."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.6,
+     "mid": 0.85,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "earliestDay": {
+     "lo": 0.3,
+     "mid": 1,
+     "hi": 3,
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 8,
+     "mid": 38,
+     "hi": 180,
+     "tag": "guess",
+     "basis": "Taxi or remis across the city, or fuel and tolls to relatives outside it, about ARS 40,000 (ARS 8,000-190,000); my estimate, no price page read. Scaled by 1.5 for this hazard. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    },
+    "usdPerPersonDay": {
+     "lo": 8,
+     "mid": 60,
+     "hi": 135,
+     "tag": "guess",
+     "basis": "Half of a three-star double room listed at ARS 77,000-128,000 a night (Despegar listings seen in a search snippet, https://www.despegar.com.ar/hoteles/hl/982/s3/i1/hoteles-3-estrellas-en-buenos+aires) = USD 24-40, plus about ARS 15,000 (USD 9) of extra meals; USD 5 when staying with family, which is the usual choice. Scaled by 1.5 for this hazard. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0,
+     "mid": 0,
+     "hi": 0.05,
+     "tag": "guess",
+     "basis": "No warning."
+    },
+    "specialty": {
+     "lo": 0,
+     "mid": 0,
+     "hi": 0.02,
+     "tag": "guess",
+     "basis": "No warning."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "trauma",
+     "description": "Death or injury from building damage, per person, if intensity VII ever occurred.",
+     "micromortsPerPerson": {
+      "lo": 20,
+      "mid": 300,
+      "hi": 3000,
+      "tag": "guess",
+      "basis": "Copied from Western Europe: the building stock has no seismic design, so it would behave like old European stock or worse. Guess."
+     }
+    }
+   ],
+   "dwellingNotes": "Buildings have no seismic design. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "No source was read for Buenos Aires seismic hazard; the 1888 Rio de la Plata earthquake and the zone classification are recalled.",
+     "source": "https://www.inpres.gob.ar/",
+     "year": 2026,
+     "verified": false
+    }
+   ],
+   "notes": "Essentially absent; entered with a near-zero probability instead of being omitted. Readers in Buenos Aires should leave the earthquake box unticked. (Mendoza and San Juan, in the west of Argentina, are a different matter and are not covered by this preset.)"
+  },
+  {
+   "id": "wildfire",
+   "location": "westernEurope",
+   "tickBox": "wildfire",
+   "definition": "A wildfire forces the evacuation of the household's neighbourhood or burns within about two kilometres of the home.",
+   "annualProbability": [
+    {
+     "location": "westernEurope",
+     "outlook": "all",
+     "lo": 0.001,
+     "mid": 0.004,
+     "hi": 0.015,
+     "tag": "guess",
+     "basis": "Exposed means a home in or beside forest or scrub in Portugal, Spain, southern France, Italy or Greece; not a city-centre flat. Evacuations: more than 42,000 residents in Spain in 2025; 320,000-330,000 in France and Spain by late July 2026, of whom 110,000-220,000 in the Gironde (press, search snippets); about 36,000 in the Gironde in 2022 and 19,000 on Rhodes in 2023 (recalled). That is of the order of 100,000 a year over the last decade, against an exposed population I put at 10-40 million (no source)."
+    }
+   ],
+   "windows": {
+    "displacement": {
+     "pOccur": {
+      "lo": 0.7,
+      "mid": 0.85,
+      "hi": 0.95,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 2,
+      "p90": 6,
+      "p99": 40
+     },
+     "tag": "guess",
+     "basis": "Evacuation orders usually last two to six days; 1-2% of evacuated households lose the home. Guess. Shorter than recent Californian evacuations."
+    },
+    "power": {
+     "pOccur": {
+      "lo": 0.2,
+      "mid": 0.4,
+      "hi": 0.65,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 3,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "Poles and lines burnt; applies to those who stay or return. Guess."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.2,
+      "mid": 0.4,
+      "hi": 0.65,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 4,
+      "p99": 20
+     },
+     "tag": "guess",
+     "basis": "Mobile and emergency networks failed around Pedrogao Grande in June 2017 and in central Portugal in October 2017 (recalled)."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.15,
+      "hi": 0.35,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 10
+     },
+     "shareTreatable": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Guess."
+     },
+     "tag": "guess",
+     "basis": "Pumping stations without power and tanks drained by firefighting; guess."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.55,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.3,
+      "p90": 1,
+      "p99": 3
+     },
+     "tag": "guess",
+     "basis": "Roads closed; guess."
+    }
+   },
+   "coldShare": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "hotShare": {
+    "lo": 0.4,
+    "mid": 0.7,
+    "hi": 0.9,
+    "tag": "guess",
+    "basis": "Large fires burn during heat waves."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.75,
+     "mid": 0.9,
+     "hi": 0.98,
+     "tag": "guess",
+     "basis": "Evacuation is the normal response and unaffected towns are close; the danger is leaving late on a road the fire crosses."
+    },
+    "earliestDay": {
+     "lo": 0,
+     "mid": 0,
+     "hi": 0.3,
+     "tag": "guess",
+     "basis": "At once."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 11,
+     "mid": 66,
+     "hi": 330,
+     "tag": "guess",
+     "basis": "Return travel for the household to relatives or a hotel, about EUR 60 (EUR 10-300) by train or car; my estimate, no price page read. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    },
+    "usdPerPersonDay": {
+     "lo": 11,
+     "mid": 82,
+     "hi": 160,
+     "tag": "guess",
+     "basis": "Half of a EUR 110 double hotel room plus EUR 20 of extra meals = EUR 75 a person a day; EUR 10 when staying with family, EUR 145 at peak prices; my estimate, no price page read. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 0.3,
+    "hi": 2,
+    "tag": "guess",
+    "basis": "Fire-weather warnings are issued days ahead, but a specific fire gives hours or minutes."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.4,
+     "mid": 0.7,
+     "hi": 0.9,
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "specialty": {
+     "lo": 0.1,
+     "mid": 0.3,
+     "hi": 0.6,
+     "tag": "guess",
+     "basis": "Respirators sell out in smoke episodes; guess."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "fire",
+     "description": "Killed or burnt by the fire front, at home or while fleeing, per person in a threatened household.",
+     "micromortsPerPerson": {
+      "lo": 5,
+      "mid": 80,
+      "hi": 1500,
+      "tag": "guess",
+      "basis": "Civilians killed in southern European wildfires since 2007: about 450 (Greece 2007 about 80, Portugal 2017 about 115, Mati 2018 104, and smaller tolls; recalled) = 25 a year, against about 100,000 people threatened a year = 250 per threatened person. Two events, where people were caught without warning or in cars, supply half the deaths; the typical evacuation has none."
+     }
+    },
+    {
+     "channel": "smoke",
+     "description": "Several days of heavy smoke for those nearby, per person.",
+     "micromortsPerPerson": {
+      "lo": 0.1,
+      "mid": 1,
+      "hi": 8,
+      "tag": "guess",
+      "basis": "Five days at about 50 micrograms per cubic metre above normal raises daily deaths about 6%; 0.06 x 5 days x about 3 micromorts a day baseline for a healthy adult = 1. Concentration-response figure recalled."
+     },
+     "hardshipUsdPerPerson": {
+      "lo": 5,
+      "mid": 30,
+      "hi": 150,
+      "tag": "guess",
+      "basis": "Irritation, staying indoors, lost outdoor time; guess."
+     }
+    }
+   ],
+   "dwellingNotes": "Not a hazard for the typical city flat, which meets wildfire only as smoke; it concerns houses and low-rise estates at the edge of towns, villages and holiday areas. The edges of Athens (2021, 2023, 2024) and the northern districts of Marseille (July 2025) have burned (recalled).",
+   "evidence": [
+    {
+     "claim": "More than 320,000 people evacuated in France and Spain by late July 2026; 2026 the worst year in fifteen for burnt area in several countries.",
+     "source": "https://es.euronews.com/business/2026/08/13/incendios-en-europa-es-2026-ya-el-peor-ano-registrado",
+     "year": 2026,
+     "verified": false
+    },
+    {
+     "claim": "2025: record 1,034,552 ha burnt in the EU; in Spain almost 400,000 ha, eight deaths and more than 42,000 residents evacuated.",
+     "source": "https://civil-protection-humanitarian-aid.ec.europa.eu/news-stories/news/record-number-wildfires-2025-calls-stronger-eu-action-2026-03-31_en",
+     "year": 2026,
+     "verified": false
+    }
+   ],
+   "notes": "The trend is steeply upward (2025 and 2026 were successive records), so the mid may be low for the coming decade."
+  },
+  {
+   "id": "wildfire",
+   "location": "buenosAires",
+   "tickBox": "wildfire",
+   "definition": "Smoke from grass and wetland fires in the Parana delta or the pampas lies over the city for two days or more. Fire itself does not threaten urban homes: as a fire hazard this is essentially absent.",
+   "annualProbability": [
+    {
+     "location": "buenosAires",
+     "outlook": "all",
+     "lo": 0.03,
+     "mid": 0.08,
+     "hi": 0.2,
+     "tag": "guess",
+     "basis": "Exposed means the whole metropolitan area (smoke only). Smoke episodes in the city: April 2008 (delta fires from 5 April over about 207,000 ha; smoke closed roads and stopped landings at the city airport for days), 2020 and August 2022 (smell of smoke across the city and northern suburbs): three notable episodes in 18 years, one of them severe. Search snippets and recall."
+    }
+   ],
+   "windows": {},
+   "coldShare": {
+    "lo": 0,
+    "mid": 0.1,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "Delta burning peaks in autumn and winter. Guess."
+   },
+   "hotShare": {
+    "lo": 0,
+    "mid": 0.05,
+    "hi": 0.2,
+    "tag": "guess",
+    "basis": "Guess."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.6,
+     "mid": 0.85,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "Smoke covers the whole metropolitan area; leaving means the coast or the interior."
+    },
+    "earliestDay": {
+     "lo": 0.3,
+     "mid": 0.5,
+     "hi": 1,
+     "tag": "guess",
+     "basis": "Same day."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 8,
+     "mid": 38,
+     "hi": 180,
+     "tag": "guess",
+     "basis": "Taxi or remis across the city, or fuel and tolls to relatives outside it, about ARS 40,000 (ARS 8,000-190,000); my estimate, no price page read. Scaled by 1.5 for this hazard. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    },
+    "usdPerPersonDay": {
+     "lo": 8,
+     "mid": 60,
+     "hi": 135,
+     "tag": "guess",
+     "basis": "Half of a three-star double room listed at ARS 77,000-128,000 a night (Despegar listings seen in a search snippet, https://www.despegar.com.ar/hoteles/hl/982/s3/i1/hoteles-3-estrellas-en-buenos+aires) = USD 24-40, plus about ARS 15,000 (USD 9) of extra meals; USD 5 when staying with family, which is the usual choice. Scaled by 1.5 for this hazard. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 0.5,
+    "hi": 2,
+    "tag": "guess",
+    "basis": "Smoke arrives with a wind change; fires are known for days beforehand."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.9,
+     "mid": 0.97,
+     "hi": 1,
+     "tag": "guess",
+     "basis": "Shops work normally."
+    },
+    "specialty": {
+     "lo": 0.2,
+     "mid": 0.5,
+     "hi": 0.8,
+     "tag": "guess",
+     "basis": "Respirators; guess."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "smoke",
+     "description": "Two to ten days of smoke over the city, per person.",
+     "micromortsPerPerson": {
+      "lo": 0.03,
+      "mid": 0.3,
+      "hi": 3,
+      "tag": "guess",
+      "basis": "A third of the Western Europe near-fire figure, since the smoke is diluted by 100 km or more of transport; guess."
+     },
+     "hardshipUsdPerPerson": {
+      "lo": 2,
+      "mid": 10,
+      "hi": 60,
+      "tag": "guess",
+      "basis": "Irritation and staying indoors; guess."
+     }
+    }
+   ],
+   "dwellingNotes": "A smoke hazard only. Flats with split air conditioners can recirculate indoor air; old flats with loose windows cannot keep smoke out.",
+   "evidence": [
+    {
+     "claim": "April 2008: fires in the Parana delta burnt about 207,000 ha (34,000 in Buenos Aires province, 173,000 in Entre Rios).",
+     "source": "https://www.argentina.gob.ar/sites/default/files/2025/07/2008_-_abril_incendios_delta_del_rio_parana_1.pdf",
+     "year": 2008,
+     "verified": false
+    },
+    {
+     "claim": "16 August 2022: strong smell of smoke across the city and the northern suburbs.",
+     "source": "https://www.lanacion.com.ar/sociedad/fuerte-olor-a-humo-en-la-ciudad-y-en-la-zona-norte-del-conurbano-nid16082022/",
+     "year": 2022,
+     "verified": false
+    }
+   ],
+   "notes": "Entered so that ticking the box in Buenos Aires gives a smoke episode and not a Californian evacuation. No utility windows."
+  },
+  {
+   "id": "waterSystemFailure",
+   "location": "westernEurope",
+   "tickBox": null,
+   "definition": "Tap water is absent, or officially unsafe to drink (boil or do-not-drink notice), for 24 hours or more, with no wider disaster.",
+   "annualProbability": [
+    {
+     "location": "westernEurope",
+     "outlook": "all",
+     "lo": 0.002,
+     "mid": 0.006,
+     "hi": 0.02,
+     "tag": "guess",
+     "basis": "Ireland is the regional worst: boil notices covered about 189,000 people in 2025 and 254,000 in 2023, 3.5-4.8% of the population (EPA figures in press, search snippets). England and Wales: Franklaw 2015 (about 300,000 households), the March 2018 thaw (about 200,000), Hampshire 2024 (58,000), Brixham 2024 (17,000), Tunbridge Wells 2025 (24,000) and others, about 0.7M household-events in 11 years on 25M households = 0.25% a year (counts recalled or from search snippets). Germany, the Netherlands and northern France are similar or lower; southern Italy and parts of Spain higher (Messina 2015, Sicily 2024). Mid 0.6%."
+    }
+   ],
+   "windows": {
+    "water": {
+     "pOccur": {
+      "lo": 0.98,
+      "mid": 1,
+      "hi": 1,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 8
+     },
+     "shareTreatable": {
+      "lo": 0.5,
+      "mid": 0.75,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Most events are boil notices with water still flowing; a quarter or so are dry taps; chemical do-not-drink notices are rare. Guess."
+     },
+     "tag": "guess",
+     "basis": "Notices last days to weeks (Tunbridge Wells: no water from 29 November 2025, boil notice 3-12 December; Brixham: 15 May to 8 July 2024), but utilities must set up bottled-water stations and shops restock, so the days on which a household cannot get safe water from outside are the first one to three, longer where stations run dry. Days are net of that relief. Same pattern as United States boil-water advisories."
+    },
+    "sanitation": {
+     "pOccur": {
+      "lo": 0.15,
+      "mid": 0.3,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 6
+     },
+     "tag": "guess",
+     "basis": "Loss of water for flushing when taps are dry; in Tunbridge Wells water for flushing returned after about four days."
+    }
+   },
+   "coldShare": {
+    "lo": 0.05,
+    "mid": 0.15,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "Freeze-thaw bursts are a leading cause of the large events. Guess."
+   },
+   "hotShare": {
+    "lo": 0.03,
+    "mid": 0.1,
+    "hi": 0.25,
+    "tag": "guess",
+    "basis": "Droughts and demand peaks. Guess."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.85,
+     "mid": 0.95,
+     "hi": 0.99,
+     "tag": "guess",
+     "basis": "The next supply zone is unaffected."
+    },
+    "earliestDay": {
+     "lo": 0.2,
+     "mid": 0.5,
+     "hi": 1,
+     "tag": "guess",
+     "basis": "Same day."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 11,
+     "mid": 66,
+     "hi": 330,
+     "tag": "guess",
+     "basis": "Return travel for the household to relatives or a hotel, about EUR 60 (EUR 10-300) by train or car; my estimate, no price page read. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    },
+    "usdPerPersonDay": {
+     "lo": 11,
+     "mid": 82,
+     "hi": 160,
+     "tag": "guess",
+     "basis": "Half of a EUR 110 double hotel room plus EUR 20 of extra meals = EUR 75 a person a day; EUR 10 when staying with family, EUR 145 at peak prices; my estimate, no price page read. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Notices arrive after the fault."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0,
+     "mid": 0.05,
+     "hi": 0.3,
+     "tag": "guess",
+     "basis": "No warning; local shops sell out of bottled water within hours of a notice."
+    },
+    "specialty": {
+     "lo": 0,
+     "mid": 0.05,
+     "hi": 0.2,
+     "tag": "guess",
+     "basis": "No warning."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "infection",
+     "description": "Gut infection caught from tap water before the notice is issued, per person in the affected area.",
+     "micromortsPerPerson": {
+      "lo": 0,
+      "mid": 0.1,
+      "hi": 2,
+      "tag": "guess",
+      "basis": "Brixham 2024: more than 100 confirmed cases of cryptosporidiosis among about 40,000 people before and around the notice, no deaths (search snippet); most events involve no confirmed contamination. Guess."
+     },
+     "hardshipUsdPerPerson": {
+      "lo": 0.5,
+      "mid": 5,
+      "hi": 60,
+      "tag": "guess",
+      "basis": "Chance of illness times about USD 500 for a week of diarrhoea; guess."
+     }
+    }
+   ],
+   "dwellingNotes": "Flats have no garden tap, water butt or large hot-water cylinder to fall back on; carrying 10 litres a person a day from a street station up several floors is the practical burden, and a serious one for old people. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "Tunbridge Wells: low pressure or no water from 29 November 2025; boil notice for about 24,000 properties from 3 to 12 December; the Drinking Water Inspectorate put affected consumers at up to 60,170 and called the event foreseeable and preventable.",
+     "source": "https://www.dwi.gov.uk/4-december-2025-drinking-water-inspectorate-investigating-south-east-water-incident/",
+     "year": 2025,
+     "verified": false
+    },
+    {
+     "claim": "Brixham, Devon: cryptosporidium boil notice from 15 May 2024, about 17,000 properties at the peak, last area cleared on 8 July.",
+     "source": "https://en.wikipedia.org/wiki/Devon_cryptosporidiosis_outbreak",
+     "year": 2024,
+     "verified": false
+    },
+    {
+     "claim": "Ireland, 2025: 66 boil notices and 34 restrictions affecting about 189,000 and 2,000 people; 28 notices lasted more than 30 days. 2023: 254,000 people.",
+     "source": "https://www.irishtimes.com/environment/2026/07/01/unsafe-drinking-water-led-to-restrictions-for-200000-last-year/",
+     "year": 2026,
+     "verified": false
+    }
+   ],
+   "notes": "Harm per event is small because relief is quick and most events are treatable by boiling."
+  },
+  {
+   "id": "waterSystemFailure",
+   "location": "buenosAires",
+   "tickBox": null,
+   "definition": "AySA mains water is absent or at unusably low pressure, or declared unsafe, for 24 hours or more, with no wider disaster and with the building's own power on.",
+   "annualProbability": [
+    {
+     "location": "buenosAires",
+     "outlook": "all",
+     "lo": 0.01,
+     "mid": 0.04,
+     "hi": 0.1,
+     "tag": "guess",
+     "basis": "Guess. AySA reports low pressure or loss of supply over wide areas several times a year: after power failures at plants and pumping stations (June 2019, March 2025, 15 January 2026), burst mains, low river levels at the intakes and annual intake cleaning. Most last under a day and are absorbed by the roof tank; I put events of 24 hours or more for a given building at one in 25 years, more in the outer suburbs."
+    }
+   ],
+   "windows": {
+    "water": {
+     "pOccur": {
+      "lo": 0.98,
+      "mid": 1,
+      "hi": 1,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.7,
+      "p90": 2,
+      "p99": 5
+     },
+     "shareTreatable": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Mostly no flow; turbidity episodes are treatable. Guess."
+     },
+     "tag": "guess",
+     "basis": "Net of bottled water, which every corner shop sells and which many households already have delivered in 20-litre bottles, and net of the day or so that the roof tank lasts. Guess."
+    },
+    "sanitation": {
+     "pOccur": {
+      "lo": 0.4,
+      "mid": 0.65,
+      "hi": 0.85,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.7,
+      "p90": 2,
+      "p99": 5
+     },
+     "tag": "guess",
+     "basis": "Loss of water for flushing once the roof tank is empty; guess."
+    }
+   },
+   "coldShare": {
+    "lo": 0,
+    "mid": 0.03,
+    "hi": 0.1,
+    "tag": "guess",
+    "basis": "Guess."
+   },
+   "hotShare": {
+    "lo": 0.1,
+    "mid": 0.3,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Summer demand peaks and heat-driven power faults at AySA sites. Guess."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.75,
+     "mid": 0.9,
+     "hi": 0.97,
+     "tag": "guess",
+     "basis": "Other parts of the city are usually supplied."
+    },
+    "earliestDay": {
+     "lo": 0.2,
+     "mid": 0.5,
+     "hi": 1,
+     "tag": "guess",
+     "basis": "Same day."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 5,
+     "mid": 25,
+     "hi": 120,
+     "tag": "guess",
+     "basis": "Taxi or remis across the city, or fuel and tolls to relatives outside it, about ARS 40,000 (ARS 8,000-190,000); my estimate, no price page read. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    },
+    "usdPerPersonDay": {
+     "lo": 5,
+     "mid": 40,
+     "hi": 90,
+     "tag": "guess",
+     "basis": "Half of a three-star double room listed at ARS 77,000-128,000 a night (Despegar listings seen in a search snippet, https://www.despegar.com.ar/hoteles/hl/982/s3/i1/hoteles-3-estrellas-en-buenos+aires) = USD 24-40, plus about ARS 15,000 (USD 9) of extra meals; USD 5 when staying with family, which is the usual choice. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Unplanned; planned works are announced and not counted."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0,
+     "mid": 0.05,
+     "hi": 0.3,
+     "tag": "guess",
+     "basis": "No warning."
+    },
+    "specialty": {
+     "lo": 0,
+     "mid": 0.05,
+     "hi": 0.2,
+     "tag": "guess",
+     "basis": "No warning."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "infection",
+     "description": "Gut infection caught from tap water before the notice is issued, per person in the affected area.",
+     "micromortsPerPerson": {
+      "lo": 0,
+      "mid": 0.05,
+      "hi": 1.5,
+      "tag": "guess",
+      "basis": "Guess; no outbreak traced to AySA mains was found."
+     },
+     "hardshipUsdPerPerson": {
+      "lo": 0.2,
+      "mid": 2.5,
+      "hi": 45,
+      "tag": "guess",
+      "basis": "Chance of illness times about USD 500 for a week of diarrhoea; guess."
+     }
+    }
+   ],
+   "dwellingNotes": "The roof tank is a free buffer of about a day against mains failures, and the reason short AySA failures go unnoticed in flats; it is also a contamination point if not cleaned (cleaning twice a year is required). Failures of the building's own pump are common, are the consortium's responsibility, and usually last under a day. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "15 January 2026: after a transmission failure AySA warned of low pressure or no water in parts of the city and in 17 suburban districts, with gradual recovery once power returned because pumping must be restarted in sequence.",
+     "source": "https://www.canal26.com/general/2026/01/15/aysa-advirtio-por-baja-presion-y-cortes-de-agua-en-el-amba-por-el-apagon-cuando-se-normaliza-el-suministro/",
+     "year": 2026,
+     "verified": true
+    },
+    {
+     "claim": "16 June 2019: AySA plants were left without power and the company asked the public to ration water.",
+     "source": "https://noticias.perfil.com/2019/06/16/advierten-que-la-poblacion-debe-racionalizar-el-uso-del-agua-por-el-apagon/",
+     "year": 2019,
+     "verified": false
+    }
+   ],
+   "notes": "Water follows power here twice over: at the building pump (pumped-water setting) and at AySA's own plants. This hazard holds only the second, and only when the building has power."
+  },
+  {
+   "id": "supplyShock",
+   "location": "westernEurope",
+   "tickBox": null,
+   "definition": "For a week or more the household cannot reliably buy at least one class of everyday goods in its area (staple foods, hygiene products, a needed medicine, motor fuel) because of panic buying, strikes, blockades or import disruption, while utilities work.",
+   "annualProbability": [
+    {
+     "location": "westernEurope",
+     "outlook": "all",
+     "lo": 0.03,
+     "mid": 0.07,
+     "hi": 0.15,
+     "tag": "guess",
+     "basis": "Episodes by country since 2000: Britain three (fuel protests 2000, March 2020, fuel 2021) = 0.12 a year; France five (fuel depot strikes 2010, 2016, 2022, 2023 and March 2020) = 0.19; Spain two (March 2020, hauliers' strike March 2022) = 0.08; Germany, Italy and the Netherlands one or two = 0.04-0.08. Medicine shortages (antibiotics and children's paracetamol in winter 2022-23) add a little. Recalled apart from the British fuel crisis and March 2020."
+    }
+   ],
+   "windows": {
+    "food": {
+     "pOccur": {
+      "lo": 0,
+      "mid": 0.02,
+      "hi": 0.08,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 1.5,
+      "p99": 4
+     },
+     "tag": "guess",
+     "basis": "Days with no food obtainable at all essentially do not occur; shelves were thin for two to four weeks in March 2020 but never empty of everything. Same pattern as the United States."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.1,
+      "hi": 0.25,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 3,
+      "p90": 14,
+      "p99": 60
+     },
+     "tag": "guess",
+     "basis": "A particular medicine out of stock at every pharmacy within reach; a substitute is often available. Guess."
+    }
+   },
+   "coldShare": {
+    "lo": 0.05,
+    "mid": 0.15,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "No link to weather; a quarter of the year is cold. Fuel shortages matter for heating-oil users."
+   },
+   "hotShare": {
+    "lo": 0,
+    "mid": 0.05,
+    "hi": 0.15,
+    "tag": "guess",
+    "basis": "No link to weather."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.05,
+     "mid": 0.3,
+     "hi": 0.6,
+     "tag": "guess",
+     "basis": "Shortages are usually national; crossing a border helps residents of border regions only."
+    },
+    "earliestDay": {
+     "lo": 1,
+     "mid": 2,
+     "hi": 5,
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 22,
+     "mid": 132,
+     "hi": 660,
+     "tag": "guess",
+     "basis": "Return travel for the household to relatives or a hotel, about EUR 60 (EUR 10-300) by train or car; my estimate, no price page read. Scaled by 2 here because the affected area is wide and nearby rooms are scarce. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    },
+    "usdPerPersonDay": {
+     "lo": 22,
+     "mid": 164,
+     "hi": 320,
+     "tag": "guess",
+     "basis": "Half of a EUR 110 double hotel room plus EUR 20 of extra meals = EUR 75 a person a day; EUR 10 when staying with family, EUR 145 at peak prices; my estimate, no price page read. Scaled by 2 here because the affected area is wide and nearby rooms are scarce. EUR 1 = USD 1.099 (ECB reference rate for 19 Nov 2026, https://api.frankfurter.dev/v1/latest?from=EUR&to=USD,GBP)."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 1,
+    "hi": 5,
+    "tag": "guess",
+    "basis": "Strikes are announced and panic buying builds over days; the 2021 fuel run started within a day of a leak."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.3,
+     "mid": 0.6,
+     "hi": 0.85,
+     "tag": "guess",
+     "basis": "Those who shop in the first day or two still find most things; daily spending on storable food peaked more than 80% above normal on 14 March 2020 (IFS, search snippet). Guess."
+    },
+    "specialty": {
+     "lo": 0.05,
+     "mid": 0.25,
+     "hi": 0.5,
+     "tag": "guess",
+     "basis": "Guess."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "financialLoss",
+     "description": "Higher prices, extra travel and queueing time, and lost working time when fuel runs short, per household per episode.",
+     "financialUsdPerHousehold": {
+      "lo": 0,
+      "mid": 20,
+      "hi": 150,
+      "tag": "guess",
+      "basis": "Guess; no channel exists for queueing and search time, so it is entered here in dollars."
+     }
+    }
+   ],
+   "dwellingNotes": "City households shop often and store little, which lowers their starting stock, but most can walk to several shops and do not depend on a car, so fuel shortages touch them less than suburban or rural households. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "Britain, September 2021: BP said 30% of its sites lacked the main fuel grades on 26 September; the retailers' association said two thirds of member sites were dry that weekend and 27% by 29 September; shortages lasted a few weeks.",
+     "source": "https://en.wikipedia.org/wiki/2021_United_Kingdom_fuel_supply_crisis",
+     "year": 2021,
+     "verified": false
+    },
+    {
+     "claim": "Britain, March 2020: daily spending on storable staples peaked on 14 March at over 80% above the January-February average; many households bought moderately more; purchase limits did not prevent the spike.",
+     "source": "https://ifs.org.uk/publications/15101",
+     "year": 2020,
+     "verified": false
+    },
+    {
+     "claim": "Gas, winter 2022-23: no Western European household was disconnected for lack of supply (recalled); households are protected customers under EU security-of-supply rules.",
+     "source": "https://eur-lex.europa.eu/eli/reg/2017/1938/oj",
+     "year": 2017,
+     "verified": false
+    }
+   ],
+   "notes": "The 2022 gas scare is counted as a price shock, not a supply window: the harm was to bills, not to supply. It argues for a small probability of rationed heating in a future winter, which belongs with nuclearFar or a dedicated energy-crisis hazard, not here."
+  },
+  {
+   "id": "supplyShock",
+   "location": "buenosAires",
+   "tickBox": null,
+   "definition": "For a week or more the household cannot reliably buy at least one class of everyday goods (staple foods, hygiene products, a needed medicine, motor fuel), or shops withdraw goods or ration them because prices are unstable, while utilities work.",
+   "annualProbability": [
+    {
+     "location": "buenosAires",
+     "outlook": "all",
+     "lo": 0.12,
+     "mid": 0.25,
+     "hi": 0.45,
+     "tag": "guess",
+     "basis": "Episodes since 2001: December 2001 and 2002 (looting, shuttered shops), the 2008 farm lock-out (meat and dairy), March 2020, early 2022 (import-restricted goods), August 2019 and August 2023 (devaluations after primary elections: suppliers stopped deliveries, purchase limits, looting in August 2023), October 2023 (fuel), December 2023 (medicines): eight or nine in 25 years = 0.32-0.36. Some were mild in the city itself; mid 0.25. Mostly recalled; 2023 from search snippets."
+    }
+   ],
+   "windows": {
+    "food": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.05,
+      "hi": 0.15,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2,
+      "p99": 5
+     },
+     "tag": "guess",
+     "basis": "Shops shuttered during looting waves (December 2001, August 2023, mostly in the suburbs) and on general-strike days; otherwise food stays on sale with gaps and limits. Guess."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.08,
+      "mid": 0.2,
+      "hi": 0.4,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 3,
+      "p90": 14,
+      "p99": 60
+     },
+     "tag": "guess",
+     "basis": "After devaluations wholesalers restrict deliveries until new price lists arrive, and imported drugs and supplies run short; in late 2023 hundreds of pharmacies stopped honouring insurer discounts (search snippets). Guess."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.02,
+      "mid": 0.06,
+      "hi": 0.15,
+      "tag": "guess",
+      "basis": "Same evidence as this window's basis."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "Shops refuse cards or instalments while prices are in flux; deposit freezes belong to bankingCrisis. Guess."
+    }
+   },
+   "coldShare": {
+    "lo": 0,
+    "mid": 0.03,
+    "hi": 0.1,
+    "tag": "guess",
+    "basis": "No link to weather."
+   },
+   "hotShare": {
+    "lo": 0.03,
+    "mid": 0.15,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "December crises (2001, 2023) fall in summer; otherwise no link."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.02,
+     "mid": 0.1,
+     "hi": 0.3,
+     "tag": "guess",
+     "basis": "Shortages are national; Uruguay is the only nearby alternative and few households would go."
+    },
+    "earliestDay": {
+     "lo": 1,
+     "mid": 2,
+     "hi": 5,
+     "tag": "guess",
+     "basis": "Guess."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 20,
+     "mid": 100,
+     "hi": 480,
+     "tag": "guess",
+     "basis": "Taxi or remis across the city, or fuel and tolls to relatives outside it, about ARS 40,000 (ARS 8,000-190,000); my estimate, no price page read. Scaled by 4 for this hazard. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    },
+    "usdPerPersonDay": {
+     "lo": 20,
+     "mid": 160,
+     "hi": 360,
+     "tag": "guess",
+     "basis": "Half of a three-star double room listed at ARS 77,000-128,000 a night (Despegar listings seen in a search snippet, https://www.despegar.com.ar/hoteles/hl/982/s3/i1/hoteles-3-estrellas-en-buenos+aires) = USD 24-40, plus about ARS 15,000 (USD 9) of extra meals; USD 5 when staying with family, which is the usual choice. Scaled by 4 for this hazard. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 2,
+    "hi": 7,
+    "tag": "guess",
+    "basis": "Devaluations cluster around elections and are widely expected days ahead; strikes are announced."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.3,
+     "mid": 0.6,
+     "hi": 0.85,
+     "tag": "guess",
+     "basis": "Households do stock up when a devaluation looms; shops limit quantities per customer within a day or two. Guess."
+    },
+    "specialty": {
+     "lo": 0.05,
+     "mid": 0.2,
+     "hi": 0.5,
+     "tag": "guess",
+     "basis": "Imported goods and medicines go first; guess."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "financialLoss",
+     "description": "Paying post-shock prices for goods the household must buy in the following weeks, before incomes adjust, per household per episode.",
+     "financialUsdPerHousehold": {
+      "lo": 5,
+      "mid": 40,
+      "hi": 250,
+      "tag": "guess",
+      "basis": "August 2023: the supermarket basket rose about 10% in the first half of the month and medicines 20-27% within days (headlines, search snippets). 10-25% on USD 350-500 of monthly groceries and pharmacy purchases = USD 35-125; mid 40 because part of the rise would have come anyway. USD 1 = ARS 1,585 (official retail selling rate, 19 Nov 2026, https://dolarapi.com/v1/dolares/oficial)."
+     }
+    }
+   ],
+   "dwellingNotes": "Every block has small grocers within walking distance, which soften shortages in the chains; kitchens and storage are small, but stocking up ahead of price rises is an established habit, and many households keep cash dollars at home. For the general description of the typical flat see the localOutage entry for this location.",
+   "evidence": [
+    {
+     "claim": "August 2023: after an 18-22% devaluation on 14 August there was a run on supermarkets; suppliers held back price lists and deliveries; most chains limited purchases of items such as oil and sugar; officials spoke of gaps, not general shortage; a 90-day price agreement followed.",
+     "source": "https://www.bloomberglinea.com/latinoamerica/argentina/inflacion-y-devaluacion-en-argentina-advierten-que-faltan-productos-basicos-en-supermercados/",
+     "year": 2023,
+     "verified": false
+    },
+    {
+     "claim": "October 2023: petrol shortages from early October in the interior, reaching the city and suburbs in the last week of the month, easing from 31 October after emergency imports.",
+     "source": "https://lanacion.com.ar/economia/por-que-no-hay-combustible-en-la-argentina-nid28102023",
+     "year": 2023,
+     "verified": false
+    },
+    {
+     "claim": "Late 2023: prices of the most-used medicines rose about 90% in the last two months of the year; a pharmacists' body estimated that two in ten people could not get their treatments in December.",
+     "source": "https://www.lacapital.com.ar/informacion-general/los-medicamentos-subieron-un-300-apenas-dos-meses-n10112936.html",
+     "year": 2024,
+     "verified": false
+    }
+   ],
+   "notes": "Three to four times as frequent as in Western Europe, and different in kind: the trigger is the currency, the first sign is shops withdrawing goods or refusing to quote prices, and the main household harm is a price jump of 10-25% in days, not empty shelves. A stocked pantry here works as a hedge."
+  }
+ ],
+ "blockedSources": [
+  "https://www.entsoe.eu/publications/blackout/28-april-2025-iberian-blackout/: connection refused; the ENTSO-E final report would give load lost and restoration by hour for Spain and Portugal. Spanish restoration shares are taken from press reports seen only in search results.",
+  "CEER 7th Benchmarking Report (2022): not attempted because the step 2 report found it too large to fetch; I used report 6.1, whose data stop at 2016. Later national figures (Germany about 12 minutes, others little changed) are recalled.",
+  "https://www.argentina.gob.ar/enre/calidad-del-servicio/17a-revision-semestral: the summary page loaded but its full report (SAIDI and SAIFI by comuna for March-August 2025) was not found; city-comuna ratios come from the 2019 report.",
+  "https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2025.30.26.2500405: abstract only; daily and regional excess deaths after the Iberian blackout not read.",
+  "https://www.ofgem.gov.uk/sites/default/files/2022-06/Final report on the review into the networks' response to Storm Arwen.pdf: not opened; the count of customers off for more than three days (about 40,000) is from a search snippet.",
+  "https://www.gsma.com/get-involved/gsma-membership/gsma_resources/how-spains-mobile-networks-performed-during-the-iberian-grid-collapse/: not opened (reported 403 by another researcher); share of mobile users without signal by hour.",
+  "https://www.epa.ie drinking water reports and https://www.dwi.gov.uk event tables: not opened; boil-notice populations are from press and search snippets.",
+  "https://www.isglobal.org/en/-/62.700-muertes-asociadas-con-el-calor-del-verano-de-2024: not opened; country heat-death totals for 2024 are from a search snippet.",
+  "Enedis, Red Electrica, Westenergie and Valencia press pages on Ciaran, the Iberian restoration, the Ahr valley and the 2024 flood: seen only as search snippets.",
+  "INDEC ENGHo 2017-18 regional tables: not opened; the air-conditioning share for the city of Buenos Aires is a guess built on the national 47.1%.",
+  "Buenos Aires building code rule for roof-tank size, and any measurement of how long tanks last in a power cut: not found.",
+  "ENRE or utility data on the distribution of outage durations in Buenos Aires (share of cuts over 4, 15, 24 and 72 hours): not found; the 4-hour share rests on an assumed log-normal spread.",
+  "Buenos Aires city flood-risk map (share of population by return period): viewer only, not readable by fetch.",
+  "INPRES seismic zoning page and any catalogue entry for the 1888 Rio de la Plata earthquake: not opened."
+ ],
+ "openQuestions": [
+  "Heat window: the engine reads win.heat but the validator rejects that id, so heatWave entries carry it in extraWindows.heat (same shape as a window). Without it households without air conditioning get no cooling gap.",
+  "Default tick-boxes: the Buenos Aires preset should tick hot summers by default, because heat-wave power cuts (7.5% a year, the long ones) are counted under heatWave and removed from localOutage. Western Europe should probably default to hot summers and cold winters on, earthquake, wildfire and flood off.",
+  "Default settings by location: pumped water on for Buenos Aires flats and for Western European flats above about the sixth floor; air conditioning off for Western Europe and on for about two thirds of Buenos Aires flats; gas cooking for Buenos Aires.",
+  "Roof tanks: the engine opens the pumped-water gap as soon as power fails, but a Buenos Aires roof tank gives roughly half a day to two days of reserve. A baseline of about one day for water and sanitation when pumped water is set would fix this.",
+  "Thresholds: my localOutage event starts at four hours and storm events at six. If the United States file uses another threshold the probabilities are not comparable across locations, although each location is consistent with its own windows.",
+  "Calibration of heat: with my probabilities and heat windows the cooling curve gives about 39 (Western Europe) and 25 (Buenos Aires) all-ages micromorts a year without air conditioning, against about 100 and 29 observed. Western Europe may need the curve scaled up about twofold or the heat window lengthened; much observed heat mortality falls on moderately hot days outside any spell.",
+  "Cold severity: Buenos Aires cold is mild. I lowered coldShare to stand in for a severity discount; a severity scale on the warmth curve would be cleaner.",
+  "Dwelling: several windows differ sharply between ground-floor homes and upper-floor flats (flood trauma and displacement, storm displacement, wildfire). The schema has one profile per location; dwellingNotes say how to split them.",
+  "Sanitation windows here mean loss of water for flushing unless the basis says sewers; comms windows start when service is lost, net of cell-site batteries.",
+  "No channel fits queueing, search time and price jumps in a supply shock; I used financialLoss in dollars.",
+  "Building-wide gas shut-offs after failed safety inspections leave Buenos Aires buildings without gas for months. No hazard covers this; it matters for cooking and heating items.",
+  "Local prices: leave costs are in local terms converted to dollars (EUR 1 = USD 1.099; USD 1 = ARS 1,585). Item prices in the model are United States prices; a price index by location would be needed to treat them the same way."
+ ]
+}

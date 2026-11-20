@@ -1,0 +1,593 @@
+{
+  "kind": "hazards",
+  "group": "tail-pandemic",
+  "hazards": [
+    {
+      "id": "pandemicModerate",
+      "definition": "A newly emerged pathogen spreads worldwide, reaches the household's country and kills at least as many people as COVID-19 did (6.5 million reported deaths by the end of 2022, 0.08% of the world; excess-death estimates are two to four times higher) but fewer than about 1% of the world's population, with infection fatality well under 1% in adults under 60. Shops, utilities and pharmacies keep working; hospitals are strained in waves. Excludes pandemics on the scale of 1957, 1968 or 2009 (under about 4 million deaths at today's population) and everything in pandemicSevere.",
+      "annualProbability": [
+        {
+          "location": "all",
+          "outlook": "forecast",
+          "lo": 0.004,
+          "mid": 0.015,
+          "hi": 0.03,
+          "tag": "derived",
+          "basis": "P(COVID-scale or worse) minus P(severe, about 0.2%). Sources for the first term: 2-3%/yr (Madhav et al. 2023, Metabiota catalogue, https://www.cgdev.org/sites/default/files/estimated-future-mortality-pathogens-epidemic-and-pandemic-potential.pdf); 2.5-3.3% (Metabiota 2021 via CGD); 19% for more than 20 million deaths in 2023-2032, about 2.1%/yr, from a base rate of 2 such events in 123 years (Cambeiro 2023); 0.2-0.8%/yr (Marani et al. as corrected in 2023: recurrence 523 or 129 years depending on the intensity used); 5% for more than 25 million deaths in 2022-2031, about 0.5%/yr (Metaculus, search snippet). Median of these about 1.8%; low end is Metaculus and corrected Marani, high end Metabiota."
+        },
+        {
+          "location": "all",
+          "outlook": "pessimistic",
+          "lo": 0.015,
+          "mid": 0.03,
+          "hi": 0.06,
+          "tag": "derived",
+          "basis": "Upper published views: 4.2%/yr for a respiratory pandemic killing 10 million or more (Madhav et al. 2023, Table 6), less about 0.8% that would be severe; 3.3% (Metabiota 2021 upper bound); a tripling of the emergence rate 'in coming decades' (Marani et al. 2021), which applied to Madhav's 2-3% gives 6%; plus human-caused epidemics, which biosecurity experts put at 1.5%/yr for more than 100,000 deaths once language models match expert virologists, a threshold SecureBio reports was passed in April 2025 (Forecasting Research Institute 2025, https://forecastingresearch.substack.com/p/forecasting-biosecurity-risks-from)."
+        }
+      ],
+      "tickBox": null,
+      "windows": {
+        "food": {
+          "pOccur": {
+            "lo": 0.005,
+            "mid": 0.03,
+            "hi": 0.12,
+            "tag": "guess",
+            "basis": "Shops stayed open throughout 2020 in the US, Western Europe and Argentina, so the window opens only for a household that is isolating with a sick or quarantined member and can get neither a delivery slot nor a friend to shop. Census Household Pulse, April-July 2020: of adults in food-insufficient households (about a tenth of adults, recalled), 15.9% said they could not get out to buy food and 8.2% could not get delivery (UCLA analysis, search snippet), which is 1-2.5% of all households."
+          },
+          "days": {
+            "p50": 5,
+            "p90": 14,
+            "p99": 30
+          },
+          "tag": "guess",
+          "basis": "Length of an isolation period (10-14 days under 2020 guidance); delivery slots were unobtainable for two weeks or more in several US cities from mid-March to mid-April 2020 (press reports, search snippets). The 99th percentile allows for a Shanghai-type confinement (27 March to 1 June 2022, with real food shortages), which no democracy imposed. Partial shortages are not this window: US stores were out of 13% of items at the late-March peak against 5-7% normally."
+        },
+        "medication": {
+          "pOccur": {
+            "lo": 0.01,
+            "mid": 0.04,
+            "hi": 0.12,
+            "tag": "guess",
+            "basis": "Pharmacies stayed open and prescribers moved to telephone. The window is a specific drug being out of stock locally, or an isolating household with nobody to collect. In April 2020 nearly 90% of US community pharmacists reported some drug shortage since 1 March, but over 83% of shortage drugs had alternatives and shortage counts were back to normal by May (search snippets, https://ncpa.org/newsroom/news-releases/2020/04/16/90-percent-community-pharmacists-report-drug-shortages-covid-19)."
+          },
+          "days": {
+            "p50": 5,
+            "p90": 21,
+            "p99": 60
+          },
+          "tag": "guess",
+          "basis": "No series found for how long individual patients went without. Median set by an isolation period, tail by the two to three months for which salbutamol inhalers and hydroxychloroquine were short in spring 2020 (recalled)."
+        },
+        "emergencyCare": {
+          "pOccur": {
+            "lo": 0.4,
+            "mid": 0.7,
+            "hi": 0.9,
+            "tag": "guess",
+            "basis": "Chance that the household's local hospitals and ambulances are strained in at least one wave. National adult intensive-care occupancy was above 75% for at least 12 consecutive weeks as of 25 October 2021 (https://www.cdc.gov/mmwr/volumes/70/wr/mm7046a5.htm); 54% of COVID inpatients in 558 US hospitals in March-August 2020 were in hospitals in the top decile of surge (Kadri 2021, search snippet). Some regions escaped each wave."
+          },
+          "days": {
+            "p50": 60,
+            "p90": 150,
+            "p99": 300
+          },
+          "tag": "derived",
+          "basis": "Days of strained, not absent, care: use the trauma channel's 'careStrained' rate (about 0.2 micromorts a day at 15-59). Two to three local waves of 3-10 strained weeks each over two years. Check: 60-75 days x 0.2 = 12-15 micromorts at 15-59; top-down, 28% of 522,368 US excess deaths from March 2020 to January 2021 were not attributed to COVID (Woolf 2021, https://news.vcu.edu/article/US_deaths_normally_change_less_than_2_each_year_In_2020_they), 440 micromorts at all ages, of which perhaps a quarter was delayed care and about 0.3 of the all-age rate applies at 15-59: about 30. Same order.",
+          "regime": "careStrained"
+        }
+      },
+      "leave": {
+        "feasible": {
+          "lo": 0,
+          "mid": 0.03,
+          "hi": 0.15,
+          "tag": "guess",
+          "basis": "A pandemic leaves no unaffected region to go to within weeks; borders of the few places that kept it out (New Zealand, Taiwan) closed to non-residents. Moving to a rural second home lowers contact but is not an exit: about 5% of New York City residents (420,000) left between 1 March and 1 May 2020, mostly from the richest districts (New York Times phone-data analysis, search snippet)."
+        },
+        "earliestDay": {
+          "lo": 0,
+          "mid": 1,
+          "hi": 14,
+          "tag": "guess",
+          "basis": "Possible at once for those with somewhere to go, until internal travel limits or border closures."
+        },
+        "fixedUsdPerHousehold": {
+          "lo": 500,
+          "mid": 3000,
+          "hi": 15000,
+          "tag": "guess",
+          "basis": "Travel plus setting up remote work and schooling elsewhere; no source."
+        },
+        "usdPerPersonDay": {
+          "lo": 15,
+          "mid": 50,
+          "hi": 200,
+          "tag": "guess",
+          "basis": "Second rent or a long-stay rental over many months, shared across the household; no source."
+        }
+      },
+      "warningDays": {
+        "lo": 3,
+        "mid": 35,
+        "hi": 70,
+        "tag": "derived",
+        "basis": "COVID-19: Wuhan locked down on 23 January 2020; US panic buying peaked 9-22 March and toilet paper was out at 70% of grocers on 23 March (step 2 base-rates; NCSolutions), 46-59 days later. Respirators were gone from US retail within about two to four weeks of the lockdown (recalled). 2009 H1N1 gave no warning: the first cases reported to WHO on 15 April 2009 were already in the US (CDC timeline, search snippet)."
+      },
+      "lateBuy": {
+        "staple": {
+          "lo": 0.75,
+          "mid": 0.92,
+          "hi": 0.99,
+          "tag": "derived",
+          "basis": "Food as a whole stayed on sale: at the late-March 2020 peak US stores were out of 13% of items against 5-7% normally (search snippet). Particular staples vanished: toilet paper was out for part of the day at 70% of stores on 23 March, 73% on 12 April and 48% on 19 April, 'deeply deficient for over 50 days' (NCSolutions via Reuters, https://www.fox6now.com/news/shortages-easing-on-coronavirus-hit-toilet-paper-supplies-not-yet-where-we-want-them-to-be); flour for about a month and yeast into late July in places."
+        },
+        "specialty": {
+          "lo": 0.03,
+          "mid": 0.15,
+          "hi": 0.4,
+          "tag": "derived",
+          "basis": "2020 record, by item, in lateBuyDetail. N95s: 'most consumers still aren't able to buy N95 masks' on 27 January 2021, a year in (NPR, https://www.wgbh.org/news/national/2021-01-27/why-n95-masks-are-still-in-short-supply-in-the-u-s). Thermometers: shipping dates of May or June on 31 March. Freezers: most models out or back-ordered to late May through August by 20 April. Only households that bought in January or early February 2020, before the public did, got respirators; the mid is my guess at the share who would act that early across all specialty items."
+        }
+      },
+      "lateBuyDetail": [
+        {"item": "N95 respirators", "soldOut": "late January to early February 2020 (recalled)", "availableAgain": "spring 2021: still unavailable to most consumers on 27 January 2021; makers had unsold stock by 30 March 2021", "monthsScarce": 13, "source": "https://www.wgbh.org/news/national/2021-01-27/why-n95-masks-are-still-in-short-supply-in-the-u-s", "verified": true},
+        {"item": "Hand sanitiser", "soldOut": "first week of March 2020 (recalled)", "availableAgain": "May to July 2020 (recalled)", "monthsScarce": 3, "source": "", "verified": false},
+        {"item": "Thermometers", "soldOut": "early to mid March 2020: shoppers had been searching for about three weeks on 31 March", "availableAgain": "online orders quoted May or June; non-contact models not before June", "monthsScarce": 3, "source": "https://chicago.suntimes.com/coronavirus/2020/3/31/21202133/thermometer-shortage-coronavirus-covid-19-amazon-target-walgreens-cvs-walmart-fever-temperature", "verified": true},
+        {"item": "Pulse oximeters", "soldOut": "April 2020 (recalled; no source found)", "availableAgain": "summer 2020 (recalled)", "monthsScarce": 2, "source": "", "verified": false},
+        {"item": "Chest freezers", "soldOut": "March 2020: 'the last six weeks saw significant panic buying' on 20 April", "availableAgain": "back-orders to late May through August; some dealers still waiting in September", "monthsScarce": 5, "source": "https://www.yahoo.com/news/freezers-sold-consider-second-refrigerator-220651433.html", "verified": true},
+        {"item": "Flour and yeast", "soldOut": "late March 2020", "availableAgain": "flour about a month; yeast late July in some shops (search snippets)", "monthsScarce": 2, "source": "", "verified": false},
+        {"item": "Toilet paper", "soldOut": "mid March 2020; 70% of stores out for part of the day on 23 March", "availableAgain": "early May 2020: 48% on 19 April, first adequate week reported 28 April", "monthsScarce": 1.7, "source": "https://www.fox6now.com/news/shortages-easing-on-coronavirus-hit-toilet-paper-supplies-not-yet-where-we-want-them-to-be", "verified": true},
+        {"item": "Grocery delivery slots", "soldOut": "mid March 2020", "availableAgain": "late April to May 2020 (press reports, search snippets)", "monthsScarce": 1.5, "source": "", "verified": false}
+      ],
+      "exposures": [
+        {
+          "channel": "infection",
+          "description": "Infection of an adult aged 15-59 who lives as the average person did in 2020-21: some cloth or surgical masking, fewer outings, vaccinated when the average person was. The event is the two years from first community spread until most adults have been offered a vaccine and a booster.",
+          "micromortsPerPerson": {
+            "lo": 150,
+            "mid": 700,
+            "hi": 3000,
+            "tag": "derived",
+            "basis": "US COVID deaths at 15-59 (CDC, https://data.cdc.gov/resource/9bhg-hcku.json; I take 39% of the 55-64 band as 55-59) over 197 million people: 46,200 in 2020 = 234 micromorts; 96,700 in 2021 = 491; 32,600 in 2022 = 165; 179,200 to September 2023 = 910. Two-year event = 725. Western Europe was about half that at these ages (recalled). The range covers a pathogen that spares the working-age (low) or one with a 1957- or 2009-like age pattern at COVID's total (high)."
+          },
+          "hardshipUsdPerPerson": {
+            "lo": 120,
+            "mid": 450,
+            "hi": 2500,
+            "tag": "derived",
+            "basis": "Attack rate 0.35 x about $1,320 per infection = $460. Per infection: 65% symptomatic (recalled) x 10 days x $70 = $455; 2% hospitalised (guess) x $10,000 = $200; long illness: 0.65 x 7% of symptomatic adults with symptoms at three months (6.2% overall, 10.6% of women and 5.4% of men aged 20+; mean 4 months if not hospitalised, 15% still ill at 12 months: Wulf Hanson 2022, https://doi.org/10.1001/jama.2022.18931) x 0.08 quality-adjusted years (disability weight about 0.2 for about 0.4 years) x $182,500 a year ($500 a day, as food.json uses) = $665."
+          },
+          "financialUsdPerHousehold": {
+            "lo": 80,
+            "mid": 400,
+            "hi": 2000,
+            "tag": "guess",
+            "basis": "Cost of illness only, two adults: 0.35 x 2 x about $550 per adult infection. Per infection: 7 isolation days x $200 x 25% of workers with no paid sick leave (BLS March 2020: 75% of private-industry workers had it, search snippet) = $350; 2% hospitalised x $1,300-4,000 out of pocket (KFF and JAMA Network Open, search snippets) = $50; 4% with long illness x a quarter losing about three months' pay = $150. Income lost to the wider downturn is the separate financialLoss exposure."
+          },
+          "attackRate": {
+            "lo": 0.2,
+            "mid": 0.35,
+            "hi": 0.6,
+            "tag": "derived",
+            "basis": "Share infected at least once during the two-year event. US blood donors: 3.5% in July 2020 and 20.2% in May 2021 from infection (Jones 2021, https://pubmed.ncbi.nlm.nih.gov/34473201/, search snippet); about a third by December 2021, before Omicron (CDC commercial-laboratory survey, recalled)."
+          },
+          "infectionFatalityRate": {
+            "lo": 0.0003,
+            "mid": 0.002,
+            "hi": 0.006,
+            "tag": "derived",
+            "basis": "725 micromorts / 0.35 = 0.21% averaged over ages 15-59. Consistent with pre-vaccine age-specific estimates of 0.057% at age 30 and 1.0% at age 60 (COVID-19 Forecasting Team, Lancet 2022, https://doi.org/10.1016/S0140-6736(21)02867-1)."
+          },
+          "shareBeforeCountermeasure": {
+            "lo": 0.4,
+            "mid": 0.55,
+            "hi": 0.7,
+            "tag": "derived",
+            "basis": "Share of the event's risk at 15-59 that fell before vaccines were open to all adults (19 April 2021): 234 micromorts in 2020 plus about 35% of 2021's 491 (monthly split recalled) = about 400 of 725. A household that vaccinates on the first day faces about 450 in all; the rest fell mostly on the unvaccinated in the Delta wave."
+          },
+          "multipliers": [
+            {
+              "profile": "child",
+              "mortality": 0.25,
+              "hardship": 0.6,
+              "tag": "derived",
+              "basis": "Equal mix of a COVID-like pattern (0.02: 2.2 against 92 deaths per 100,000, same CDC data) and the average of Metabiota's simulated respiratory pandemics, two thirds influenza (0.5: 1.6 deaths per 10,000 a year at ages 1-9 and 0.89 at 10-19, against 3.0 at 20-59; Madhav 2023, Table 9). Hardship is a guess."
+            },
+            {
+              "profile": "age60to74",
+              "mortality": 5,
+              "hardship": 1.3,
+              "tag": "derived",
+              "basis": "Equal mix of COVID-like (8, from US death rates: see respiratory.json) and the Metabiota catalogue average (2.3: 6.9 at 60-79 against 3.0 at 20-59). Range 2-15. Hardship is a guess."
+            },
+            {
+              "profile": "age75plus",
+              "mortality": 20,
+              "hardship": 1.5,
+              "tag": "derived",
+              "basis": "Equal mix of COVID-like (35) and the Metabiota catalogue average (about 4.5: 6.9 at 60-79 and 15 at 80+ against 3.0). Range 4-90. Hardship is a guess."
+            }
+          ]
+        },
+        {
+          "channel": "financialLoss",
+          "description": "Household earnings lost to the pandemic economy (lay-offs, cut hours, closed businesses), before government transfers. Not reduced by avoiding infection; an income buffer or remote-capable work is what addresses it.",
+          "financialUsdPerHousehold": {
+            "lo": 0,
+            "mid": 2500,
+            "hi": 12000,
+            "tag": "guess",
+            "basis": "In August 2020, 25% of US adults said someone in their household had lost a job and 32% that someone had taken a pay cut; 42% one or both (Pew, https://www.pewresearch.org/social-trends/2020/09/24/economic-fallout-from-covid-19-continues-to-hit-lower-income-americans-the-hardest/, search snippet). Size: US wages and salaries ran roughly 3.5% below trend in 2020 (recalled, not checked), about $330 billion or $2,500 per household, some $6,000 per affected household. Transfers more than replaced this on average in the US; they did not in Argentina."
+          }
+        }
+      ],
+      "avoidance": {
+        "daysToCountermeasure": {
+          "lo": 150,
+          "mid": 450,
+          "hi": 900,
+          "tag": "derived",
+          "basis": "COVID-19: 326 days from sequence to the first emergency authorisation anywhere (CEPI, search snippet); US authorisation 11 December 2020; general adult eligibility 19 April 2021; so early March 2020 to full vaccination of a prompt adult is about 64 weeks. 2009 H1N1: first US doses 5 October 2009, 173 days after the first reports, with 14 million doses by the end of October, after the autumn peak (search snippets). CEPI's target is 100 days."
+        },
+        "highIncidenceDaysBeforeCountermeasure": {
+          "lo": 100,
+          "mid": 180,
+          "hi": 260,
+          "tag": "guess",
+          "basis": "COVID-19 in the US before vaccines: three waves, spring 2020 (mid-March to May, about 10 weeks, north-east), summer (mid-June to August, about 10 weeks, south and west) and winter (November to February, about 16 weeks, everywhere); a given place had two of them. Dates recalled; respiratory.json finds that the best-placed 180 days held 61-73% of deaths to April 2021."
+        },
+        "waves": [
+          {"event": "COVID-19, United States", "wave": "spring 2020", "weeks": 10, "note": "north-east and a few cities; about 20% of pre-vaccine deaths nationally"},
+          {"event": "COVID-19, United States", "wave": "summer 2020", "weeks": 10, "note": "south and west"},
+          {"event": "COVID-19, United States", "wave": "winter 2020-21", "weeks": 16, "note": "national; about half of pre-vaccine deaths"},
+          {"event": "COVID-19, United States", "wave": "Delta, August-October 2021", "weeks": 10, "note": "after vaccines; deaths at 15-59 concentrated in the unvaccinated"},
+          {"event": "COVID-19, United States", "wave": "Omicron, December 2021-February 2022", "weeks": 9, "note": "about 5% of workers absent sick in the January survey week, the most since 1978"},
+          {"event": "1918 influenza", "wave": "autumn 1918", "weeks": 8, "note": "September to November worldwide; 6-10 weeks in any one city; all three waves fell within 8-9 months in one country"},
+          {"event": "1918 influenza", "wave": "winter 1919", "weeks": 6, "note": "early 1919 in many countries"},
+          {"event": "1957 influenza, United States", "wave": "autumn 1957", "weeks": 9, "note": "peak October; vaccine in limited supply from August"},
+          {"event": "1957 influenza, United States", "wave": "winter 1958", "weeks": 8, "note": "January to March"},
+          {"event": "2009 H1N1, United States", "wave": "autumn 2009", "weeks": 12, "note": "peak in the week ending 24 October; first vaccine doses 5 October"}
+        ]
+      },
+      "dwellingNotes": "Apartments share lifts, corridors, laundry rooms and sometimes air, so a household that stays in is less sealed off than in a house (respiratory.json uses 0.93 against 0.97 of exposure removed). Flats have less room for a freezer and a deep pantry, which is what lets a household skip shops for a wave; city flats had better delivery coverage in 2020 but the slots were the first to go. High floors make no difference while power holds.",
+      "evidence": [
+        {"claim": "Annual probability of a respiratory pandemic at least as deadly as COVID-19 (6.5 million reported deaths) is 2-3%; 6.3% for 1 million deaths or more, 4.2% for 10 million, 0.6% for 100 million, 0.8% for more than 80 million (1% of the world).", "source": "https://www.cgdev.org/sites/default/files/estimated-future-mortality-pathogens-epidemic-and-pandemic-potential.pdf", "year": 2023, "verified": true},
+        {"claim": "Metabiota put the annual probability of a COVID-scale pandemic at 2.5-3.3%, or 47-57% in 25 years.", "source": "https://www.cgdev.org/blog/the-next-pandemic-could-come-soon-and-be-deadlier", "year": 2021, "verified": true},
+        {"claim": "Marani et al. corrected their paper in March 2023 for a coding error: recurrence of a 1918-intensity event today is 879 years (95% CI 730-1,081), not 400; the 1600-present range is 0.11-0.89% a year, not 0.27-1.9%; lifetime probability of a COVID-like pandemic is 0.17, not 0.38 (0.44 if emergence triples); the two recurrence times that I read as referring to COVID-19's intensity are 129 and 523 years, not 59 and 209.", "source": "https://doi.org/10.1073/pnas.2302169120", "year": 2023, "verified": true},
+        {"claim": "Duke's press release on the uncorrected paper: 'about 2% in any year' for a pandemic like COVID-19.", "source": "https://globalhealth.duke.edu/news/statistics-say-large-pandemics-are-more-likely-we-thought", "year": 2021, "verified": true},
+        {"claim": "Superforecaster Juan Cambeiro: 19% for a novel-pathogen pandemic killing more than 20 million in 2023-2032; base rate 2 in 123 years (1.6% a year); 47% influenza, 21% coronavirus.", "source": "https://asteriskmag.com/issues/02/what-comes-after-covid", "year": 2023, "verified": true},
+        {"claim": "Seven Samotsvety forecasters: 22% (10-30%) that a natural pandemic kills more than 1 million in a single year within ten years; biological weapons 2.2%; accidental release 2.4%.", "source": "https://www.lesswrong.com/posts/8PcjymbWGJCgT7bSf/how-likely-are-various-precursors-of-existential-risk", "year": 2024, "verified": true},
+        {"claim": "Metaculus: 5% (2.3-12%) that a novel pathogen kills more than 25 million between 2022 and 2031, 294 forecasters; undated snapshot.", "source": "https://www.metaculus.com/questions/11164/25m-killed-by-pandemic-2022-to-2031", "year": 2026, "verified": false},
+        {"claim": "US COVID-19 deaths by age and year, 2020 to September 2023 (1,146,774 in all; 277,943 under 65).", "source": "https://data.cdc.gov/resource/9bhg-hcku.json", "year": 2023, "verified": true},
+        {"claim": "Pre-vaccine infection fatality: 0.0023% at age 7, 0.0573% at 30, 1.0035% at 60, 20.3% at 90; median all-age value fell from 0.466% in April 2020 to 0.314% in January 2021.", "source": "https://doi.org/10.1016/S0140-6736(21)02867-1", "year": 2022, "verified": true},
+        {"claim": "6.2% (2.4-13.3%) of symptomatic infections had long-COVID symptom clusters at three months; mean duration 4.0 months if not hospitalised, 9.0 if hospitalised; 15.1% of those still ill at 12 months.", "source": "https://doi.org/10.1001/jama.2022.18931", "year": 2022, "verified": true},
+        {"claim": "Intensive-care occupancy of 75% was followed by 12,000 extra deaths nationally two weeks later (8,623-17,294) and 100% by 80,000 (53,576-132,765); adult ICU occupancy had exceeded 75% for at least 12 weeks as of 25 October 2021.", "source": "https://www.cdc.gov/mmwr/volumes/70/wr/mm7046a5.htm", "year": 2021, "verified": true},
+        {"claim": "522,368 US excess deaths from 1 March 2020 to 2 January 2021 (22.9% above expected); 72% attributed to COVID-19; heart disease, Alzheimer's and diabetes deaths rose in surges.", "source": "https://news.vcu.edu/article/US_deaths_normally_change_less_than_2_each_year_In_2020_they", "year": 2021, "verified": true},
+        {"claim": "Nearly 1 in 4 COVID deaths (23.2%) in 558 US hospitals in March-August 2020 was potentially attributable to surge strain; adjusted odds of death 2.0 in the most strained hospital-months.", "source": "https://doi.org/10.7326/M21-1213", "year": 2021, "verified": false},
+        {"claim": "New York City out-of-hospital cardiac arrests ran at three times the 2019 rate from 1 March to 25 April 2020; Los Angeles County told crews in January 2021 not to transport cardiac-arrest patients who could not be revived in the field.", "source": "https://jamanetwork.com/journals/jamacardiology/fullarticle/2767649", "year": 2020, "verified": false},
+        {"claim": "7.8 million US workers had an illness-related absence in the January 2022 survey week (3.6 million not at work at all), against 3.7 million a year earlier; services did not fail.", "source": "https://www.bls.gov/opub/ted/2022/7-8-million-workers-had-an-illness-related-work-absence-in-january-2022.htm", "year": 2022, "verified": true},
+        {"claim": "Toilet paper out of stock for part of the day at 73% of US grocery stores on 12 April 2020 and 48% on 19 April.", "source": "https://www.fox6now.com/news/shortages-easing-on-coronavirus-hit-toilet-paper-supplies-not-yet-where-we-want-them-to-be", "year": 2020, "verified": true},
+        {"claim": "A year into the pandemic most US consumers still could not buy N95 respirators.", "source": "https://www.wgbh.org/news/national/2021-01-27/why-n95-masks-are-still-in-short-supply-in-the-u-s", "year": 2021, "verified": true},
+        {"claim": "By 20 April 2020 most freezers at eight large US retailers were out of stock or back-ordered until late May through August.", "source": "https://www.yahoo.com/news/freezers-sold-consider-second-refrigerator-220651433.html", "year": 2020, "verified": true},
+        {"claim": "On 31 March 2020 thermometers were almost unobtainable at Amazon, Walgreens, Walmart, Target and CVS, with shipping dates in May or June.", "source": "https://chicago.suntimes.com/coronavirus/2020/3/31/21202133/thermometer-shortage-coronavirus-covid-19-amazon-target-walgreens-cvs-walmart-fever-temperature", "year": 2020, "verified": true}
+      ],
+      "notes": "Period in which a household would want to avoid contact, wave by wave: see 'avoidance'. For COVID-19 in the US it was about 64 weeks from first community spread to full vaccination, of which roughly 26 weeks (two local waves) carried most of the risk; the engine should treat a food and supplies stock as what makes sitting out a wave possible (respiratory.json, stayHome), not mainly as cover for the rare food window here. The micromort figure is the population average and includes people who declined vaccination; 'shareBeforeCountermeasure' lets the engine separate the part that avoidance can remove. Age multipliers here are flatter than those in respiratory.json because the next pandemic is more likely to be influenza than a coronavirus and influenza pandemics have killed the young in larger proportion; use one set, not both."
+    },
+    {
+      "id": "pandemicSevere",
+      "definition": "A pandemic that kills more than about 1% of the world's population within five years, or would without extreme countermeasures, because infection fatality is several percent or more in adults under 60 as well as in the old. Natural (a 1918-type influenza, an H5N1-type virus that keeps high lethality while becoming transmissible) or engineered. Hospitals cannot cope, and enough workers may stay home to interrupt supply. Excludes agents so lethal and contagious that nothing a household does would matter.",
+      "annualProbability": [
+        {
+          "location": "all",
+          "outlook": "forecast",
+          "lo": 0.0006,
+          "mid": 0.002,
+          "hi": 0.008,
+          "tag": "derived",
+          "basis": "Pathogen killing more than 1% of humanity within five years, tournament medians annualised for 2023-2030: superforecasters 0.04% engineered + 0.07% natural = 0.11%/yr; biosecurity experts 0.18% + 0.14% = 0.32% (Existential Risk Persuasion Tournament, Table 23, as excerpted and annualised in https://arxiv.org/pdf/2312.14289). 1918-intensity event: 0.11%/yr (879-year recurrence, Marani et al. as corrected 2023). Respiratory pandemic killing more than 80 million: 0.8%/yr; more than 100 million: 0.6% (Madhav et al. 2023, Tables 5-6). Low end is superforecasters shaded for rich countries, high end Metabiota."
+        },
+        {
+          "location": "all",
+          "outlook": "pessimistic",
+          "lo": 0.004,
+          "mid": 0.01,
+          "hi": 0.03,
+          "tag": "derived",
+          "basis": "Upper end of published views. Tournament biosecurity experts for 2030-2050: 0.35% engineered + 0.21% natural = 0.56%/yr (https://arxiv.org/pdf/2312.14289). Metabiota: 0.8% natural alone. Forecasting Research Institute 2025: 46 experts put a human-caused epidemic of more than 100,000 deaths at 0.3%/yr, rising to 1.5% if language models match top virologists at troubleshooting, which OpenAI's o3 did in April 2025; only part of that would be this severe. Metaculus: 5% (1-10%) that an engineered pandemic infects a billion people within five years of AGI, about 1%/yr (search snippet). Ord 2020: 1 in 30 for existential catastrophe from engineered pandemics by 2100. Amodei 2026: 'a serious risk of a major attack' with casualties 'in the millions or more' within a few years; no number. The high end is a reader with short AGI timelines who takes the 1.5% as mostly severe."
+        }
+      ],
+      "tickBox": null,
+      "windows": {
+        "food": {
+          "pOccur": {
+            "lo": 0.08,
+            "mid": 0.3,
+            "hi": 0.7,
+            "tag": "guess",
+            "basis": "No pandemic has tested this in a modern economy. For: a system-dynamics model finds 'greater than a 25% reduction in labor availability' produces 'significant and widespread food shortages' (Huff et al. 2015, https://doi.org/10.1007/s13412-015-0275-3); US planning assumed up to 40% absent in the two peak weeks of a severe influenza (HHS 2005, search snippet); fewer than half of 1,100 New York emergency and hospital workers were both willing and able to work in a 'serious pandemic' (Columbia 2010); in 2020 infection of 3.5% of meat-plant workers cut US meat output by 40%; shops and warehouses hold about five days (IFP). Against: 5% of all US workers absent in January 2022 broke nothing; in 1918, with case fatality above 2.5%, cities kept food on sale; grain stocks cover the US for over a year."
+          },
+          "days": {
+            "p50": 7,
+            "p90": 28,
+            "p99": 60
+          },
+          "tag": "guess",
+          "basis": "Days with no food obtainable at all, net of rationing and army or municipal distribution, which I assume starts within one to four weeks. The 99th percentile stands for the 'Wildfire' case of Gopal et al. 2023, in which essential services break down. The engine's food-mortality curve is steep after day 30, so results are sensitive to this tail; it is a guess."
+        },
+        "medication": {
+          "pOccur": {
+            "lo": 0.1,
+            "mid": 0.3,
+            "hi": 0.7,
+            "tag": "guess",
+            "basis": "Drug supply runs through long international chains (active ingredients from India and China) and through pharmacies staffed by people in contact with the sick; both failed briefly in 2020 at far lower stakes. No quantitative source."
+          },
+          "days": {
+            "p50": 14,
+            "p90": 60,
+            "p99": 180
+          },
+          "tag": "guess",
+          "basis": "Longer than the food window because production cannot be improvised or substituted locally and stocks in the chain are a few weeks to a few months. No source."
+        },
+        "emergencyCare": {
+          "pOccur": {
+            "lo": 0.8,
+            "mid": 0.95,
+            "hi": 1,
+            "tag": "guess",
+            "basis": "COVID-19, with infection fatality under 1%, filled intensive care in most US regions for months; an agent several times deadlier overwhelms hospitals wherever it spreads, and a third of hospital workers said they would not report in a severe pandemic (Johns Hopkins 2010, search snippet)."
+          },
+          "days": {
+            "p50": 90,
+            "p90": 240,
+            "p99": 540
+          },
+          "tag": "guess",
+          "basis": "Two or three waves of 6-10 weeks, as in 1918 (all waves within 8-9 months in one country, https://wwwnc.cdc.gov/eid/article/12/1/05-0979_article), plus recovery; longer if suppression stretches the epidemic out. Use the trauma channel's 'careAbsent' rate for about a third of these days (wave peaks) and 'careStrained' for the rest: about 0.5 micromorts a day at 15-59.",
+          "regime": "careAbsent for about one third of days, careStrained for the rest"
+        },
+        "power": {
+          "pOccur": {
+            "lo": 0.01,
+            "mid": 0.08,
+            "hi": 0.3,
+            "tag": "guess",
+            "basis": "Qualitative basis only. The US grid regulator called COVID-19 a 'people event' whose main risk was loss of control-room and maintenance staff, and utilities sequestered operators (NERC 2020, search snippet); no outage resulted. Gopal et al. 2023 and ALLFED 2026 argue that at high lethality essential workers stop working and services fail in cascade, without giving a threshold. Mid = an ordinary outage of six hours or more during three peak months (17.7% of households a year, step 2 base-rates, so about 4%) repaired late, plus a few percent for wider failure."
+          },
+          "days": {
+            "p50": 2,
+            "p90": 10,
+            "p99": 45
+          },
+          "tag": "guess",
+          "basis": "Ordinary faults repaired two to five times more slowly by depleted crews; tail for fuel-supply or staffing failure at plants. No source."
+        },
+        "water": {
+          "pOccur": {
+            "lo": 0.005,
+            "mid": 0.04,
+            "hi": 0.2,
+            "tag": "guess",
+            "basis": "Same reasoning as power; treatment plants need few operators but depend on power and on chemical deliveries. No outage of this kind occurred in COVID-19. No quantitative source."
+          },
+          "days": {
+            "p50": 2,
+            "p90": 10,
+            "p99": 30
+          },
+          "shareTreatable": {
+            "lo": 0.4,
+            "mid": 0.7,
+            "hi": 0.9,
+            "tag": "guess",
+            "basis": "Most failures would be loss of treatment or pressure (boil notices) before dry taps."
+          },
+          "tag": "guess",
+          "basis": "Set equal to the power window with a shorter tail. No source."
+        }
+      },
+      "leave": {
+        "feasible": {
+          "lo": 0,
+          "mid": 0.02,
+          "hi": 0.1,
+          "tag": "guess",
+          "basis": "Nowhere stays unaffected for long, and borders and internal travel close faster the deadlier the agent; a remote second home is isolation, not exit, and is covered by the stay-home effect."
+        },
+        "earliestDay": {
+          "lo": 0,
+          "mid": 1,
+          "hi": 7,
+          "tag": "guess",
+          "basis": "Only before movement restrictions."
+        },
+        "fixedUsdPerHousehold": {
+          "lo": 1000,
+          "mid": 5000,
+          "hi": 25000,
+          "tag": "guess",
+          "basis": "Travel at crisis prices plus setting up elsewhere; no source."
+        },
+        "usdPerPersonDay": {
+          "lo": 20,
+          "mid": 70,
+          "hi": 300,
+          "tag": "guess",
+          "basis": "Long-stay accommodation for many months; no source."
+        }
+      },
+      "warningDays": {
+        "lo": 1,
+        "mid": 14,
+        "hi": 45,
+        "tag": "guess",
+        "basis": "A natural outbreak abroad gives weeks, as COVID-19 did (about seven weeks from the Wuhan lockdown to empty US shelves), but the public reacts sooner to a deadlier agent. A deliberate release in several travel hubs (the Gopal et al. scenario) may be recognised only when cases appear at home."
+      },
+      "lateBuy": {
+        "staple": {
+          "lo": 0.3,
+          "mid": 0.65,
+          "hi": 0.9,
+          "tag": "guess",
+          "basis": "In 2020 a household could still buy weeks of food once the threat was plain (0.92). With several times the fear and less warning, a larger share of shoppers stock up at once and shops ration; no data."
+        },
+        "specialty": {
+          "lo": 0.01,
+          "mid": 0.05,
+          "hi": 0.2,
+          "tag": "guess",
+          "basis": "Respirators sold out within weeks in 2020 and stayed scarce for a year for a far milder disease; governments would also requisition stocks for essential workers, whose needs 'far exceed stockpiles' (ALLFED 2026, search snippet)."
+        }
+      },
+      "exposures": [
+        {
+          "channel": "infection",
+          "description": "Scenario: 30% of adults infected before a vaccine or other countermeasure arrives, despite living as cautiously as people did in 2020-21, and 3% of infected adults aged 15-59 die (a 1918-type influenza in a rich country is at the low end; an agent with fatality in the tens of percent at the high end). Unprepared adult aged 15-59 who stays.",
+          "micromortsPerPerson": {
+            "lo": 1500,
+            "mid": 9000,
+            "hi": 80000,
+            "tag": "guess",
+            "basis": "0.30 x 0.03 = 0.9%. Low: 0.12 x 0.012; high: 0.5 x 0.16. Anchor: 1918 killed about 0.65% of the US population and about 2.7% of the world (675,000 and about 50 million; US figure recalled), with case fatality 'above 2.5%', a third of the world infected and nearly half of deaths at ages 20-40 (https://wwwnc.cdc.gov/eid/article/12/1/05-0979_article). Fatality and attack rate are probably negatively related, since people hide from deadlier agents, which narrows the product."
+          },
+          "hardshipUsdPerPerson": {
+            "lo": 500,
+            "mid": 3000,
+            "hi": 20000,
+            "tag": "guess",
+            "basis": "0.30 x about $10,000 per infection: two to three weeks of severe illness, mostly without hospital care, at $300-500 a day, plus lasting damage in some survivors. No source."
+          },
+          "financialUsdPerHousehold": {
+            "lo": 300,
+            "mid": 2000,
+            "hi": 15000,
+            "tag": "guess",
+            "basis": "Cost of illness, two adults: 0.30 x 2 x about $3,000 (a month off work, care costs). No source."
+          },
+          "attackRate": {
+            "lo": 0.1,
+            "mid": 0.3,
+            "hi": 0.6,
+            "tag": "guess",
+            "basis": "1918: a third of the world infected (Taubenberger and Morens 2006). COVID-19 before vaccines: 20% of US blood donors by May 2021. US planning assumed 30% clinically ill (HHS 2005, search snippet). Fear lowers it; higher transmissibility raises it."
+          },
+          "infectionFatalityRate": {
+            "lo": 0.01,
+            "mid": 0.03,
+            "hi": 0.2,
+            "tag": "guess",
+            "basis": "Ages 15-59. 1918: above 2.5% of cases. Reference agents: SARS about 10% of cases, MERS about 35%, H5N1 about half of confirmed cases (all recalled). The class is defined by this number being 'several percent'."
+          },
+          "shareBeforeCountermeasure": {
+            "lo": 0.6,
+            "mid": 0.85,
+            "hi": 1,
+            "tag": "guess",
+            "basis": "Most of the risk falls in the first one or two waves, before a vaccine can exist; Gopal et al. argue rapid vaccines 'will reliably fail' against a deliberate release."
+          },
+          "multipliers": [
+            {
+              "profile": "child",
+              "mortality": 0.4,
+              "hardship": 0.8,
+              "tag": "derived",
+              "basis": "Metabiota's catalogue, in which events over 50 million deaths supply 68% of deaths: 1.6 deaths per 10,000 a year at ages 1-9 and 0.89 at 10-19 against 3.0 at 20-59, about 0.5 with infants (Madhav 2023, Table 9), shaded down for rich countries. Range 0.05-1.5; 1918 was near 0.65, COVID 0.02."
+            },
+            {
+              "profile": "age60to74",
+              "mortality": 2.3,
+              "hardship": 1.2,
+              "tag": "derived",
+              "basis": "Same table: 6.9 at 60-79 against 3.0 at 20-59. Range 0.3-10: in 1918 over 99% of excess deaths were under 65; in COVID the ratio was 8."
+            },
+            {
+              "profile": "age75plus",
+              "mortality": 4.5,
+              "hardship": 1.4,
+              "tag": "derived",
+              "basis": "Same table: 6.9 at 60-79 and 15 at 80+ against 3.0. Range 0.2-40. An engineered agent could have any age pattern."
+            }
+          ]
+        },
+        {
+          "channel": "financialLoss",
+          "description": "Household earnings lost to the collapse in activity, before government transfers.",
+          "financialUsdPerHousehold": {
+            "lo": 2000,
+            "mid": 15000,
+            "hi": 60000,
+            "tag": "guess",
+            "basis": "A year in which output falls 5-20%: the 'ultra' influenza scenario of McKibbin and Sidorenko (2006) loses 12.6% of world output in the first year, 5.5% in the US and 11.1% in the UK (search snippet); applied to US median household income of about $80,000 and concentrated on those who cannot work from home."
+          }
+        }
+      ],
+      "avoidance": {
+        "daysToCountermeasure": {
+          "lo": 100,
+          "mid": 300,
+          "hi": 730,
+          "tag": "guess",
+          "basis": "Between CEPI's 100-day target and the 15 months COVID-19 took to reach all US adults; emergency use would come sooner for a deadlier agent, but an engineered one may defeat known vaccine platforms. For an eradication strategy the end point is protective equipment for everyone, not a vaccine (Gopal et al. 2023)."
+        },
+        "highIncidenceDaysBeforeCountermeasure": {
+          "lo": 45,
+          "mid": 150,
+          "hi": 400,
+          "tag": "guess",
+          "basis": "If it runs like 1918: an autumn-type wave of 6-10 weeks in any one city and a second of 4-8 weeks, all inside 8-9 months. If suppressed by lockdowns as COVID-19 was, lower incidence over a longer period; a household would then want to avoid contact for most of the time until the countermeasure."
+        },
+        "waves": [
+          {"event": "1918 influenza", "wave": "spring 1918", "weeks": 8, "note": "mild; March onward, uneven"},
+          {"event": "1918 influenza", "wave": "autumn 1918", "weeks": 8, "note": "September to November; the lethal wave; 6-10 weeks in any one city"},
+          {"event": "1918 influenza", "wave": "winter 1919", "weeks": 6, "note": "early 1919"},
+          {"event": "planning assumption, US 2005", "wave": "each wave", "weeks": 7, "note": "community outbreak of 6-8 weeks; several waves of 2-3 months nationally; absenteeism up to 40% for about two weeks at the peak (search snippet)"}
+        ]
+      },
+      "dwellingNotes": "As for pandemicModerate, with more at stake: a house with its own entrance lets a household take deliveries and stay sealed; a flat depends on shared lifts and stairwells that neighbours also use. If power or water falters, upper floors lose water pressure and lifts first. A flat seldom has room for the three to six months of food that sitting out the waves would take.",
+      "evidence": [
+        {"claim": "Probability that a pathogen kills more than 1% of humans within five years. Engineered: superforecasters 0.25% by 2030, 1.5% by 2050, 4% by 2100; domain experts 1.22%, 8%, 10.25%. Not engineered: superforecasters 0.5%, 1.69%, 3.62%; experts 1%, 5%, 8.14%.", "source": "https://arxiv.org/pdf/2312.14289", "year": 2023, "verified": true},
+        {"claim": "Annual probability of a respiratory pandemic killing more than 80 million (over 100 per 10,000) is 0.8%, and of 100 million or more 0.6%; the 1-in-200-year event kills 110 million and the 1-in-1,000 220 million.", "source": "https://www.cgdev.org/sites/default/files/estimated-future-mortality-pathogens-epidemic-and-pandemic-potential.pdf", "year": 2023, "verified": true},
+        {"claim": "Corrected recurrence time of a 1918-intensity epidemic: 879 years (95% CI 730-1,081); 292 years (243-360) if emergence keeps rising.", "source": "https://doi.org/10.1073/pnas.2302169120", "year": 2023, "verified": true},
+        {"claim": "46 biosecurity experts and 22 superforecasters: median annual risk of a human-caused epidemic killing more than 100,000 is 0.3% (forecast for 2028), rising to 1.5% if AI matches a top virology team on a troubleshooting test, which OpenAI's o3 did by April 2025; if AI lets half of non-experts synthesise influenza the figure is 1.25%, falling to 0.4% with anti-jailbreak safeguards and mandatory synthesis screening.", "source": "https://forecastingresearch.substack.com/p/forecasting-biosecurity-risks-from", "year": 2025, "verified": true},
+        {"claim": "Amodei: language models 'may already be providing substantial uplift'; over a few years 'a serious risk of a major attack' with casualties potentially 'in the millions or more'; he would bet against attacks the moment they become possible.", "source": "https://www.darioamodei.com/essay/the-adolescence-of-technology", "year": 2026, "verified": true},
+        {"claim": "Gopal, Bradshaw, Sunil and Esvelt: in a 'Wildfire' pandemic fear of a lethal, contagious agent released in several travel hubs 'leads to the breakdown of essential services'; 'if too many essential workers die or refuse to work, societies will collapse'; rapid vaccines and N95 masks 'will reliably fail'.", "source": "https://gcsp.ch/publications/securing-civilisation-against-catastrophic-pandemics", "year": 2023, "verified": true},
+        {"claim": "Metaculus: 5% (1-10%), 54 forecasters, that an engineered pandemic infects one billion people within five years of AGI; undated snapshot.", "source": "https://www.metaculus.com/questions/26715/5y-after-agi-engineered-pandemic", "year": 2026, "verified": false},
+        {"claim": "Ord puts existential catastrophe by 2100 at 1 in 30 from engineered pandemics and 1 in 10,000 from natural ones.", "source": "https://forum.effectivealtruism.org/posts/zzsQMTejrRvYodkTS/exaggerating-the-risks-part-13-ord-on-biorisk", "year": 2020, "verified": false},
+        {"claim": "A severe pandemic with 'greater than a 25% reduction in labor availability' can create significant and widespread food shortages in the US (system-dynamics model).", "source": "https://doi.org/10.1007/s13412-015-0275-3", "year": 2015, "verified": true},
+        {"claim": "By June 2020 about 3.5% of US meat-processing workers had been infected, 30 plants had closed and meat output fell 40% from a year before; shops and warehouses hold about five days of food; stored corn, soy and wheat could feed the US for over 1.5 years.", "source": "https://ifp.org/how-to-maintain-food-supplies-in-future-pandemics/", "verified": true},
+        {"claim": "Of over 1,100 New York hospital, police, fire, ambulance, public-health and prison workers, 80% would be able and 65% willing to work in a serious pandemic; fewer than half both.", "source": "https://www.publichealth.columbia.edu/news/less-half-essential-workers-are-willing-report-work-during-serious-pandemic", "year": 2010, "verified": true},
+        {"claim": "US federal planning assumed a 30% clinical attack rate and absenteeism of up to 40% in the peak weeks of a severe influenza pandemic, with community outbreaks of 6-8 weeks.", "source": "https://cdc.gov/pandemic-flu/media/hhspandemicinfluenzaplan.pdf", "year": 2005, "verified": false},
+        {"claim": "1918: case fatality above 2.5%; about 50 million deaths; a third of the world infected; nearly half of deaths at ages 20-40; over 99% of excess deaths under 65; three waves within about a year, 8-9 months in any one country.", "source": "https://wwwnc.cdc.gov/eid/article/12/1/05-0979_article", "year": 2006, "verified": true},
+        {"claim": "ALLFED (Mulhall et al.): over the first three months of an extreme pandemic the US supply of protective equipment that can be mobilised quickly is 'insufficient', with vital-sector demand for sufficiently protective respirators 'far exceeding stockpiles'.", "source": "https://respond.allfed.info/research/publications-and-reports/pre-print/developing-contingency-plans-to-protect-vital-sectors-in-extreme-pandemics", "year": 2026, "verified": true},
+        {"claim": "NERC's spring 2020 assessment found no degradation of grid reliability from COVID-19 and named loss of critical operating staff as the main risk.", "source": "https://www.eenews.net/articles/abnormal-system-grid-operators-brace-for-the-worst/", "year": 2020, "verified": false}
+      ],
+      "notes": "Everything here except the probabilities and the 1918 anchor is a guess: no modern society has met this hazard. Period in which a household would want to avoid contact: from first local spread until a countermeasure, 100 days at best and one to two years at worst, with the risk concentrated in waves of 6-10 weeks if the epidemic runs free, or spread thinly over the whole period if it is suppressed. What a household can do is avoid infection (respiratory.json) and hold enough food, water treatment and medicine not to need shops during the waves; the windows above matter mostly because they force outings. The probabilities are for the class as defined; perhaps a tenth of it (guess) is so severe that preparation does not help, and the AI assignment may replace the pessimistic row with a timeline-dependent one."
+    }
+  ],
+  "blockedSources": [
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC8536331/: full text of Marani et al. 2021 (reCAPTCHA; the Europe PMC full-text call timed out, the Padova mirror returned 403). Read the abstract and the 2023 correction instead; what the 129-year and 523-year recurrence times each refer to is inferred from the correction's wording.",
+    "https://static1.squarespace.com/static/635693acf15a3e2a14a56a4a/t/64f0a7838ccbf43b6b5ee40c/1693493128111/XPT.pdf: the tournament report (over the fetch size limit). Table 23 taken from the excerpt in arXiv 2312.14289.",
+    "https://forum.effectivealtruism.org/posts/9ddheDChiMhveCfSw/what-do-xpt-results-tell-us-about-biorisk: tournament biorisk summary, including the catastrophe (over 10% dead) forecasts (HTTP 429 three times).",
+    "https://static1.squarespace.com/static/635693acf15a3e2a14a56a4a/t/6864346b887f5e3d2902d6ff/1751397485054/ai-enabled-biorisk-memo.pdf: Forecasting Research Institute memo with forecast quantiles and the superforecaster medians (404). Used the institute's newsletter.",
+    "https://www.metaculus.com/questions/11164/ and /26715/: current community forecasts (Metaculus blocks fetches; figures are undated search snippets).",
+    "https://samotsvety.org/blog/2024/10/22/p-calamity/: connection refused; read the LessWrong copy.",
+    "https://allfed.info/images/pdfs/Developing-contingency-plans-vital-sectors-pandemics-ALLFED.pdf and two other ALLFED PDF addresses: full text of the vital-sectors paper, which may contain absenteeism thresholds by sector (404); https://forum.effectivealtruism.org/posts/q4yhhczr6ZzJe4sSW (429).",
+    "https://link.springer.com/article/10.1007/s13412-015-0275-3: full text of Huff et al. 2015 and its account of the NISAC study (25% labour loss cutting food production by 49%) (login redirect). Abstract read through Europe PMC.",
+    "https://webarchive.library.unt.edu/eot2008/20090304232308/http://www.pandemicflu.gov/plan/pandplan.html and https://www.globalsecurity.org/security/library/report/2007/pandplan.htm: US planning assumptions on absenteeism (empty page; 403).",
+    "https://data.cdc.gov/resource/r8kw-7aab.json: weekly US COVID deaths, for dating waves and splitting 2021 by month (HTTP 400 on every filtered query). Wave dates are from memory.",
+    "https://www.npr.org/sections/health-shots/2021/01/27/960336778/: timed out; read the WGBH copy.",
+    "https://www.greaterwrong.com/posts/ksevLrNby34TJKGSF/: full text of Gopal et al. 2023 (fetch failed); only the publisher's abstract and takeaways were read."
+  ],
+  "openQuestions": [
+    "Step 2 base-rates.md quotes Marani et al. before their 2023 correction (0.27-1.9% a year, 400-year recurrence, 38% lifetime). The corrected figures are roughly half: 0.11-0.89%, 879 years, 17%. Anything built on the old figures should be redone.",
+    "The main use of stored food in a pandemic is voluntary: it lets a household skip shops during a wave. The food window as defined (no way to obtain food) almost never opens in pandemicModerate. The engine needs a rule that turns days of stock into days of avoided exposure, using avoidance.highIncidenceDaysBeforeCountermeasure and respiratory.json's stayHome table.",
+    "The moderate micromort figure (700) is the population average over two years and includes people who refused vaccination. For a household that vaccinates at once it is about 450. Which should the baseline be?",
+    "pandemicSevere food window: the tail (99th percentile of 60 days) is a guess, and the food-mortality curve turns steeply upward after day 30, so a small change in that guess moves expected deaths a great deal.",
+    "Age multipliers here differ from respiratory.json (moderate: 5 and 20 here against 8 and 35; severe: 2.3 and 4.5 against 4 and 17) because I weight influenza-like patterns using Metabiota's simulated catalogue. One set must be chosen.",
+    "Extra fields used: exposures[].attackRate, infectionFatalityRate and shareBeforeCountermeasure (the infection channel's formula needs the attack rate); hazard.avoidance; hazard.lateBuyDetail; windows.emergencyCare.regime (which of the trauma channel's two rates applies).",
+    "The probabilities for the two hazards are meant to be exclusive (moderate excludes severe). The pessimistic rows overlap with whatever the AI assignment produces for engineered pandemics and should not be added to it.",
+    "The tournament's superforecasters put a natural pandemic killing over 1% of humanity at about 0.05-0.07% a year, an order of magnitude below Metabiota's 0.8%. I found no reconciliation; the forecast range spans both."
+  ]
+}

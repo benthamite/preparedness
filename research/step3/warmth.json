@@ -1,0 +1,372 @@
+{
+  "kind": "items",
+  "group": "warmth",
+  "needs": [
+    {
+      "id": "warmth",
+      "definition": "A person-day spent at home while the normal heating is out, the household has no purpose-built alternative heat source (wood stove, fireplace, indoor-rated heater), and it is cold enough outside (daily mean near or below freezing) that the home has cooled below about 10 C indoors. Day 1 begins once the building's stored heat is gone (baselineCoverageDays). Improvised heating with ovens, grills or cars is part of the baseline, not a met need.",
+      "baselineCoverageDays": {
+        "lo": 0.2, "mid": 0.5, "hi": 1.5, "tag": "guess",
+        "basis": "Thermal lag of the building. Newtonian cooling with a time constant of 20-60 h takes a house from 20 C to 10 C in 8-24 h at -10 C outside and 14-42 h at 0 C. An RMI/Redwood Energy model (search snippet only, https://rmi.org/insight/hours-of-safety-in-cold-weather) has a 1950s house below 40 F after 8 h and a 2009-code house after 45 h in severe cold. Texas 2021: indoor temperatures fell 'near or below freezing' within outages whose longest block had a median of 19 h (https://www.uh.edu/hobby/winter2021/storm.pdf)."
+      },
+      "hardshipUsdPerPersonDay": {
+        "tag": "derived",
+        "basis": "Baik et al. 2020 (read in full, https://doi.org/10.1038/s41560-020-0581-1): for a 10-day below-freezing outage, households would pay a median $43 (mean $51) for sure and a median $60 (mean $80) with uncertainty per day for 20 A of backup running a furnace blower, fridge, freezer and a few lights. At 2.5 persons that is $17-32 per person-day for the bundle; I assign about 60% to heat ($10-19). FEMA's residential electricity value is $33 per person-day and ICE 2.0 gives $54 per household for 24 h (prior-art.md). Stated values look low against behaviour in Texas 2021, where 18% left home and 26% of those who stayed heated with a gas oven and 8% with a grill indoors, so the high end is wide. The rise with consecutive days is my judgment (the house keeps cooling; sleep loss accumulates).",
+        "steps": [
+          {"fromDay": 1, "lo": 5, "mid": 15, "hi": 50},
+          {"fromDay": 2, "lo": 8, "mid": 25, "hi": 80},
+          {"fromDay": 4, "lo": 10, "mid": 35, "hi": 120}
+        ]
+      },
+      "mortalityMicromortsPerPersonDay": {
+        "tag": "derived",
+        "basis": "Texas, February 2021. Certified hypothermia deaths 158, of which 107 aged 60+ (DSHS, https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf). Exposure: 69% of the 27.0M people in ERCOT counties lost power for a mean 42 h; 18% left; 16% had a wood fire and 15% a gas fireplace (UH survey, https://www.uh.edu/hobby/winter2021/storm.pdf). That gives about 15.9M unmet person-days, 9.7M of them in ages 15-59. Guessed inputs: the share of hypothermia deaths that occurred at home (0.45 under 60, 0.8 at 60+; DSHS does not report place of death) and a 0.7 factor for 'healthy' (21% of hypothermia deaths involved alcohol or drugs). Result: about 20 at-home deaths at 15-59, or 2.1 micromorts per unmet day for the average adult and 1.5 for a healthy one. The steps (1.2, then 2.4) reproduce that over the Texas mean of 1.25 unmet days; the rise by day and the day-3 value are assumptions. The high end allows for Buffalo 2022, where 7 of the first 31 deaths were from lack of heat (https://text.npr.org/1145589871) among roughly 20,000 customers without power (unverified), about seven times the Texas rate per person-day, and for uncertified cold-related deaths (Texas excess deaths 702 against 246 certified, https://buzzfeednews.com/article/peteraldhous/texas-winter-storm-power-outage-death-toll).",
+        "steps": [
+          {"fromDay": 1, "lo": 0.3, "mid": 1.2, "hi": 5},
+          {"fromDay": 2, "lo": 0.5, "mid": 2.4, "hi": 10},
+          {"fromDay": 3, "lo": 0.6, "mid": 3.5, "hi": 20}
+        ]
+      },
+      "multipliers": [
+        {
+          "profile": "age60to74", "hardship": 1.2, "mortality": 14, "mortalityLo": 6, "mortalityHi": 30, "tag": "derived",
+          "basis": "Texas 2021: of 107 hypothermia deaths at 60+, about 52 fall in 60-74 (allocated by the DSHS all-cause age table, 100 deaths at 60-79 and 47 at 80+, assuming the 75-79 rate is 2.5 times the 60-74 rate). With 0.8 at home and 2.07M unmet person-days (13.0% of population), that is 20 micromorts per day, 14 times the healthy-adult base of 1.45. The split and the at-home share are guesses. Hardship multiplier is a guess."
+        },
+        {
+          "profile": "age75plus", "hardship": 1.5, "mortality": 40, "mortalityLo": 15, "mortalityHi": 100, "tag": "derived",
+          "basis": "Same derivation: about 55 hypothermia deaths at 75+, 0.8 at home, 0.76M unmet person-days (4.8% of population), so 58 micromorts per day, 40 times the base. Consistent in direction with Japan, where the median age of accidental hypothermia patients is 79 and 73.4% of cases start indoors (https://pmc.ncbi.nlm.nih.gov/articles/PMC8448583), and with US death rates of 4.6 per 100,000 at 85+ against 0.2 at 15-34 in urban areas (https://www.cdc.gov/mmwr/volumes/70/wr/mm7007a6.htm). Counting uncertified cold-related cardiovascular deaths could double or triple it."
+        },
+        {
+          "profile": "child", "hardship": 1.2, "mortality": 0.6, "tag": "guess",
+          "basis": "Only 8 of 246 Texas storm deaths from all causes were under 20, against about 27% of the population (DSHS). Cause by age is not published; I assume about 3 child hypothermia deaths at home over 3.4M unmet person-days, giving 0.9 micromorts per day against the base of 1.45. Infants are more vulnerable than older children but share a bed with adults."
+        },
+        {
+          "profile": "limitedMobility", "hardship": 1.3, "mortality": 3, "tag": "guess",
+          "basis": "No event data. In the Japanese registry, needing total assistance in daily activities is an independent predictor of death from accidental hypothermia, and half of cases follow an acute illness (https://pmc.ncbi.nlm.nih.gov/articles/PMC8448583). A person who cannot move about cannot generate heat, add layers or get up after a fall."
+        }
+      ],
+      "notes": "The curve is one line for all 'dangerous cold'. Texas was mild cold (lows near -10 C) in poorly insulated homes with thin bedding; Buffalo was severe cold with travel impossible. If the engine can scale by severity, the Texas-derived mid fits a 1-3 day event near -5 to -10 C. Quebec 1998 shows the other end: 4 hypothermia deaths among about 1.4 million customers out for days to weeks, because 89% of surveyed older people had a combustion heater and about 100,000 people went to shelters. It measures the effect of heat sources and relocation, not the risk in an unheated home."
+    }
+  ],
+  "items": [
+    {
+      "id": "sleeping-bag",
+      "name": "Sleeping bag or heavy blankets",
+      "spec": "One synthetic rectangular sleeping bag rated 20 F (-7 C) per person, or two heavy wool or fleece blankets per person. Used on the existing bed; no separate mat.",
+      "fromLonglistRows": [22],
+      "scalesWith": "person",
+      "unit": "sleeping bag for one person",
+      "price": {
+        "usdPerUnit": {"lo": 33, "mid": 60, "hi": 100, "tag": "data", "basis": "Kittery Trading Post product page read 19 Nov 2026: Slumberjack Middle Fork 20-30 F $59.95; the same page listed a 30 F bag at $32.99 and a 10-20 F bag at $99.99."},
+        "product": "Slumberjack Middle Fork 20-30 F synthetic sleeping bag",
+        "source": "https://www.kitterytradingpost.com/kelty/",
+        "verified": true
+      },
+      "lifeYears": {"lo": 10, "mid": 15, "hi": 25, "tag": "guess", "basis": "Longlist gives 10+ years; synthetic fill loses loft slowly if stored loose."},
+      "setupHours": {"lo": 0.2, "mid": 0.5, "hi": 1, "tag": "guess", "basis": "Choose and order; no learning needed."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Air once a year."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 2, "tag": "guess", "basis": "None expected."},
+      "everydayShare": {"lo": 0.05, "mid": 0.25, "hi": 0.6, "tag": "guess", "basis": "Camping and guests for some households; none for others."},
+      "volumeLitresPerUnit": 28,
+      "reliability": {"lo": 0.9, "mid": 0.97, "hi": 0.99, "tag": "guess", "basis": "Nothing to fail; the risk is not finding it."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": ["coldWinters"],
+      "effects": [
+        {"type": "capability", "capability": "passiveWarmth", "notes": "The reduce effect below is the quantified form of this capability; do not count both."},
+        {
+          "type": "reduce", "target": "warmth", "hazards": ["all"],
+          "fractionRemoved": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Mortality. Heat balance: asleep at 40 W/m2 with about 32 W/m2 of dry heat loss, comfort needs (33 - T)/(0.155 x 32) clo: 4.6 clo at 10 C, 5.6 at 5 C, 6.7 at 0 C. Ordinary bedding measures 0.90-4.89 clo (Lin and Deng 2008, https://research.polyu.edu.hk/en/publications/a-study-on-the-thermal-comfort-in-sleeping-environments-in-the-su-2/), so it stops sufficing near 9 C; a 20 F bag supplies roughly 6-7 clo. Physically the bag closes most of the gap, but a cold-climate household can already pile up duvets and coats, and many deaths follow falls, acute illness or not noticing the cold. Hence 0.3, not 0.8."},
+          "hardshipFractionRemoved": {"lo": 0.1, "mid": 0.25, "hi": 0.5, "tag": "guess", "basis": "Warm nights and a warm wrap by day, but the house stays cold and the person is confined to the bag."},
+          "adherence": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Most owners would use it once the house is cold; frail or confused people may not."},
+          "notes": "fractionRemoved is for mortality; hardshipFractionRemoved (extra field) is for hardship. Relative to a household that already wears every layer and uses all its ordinary bedding."
+        }
+      ],
+      "evidence": [
+        {"claim": "Measured total insulation of ordinary bedding systems ranges from 0.90 to 4.89 clo.", "source": "https://research.polyu.edu.hk/en/publications/a-study-on-the-thermal-comfort-in-sleeping-environments-in-the-su-2/", "year": 2008, "verified": true},
+        {"claim": "Four hours seated at 6 C in 1.5 clo lowered core temperature in healthy volunteers, more in those aged 63-70 (0.4 C); the authors suggest 15 C as the minimum for older people (Collins 1985, summarised in the Public Health England review).", "source": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/468196/Min_temp_threshold_for_homes_in_winter.pdf", "year": 2014, "verified": true},
+        {"claim": "Texas officials list 'not wearing appropriate clothing or enough layering' among risk factors for the 158 hypothermia deaths.", "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf", "year": 2021, "verified": true},
+        {"claim": "Older people with low body temperature at home were less aware of being cold.", "source": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/468196/Min_temp_threshold_for_homes_in_winter.pdf", "year": 2014, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Value depends almost entirely on age: for two adults under 60 the item removes cents of expected harm a year; for people over 75 it is roughly 40 times more. In a warm-climate home with thin bedding (the Texas case) the fraction removed would be higher, perhaps 0.5."
+    },
+    {
+      "id": "warm-layers",
+      "name": "Warm layers",
+      "spec": "Per person: thermal base-layer top and bottom, warm hat, gloves, two pairs of thick socks, for anyone who does not already own them.",
+      "fromLonglistRows": [23],
+      "scalesWith": "person",
+      "unit": "set of layers for one person",
+      "price": {
+        "usdPerUnit": {"lo": 20, "mid": 45, "hi": 100, "tag": "guess", "basis": "Longlist estimate $50-100; budget synthetic base layers sell for about $10 a piece. No retailer page could be opened."},
+        "product": "Synthetic thermal top and bottom, fleece hat, liner gloves, wool-blend socks",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 15, "tag": "guess", "basis": "Clothing in regular winter use."},
+      "setupHours": {"lo": 0.2, "mid": 0.5, "hi": 1, "tag": "guess", "basis": "Check what each person owns; buy the gaps."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0, "hi": 0.2, "tag": "guess", "basis": "None beyond normal laundry."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 2, "tag": "guess", "basis": "None expected."},
+      "everydayShare": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Worn every winter in a cold climate; the longlist rates everyday use as high."},
+      "volumeLitresPerUnit": 5,
+      "reliability": {"lo": 0.9, "mid": 0.97, "hi": 0.99, "tag": "guess", "basis": "Nothing to fail."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": ["coldWinters"],
+      "effects": [
+        {"type": "capability", "capability": "passiveWarmth", "notes": "Quantified by the reduce effect below; do not count both."},
+        {
+          "type": "reduce", "target": "warmth", "hazards": ["all"],
+          "fractionRemoved": {"lo": 0.02, "mid": 0.1, "hi": 0.25, "tag": "guess", "basis": "Mortality. Seated at 58 W/m2 a person needs (33 - T)/(0.155 x 45) clo: 3.3 clo at 10 C, 4.0 at 5 C. Indoor winter clothing is 1.0-1.3 clo (https://en.wikipedia.org/wiki/Clothing_insulation); a base layer, hat and gloves add about 0.5-1 clo and cover the head and hands. Most cold-climate households own these already, so the marginal effect is small."},
+          "hardshipFractionRemoved": {"lo": 0.05, "mid": 0.15, "hi": 0.3, "tag": "guess", "basis": "Lets people move about the house and do tasks in comfort, which a sleeping bag does not."},
+          "adherence": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "People put on clothes when cold."},
+          "notes": "fractionRemoved is for mortality; hardshipFractionRemoved (extra field) is for hardship. Applies only to the share of households missing these items; for a household that owns them the item is already in the baseline and its value is zero."
+        }
+      ],
+      "evidence": [
+        {"claim": "A typical indoor winter ensemble (trousers, long-sleeved shirt, sweater, T-shirt) is about 1.0 clo; 1 clo = 0.155 m2K/W.", "source": "https://en.wikipedia.org/wiki/Clothing_insulation", "year": 2026, "verified": true},
+        {"claim": "Texas officials list inadequate clothing or layering among hypothermia risk factors in 2021.", "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf", "year": 2021, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Candidate for merging into the sleeping-bag entry as one 'passive warmth' bundle. I kept it separate because its everyday share is so different."
+    },
+    {
+      "id": "mylar-blankets",
+      "name": "Mylar blankets",
+      "spec": "Two aluminised emergency blankets per person.",
+      "fromLonglistRows": [24],
+      "scalesWith": "person",
+      "unit": "blanket",
+      "ladder": [{"label": "2 per person", "units": 2}],
+      "price": {
+        "usdPerUnit": {"lo": 1.5, "mid": 4, "hi": 7, "tag": "derived", "basis": "SOL One Person Survival Blanket $6.99 on the Kittery Trading Post SOL page (read 19 Nov 2026) is the top of the range; plain mylar blankets sell in multipacks at about $2 each (longlist estimate $2-5, not verified)."},
+        "product": "SOL One Person Survival Blanket ($6.99); generic mylar multipacks are cheaper",
+        "source": "https://www.kitterytradingpost.com/brands/SOL.html",
+        "verified": true
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 20, "tag": "guess", "basis": "Indefinite shelf life per the longlist; creases weaken thin film."},
+      "setupHours": {"lo": 0.05, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Order and put away."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0, "hi": 0.1, "tag": "guess", "basis": "None."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0.05, "tag": "guess", "basis": "No everyday use."},
+      "volumeLitresPerUnit": 0.1,
+      "reliability": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Tears easily, hard to keep wrapped, and owners rarely know to put it inside other bedding."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": ["coldWinters"],
+      "effects": [
+        {
+          "type": "reduce", "target": "warmth", "hazards": ["all"],
+          "fractionRemoved": {"lo": 0, "mid": 0.03, "hi": 0.1, "tag": "guess", "basis": "Mortality. Outdoors on a torso model a space blanket cut the one-hour temperature drop from 11.6 C to 4.5 C, better than one ambulance blanket (6.1 C) and worse than bubble wrap (EMJ 2016, read via Europe PMC, https://doi.org/10.1136/emermed-2015-204769). It works as a wind and vapour barrier. In a home there is no wind and ordinary bedding already gives several clo, so the gain is small."},
+          "hardshipFractionRemoved": {"lo": 0, "mid": 0.02, "hi": 0.08, "tag": "guess", "basis": "Noisy, clammy, little added comfort over blankets."},
+          "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Many owners would not think to use it at home."},
+          "notes": "fractionRemoved is for mortality; hardshipFractionRemoved (extra field) is for hardship."
+        },
+        {"type": "other", "description": "Its real use is away from home: stranded in a car or outdoors in wind, where it replaces bedding the person does not have. That value belongs with the car kit and go-bag entries, not with warmth at home."}
+      ],
+      "evidence": [
+        {"claim": "Torso-model test outdoors: mean one-hour temperature drop 4.5 C with a space blanket, 6.1 C with an ambulance blanket, 11.6 C with nothing; no device prevented heat loss.", "source": "https://doi.org/10.1136/emermed-2015-204769", "year": 2016, "verified": true},
+        {"claim": "A 1997 literature review found the space blanket had fallen from favour for treating hypothermia (search snippet only).", "source": "https://pubmed.ncbi.nlm.nih.gov/9325662/", "year": 1997, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "I recommend dropping this as a home entry and folding it into the go-bag and car-kit bundles."
+    },
+    {
+      "id": "indoor-propane-heater",
+      "name": "Indoor-rated propane heater",
+      "spec": "Portable radiant propane heater certified for indoor use, 4,000/9,000 BTU per hour, with oxygen-depletion and tip-over shut-offs, run on 1-lb cylinders in one closed room with a window cracked.",
+      "fromLonglistRows": [25],
+      "scalesWith": "household",
+      "unit": "heater",
+      "price": {
+        "usdPerUnit": {"lo": 76, "mid": 115, "hi": 145, "tag": "data", "basis": "Kittery Trading Post product page read 19 Nov 2026: $119.99. Search snippets show $75.99 to $145.43 at other retailers."},
+        "product": "Mr. Heater Portable Buddy MH9BX",
+        "source": "https://www.kitterytradingpost.com/mr-heater-mh9bbx-portable-buddy-heater",
+        "verified": true
+      },
+      "lifeYears": {"lo": 8, "mid": 12, "hi": 20, "tag": "guess", "basis": "Simple appliance used a few days a decade; pilot and thermocouple assemblies foul with age."},
+      "setupHours": {"lo": 1, "mid": 1.5, "hi": 3, "tag": "guess", "basis": "Buy, read the manual, test-fire once, decide which room and where the CO alarm goes."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.3, "hi": 0.5, "tag": "guess", "basis": "Test-fire before each winter."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 1, "hi": 3, "tag": "guess", "basis": "A little fuel for the yearly test."},
+      "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.4, "tag": "guess", "basis": "Garage, workshop or camping use for some owners."},
+      "volumeLitresPerUnit": 25,
+      "reliability": {"lo": 0.7, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Pilot or oxygen-sensor faults, unfamiliarity under stress, and the sensor shutting the unit off above about 7,000 ft."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": ["coldWinters"],
+      "effects": [
+        {"type": "capability", "capability": "heatSource", "notes": "Heats one room, not the home: 4,000 BTU/h is 1.17 kW and 9,000 BTU/h is 2.6 kW. A small closed room losing 80-120 W per kelvin is lifted 10-15 C on low and 20-30 C on high. The retailer page gives 'up to 225 sq. ft.'."},
+        {"type": "other", "description": "Carbon monoxide and fire risk while in use, the CO-alarm pairing and any credit for displacing ovens and grills as improvised heat are parameterised by the combustion researcher. This entry carries no sideRisk so that it is not counted twice. Some leases and local codes forbid unvented propane heaters in flats."}
+      ],
+      "evidence": [
+        {"claim": "Mr. Heater Portable Buddy: 4,000-9,000 BTU per hour, 3 hours at maximum and 6 hours at minimum on one cylinder, oxygen-depletion sensor and tip-over shut-off, sold as indoor-safe, $119.99.", "source": "https://www.kitterytradingpost.com/mr-heater-mh9bbx-portable-buddy-heater", "year": 2026, "verified": true},
+        {"claim": "Quebec 1998: 89.3% of surveyed people aged 65+ in the worst-hit region used combustion appliances and only 18.5% were exposed to indoor temperatures below 5 C; a quarter of users used them unsafely.", "source": "https://constellation.uqac.ca/5905/1/CSLes%20personnes%20%C3%A2g%C3%A9es%20de%20la%20Mont%C3%A9r%C3%A9gie%20et%20la%20temp%C3%AAte%20de%20verglas%20de%20janvier%201997%2C.pdf", "year": 2007, "verified": true},
+        {"claim": "Quebec 1998: 4 hypothermia deaths among 21 storm deaths by 18 January, against 6 from carbon monoxide and 5 from fire.", "source": "https://www.canadianunderwriter.ca/insurance/retrospective-feature-on-ice-storm-98-available-on-iclr-website-1001968168/", "year": 1998, "verified": true},
+        {"claim": "Texas 2021: of those who stayed home without power, 26% heated with a gas oven or cooktop, 8% with a grill or smoker indoors and 5% with an outdoor propane heater indoors.", "source": "https://www.uh.edu/hobby/winter2021/storm.pdf", "year": 2021, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "Useless without the fuel entry. A household with a working wood stove or fireplace insert already has heatSource and should not be offered this."
+    },
+    {
+      "id": "heater-fuel-propane",
+      "name": "Propane cylinders for the heater",
+      "spec": "1-lb (16.4 oz) disposable propane cylinders. Each runs the heater about 5.5 hours on low.",
+      "fromLonglistRows": [25],
+      "scalesWith": "household",
+      "unit": "1-lb propane cylinder",
+      "ladder": [
+        {"label": "2 cylinders: about 11 hours, under 1 day (the usual indoor storage limit)", "units": 2},
+        {"label": "6 cylinders: about 2 days", "units": 6},
+        {"label": "12 cylinders: about 5 days", "units": 12},
+        {"label": "24 cylinders: about 9 days", "units": 24}
+      ],
+      "price": {
+        "usdPerUnit": {"lo": 4.9, "mid": 5.5, "hi": 8.5, "tag": "guess", "basis": "Search snippets of Walmart listings: Coleman 16 oz 2-pack $9.87-10.47, 6-pack $41.99-48.97. The Walmart page itself returned a bot check."},
+        "product": "Coleman 16 oz propane cylinder, 2-pack",
+        "source": "https://www.walmart.com/ip/20971271",
+        "verified": false
+      },
+      "lifeYears": {"lo": 10, "mid": 15, "hi": 30, "tag": "guess", "basis": "Propane does not degrade; the limit is valve seals and rust."},
+      "setupHours": {"lo": 0.1, "mid": 0.3, "hi": 0.5, "tag": "guess", "basis": "Buy and find a legal place to store them."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.2, "tag": "guess", "basis": "Yearly glance for rust and leaks."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 1, "tag": "guess", "basis": "None expected."},
+      "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.5, "tag": "guess", "basis": "Shared with a camp stove or grill in some households."},
+      "volumeLitresPerUnit": 2,
+      "reliability": {"lo": 0.9, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Sealed cylinders rarely fail; some leak after first use."},
+      "lateBuyClass": "specialty",
+      "requires": ["heatSource"],
+      "conditions": ["coldWinters"],
+      "effects": [
+        {
+          "type": "supply", "need": "warmth", "amountPerUnit": 5.5, "amountUnit": "heater-hours at the low setting (4,000 BTU/h)",
+          "hoursPerCoveredDay": {"lo": 8, "mid": 14, "hi": 30, "tag": "guess", "basis": "Low setting through the waking day and off while asleep, as the maker instructs: about 14 h. Severe cold needs the high setting, which burns 2.25 times as fast, so up to 30 low-hours a day."},
+          "mortalityRemovedWhileCovered": {"lo": 0.6, "mid": 0.85, "hi": 0.97, "tag": "guess", "basis": "A room held at 12-18 C by day removes the cold stress; nights are spent in the pre-warmed room under ordinary bedding. The rest is night cooling and people who stay outside the heated room."},
+          "hardshipRemovedWhileCovered": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "One warm room, the rest of the home still cold."},
+          "notes": "The three extra fields say how many hours make one covered day for the whole household and how much of the warmth harm a covered day removes. The heater serves everyone in the room, so fuel scales with the household, not with persons."
+        }
+      ],
+      "evidence": [
+        {"claim": "One 1-lb cylinder lasts 3 hours at maximum and 6 hours at minimum output (retailer page); Lowe's and Home Depot list 2.4 and 5.4 hours (search snippet).", "source": "https://www.kitterytradingpost.com/mr-heater-mh9bbx-portable-buddy-heater", "year": 2026, "verified": true},
+        {"claim": "NFPA 58 as adopted locally limits propane inside a dwelling to cylinders of 2.7 lb water capacity (1 lb of propane) and 5.4 lb in aggregate, that is two 1-lb cylinders per unit; Minnesota's fire marshal sheet gives 2 lb per dwelling unit (search snippets; the Minnesota page returned 404).", "source": "https://dps.mn.gov/divisions/sfm/fire-code/fire-code-information-topic/lp-gas-inside-buildings", "year": 2024, "verified": false},
+        {"claim": "Texas 2021: 9% of households bought extra propane and 11% extra wood before the storm.", "source": "https://www.uh.edu/hobby/winter2021/storm.pdf", "year": 2021, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "Steps above two cylinders need storage outside the dwelling (shed, detached garage, balcony box where allowed), so in practice they need a house. At about $1 per heater-hour a covered day costs $14 (8-30). A 20-lb cylinder is five times cheaper per hour but may not be used or stored indoors."
+    },
+    {
+      "id": "one-warm-room-plan",
+      "name": "One-warm-room plan",
+      "spec": "Decide in advance which small room the household retreats to; keep window-film or spare blankets, tape and a door draught-stop to seal it; everyone sleeps there; know the nearest warming centre; agree a place to stay with relatives or friends; arrange a daily check on any older person living alone.",
+      "fromLonglistRows": [27],
+      "scalesWith": "household",
+      "unit": "plan with sealing materials",
+      "price": {
+        "usdPerUnit": {"lo": 10, "mid": 25, "hi": 45, "tag": "guess", "basis": "Search snippets: 3M indoor window insulator kit for five windows $13.59 at Target and $15.99 at Fleet Farm; plus tape and a draught-stop. No retailer page opened."},
+        "product": "3M Indoor Window Insulator Kit (5 windows), tape, door draught-stop",
+        "source": "https://www.target.com/p/3m-5pk-indoor-window-insulator-kit/-/A-94632174",
+        "verified": false
+      },
+      "lifeYears": {"lo": 3, "mid": 5, "hi": 10, "tag": "guess", "basis": "Film and tape adhesive age; the plan itself needs revisiting as the household changes."},
+      "setupHours": {"lo": 1, "mid": 2, "hi": 4, "tag": "guess", "basis": "Choose the room, measure windows, buy materials, talk it through, make two phone calls."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.25, "hi": 0.5, "tag": "guess", "basis": "Review before each winter."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 3, "tag": "guess", "basis": "None expected."},
+      "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.5, "tag": "guess", "basis": "Window film cuts heating bills if fitted every winter; most will keep it in the box."},
+      "volumeLitresPerUnit": 3,
+      "reliability": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Plans are forgotten and materials go missing."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": ["coldWinters"],
+      "effects": [
+        {
+          "type": "reduce", "target": "warmth", "hazards": ["all"],
+          "fractionRemoved": {"lo": 0.03, "mid": 0.12, "hi": 0.3, "tag": "guess", "basis": "Mortality. Three people give off about 300 W; in a sealed small room losing 50-100 W per kelvin that holds the room 3-6 C above the rest of the house. Many households would crowd into one room anyway, so the credit is only for doing it sooner and sealing it better, plus the check on an older person living alone."},
+          "hardshipFractionRemoved": {"lo": 0.03, "mid": 0.1, "hi": 0.25, "tag": "guess", "basis": "A few degrees warmer, at the price of crowding."},
+          "adherence": {"lo": 0.4, "mid": 0.65, "hi": 0.9, "tag": "guess", "basis": "A plan made once is followed by perhaps two households in three."},
+          "notes": "fractionRemoved is for mortality; hardshipFractionRemoved (extra field) is for hardship. Works with body heat alone; with a heater the same sealed room cuts fuel use."
+        },
+        {"type": "other", "description": "The pre-agreed place to stay makes the leave option cheaper and more likely to be used: in Texas 2021, 62% of those who left went to a local relative or friend and 13% to a hotel. That effect belongs to the hazard's leave parameters."}
+      ],
+      "evidence": [
+        {"claim": "Texas 2021: 18% of those who lost power and heat left home; 44% of them went to a local relative, 18% to a friend, 13% to a hotel, 2% to a public shelter.", "source": "https://www.uh.edu/hobby/winter2021/storm.pdf", "year": 2021, "verified": true},
+        {"claim": "Texas officials list refusing to move to heated shelter among hypothermia risk factors.", "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf", "year": 2021, "verified": true},
+        {"claim": "Older people at home with low body temperature tended to live alone, with no heating in the bedroom (Fox 1973, in the Public Health England review).", "source": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/468196/Min_temp_threshold_for_homes_in_winter.pdf", "year": 2014, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Cheap enough that the time cost dominates. The part most likely to save a life is the check on an older relative or neighbour, which the model cannot credit because it leaves out harm outside the household."
+    },
+    {
+      "id": "indoor-tent",
+      "name": "Small tent as a room within a room",
+      "spec": "Freestanding two-person dome tent pitched on the bed or floor of the warm room, flysheet off, door partly open for air.",
+      "fromLonglistRows": [26],
+      "scalesWith": "household",
+      "unit": "two-person tent",
+      "price": {
+        "usdPerUnit": {"lo": 45, "mid": 80, "hi": 130, "tag": "derived", "basis": "Kittery Trading Post product page read 19 Nov 2026: Kelty Discovery Trail 2-Person Tent $129.95, which sets the top. The same retailer lists a Coleman 2-Person Pop-Up Tent at $79.99 (search snippet); budget dome tents run lower (not verified)."},
+        "product": "Kelty Discovery Trail 2-Person Tent ($129.95); cheaper dome tents serve equally",
+        "source": "https://www.kitterytradingpost.com/kelty-discovery-trail-2-person-tent/",
+        "verified": true
+      },
+      "lifeYears": {"lo": 6, "mid": 12, "hi": 20, "tag": "guess", "basis": "Little wear in storage; coatings degrade over a decade or two."},
+      "setupHours": {"lo": 0.5, "mid": 1, "hi": 2, "tag": "guess", "basis": "Buy and pitch once indoors to check that it fits the bed or floor."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "None unless used for camping."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 2, "tag": "guess", "basis": "None expected."},
+      "everydayShare": {"lo": 0, "mid": 0.3, "hi": 0.7, "tag": "guess", "basis": "Camping use for some households; the longlist rates everyday use as some."},
+      "volumeLitresPerUnit": 12,
+      "reliability": {"lo": 0.75, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "Missing poles, or the tent does not fit the room."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": ["coldWinters"],
+      "effects": [
+        {
+          "type": "reduce", "target": "warmth", "hazards": ["all"],
+          "fractionRemoved": {"lo": 0.02, "mid": 0.1, "hi": 0.25, "tag": "guess", "basis": "Mortality. Two sleepers give off about 150 W inside roughly 8 m2 of fabric passing 3-5 W/m2K, so the air inside sits 3-5 C above the room before ventilation losses. Korea's consumer agency measured about 3 C with a heating pad (search snippet only, https://www.asiae.co.kr/en/article/2022011110194318883). That is worth roughly one extra blanket, and a blanket draped over a table does much the same for nothing."},
+          "hardshipFractionRemoved": {"lo": 0.02, "mid": 0.08, "hi": 0.2, "tag": "guess", "basis": "Slightly warmer air to breathe at night; cramped."},
+          "adherence": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Owners who bought it for this purpose would mostly pitch it."},
+          "notes": "fractionRemoved is for mortality; hardshipFractionRemoved (extra field) is for hardship. Never run a combustion heater inside the tent."
+        },
+        {"type": "other", "description": "Also serves as shelter after evacuation or if the home is damaged; that value belongs to the displacement need."}
+      ],
+      "evidence": [
+        {"claim": "Korea Consumer Agency test of seven indoor heating tents: air inside about 3 C warmer than the room (20 C to 23 C) with a heating pad (search snippet; page would not load).", "source": "https://www.asiae.co.kr/en/article/2022011110194318883", "year": 2022, "verified": false},
+        {"claim": "Kelty Discovery Trail 2-Person Tent: freestanding dome, floor 87 by 54 inches, $129.95.", "source": "https://www.kitterytradingpost.com/kelty-discovery-trail-2-person-tent/", "year": 2026, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Weakest entry in the group on warmth alone. Its case rests on the displacement use and on camping."
+    }
+  ],
+  "excluded": [
+    {"what": "Sleeping mat (row 22)", "reason": "At home people sleep on a bed, which insulates from below. A mat matters only for evacuation; leave it to the go-bag entry."},
+    {"what": "Tarp (row 26)", "reason": "No use for warmth indoors that a blanket does not serve; storm-damage use belongs to shelter repair."},
+    {"what": "Firewood reserve (row 25)", "reason": "Applies only to homes with a working wood stove or fireplace, for which no condition id exists. Those homes already have heatSource and usually a winter's wood. See open questions."},
+    {"what": "Kerosene heater", "reason": "Alternative to the propane heater with the same role (heatSource plus fuel hours) and worse indoor-air and fuel-storage problems. One model entry is enough."},
+    {"what": "Chemical hand warmers, hot-water bottles", "reason": "Cents of benefit; The Prepared lists hand warmers as overrated. A hot-water bottle needs the cook capability and adds comfort, not safety."},
+    {"what": "Electric blanket run from a power station", "reason": "A 50-100 W heated blanket on a 1 kWh battery gives 10-20 hours and has no combustion risk. It belongs to the power group's entries; flagged in open questions."}
+  ],
+  "blockedSources": [
+    "https://www.khou.com/article/news/local/harris-county-texas-winter-freeze-deaths/285-23a2c5da-6724-4001-8752-c853800f5fac (403): share of Harris County freeze deaths that occurred inside a residence",
+    "https://www.wfaa.com/article/news/local/the-ones-we-lost-at-least-22-people-in-dallas-county-alone-lost-their-lives-to-the-february-2021-winter-storm/287-a8654006-deb6-434b-8751-b60cb9eaf55e (403): place and age of Dallas County's 22 storm deaths",
+    "https://cmaj.ca/content/cmaj/158/4/520.full.pdf (403): early count of Quebec ice-storm deaths by cause",
+    "https://wagner.nyu.edu/files/faculty/publications/NYU Buffalo Blizzard Report - June2023_0.pdf (too large to fetch): customers without power and deaths at home in Buffalo, December 2022",
+    "https://rmi.org/insight/hours-of-safety-in-cold-weather (page loads but the figures are in a download): hours for five house types to fall below 40 F without heat",
+    "https://www.neilsberg.com/insights/texas-population-by-age (403): Texas age structure; I used its figures from a search snippet",
+    "https://mrheater.com/portable-buddy-heater.html (429): maker's run times and ventilation requirements",
+    "https://dps.mn.gov/divisions/sfm/fire-code/fire-code-information-topic/lp-gas-inside-buildings (404): limit on propane cylinders stored inside a dwelling",
+    "https://www.asiae.co.kr/en/article/2022011110194318883 (connection reset): Korea Consumer Agency test of indoor tents",
+    "https://www.walmart.com/ip/20971271 (bot check), coleman.com, campmor.com, acehardware.com, basspro.com, rei.com, acmetools.com, harborfreight.com (403), tetongear.com, 32degrees.com, surviveoutdoorslonger.com (429): retail prices for propane cylinders, sleeping bags, base layers and blankets",
+    "ISO 23537-1 and ISO 11079 (paywalled): sleeping-bag rating model and required-insulation tables; I used a first-principles heat balance instead",
+    "https://pubmed.ncbi.nlm.nih.gov (cookie wall): abstracts were read through the Europe PMC API instead"
+  ],
+  "openQuestions": [
+    "Place of death for the 158 Texas hypothermia deaths. DSHS does not publish it. My at-home shares (0.45 under 60, 0.8 at 60+) move every mortality number in proportion; county medical-examiner records would settle it.",
+    "Severity. One curve serves all dangerous cold, but Buffalo 2022 suggests several times the Texas rate per person-day in severe cold with travel impossible. Should coldShare carry a severity scale?",
+    "Schema: I added hardshipFractionRemoved to reduce effects, hoursPerCoveredDay, mortalityRemovedWhileCovered and hardshipRemovedWhileCovered to the fuel supply effect, and mortalityLo/mortalityHi to two multipliers. The validator ignores them; the engine needs to decide whether to read them.",
+    "Stacking: the passive items overlap. Combined multiplicatively at my medians they remove about 0.42 of warmth mortality; I would cap the passive package at 0.6, because the remaining deaths follow falls, acute illness and not noticing the cold.",
+    "Homes that already have a wood stove, fireplace insert or gas fireplace (about a quarter of Texas respondents used one) already have heatSource. A condition such as woodHeat would let the model skip the heater for them and offer firewood instead.",
+    "Two 1-lb cylinders is the usual legal limit for propane stored inside a dwelling, and some leases ban unvented heaters. Should fuel ladder steps above two cylinders carry the house condition?",
+    "Combustion: this file gives the heater no sideRisk. The combustion researcher should supply it, decide whether the heater requires coAlarm, and consider crediting a safe heater with displacing ovens and grills used for heat.",
+    "Uncertified deaths: Texas excess deaths were about 702 against 246 certified, with heart-disease deaths up by more than 200 in the week. Whether cold-triggered cardiac deaths at home belong to warmth, medication or emergencyCare is a model-wide decision; I left them out of the medians and inside the high bounds.",
+    "Electric route to warmth (heated blanket on a power station) crosses into the power group and is not parameterised here."
+  ]
+}

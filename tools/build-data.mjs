@@ -95,9 +95,9 @@ for (const [id, spec] of Object.entries(config.needs)) {
 
 // ---- channels ----
 const channels = {};
-for (const id of config.channels) {
+for (const [id, spec] of Object.entries(config.channels)) {
   const r = R.channels[id];
-  channels[id] = { multipliers: r ? mults(r.multipliers) : undefined };
+  channels[id] = { multipliers: spec && spec.multipliers ? spec.multipliers : (r ? mults(r.multipliers) : undefined) };
 }
 
 // ---- hazards ----
@@ -107,6 +107,9 @@ function profileOf(h) {
     windows[k] = { pOccur: T(w.pOccur, { max: 1 }), days: w.days, tag: w.tag, basis: w.basis };
     if (w.shareTreatable) windows[k].shareTreatable = T(w.shareTreatable, { max: 1 });
   }
+  // The heat-wave researcher gives the length of the heat itself beside the
+  // canonical windows.
+  if (h.heat) windows.heat = { pOccur: T(h.heat.pOccur, { max: 1 }), days: h.heat.days, tag: h.heat.tag, basis: h.heat.basis };
   return {
     windows,
     coldShare: T(h.coldShare, { max: 1 }),
@@ -154,7 +157,9 @@ for (const [id, spec] of Object.entries(config.hazards)) {
     const locs = [...new Set(h.annualProbability.map((a) => a.location))].filter((l) => l !== 'all' && l !== 'us');
     for (const l of locs) byLocation[l] = profileOf(h);
   }
-  const { from, label, profile, patch, patchByLocation, ...rest } = spec;
+  const { from, label, patch, patchByLocation, ...rest } = spec;
+  delete rest.profile;
+  const profile = typeof spec.profile === 'function' ? spec.profile(R, T) : spec.profile;
   hazards[id] = {
     label,
     definition: primary ? primary.definition : spec.definition,
@@ -194,6 +199,16 @@ for (const spec of config.items) {
       else if (e.type === 'sideRisk') warn(`item ${spec.id}: side risk on ${e.channel} needs an explicit effect in the config`);
     }
   } else if (typeof effects === 'function') effects = effects(src, T);
+  // Side risks of combustion come from the fire researcher's table.
+  effects = effects.map((e) => {
+    if (e.type !== 'sideRisk' || typeof e.micromortsPerDay !== 'string') return e;
+    const key = e.micromortsPerDay.replace('SIDE:', '');
+    const row = R.sideRisks.find((x) => x.channel === e.channel && config.sideRisks[key].test(x.activity));
+    if (!row) { warn(`item ${spec.id}: no side-risk row for ${key}`); return null; }
+    return { ...e, micromortsPerDay: T(row.micromortsPerDayOfUse) };
+  }).filter(Boolean);
+  // Fields given as functions draw on other research items.
+  for (const [k, v] of Object.entries(spec)) if (k !== 'effects' && typeof v === 'function') spec[k] = v(R.items, T);
   const price = spec.price !== undefined ? spec.price : T(src.price && src.price.usdPerUnit);
   if (price === undefined) { warn(`item ${spec.id}: no price`); continue; }
   const pickQ = (key, opts) => (spec[key] !== undefined ? spec[key] : T(src[key], opts));
@@ -213,6 +228,8 @@ for (const spec of config.items) {
     scalesWho: spec.scalesWho,
     ladder: spec.ladder !== undefined ? spec.ladder : src.ladder,
     price,
+    fixedPrice: spec.fixedPrice,
+    capitalFree: spec.capitalFree,
     lifeYears: pickQ('lifeYears'),
     setupHours: pickQ('setupHours'),
     upkeepHoursPerYear: pickQ('upkeepHoursPerYear'),

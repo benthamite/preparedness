@@ -1,0 +1,2270 @@
+{
+  "kind": "parameters",
+  "group": "cross-cutting",
+  "parameters": [
+    {
+      "id": "micromortValueUsd.us",
+      "definition": "Value of a one-in-a-million reduction in the risk of death for a US resident: the official value of a statistical life divided by one million, in November 2026 dollars. Population-average value, not adjusted for age.",
+      "unit": "USD",
+      "value": {
+        "lo": 6.8,
+        "mid": 14.6,
+        "hi": 22.3,
+        "tag": "derived",
+        "basis": "HHS standard values for 2026: VSL low $6.6M, central $14.1M, high $21.5M in 2025 dollars (https://aspe.hhs.gov/sites/default/files/documents/2d83af5823915d81871334ee08ad03d9/Standard-RIA-Values-2026.pdf, read). Multiplied by 1.035 to reach November 2026 prices (my CPI assumption) and divided by 1e6. US DOT's figure ($13.7M in 2024 dollars, recalled; DOT pages returned 403) gives the same central value after the same adjustment."
+      }
+    },
+    {
+      "id": "micromortValueUsd.westernEurope",
+      "definition": "As micromortValueUsd.us, for a resident of Western Europe (EU-15, UK, Switzerland, Norway), in November 2026 US dollars at market exchange rates.",
+      "unit": "USD",
+      "value": {
+        "lo": 3.5,
+        "mid": 7,
+        "hi": 11,
+        "tag": "guess",
+        "basis": "Three routes. (a) OECD 2025 meta-analysis: base VSL USD 8.4M for the EU and 8.5M for the US in 2022 dollars, income elasticity 1 (https://www.oecd.org/en/publications/mortality-risk-valuation-in-policy-assessment_76ca89a2-en/full-report/recommended-vsl-estimates-for-policy-analysis_9b41dca3.html; search snippet, page returned 403); about 9.4M in 2026 dollars. (b) Transfer from the US value at elasticity 1 with Western European GNI per capita about 0.55-0.6 of the US: 14.6 x 0.58 = 8.5. (c) Older European Commission and national practice (DG MOVE transport handbook about EUR 3.3M in 2016, UK about GBP 2.4M; both recalled) is about 4-5M today. Mid 7.0 is the geometric middle of 5 and 9.4; lo and hi span the routes."
+      }
+    },
+    {
+      "id": "micromortValueUsd.buenosAires",
+      "definition": "As micromortValueUsd.us, for a resident of the city of Buenos Aires, in November 2026 US dollars at the market exchange rate (the rate at which the household would actually pay for goods).",
+      "unit": "USD",
+      "value": {
+        "lo": 1,
+        "mid": 3,
+        "hi": 6,
+        "tag": "guess",
+        "basis": "Income-elasticity transfer: VSL_AR = VSL_US x (GNI per capita AR / US)^e. Atlas GNI per capita 2024: Argentina $13,530, US $83,490 (World Bank, https://data.worldbank.org/indicator/NY.GNP.PCAP.CD; search snippet), ratio 0.162. e = 1.0 (OECD 2025; Viscusi and Masterman 2017) gives 14.6 x 0.162 = 2.4; e = 1.5 (Robinson, Hammitt and O'Keeffe 2019 reference case, recalled) gives 14.6 x 0.065 = 0.95. City of Buenos Aires incomes are roughly 1.5 times the national average (my estimate), giving 3.6 at e = 1 and 2.7 at e = 1.2. A PPP income ratio (about 0.35) would give 5.1. Mid 3.0; lo and hi cover the elasticity, income premium and exchange-rate choices."
+      }
+    },
+    {
+      "id": "timeValueUsdPerHour.us",
+      "definition": "Value of an hour of unpaid (leisure or chore) time for an adult, November 2026 dollars.",
+      "unit": "USD per hour",
+      "value": {
+        "lo": 10.5,
+        "mid": 21,
+        "hi": 35,
+        "tag": "derived",
+        "basis": "HHS default for unpaid time: median pre-tax wage $24.43 less a 17% effective tax rate = $20.27 in 2025 dollars (https://aspe.hhs.gov/sites/default/files/documents/2d83af5823915d81871334ee08ad03d9/Standard-RIA-Values-2026.pdf, read); x 1.035 = $21.0. US DOT values personal travel time at 50% of median household income per hour, which also comes to about $19-20 (recalled). Lo is 50% of the HHS figure (the fraction transport appraisal applies to a personal wage); hi is the after-tax mean wage of an above-median earner."
+      }
+    },
+    {
+      "id": "timeValueUsdPerHour.westernEurope",
+      "definition": "As timeValueUsdPerHour.us, for Western Europe, November 2026 US dollars.",
+      "unit": "USD per hour",
+      "value": {
+        "lo": 7.5,
+        "mid": 15,
+        "hi": 26,
+        "tag": "guess",
+        "basis": "HHS method applied to European wages. Median gross hourly earnings 2022: EU EUR 14.9, Germany 19.4, Netherlands 19.0 (Eurostat Structure of Earnings Survey, https://ec.europa.eu/eurostat/statistics-explained/index.php/Earnings_statistics; search snippet); with France about 16.5, UK about 18, Italy 13, Spain 11 (recalled) the population-weighted Western European median is about EUR 16.4. Plus about 17% nominal growth to 2026 = 19.2; less about 29% income tax and employee contributions = 13.6; x 1.15 USD per EUR (assumed) = $15.6. Lo is half of that."
+      }
+    },
+    {
+      "id": "timeValueUsdPerHour.buenosAires",
+      "definition": "As timeValueUsdPerHour.us, for the city of Buenos Aires, November 2026 US dollars at the official exchange rate.",
+      "unit": "USD per hour",
+      "value": {
+        "lo": 2.5,
+        "mid": 5.5,
+        "hi": 10,
+        "tag": "guess",
+        "basis": "Average taxable wage of stable formal workers (RIPTE) ARS 1,915,879 a month in June 2026 (https://www.argentina.gob.ar/trabajo/seguridadsocial/ripte; search snippet), about ARS 2.15M by November; at ARS 1,555 per dollar (retail rate early November 2026, search snippet) = $1,380 a month = $8.1 an hour over 170 hours; less 17% employee contributions = $6.7. Informal workers (over a third of the workforce) earn roughly half, so the after-tax median across all workers is about $5-6. Lo is half the mid; hi is a professional's after-tax wage."
+      }
+    },
+    {
+      "id": "realDiscountRate",
+      "definition": "Real annual rate at which a household trades money now for money later; used for the capital recovery factor.",
+      "unit": "fraction per year",
+      "value": {
+        "lo": 0.01,
+        "mid": 0.03,
+        "hi": 0.07,
+        "tag": "data",
+        "basis": "US regulatory analysis uses 3% and 7% real (OMB Circular A-4 of 2003, as applied in https://aspe.hhs.gov/sites/default/files/documents/2d83af5823915d81871334ee08ad03d9/Standard-RIA-Values-2026.pdf, read). 3% is also the European Commission's social discount rate (recalled). Lo is the real after-tax return on safe savings; hi is the OMB upper rate, close to the real cost of consumer credit for a household that borrows."
+      }
+    },
+    {
+      "id": "storageCostUsdPerLitreYear.apartment",
+      "definition": "Annual cost of the marginal litre of storage space in an urban apartment (a closet shelf, under a bed), November 2026 dollars.",
+      "unit": "USD per litre per year",
+      "value": {
+        "lo": 0.02,
+        "mid": 0.07,
+        "hi": 0.26,
+        "tag": "guess",
+        "basis": "Average US apartment rent $1,730 a month (Apartments.com, April 2026; search snippet) over about 900 sq ft (recalled) = $1.92 per sq ft a month = $248 per square metre a year; I use $232 (between that and the Apartment List median of $1,390). Usable stack 1.8 m at 50% fill = 900 litres per square metre, so average floor space costs 232 / 900 = $0.26 per litre-year. Marginal dead space is worth about a quarter of average floor space (my judgment; range 10-100%): 0.26 x 0.25 = $0.065. Market check: self-storage at about $1.2-1.5 per sq ft a month, stacked 2 m at 60% fill, is $0.13-0.16 per litre-year (recalled prices). European city rents per square metre are similar to US ones and Buenos Aires about 40% lower (two-room flat ARS 898,154 a month in September 2026, Zonaprop via search snippet, about $12 per square metre a month), but flats are smaller, so I keep one value."
+      }
+    },
+    {
+      "id": "storageCostUsdPerLitreYear.house",
+      "definition": "Annual cost of the marginal litre of storage space in a detached or terraced house (garage, basement, attic, spare closet), November 2026 dollars.",
+      "unit": "USD per litre per year",
+      "value": {
+        "lo": 0.005,
+        "mid": 0.02,
+        "hi": 0.1,
+        "tag": "guess",
+        "basis": "US single-family rent about $1.2 per sq ft a month (about $2,200 for 1,800 sq ft; recalled) = $155 per square metre a year. Garage or unfinished basement space is valued at about 30% of living space: $47 per square metre a year, or 47 / 900 = $0.052 per litre-year on average. Houses usually have slack, so the marginal litre is worth about 40% of that: $0.02. Hi is living-space value at 60%; lo is a house with empty basement."
+      }
+    },
+    {
+      "id": "priceIndex.westernEurope",
+      "definition": "Price of the model's preparedness goods in Western Europe relative to the United States (US = 1), tax included, at market exchange rates.",
+      "unit": "ratio",
+      "value": {
+        "lo": 0.9,
+        "mid": 1.1,
+        "hi": 1.35,
+        "tag": "guess",
+        "basis": "No prices fetched. Judgment: branded outdoor and electronic goods cost 10-30% more than US pre-sales-tax prices because of 19-22% VAT (a Sawyer Mini is about EUR 30-35 against $29; recalled); FFP2 masks, bottled water and shelf-stable food are at or below US prices; US tariffs since 2025 have narrowed the gap on imported goods."
+      }
+    },
+    {
+      "id": "priceIndex.buenosAires",
+      "definition": "Price of the model's preparedness goods in Buenos Aires relative to the United States (US = 1), at the official exchange rate, for goods as sold on Mercado Libre or in local shops.",
+      "unit": "ratio",
+      "value": {
+        "lo": 1,
+        "mid": 1.4,
+        "hi": 2.3,
+        "tag": "guess",
+        "basis": "Samples at ARS 1,555 per dollar (search snippets; Mercado Libre product pages returned 403): generic battery CO alarm ARS 59,994 (6 x 9,999) = $39 against $25-35 in the US, ratio 1.1-1.5; portable CO detector ARS 89,900 = $58; Sawyer Mini filter ARS 209,033-242,576 = $134-156 through a cross-border reseller (Desertcart) against $29, ratio about 5, an upper bound for branded specialty imports with no local distributor. Staples (water, canned food, fuel, candles) are at or below US prices. Weighting generic locally stocked goods at 1.2-1.5, staples at 0.8-1.0 and branded imports at 2-5 gives about 1.4. Items differ by a factor of five, so an item-level override would be better than one index."
+      }
+    },
+    {
+      "id": "homePresence",
+      "definition": "Share of days on which the household is at home or close enough to reach its home supplies when an event begins. Quantiles are over my uncertainty about the population average, not over households.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.9,
+        "mid": 0.95,
+        "hi": 0.98,
+        "tag": "guess",
+        "basis": "Nights away: about 2.3 billion US domestic person-trips a year at about 1.8 nights each (BTS average stay 1.6-2.1 nights, search snippet; trip count recalled) = 12 nights per person, plus about 2-3 nights abroad = about 15 nights, or 4% of the year. Household members usually travel together, and daytime absence at work still leaves supplies within reach, so presence is about 0.95. Lower for frequent travellers and for hazards that block the way home (earthquake during working hours)."
+      }
+    },
+    {
+      "id": "shareWithCar.us",
+      "definition": "Share of urban US households with at least one car or light truck available.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.85,
+        "mid": 0.9,
+        "hi": 0.93,
+        "tag": "derived",
+        "basis": "92% of all US households have a vehicle (2023 ACS, via https://www.pewresearch.org/short-reads/2024/11/14/1-in-10-americans-rarely-or-never-drive-a-car/, read). Urban adults are 2.3 times as likely as suburban ones to seldom or never drive (18% against 7%, same page), so I take 0.90 for urban households; lo is central cities only."
+      }
+    },
+    {
+      "id": "shareWithCar.westernEurope",
+      "definition": "Share of urban Western European households with at least one car.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.5,
+        "mid": 0.65,
+        "hi": 0.78,
+        "tag": "guess",
+        "basis": "National shares are about 72-85% (Belgium 72.4%, Statbel via search snippet; Germany 77%, France 82%, UK 78%, recalled). Large cities are far lower (Brussels under 50% per the same snippet; Paris about 35%, Berlin and Amsterdam about 50%, London 56%, recalled) and mid-sized cities about 70%."
+      }
+    },
+    {
+      "id": "shareWithCar.buenosAires",
+      "definition": "Share of households in the city of Buenos Aires that own a car.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.33,
+        "mid": 0.4,
+        "hi": 0.48,
+        "tag": "guess",
+        "basis": "38.3% of city households owned a car in the 2012 Encuesta Anual de Hogares (Direccion General de Estadistica y Censos, https://www.estadisticaciudad.gob.ar; search snippet); no newer figure found. I assume little change since."
+      }
+    },
+    {
+      "id": "shareElectricCooking.us",
+      "definition": "Share of US households whose main cooktop is electric, so that cooking stops when the grid fails. Gas cooktops can be lit with a match; gas ovens usually cannot.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.55,
+        "mid": 0.6,
+        "hi": 0.68,
+        "tag": "guess",
+        "basis": "About 38% of US households cook with natural gas (EIA RECS 2020, https://www.eia.gov/pressroom/releases/press510.php; search snippet, page returned 503) and about 4% with propane (recalled), some of them alongside an electric appliance, leaving about 60% with an electric cooktop only."
+      }
+    },
+    {
+      "id": "shareElectricCooking.westernEurope",
+      "definition": "Share of Western European households whose main hob is electric (resistance, ceramic or induction).",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.5,
+        "mid": 0.6,
+        "hi": 0.7,
+        "tag": "guess",
+        "basis": "France 59% electric hobs (CLASP survey, https://www.clasp.ngo/research/all/consumer-survey-gas-electric-cooking/; search snippet); Italy 68-80% gas (same source). With Germany about 92%, Spain 70%, UK 42%, Netherlands 45% and the Nordic and Alpine countries about 90% electric (recalled), the population-weighted share is 0.62."
+      }
+    },
+    {
+      "id": "shareElectricCooking.buenosAires",
+      "definition": "Share of households in the city of Buenos Aires that cook mainly with electricity.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.13,
+        "mid": 0.17,
+        "hi": 0.22,
+        "tag": "guess",
+        "basis": "2022 census, city of Buenos Aires: electricity 14.8% (1.3% in 2010), mains gas 78.5% (https://estadisticaciudad.gob.ar/eyc/wp-content/uploads/2024/07/ir_2024_1877.pdf; search snippet). New buildings are all-electric, so I add about two points for 2026."
+      }
+    },
+    {
+      "id": "shareHeatingNeedsGrid.us",
+      "definition": "Share of US households whose main heating system stops when the grid fails (electric heating, heat pumps, and gas, oil or propane furnaces and boilers that need electric blowers, pumps, igniters or controls). Not net of secondary sources such as fireplaces.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.88,
+        "mid": 0.93,
+        "hi": 0.97,
+        "tag": "guess",
+        "basis": "Recalled from EIA RECS 2020: main heating fuel is electricity for about 41% of households and gas, propane or oil through central equipment for most of the rest; grid-independent main heating is limited to wood stoves (about 2%) and unpowered gas wall, floor or room heaters with standing pilots (about 3-5%, mostly older homes in the South and California). In Texas in 2021, 26% of those who stayed home heated with a gas oven or cooktop (https://www.uh.edu/hobby/winter2021/storm.pdf), which shows how few had a working alternative. Perhaps 20% of households, nearly all in houses, also have a fireplace or stove that works unpowered."
+      }
+    },
+    {
+      "id": "shareHeatingNeedsGrid.westernEurope",
+      "definition": "As shareHeatingNeedsGrid.us, for Western Europe.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.82,
+        "mid": 0.9,
+        "hi": 0.95,
+        "tag": "guess",
+        "basis": "Judgment. Gas and oil boilers with pumped radiators, district heating substations, heat pumps and direct electric heating all stop. Exceptions: log stoves as main heating (a few percent; a further fifth of households in France and Germany have one as a secondary source, mostly in houses) and bottled-gas room heaters in Spain and Portugal."
+      }
+    },
+    {
+      "id": "shareHeatingNeedsGrid.buenosAires",
+      "definition": "As shareHeatingNeedsGrid.us, for the city of Buenos Aires.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.35,
+        "mid": 0.5,
+        "hi": 0.65,
+        "tag": "guess",
+        "basis": "Judgment, no source found. Balanced-flue gas room heaters, which need no electricity, are the traditional main heating; the rest use reverse-cycle air conditioners, portable electric heaters or building central systems with electric pumps. Winters are mild (July mean minimum about 7-8 C), so cold exposure is modest in any case."
+      }
+    },
+    {
+      "id": "shareApartmentPumpedWater.us",
+      "definition": "Among apartment households, the share whose taps run dry within about a day of a building power failure even though the street main stays pressurised (buildings that rely on electric booster pumps or pumped roof tanks).",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.08,
+        "mid": 0.15,
+        "hi": 0.25,
+        "tag": "guess",
+        "basis": "Mains pressure serves roughly the first five or six floors; taller buildings need booster pumps. About a tenth of US apartment units are in buildings of seven or more storeys (recalled from the American Housing Survey), plus some mid-rise buildings in low-pressure zones. New York roof tanks held for less than a day in the 2003 blackout. Failure of the utility's own pumping is the hazard files' business, not this parameter."
+      }
+    },
+    {
+      "id": "shareApartmentPumpedWater.westernEurope",
+      "definition": "As shareApartmentPumpedWater.us, for Western Europe.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.12,
+        "mid": 0.25,
+        "hi": 0.45,
+        "tag": "guess",
+        "basis": "Mostly three- to six-storey blocks on mains pressure in Germany, France, the Netherlands and the UK, but communal booster pumps are common in Spain and Italy: in the April 2025 blackout Spanish buildings with pressure groups lost water above about the second or third floor (https://www.xatakahome.com/hogar/que-agua-salga-poca-fuerza-problemon-hay-muchas-soluciones-solo-legal-funciona-no-deja-secos-a-vecinos and the Malaga water company notice, search snippets)."
+      }
+    },
+    {
+      "id": "shareApartmentPumpedWater.buenosAires",
+      "definition": "As shareApartmentPumpedWater.us, for the city of Buenos Aires.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.7,
+        "mid": 0.85,
+        "hi": 0.95,
+        "tag": "guess",
+        "basis": "Judgment from how buildings are plumbed, no source found: apartment buildings take water into a ground-level cistern and pump it to a roof tank that feeds the flats by gravity, so when the pump stops the building has only the roof tank, typically half a day to a day of normal use. Only ground-floor units and low buildings on direct mains connection are spared."
+      }
+    },
+    {
+      "id": "shareWithAirConditioning.us",
+      "definition": "Share of US households with air conditioning (central or room units).",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.86,
+        "mid": 0.89,
+        "hi": 0.92,
+        "tag": "derived",
+        "basis": "88% of 123.5 million households (EIA RECS 2020, search snippet) and more than 90% (US Census Bureau, cited in https://www.carbonbrief.org/eight-facts-about-air-conditioning-amid-an-overheated-global-debate/, read). Much lower in a few places (Seattle, San Francisco: about half, recalled)."
+      }
+    },
+    {
+      "id": "shareWithAirConditioning.westernEurope",
+      "definition": "Share of Western European households with air conditioning.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.15,
+        "mid": 0.22,
+        "hi": 0.3,
+        "tag": "derived",
+        "basis": "Europe about 20% (IEA); Italy nearly 60%, Spain 41%, France 25%, Germany 6% (Verivox says 19% in 2024), UK under 5% (all from https://www.carbonbrief.org/eight-facts-about-air-conditioning-amid-an-overheated-global-debate/, read). Population-weighted with 20% for the Netherlands and 12% elsewhere: 0.23."
+      }
+    },
+    {
+      "id": "shareWithAirConditioning.buenosAires",
+      "definition": "Share of households in the city of Buenos Aires with air conditioning.",
+      "unit": "fraction",
+      "value": {
+        "lo": 0.55,
+        "mid": 0.68,
+        "hi": 0.8,
+        "tag": "guess",
+        "basis": "47.1% of households nationally (INDEC household energy survey 2017-18, via La Nacion, search snippet). The city is richer and hotter in summer than the national average and ownership has grown since, so I add about 20 points."
+      }
+    },
+    {
+      "id": "relocationUsdPerPersonDay.us",
+      "definition": "Money cost per person per day of staying away from home beyond normal living costs (lodging and the extra cost of meals), averaged over the ways people relocate. Excludes the hardship of displacement itself.",
+      "unit": "USD per person per day",
+      "value": {
+        "lo": 15,
+        "mid": 45,
+        "hi": 130,
+        "tag": "guess",
+        "basis": "Hotel route: GSA standard lodging rate for fiscal 2027 is $113 a night (https://www.federalregister.gov/documents/2026/09/10/2026-18439/maximum-per-diem-reimbursement-rates-for-the-continental-united-states-conus; search snippet), shared by 2.5 people = $45 each, plus meals out at part of the $68 meals rate less about $12 of groceries saved = about $35: $80 per person-day for a family, about $150 for one person alone. Friends-or-family route: about $15 for contributions and extra travel. Evacuation surveys put roughly 60% with friends or relatives, 30% in paid lodging and the rest in shelters (recalled): 0.6 x 15 + 0.3 x 95 + 0.1 x 10 = $38; I round up to 45 because multi-day events fill cheap rooms."
+      }
+    },
+    {
+      "id": "relocationUsdPerPersonDay.westernEurope",
+      "definition": "As relocationUsdPerPersonDay.us, for Western Europe, US dollars.",
+      "unit": "USD per person per day",
+      "value": {
+        "lo": 15,
+        "mid": 45,
+        "hi": 130,
+        "tag": "guess",
+        "basis": "No separate data found. Hotel rates and restaurant prices are close to US levels and the split between relatives and paid lodging is assumed the same."
+      }
+    },
+    {
+      "id": "relocationUsdPerPersonDay.buenosAires",
+      "definition": "As relocationUsdPerPersonDay.us, for Buenos Aires, US dollars.",
+      "unit": "USD per person per day",
+      "value": {
+        "lo": 6,
+        "mid": 20,
+        "hi": 60,
+        "tag": "guess",
+        "basis": "Judgment: mid-range hotels about $60-90 a night and meals out about $15-25 a day (recalled), and a larger share staying with family: 0.7 x 8 + 0.3 x 45 = $19."
+      }
+    },
+    {
+      "id": "relocationFixedUsdPerHousehold.us",
+      "definition": "One-off cost per household of leaving and returning: transport both ways and the adults' travel and packing time.",
+      "unit": "USD per household",
+      "value": {
+        "lo": 80,
+        "mid": 300,
+        "hi": 900,
+        "tag": "guess",
+        "basis": "300-mile round trip at $0.30 a mile marginal cost = $90; two adults x 5 hours of travel and packing x $21 = $210; total $300. Lo is a short drive to relatives counted at fuel cost only; hi is flights or a congested mass evacuation."
+      }
+    },
+    {
+      "id": "relocationFixedUsdPerHousehold.westernEurope",
+      "definition": "As relocationFixedUsdPerHousehold.us, for Western Europe, US dollars.",
+      "unit": "USD per household",
+      "value": {
+        "lo": 60,
+        "mid": 220,
+        "hi": 700,
+        "tag": "guess",
+        "basis": "Shorter distances and a third of urban households without a car: train or car for 200 km each way, about $100, plus two adults x 4 hours x $15 = $120."
+      }
+    },
+    {
+      "id": "relocationFixedUsdPerHousehold.buenosAires",
+      "definition": "As relocationFixedUsdPerHousehold.us, for Buenos Aires, US dollars.",
+      "unit": "USD per household",
+      "value": {
+        "lo": 30,
+        "mid": 110,
+        "hi": 350,
+        "tag": "guess",
+        "basis": "Bus or car to a city 300-400 km away: about $55 in fares or fuel plus two adults x 5 hours x $5.5 = $55."
+      }
+    },
+    {
+      "id": "aidArrivalDays",
+      "definition": "Days from the start of a major rich-country disaster until organised relief (water, food, shelter supplies) reaches the median affected household that needs it. The value is my uncertainty about that median. Across households and events I put the 10th percentile at 1 day, the median at 3, the 90th percentile at 7 and the 99th at 21 days.",
+      "unit": "days",
+      "value": {
+        "lo": 2,
+        "mid": 3,
+        "hi": 5,
+        "tag": "guess",
+        "basis": "Cases: Sandy 2012, city distribution points opened 3 days after landfall (recalled); Katrina 2005, relief and buses reached the Superdome on days 3-5 (prior-art.md); Texas 2021, mass water distribution from about day 4-5 while 63% reported difficulty finding bottled water (https://www.uh.edu/hobby/winter2021/storm.pdf); Helene 2024, officials still promising water and food on day 3, helicopter drops that day, Red Cross distribution centres running about day 10 (https://fortune.com/2024/10/01/supplies-north-carolina-plane-truck-mule-hurricane-helene-death-toll-130/ and Red Cross reports, search snippets); Andrew 1992, on day 8 a quarter of households depended on relief food, so relief was reaching them by then (https://www.cdc.gov/mmwr/preview/mmwrhtml/00017631.htm); Maria 2017, weeks for interior municipalities. The official '72 hours' rests on an assumption, not on measurement (prior-art.md). No systematic dataset exists."
+      }
+    },
+    {
+      "id": "hardshipPowerUsdPerHouseholdDay",
+      "definition": "Willingness to pay of a household with no backup to avoid one day without grid electricity, excluding risk of death, November 2026 dollars. Scaling with duration: the first 8 hours carry about 55% of the first day's cost ($29.42 of $53.68); from day 1 to about day 10 the cost per day is roughly constant; beyond two weeks there is no evidence. Does not include the one-off loss of refrigerated food.",
+      "unit": "USD per household per day",
+      "value": {
+        "lo": 35,
+        "mid": 65,
+        "hi": 170,
+        "tag": "derived",
+        "basis": "LBNL ICE 2.0: residential willingness to pay $1.90 momentary, $7.08 for 2 h, $29.42 for 8 h, $53.68 for 24 h (90% CI 49.98-57.38), rural cooperative members (https://eta-publications.lbl.gov/sites/default/files/2026-10/ice_2.0_nreca_final_report_28oct2026.pdf, read). Baik et al. 2020: $43-60 a day in 2018 dollars for partial backup through a 10-day winter blackout (https://doi.org/10.1038/s41560-020-0581-1, verified in prior-art.md), about $56-78 today. FEMA residential value $33.04 per person-day in 2022 dollars x 2.5 people x 1.14 = $94 (https://fema.gov/sites/default/files/documents/fema_standard-economic-values-methodology-report_2023.pdf, verified in prior-art.md). Mid 65 sits between ICE and FEMA; hi allows for willingness to accept exceeding willingness to pay by two to three times."
+      }
+    },
+    {
+      "id": "hardshipWaterUsdPerPersonDay",
+      "definition": "Welfare loss per person per day without any tap water, for all household uses (drinking, cooking, washing, flushing), excluding risk of death, November 2026 dollars. Scaling with duration: FEMA applies the same value to every day; I would halve it on day 1 (liquids and cistern water on hand) and hold it flat after that. Stored drinking water at 4 litres a day replaces only part of this loss, perhaps a third to a half.",
+      "unit": "USD per person per day",
+      "value": {
+        "lo": 40,
+        "mid": 85,
+        "hi": 160,
+        "tag": "derived",
+        "basis": "FEMA standard value for residential loss of potable water: $74.38 per person-day in 2022 dollars (welfare loss $66.26 plus $8.12 for bottled water at 6.6 gallons), or $138 including economic activity (https://fema.gov/sites/default/files/documents/fema_standard-economic-values-methodology-report_2023.pdf, verified in prior-art.md). x 1.14 for inflation to November 2026 (my CPI assumption) = $85 and $157. Lo is half the residential value."
+      }
+    },
+    {
+      "id": "ageMortalityMultiplier.child",
+      "definition": "Risk of death in a disaster for a child under 15 relative to an adult aged 15-59, all causes combined. Infants are well above this average and older children below it.",
+      "unit": "ratio",
+      "value": {
+        "lo": 0.03,
+        "mid": 0.15,
+        "hi": 0.5,
+        "tag": "derived",
+        "basis": "Rate ratios from deaths by age over population by age. Texas 2021: ages 0-19, 8 deaths in 8.25M against 90 in 15.5M aged 20-59: 0.17 (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf; population shares approximate). Katrina: under 18, 1 per 10,000 against about 6.6 for ages 18-59: 0.15 (https://doi.org/10.1097/DMP.0b013e31818aaf55, Table 2). British Columbia 2021: no deaths under 19 (https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf). Japan 2011 indirect deaths: 1 of 1,263 under 10: 0.08 (https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf). Ordinary all-cause mortality gives about 0.2."
+      }
+    },
+    {
+      "id": "ageMortalityMultiplier.age60to74",
+      "definition": "Risk of death in a disaster for a person aged 60-74 relative to an adult aged 15-59, all causes combined. Cold and injury sit at the low end, heat and interrupted care at the high end.",
+      "unit": "ratio",
+      "value": {
+        "lo": 3.5,
+        "mid": 7,
+        "hi": 13,
+        "tag": "derived",
+        "basis": "Texas 2021: ages 60-79, 100 deaths in 4.55M = 22.0 per million against 5.8 for ages 20-59: 3.8 (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf). Katrina: about 32 per 10,000 at 55-74 against 6.6: 4.8 (https://doi.org/10.1097/DMP.0b013e31818aaf55). British Columbia heat: 164 per million at 60-69 and 338 at 70-79 against 15.3 at 15-59, about 12 for 60-74 (https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf). Japan indirect deaths: about 10 (https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf; population shares approximate). New York 2003: 65-74 against under 65, 48 against 3.8 per million: 12.6 (https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729). Ordinary all-cause mortality: about 6."
+      }
+    },
+    {
+      "id": "ageMortalityMultiplier.age75plus",
+      "definition": "Risk of death in a disaster for a person aged 75 or over relative to an adult aged 15-59, all causes combined. About 10 for cold and injury, 45 or more for heat and for the indirect deaths of evacuation and interrupted care.",
+      "unit": "ratio",
+      "value": {
+        "lo": 9,
+        "mid": 25,
+        "hi": 75,
+        "tag": "derived",
+        "basis": "Texas 2021: ages 80+, 47 deaths in 0.85M = 55 per million against 5.8: 9.5 (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf). Katrina: 121 per 10,000 against 6.6: 18 (https://doi.org/10.1097/DMP.0b013e31818aaf55). New York 2003: 75+ against under 65: 87 against 3.8 per million = 23 (https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729). British Columbia heat: 747 per million at 80-89 and 1,388 at 90+ against 15.3: about 45 for 75+ (https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf). Japan indirect deaths: 80+ are 68% of deaths and about 8% of population: about 73 for 75+ (https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf). Ordinary all-cause mortality: about 30."
+      }
+    }
+  ],
+  "anchors": [
+    {
+      "event": "Texas winter storm, February 2021",
+      "cause": "all causes",
+      "deaths": {
+        "lo": 246,
+        "mid": 700,
+        "hi": 978,
+        "tag": "derived",
+        "basis": "Lo is the 246 deaths certified by the state (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf, read). Mid and hi are the BuzzFeed News excess-death estimate for the week ending 20 February, 702 (426-978) (https://www.kut.org/energy-environment/2021-05-27/texas-winter-storm-death-toll-could-be-much-higher-than-the-states-estimate-buzzfeed-review-found, read); the uncounted deaths were mostly medically vulnerable people with cardiovascular disease, diabetes or kidney problems."
+      },
+      "exposedPersons": {
+        "lo": 16000000,
+        "mid": 19000000,
+        "hi": 21000000,
+        "tag": "derived",
+        "basis": "People in homes that lost power: 69% of respondents (https://www.uh.edu/hobby/winter2021/storm.pdf; survey of the ERCOT area, about 90% of the state's 29.1 million) = 18-20 million; mid 19 million."
+      },
+      "exposureDays": {
+        "lo": 1.5,
+        "mid": 1.75,
+        "hi": 2.5,
+        "tag": "data",
+        "basis": "Mean time without power 42 hours, median 36 (https://www.uh.edu/hobby/winter2021/storm.pdf); hi allows for homes that stayed cold after power returned."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 4.69,
+        "mid": 21.1,
+        "hi": 40.8,
+        "tag": "derived",
+        "basis": "mid = 700 / (19,000,000 x 1.75) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf",
+      "notes": "Per Texas resident (29.1 million) rather than per person without power: 8.5 micromorts on the certified count, 24 on the excess estimate, over the whole event. The certified count gives 7.4 per person-day without power."
+    },
+    {
+      "event": "Texas winter storm, February 2021",
+      "cause": "cold",
+      "deaths": {
+        "lo": 161,
+        "mid": 300,
+        "hi": 640,
+        "tag": "derived",
+        "basis": "Lo is certified extreme-cold deaths: 158 hypothermia and 3 frostbite (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf). Hi applies the certified cold share (65.4%) to the upper excess estimate (978). Mid is halfway between 161 and 65.4% of the central excess estimate (459), on the view that part of the uncounted excess was cold-triggered cardiovascular death."
+      },
+      "exposedPersons": {
+        "lo": 16000000,
+        "mid": 19000000,
+        "hi": 21000000,
+        "tag": "derived",
+        "basis": "People in homes that lost power: 69% of respondents (https://www.uh.edu/hobby/winter2021/storm.pdf; survey of the ERCOT area, about 90% of the state's 29.1 million) = 18-20 million; mid 19 million."
+      },
+      "exposureDays": {
+        "lo": 1.5,
+        "mid": 1.75,
+        "hi": 2.5,
+        "tag": "data",
+        "basis": "Mean time without power 42 hours, median 36 (https://www.uh.edu/hobby/winter2021/storm.pdf); hi allows for homes that stayed cold after power returned."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 3.07,
+        "mid": 9.02,
+        "hi": 26.7,
+        "tag": "derived",
+        "basis": "mid = 300 / (19,000,000 x 1.75) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf",
+      "notes": "Certified count alone gives 4.8. Of the 158 hypothermia deaths 107 (67.7%) were aged 60 or over and 13.9% involved alcohol. Some died outdoors or homeless, so not every death belongs to a home without power. Overnight lows were about -7 C in Houston and -15 C or below in north Texas (recalled)."
+    },
+    {
+      "event": "Texas winter storm, February 2021",
+      "cause": "cold (certified hypothermia, ages under 60)",
+      "deaths": {
+        "lo": 45,
+        "mid": 51,
+        "hi": 150,
+        "tag": "derived",
+        "basis": "158 hypothermia deaths less 107 aged 60 or over = 51 (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf); lo drops a share for deaths outdoors unrelated to home power, hi scales by the excess-to-certified ratio."
+      },
+      "exposedPersons": {
+        "lo": 13000000,
+        "mid": 15600000,
+        "hi": 17200000,
+        "tag": "derived",
+        "basis": "People under 60 in homes that lost power: 82% of 19 million (Texas age structure, approximate)."
+      },
+      "exposureDays": {
+        "lo": 1.5,
+        "mid": 1.75,
+        "hi": 2.5,
+        "tag": "data",
+        "basis": "Mean time without power 42 hours, median 36 (https://www.uh.edu/hobby/winter2021/storm.pdf); hi allows for homes that stayed cold after power returned."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 1.05,
+        "mid": 1.87,
+        "hi": 7.69,
+        "tag": "derived",
+        "basis": "mid = 51 / (15,600,000 x 1.75) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf",
+      "notes": "The closest check on a healthy-adult warmth curve, but it still includes children (who rarely died), alcohol- and drug-involved deaths (about 16% of hypothermia deaths) and people sleeping rough. Restricting the denominator to adults 20-59 gives about 2.9."
+    },
+    {
+      "event": "Texas winter storm, February 2021",
+      "cause": "co",
+      "deaths": {
+        "lo": 17,
+        "mid": 19,
+        "hi": 30,
+        "tag": "data",
+        "basis": "19 carbon monoxide deaths, 18 indirect and 1 possible, from generators, grills, heaters, vehicles run in enclosed spaces and iced-over vents (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf); hi allows for deaths certified as something else."
+      },
+      "exposedPersons": {
+        "lo": 16000000,
+        "mid": 19000000,
+        "hi": 21000000,
+        "tag": "derived",
+        "basis": "People in homes that lost power: 69% of respondents (https://www.uh.edu/hobby/winter2021/storm.pdf; survey of the ERCOT area, about 90% of the state's 29.1 million) = 18-20 million; mid 19 million."
+      },
+      "exposureDays": {
+        "lo": 1.5,
+        "mid": 1.75,
+        "hi": 2.5,
+        "tag": "data",
+        "basis": "Mean time without power 42 hours, median 36 (https://www.uh.edu/hobby/winter2021/storm.pdf); hi allows for homes that stayed cold after power returned."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.324,
+        "mid": 0.571,
+        "hi": 1.25,
+        "tag": "derived",
+        "basis": "mid = 19 / (19,000,000 x 1.75) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf",
+      "notes": "Per person in a home without power. Of those who stayed home 26% heated with a gas oven or cooktop and 8% used a grill or outdoor stove indoors; if about 5 million people were exposed to indoor combustion for 1.75 days the risk is about 2 micromorts per user-day."
+    },
+    {
+      "event": "Texas winter storm, February 2021",
+      "cause": "fire",
+      "deaths": {
+        "lo": 7,
+        "mid": 10,
+        "hi": 15,
+        "tag": "data",
+        "basis": "10 fire deaths, 7 indirect and 3 possible, in house fires or from space heaters near combustibles (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf)."
+      },
+      "exposedPersons": {
+        "lo": 16000000,
+        "mid": 19000000,
+        "hi": 21000000,
+        "tag": "derived",
+        "basis": "People in homes that lost power: 69% of respondents (https://www.uh.edu/hobby/winter2021/storm.pdf; survey of the ERCOT area, about 90% of the state's 29.1 million) = 18-20 million; mid 19 million."
+      },
+      "exposureDays": {
+        "lo": 1.5,
+        "mid": 1.75,
+        "hi": 2.5,
+        "tag": "data",
+        "basis": "Mean time without power 42 hours, median 36 (https://www.uh.edu/hobby/winter2021/storm.pdf); hi allows for homes that stayed cold after power returned."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.133,
+        "mid": 0.301,
+        "hi": 0.625,
+        "tag": "derived",
+        "basis": "mid = 10 / (19,000,000 x 1.75) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf",
+      "notes": "About twelve times the ordinary US home-fire death rate of roughly 0.023 micromorts per person-day (about 2,800 deaths a year, recalled)."
+    },
+    {
+      "event": "Texas winter storm, February 2021",
+      "cause": "interrupted care or devices",
+      "deaths": {
+        "lo": 25,
+        "mid": 60,
+        "hi": 300,
+        "tag": "derived",
+        "basis": "Lo is the 25 certified deaths from exacerbation of pre-existing illness: respiratory 8, renal 6, cardiovascular 5, other 6; causes named were disrupted dialysis or oxygen, frozen devices and medication, disrupted hospice care and loss of power to life-sustaining equipment (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf). Mid and hi are my guess at how much of the roughly 450 uncounted excess deaths belongs here."
+      },
+      "exposedPersons": {
+        "lo": 16000000,
+        "mid": 19000000,
+        "hi": 21000000,
+        "tag": "derived",
+        "basis": "People in homes that lost power: 69% of respondents (https://www.uh.edu/hobby/winter2021/storm.pdf; survey of the ERCOT area, about 90% of the state's 29.1 million) = 18-20 million; mid 19 million."
+      },
+      "exposureDays": {
+        "lo": 1.5,
+        "mid": 1.75,
+        "hi": 2.5,
+        "tag": "data",
+        "basis": "Mean time without power 42 hours, median 36 (https://www.uh.edu/hobby/winter2021/storm.pdf); hi allows for homes that stayed cold after power returned."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.476,
+        "mid": 1.8,
+        "hi": 12.5,
+        "tag": "derived",
+        "basis": "mid = 60 / (19,000,000 x 1.75) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf",
+      "notes": "For the powerDependent profile: if about 10 of the 25 were device, oxygen or dialysis deaths among roughly 150,000 electricity-dependent people in homes without power (0.9% of population, HHS emPOWER share, recalled), that is about 40 micromorts per dependent person-day, uncertain by a factor of four either way."
+    },
+    {
+      "event": "Texas winter storm, February 2021",
+      "cause": "injury",
+      "deaths": {
+        "lo": 31,
+        "mid": 31,
+        "hi": 45,
+        "tag": "data",
+        "basis": "22 motor-vehicle deaths and 9 fall deaths, including one fall through ice (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf)."
+      },
+      "exposedPersons": {
+        "lo": 28000000,
+        "mid": 29100000,
+        "hi": 29500000,
+        "tag": "data",
+        "basis": "All Texas residents (2020 census 29.1 million), since road and ice deaths do not depend on losing power."
+      },
+      "exposureDays": {
+        "lo": 4,
+        "mid": 5,
+        "hi": 7,
+        "tag": "guess",
+        "basis": "Days of ice and snow, about 14-19 February."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.15,
+        "mid": 0.213,
+        "hi": 0.402,
+        "tag": "derived",
+        "basis": "mid = 31 / (29,100,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf",
+      "notes": "Below the ordinary Texas road-death rate of about 0.4 micromorts per person-day; listed for completeness."
+    },
+    {
+      "event": "Texas winter storm, February 2021",
+      "cause": "water or food",
+      "deaths": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 5,
+        "tag": "data",
+        "basis": "No death was attributed to thirst, hunger or contaminated water (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf); hi is an allowance for unrecognised cases."
+      },
+      "exposedPersons": {
+        "lo": 12000000,
+        "mid": 14300000,
+        "hi": 15000000,
+        "tag": "derived",
+        "basis": "People who lost running water: 49% of 29.1 million (https://www.uh.edu/hobby/winter2021/storm.pdf); 14.6 million were under disrupted supply by another count (base-rates.md)."
+      },
+      "exposureDays": {
+        "lo": 1.5,
+        "mid": 2.2,
+        "hi": 5,
+        "tag": "data",
+        "basis": "Mean 52 hours without running water (https://www.uh.edu/hobby/winter2021/storm.pdf); boil notices ran longer."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0.278,
+        "tag": "derived",
+        "basis": "mid = 0 / (14,300,000 x 2.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf",
+      "notes": "75% reported difficulty getting food and 63% bottled water, yet nobody is known to have died of it."
+    },
+    {
+      "event": "New York City blackout, August 2003",
+      "cause": "all causes",
+      "deaths": {
+        "lo": 46,
+        "mid": 90,
+        "hi": 138,
+        "tag": "data",
+        "basis": "Excess deaths on 14-15 August: 90 (95% CI 46-138), 28% above the 319 expected (https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729, read). The official count was 6."
+      },
+      "exposedPersons": {
+        "lo": 8000000,
+        "mid": 8100000,
+        "hi": 8200000,
+        "tag": "guess",
+        "basis": "New York City residents in 2003, about 8.1 million (recalled); the paper gives no denominator."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 1.2,
+        "hi": 2,
+        "tag": "guess",
+        "basis": "Power failed at 16:11 on 14 August and returned to most of the city within about 29 hours (recalled); excess deaths were measured over 14-15 August."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 2.8,
+        "mid": 9.26,
+        "hi": 17.3,
+        "tag": "derived",
+        "basis": "mid = 90 / (8,100,000 x 1.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729",
+      "notes": "11 micromorts per resident for the whole event. By age: under 65, 27 excess; 65-74, 24; 75 and over, 39. Hot but not a heat wave."
+    },
+    {
+      "event": "New York City blackout, August 2003",
+      "cause": "heat and interrupted care (non-accidental disease deaths)",
+      "deaths": {
+        "lo": 37,
+        "mid": 78,
+        "hi": 125,
+        "tag": "data",
+        "basis": "Non-accidental excess 78 (37-125): cardiovascular 38, respiratory 3, other 37 (https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729)."
+      },
+      "exposedPersons": {
+        "lo": 8000000,
+        "mid": 8100000,
+        "hi": 8200000,
+        "tag": "guess",
+        "basis": "New York City residents in 2003, about 8.1 million (recalled); the paper gives no denominator."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 1.2,
+        "hi": 2,
+        "tag": "guess",
+        "basis": "Power failed at 16:11 on 14 August and returned to most of the city within about 29 hours (recalled); excess deaths were measured over 14-15 August."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 2.26,
+        "mid": 8.02,
+        "hi": 15.6,
+        "tag": "derived",
+        "basis": "mid = 78 / (8,100,000 x 1.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729",
+      "notes": "The study cannot separate heat without air conditioning, exertion on stairs, and interrupted care or devices; treat this as the sum of the heat and interrupted-care causes."
+    },
+    {
+      "event": "New York City blackout, August 2003",
+      "cause": "injury",
+      "deaths": {
+        "lo": 3,
+        "mid": 12,
+        "hi": 27,
+        "tag": "data",
+        "basis": "Accidental excess 12 (3-27), a 122% rise over 10 expected (https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729); includes the carbon monoxide and fire deaths below."
+      },
+      "exposedPersons": {
+        "lo": 8000000,
+        "mid": 8100000,
+        "hi": 8200000,
+        "tag": "guess",
+        "basis": "New York City residents in 2003, about 8.1 million (recalled); the paper gives no denominator."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 1.2,
+        "hi": 2,
+        "tag": "guess",
+        "basis": "Power failed at 16:11 on 14 August and returned to most of the city within about 29 hours (recalled); excess deaths were measured over 14-15 August."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.183,
+        "mid": 1.23,
+        "hi": 3.38,
+        "tag": "derived",
+        "basis": "mid = 12 / (8,100,000 x 1.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729",
+      "notes": "Includes CO and fire."
+    },
+    {
+      "event": "New York City blackout, August 2003",
+      "cause": "co",
+      "deaths": {
+        "lo": 2,
+        "mid": 4,
+        "hi": 6,
+        "tag": "guess",
+        "basis": "The city health department counted 6 deaths directly attributable to the blackout, 'most from carbon monoxide poisoning' (https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729); the split is not given."
+      },
+      "exposedPersons": {
+        "lo": 8000000,
+        "mid": 8100000,
+        "hi": 8200000,
+        "tag": "guess",
+        "basis": "New York City residents in 2003, about 8.1 million (recalled); the paper gives no denominator."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 1.2,
+        "hi": 2,
+        "tag": "guess",
+        "basis": "Power failed at 16:11 on 14 August and returned to most of the city within about 29 hours (recalled); excess deaths were measured over 14-15 August."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.122,
+        "mid": 0.412,
+        "hi": 0.75,
+        "tag": "derived",
+        "basis": "mid = 4 / (8,100,000 x 1.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729",
+      "notes": "A summer outage: generators and cooking, not heating."
+    },
+    {
+      "event": "New York City blackout, August 2003",
+      "cause": "fire",
+      "deaths": {
+        "lo": 0,
+        "mid": 1,
+        "hi": 2,
+        "tag": "guess",
+        "basis": "The remainder of the 6 official deaths; at least one candle fire death was reported (recalled)."
+      },
+      "exposedPersons": {
+        "lo": 8000000,
+        "mid": 8100000,
+        "hi": 8200000,
+        "tag": "guess",
+        "basis": "New York City residents in 2003, about 8.1 million (recalled); the paper gives no denominator."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 1.2,
+        "hi": 2,
+        "tag": "guess",
+        "basis": "Power failed at 16:11 on 14 August and returned to most of the city within about 29 hours (recalled); excess deaths were measured over 14-15 August."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0,
+        "mid": 0.103,
+        "hi": 0.25,
+        "tag": "derived",
+        "basis": "mid = 1 / (8,100,000 x 1.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729",
+      "notes": ""
+    },
+    {
+      "event": "New York City blackout, August 2003",
+      "cause": "water or food",
+      "deaths": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 2,
+        "tag": "guess",
+        "basis": "None reported. High-rise buildings lost water when roof tanks emptied."
+      },
+      "exposedPersons": {
+        "lo": 8000000,
+        "mid": 8100000,
+        "hi": 8200000,
+        "tag": "guess",
+        "basis": "New York City residents in 2003, about 8.1 million (recalled); the paper gives no denominator."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 1.2,
+        "hi": 2,
+        "tag": "guess",
+        "basis": "Power failed at 16:11 on 14 August and returned to most of the city within about 29 hours (recalled); excess deaths were measured over 14-15 August."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0.25,
+        "tag": "derived",
+        "basis": "mid = 0 / (8,100,000 x 1.2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3276729",
+      "notes": ""
+    },
+    {
+      "event": "Hurricane Irma, Florida, September 2017",
+      "cause": "all causes",
+      "deaths": {
+        "lo": 129,
+        "mid": 380,
+        "hi": 560,
+        "tag": "guess",
+        "basis": "Lo is the 129 deaths certified to 10 October, 123 of them in Florida (https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm, read). Hi and mid add the excess among Florida nursing-home residents against 2015: 262 more deaths at 30 days and 433 at 90 days (Dosa et al. 2020, https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2771392; search snippet), less the 14 already certified."
+      },
+      "exposedPersons": {
+        "lo": 11000000,
+        "mid": 13400000,
+        "hi": 14500000,
+        "tag": "derived",
+        "basis": "6.7 million customers, 64% of Florida accounts, were without power at the peak (https://www.eia.gov/todayinenergy/detail.php?id=32992, read); 64% of 21.0 million residents = 13.4 million."
+      },
+      "exposureDays": {
+        "lo": 3,
+        "mid": 3.8,
+        "hi": 4.5,
+        "tag": "derived",
+        "basis": "Share of customers out: 64% at the peak on day 1, 18% on day 5, 1% on day 9 (https://www.eia.gov/todayinenergy/detail.php?id=32992). Area under that curve is about 2.4 customer-days per Florida customer, or 2.4 / 0.64 = 3.8 days per customer who lost power."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 1.98,
+        "mid": 7.46,
+        "hi": 17,
+        "tag": "derived",
+        "basis": "mid = 380 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
+      "notes": "Certified count alone gives 2.5. For the 61,564 nursing-home residents studied, 262 extra deaths in 30 days is about 4,300 micromorts each."
+    },
+    {
+      "event": "Hurricane Irma, Florida, September 2017",
+      "cause": "heat",
+      "deaths": {
+        "lo": 17,
+        "mid": 30,
+        "hi": 200,
+        "tag": "guess",
+        "basis": "Lo is the 17 certified heat-related deaths, 14 of them in one care home that lost its air conditioning (https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm). Mid and hi are my allowance for heat deaths inside the nursing-home excess."
+      },
+      "exposedPersons": {
+        "lo": 11000000,
+        "mid": 13400000,
+        "hi": 14500000,
+        "tag": "derived",
+        "basis": "6.7 million customers, 64% of Florida accounts, were without power at the peak (https://www.eia.gov/todayinenergy/detail.php?id=32992, read); 64% of 21.0 million residents = 13.4 million."
+      },
+      "exposureDays": {
+        "lo": 3,
+        "mid": 3.8,
+        "hi": 4.5,
+        "tag": "derived",
+        "basis": "Share of customers out: 64% at the peak on day 1, 18% on day 5, 1% on day 9 (https://www.eia.gov/todayinenergy/detail.php?id=32992). Area under that curve is about 2.4 customer-days per Florida customer, or 2.4 / 0.64 = 3.8 days per customer who lost power."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.261,
+        "mid": 0.589,
+        "hi": 6.06,
+        "tag": "derived",
+        "basis": "mid = 30 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
+      "notes": "Certified count alone gives 0.33. Early-autumn Florida heat in a state where nearly every home normally has air conditioning."
+    },
+    {
+      "event": "Hurricane Irma, Florida, September 2017",
+      "cause": "co",
+      "deaths": {
+        "lo": 16,
+        "mid": 16,
+        "hi": 20,
+        "tag": "data",
+        "basis": "16 carbon monoxide deaths (https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm)."
+      },
+      "exposedPersons": {
+        "lo": 11000000,
+        "mid": 13400000,
+        "hi": 14500000,
+        "tag": "derived",
+        "basis": "6.7 million customers, 64% of Florida accounts, were without power at the peak (https://www.eia.gov/todayinenergy/detail.php?id=32992, read); 64% of 21.0 million residents = 13.4 million."
+      },
+      "exposureDays": {
+        "lo": 3,
+        "mid": 3.8,
+        "hi": 4.5,
+        "tag": "derived",
+        "basis": "Share of customers out: 64% at the peak on day 1, 18% on day 5, 1% on day 9 (https://www.eia.gov/todayinenergy/detail.php?id=32992). Area under that curve is about 2.4 customer-days per Florida customer, or 2.4 / 0.64 = 3.8 days per customer who lost power."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.245,
+        "mid": 0.314,
+        "hi": 0.606,
+        "tag": "derived",
+        "basis": "mid = 16 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
+      "notes": "Almost all from generators; per generator-using household the risk is several times higher."
+    },
+    {
+      "event": "Hurricane Irma, Florida, September 2017",
+      "cause": "fire",
+      "deaths": {
+        "lo": 0,
+        "mid": 1,
+        "hi": 6,
+        "tag": "guess",
+        "basis": "Not reported as a category; at most the 6 unexplained deaths within 'other accident' (https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm)."
+      },
+      "exposedPersons": {
+        "lo": 11000000,
+        "mid": 13400000,
+        "hi": 14500000,
+        "tag": "derived",
+        "basis": "6.7 million customers, 64% of Florida accounts, were without power at the peak (https://www.eia.gov/todayinenergy/detail.php?id=32992, read); 64% of 21.0 million residents = 13.4 million."
+      },
+      "exposureDays": {
+        "lo": 3,
+        "mid": 3.8,
+        "hi": 4.5,
+        "tag": "derived",
+        "basis": "Share of customers out: 64% at the peak on day 1, 18% on day 5, 1% on day 9 (https://www.eia.gov/todayinenergy/detail.php?id=32992). Area under that curve is about 2.4 customer-days per Florida customer, or 2.4 / 0.64 = 3.8 days per customer who lost power."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0,
+        "mid": 0.0196,
+        "hi": 0.182,
+        "tag": "derived",
+        "basis": "mid = 1 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
+      "notes": ""
+    },
+    {
+      "event": "Hurricane Irma, Florida, September 2017",
+      "cause": "interrupted care or devices",
+      "deaths": {
+        "lo": 6,
+        "mid": 30,
+        "hi": 250,
+        "tag": "guess",
+        "basis": "Lo is 3 oxygen-dependent deaths plus 3 from disrupted emergency medical services (https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm); another 23 were stress-related cardiac deaths. Mid and hi allow for care disruption inside the nursing-home excess."
+      },
+      "exposedPersons": {
+        "lo": 11000000,
+        "mid": 13400000,
+        "hi": 14500000,
+        "tag": "derived",
+        "basis": "6.7 million customers, 64% of Florida accounts, were without power at the peak (https://www.eia.gov/todayinenergy/detail.php?id=32992, read); 64% of 21.0 million residents = 13.4 million."
+      },
+      "exposureDays": {
+        "lo": 3,
+        "mid": 3.8,
+        "hi": 4.5,
+        "tag": "derived",
+        "basis": "Share of customers out: 64% at the peak on day 1, 18% on day 5, 1% on day 9 (https://www.eia.gov/todayinenergy/detail.php?id=32992). Area under that curve is about 2.4 customer-days per Florida customer, or 2.4 / 0.64 = 3.8 days per customer who lost power."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.092,
+        "mid": 0.589,
+        "hi": 7.58,
+        "tag": "derived",
+        "basis": "mid = 30 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
+      "notes": "Certified count alone gives 0.12."
+    },
+    {
+      "event": "Hurricane Irma, Florida, September 2017",
+      "cause": "injury",
+      "deaths": {
+        "lo": 58,
+        "mid": 64,
+        "hi": 70,
+        "tag": "data",
+        "basis": "Drowning in floodwater 7, tree injuries 4, preparation or repair injuries 15, motor vehicle 13, falls 13, other accidents 12 (https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm)."
+      },
+      "exposedPersons": {
+        "lo": 20500000,
+        "mid": 21000000,
+        "hi": 21500000,
+        "tag": "guess",
+        "basis": "All Florida residents, 2017 (about 21.0 million, recalled)."
+      },
+      "exposureDays": {
+        "lo": 7,
+        "mid": 10,
+        "hi": 14,
+        "tag": "guess",
+        "basis": "Preparation, storm and clean-up period."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.193,
+        "mid": 0.305,
+        "hi": 0.488,
+        "tag": "derived",
+        "basis": "mid = 64 / (21,000,000 x 10) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
+      "notes": "Only 11 of 129 deaths were caused directly by wind or water."
+    },
+    {
+      "event": "Hurricane Irma, Florida, September 2017",
+      "cause": "water or food",
+      "deaths": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 2,
+        "tag": "data",
+        "basis": "None attributed to lack of water or food; 2 deaths were floodwater wound infections (https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm)."
+      },
+      "exposedPersons": {
+        "lo": 11000000,
+        "mid": 13400000,
+        "hi": 14500000,
+        "tag": "derived",
+        "basis": "6.7 million customers, 64% of Florida accounts, were without power at the peak (https://www.eia.gov/todayinenergy/detail.php?id=32992, read); 64% of 21.0 million residents = 13.4 million."
+      },
+      "exposureDays": {
+        "lo": 3,
+        "mid": 3.8,
+        "hi": 4.5,
+        "tag": "derived",
+        "basis": "Share of customers out: 64% at the peak on day 1, 18% on day 5, 1% on day 9 (https://www.eia.gov/todayinenergy/detail.php?id=32992). Area under that curve is about 2.4 customer-days per Florida customer, or 2.4 / 0.64 = 3.8 days per customer who lost power."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0.0606,
+        "tag": "derived",
+        "basis": "mid = 0 / (13,400,000 x 3.8) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
+      "notes": ""
+    },
+    {
+      "event": "Hurricane Maria, Puerto Rico, 2017",
+      "cause": "all causes",
+      "deaths": {
+        "lo": 1205,
+        "mid": 2975,
+        "hi": 4645,
+        "tag": "derived",
+        "basis": "Lo: 1,205 excess deaths (707-1,702) in September and October alone (https://pmc.ncbi.nlm.nih.gov/articles/PMC6603484, read). Mid: 2,975 (2,658-3,290) from September 2017 to February 2018 (George Washington University, https://gwtoday.gwu.edu/node/9876; search snippet, page returned 403). Hi: 4,645 (793-8,498) to 31 December (https://fxb.harvard.edu/2018/05/29/study-estimates-prolonged-increase-in-puerto-rican-death-rate-after-hurricane-maria)."
+      },
+      "exposedPersons": {
+        "lo": 3050000,
+        "mid": 3300000,
+        "hi": 3490000,
+        "tag": "data",
+        "basis": "3.49 million in September 2017 (https://pmc.ncbi.nlm.nih.gov/articles/PMC6603484, read); about 3.05 million by early 2018 after out-migration (George Washington University study, recalled)."
+      },
+      "exposureDays": {
+        "lo": 68,
+        "mid": 84,
+        "hi": 102,
+        "tag": "data",
+        "basis": "Households averaged 84 days without electricity, 68 without water and 41 without mobile service to 31 December (Kishore et al. 2018, https://fxb.harvard.edu/2018/05/29/study-estimates-prolonged-increase-in-puerto-rican-death-rate-after-hurricane-maria; verified in prior-art.md). Hi is the whole survey period, 20 September to 31 December."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 3.39,
+        "mid": 10.7,
+        "hi": 22.4,
+        "tag": "derived",
+        "basis": "mid = 2,975 / (3,300,000 x 84) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6603484",
+      "notes": "September-October alone: 1,205 / (3.49 million x 41 days) = 8.4. Excess appeared only at ages 60 and over: 1,038 deaths among 841,000 people, about 30 micromorts per person-day for that group against about 1.5 for younger people."
+    },
+    {
+      "event": "Hurricane Maria, Puerto Rico, 2017",
+      "cause": "interrupted care or devices",
+      "deaths": {
+        "lo": 400,
+        "mid": 1800,
+        "hi": 3500,
+        "tag": "guess",
+        "basis": "Households attributed about a third of post-hurricane deaths to delayed or interrupted care (https://fxb.harvard.edu/2018/05/29/study-estimates-prolonged-increase-in-puerto-rican-death-rate-after-hurricane-maria): in the survey 12 of 38 deaths, against an excess of about 14.5 over the 23.5 expected, so interrupted care accounts for most of the excess. Lo is a third of 1,205; mid is 60% of 2,975; hi is 75% of 4,645. Leading excess causes in September-October: heart disease 253, diabetes 195, Alzheimer's disease 122, septicaemia 81 (https://pmc.ncbi.nlm.nih.gov/articles/PMC6603484)."
+      },
+      "exposedPersons": {
+        "lo": 3050000,
+        "mid": 3300000,
+        "hi": 3490000,
+        "tag": "data",
+        "basis": "3.49 million in September 2017 (https://pmc.ncbi.nlm.nih.gov/articles/PMC6603484, read); about 3.05 million by early 2018 after out-migration (George Washington University study, recalled)."
+      },
+      "exposureDays": {
+        "lo": 68,
+        "mid": 84,
+        "hi": 102,
+        "tag": "data",
+        "basis": "Households averaged 84 days without electricity, 68 without water and 41 without mobile service to 31 December (Kishore et al. 2018, https://fxb.harvard.edu/2018/05/29/study-estimates-prolonged-increase-in-puerto-rican-death-rate-after-hurricane-maria; verified in prior-art.md). Hi is the whole survey period, 20 September to 31 December."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 1.12,
+        "mid": 6.49,
+        "hi": 16.9,
+        "tag": "derived",
+        "basis": "mid = 1,800 / (3,300,000 x 84) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://fxb.harvard.edu/2018/05/29/study-estimates-prolonged-increase-in-puerto-rican-death-rate-after-hurricane-maria",
+      "notes": "The best anchor for a long outage with health care, pharmacies, dialysis and oxygen supply disrupted for weeks. Nearly all of it falls on people aged 60 and over with chronic illness."
+    },
+    {
+      "event": "Hurricane Maria, Puerto Rico, 2017",
+      "cause": "injury",
+      "deaths": {
+        "lo": 20,
+        "mid": 64,
+        "hi": 100,
+        "tag": "guess",
+        "basis": "The official toll stood at 64 before revision (https://www.axios.com/2018/07/03/leptospirosis-puerto-rico-hurricane-maria-deaths; search snippet); it mixed direct and early indirect deaths."
+      },
+      "exposedPersons": {
+        "lo": 3050000,
+        "mid": 3300000,
+        "hi": 3490000,
+        "tag": "data",
+        "basis": "3.49 million in September 2017 (https://pmc.ncbi.nlm.nih.gov/articles/PMC6603484, read); about 3.05 million by early 2018 after out-migration (George Washington University study, recalled)."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 2,
+        "hi": 7,
+        "tag": "guess",
+        "basis": "Landfall and the days immediately after."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.819,
+        "mid": 9.7,
+        "hi": 32.8,
+        "tag": "derived",
+        "basis": "mid = 64 / (3,300,000 x 2) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://fxb.harvard.edu/2018/05/29/study-estimates-prolonged-increase-in-puerto-rican-death-rate-after-hurricane-maria",
+      "notes": "Direct storm deaths were about 2% of the eventual excess."
+    },
+    {
+      "event": "Hurricane Maria, Puerto Rico, 2017",
+      "cause": "water or food",
+      "deaths": {
+        "lo": 4,
+        "mid": 26,
+        "hi": 60,
+        "tag": "guess",
+        "basis": "26 deaths labelled leptospirosis in the six months after the storm; the health department acknowledged 4, later 6 (CNN and Centro de Periodismo Investigativo via https://www.axios.com/2018/07/03/leptospirosis-puerto-rico-hurricane-maria-deaths; search snippet). No deaths from thirst or hunger were certified."
+      },
+      "exposedPersons": {
+        "lo": 3050000,
+        "mid": 3300000,
+        "hi": 3490000,
+        "tag": "data",
+        "basis": "3.49 million in September 2017 (https://pmc.ncbi.nlm.nih.gov/articles/PMC6603484, read); about 3.05 million by early 2018 after out-migration (George Washington University study, recalled)."
+      },
+      "exposureDays": {
+        "lo": 41,
+        "mid": 68,
+        "hi": 102,
+        "tag": "data",
+        "basis": "68 days without water on average (https://fxb.harvard.edu/2018/05/29/study-estimates-prolonged-increase-in-puerto-rican-death-rate-after-hurricane-maria)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.0112,
+        "mid": 0.116,
+        "hi": 0.48,
+        "tag": "derived",
+        "basis": "mid = 26 / (3,300,000 x 68) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://fxb.harvard.edu/2018/05/29/study-estimates-prolonged-increase-in-puerto-rican-death-rate-after-hurricane-maria",
+      "notes": "People drew water from streams and springs for weeks. This is the only anchor in the set with deaths from unsafe water, and it is about a hundredth of the all-cause figure. Excess septicaemia deaths (81 in two months) may add to it."
+    },
+    {
+      "event": "British Columbia heat dome, June 2021",
+      "cause": "heat",
+      "deaths": {
+        "lo": 526,
+        "mid": 619,
+        "hi": 740,
+        "tag": "data",
+        "basis": "619 heat-related deaths confirmed by the coroners' review (https://news.gov.bc.ca/releases/2022PSSG0042-000903, read); 526 in the preliminary count (https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf); 740 excess deaths estimated by Henderson et al. 2022 (search snippet)."
+      },
+      "exposedPersons": {
+        "lo": 5100000,
+        "mid": 5200000,
+        "hi": 5300000,
+        "tag": "derived",
+        "basis": "526 deaths at a crude rate of 10.1 per 100,000 imply a population of 5.2 million (https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf, read)."
+      },
+      "exposureDays": {
+        "lo": 6,
+        "mid": 7,
+        "hi": 8,
+        "tag": "data",
+        "basis": "25 June to 1 July; 362 of the first 526 deaths fell on 28-29 June (https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 12.4,
+        "mid": 17,
+        "hi": 24.2,
+        "tag": "derived",
+        "basis": "mid = 619 / (5,200,000 x 7) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://news.gov.bc.ca/releases/2022PSSG0042-000903",
+      "notes": "119 micromorts per resident for the week. 98% died indoors, 67% were 70 or older, 56% lived alone, and most had no adequate cooling; about a third of British Columbia homes had air conditioning (Henderson et al., search snippet), so the rate among people without it is about 24. No power outage was involved: this is the unmet cooling need itself."
+    },
+    {
+      "event": "British Columbia heat dome, June 2021",
+      "cause": "heat (ages 15-59)",
+      "deaths": {
+        "lo": 47,
+        "mid": 55,
+        "hi": 66,
+        "tag": "derived",
+        "basis": "47 of the first 526 deaths were under 60 (2 under 40, 12 at 40-49, 33 at 50-59) and none were under 19 (https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf); scaled by 619 / 526 = 55."
+      },
+      "exposedPersons": {
+        "lo": 2900000,
+        "mid": 3080000,
+        "hi": 3200000,
+        "tag": "guess",
+        "basis": "Residents aged 15-59, about 59% of 5.2 million (approximate age structure)."
+      },
+      "exposureDays": {
+        "lo": 6,
+        "mid": 7,
+        "hi": 8,
+        "tag": "data",
+        "basis": "25 June to 1 July; 362 of the first 526 deaths fell on 28-29 June (https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 1.84,
+        "mid": 2.55,
+        "hi": 3.79,
+        "tag": "derived",
+        "basis": "mid = 55 / (3,080,000 x 7) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf",
+      "notes": "Upper bound for a healthy adult: the coroners found schizophrenia, substance use and other chronic illness over-represented among the dead. Rates per million for the week from the preliminary table: 15-59, 15; 60-69, 164; 70-79, 338; 80-89, 747; 90 and over, 1,388."
+    },
+    {
+      "event": "Tohoku earthquake and tsunami, Japan, 2011 (disaster-related deaths)",
+      "cause": "all causes (first week)",
+      "deaths": {
+        "lo": 446,
+        "mid": 446,
+        "hi": 472,
+        "tag": "data",
+        "basis": "Disaster-related deaths within one week: Iwate 97, Miyagi 234, Fukushima 115 = 446; 472 nationally (https://www.reconstruction.go.jp/files/user/topics/main-cat2/sub-cat2-6/20260213_kanrenshi.pdf, read). These are deaths after surviving the tsunami, certified for condolence payments."
+      },
+      "exposedPersons": {
+        "lo": 5000000,
+        "mid": 5710000,
+        "hi": 5800000,
+        "tag": "guess",
+        "basis": "Residents of Iwate, Miyagi and Fukushima at the 2010 census: 1.33 + 2.35 + 2.03 = 5.71 million (recalled). Not everyone lost utilities or was displaced, so this is a generous denominator; the peak number in shelters was about 470,000."
+      },
+      "exposureDays": {
+        "lo": 7,
+        "mid": 7,
+        "hi": 7,
+        "tag": "data",
+        "basis": "11-18 March 2011."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 11,
+        "mid": 11.2,
+        "hi": 13.5,
+        "tag": "derived",
+        "basis": "mid = 446 / (5,710,000 x 7) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.reconstruction.go.jp/files/user/topics/main-cat2/sub-cat2-6/20260213_kanrenshi.pdf",
+      "notes": "Total certified to December 2025 is 3,810, of whom 3,371 (88.5%) were aged 66 or over and 10 were 20 or under."
+    },
+    {
+      "event": "Tohoku earthquake and tsunami, Japan, 2011 (disaster-related deaths)",
+      "cause": "all causes (first three months)",
+      "deaths": {
+        "lo": 1856,
+        "mid": 1856,
+        "hi": 1905,
+        "tag": "data",
+        "basis": "Deaths to 11 June 2011 in the three prefectures: 446 + 730 + 680 = 1,856; 1,905 nationally (https://www.reconstruction.go.jp/files/user/topics/main-cat2/sub-cat2-6/20260213_kanrenshi.pdf)."
+      },
+      "exposedPersons": {
+        "lo": 5000000,
+        "mid": 5710000,
+        "hi": 5800000,
+        "tag": "guess",
+        "basis": "Residents of Iwate, Miyagi and Fukushima at the 2010 census: 1.33 + 2.35 + 2.03 = 5.71 million (recalled). Not everyone lost utilities or was displaced, so this is a generous denominator; the peak number in shelters was about 470,000."
+      },
+      "exposureDays": {
+        "lo": 92,
+        "mid": 92,
+        "hi": 92,
+        "tag": "data",
+        "basis": "11 March to 11 June 2011."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 3.48,
+        "mid": 3.53,
+        "hi": 4.14,
+        "tag": "derived",
+        "basis": "mid = 1,856 / (5,710,000 x 92) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.reconstruction.go.jp/files/user/topics/main-cat2/sub-cat2-6/20260213_kanrenshi.pdf",
+      "notes": "Rate by period: week 1, 11.2; rest of month 1, 5.3; months 2-3, 2.0. Half of all deaths studied came within a month and 78% within three months."
+    },
+    {
+      "event": "Tohoku earthquake and tsunami, Japan, 2011 (disaster-related deaths)",
+      "cause": "shelter life (people living in evacuation shelters)",
+      "deaths": {
+        "lo": 200,
+        "mid": 279,
+        "hi": 400,
+        "tag": "derived",
+        "basis": "94 of the 1,263 deaths analysed (7.4%) were of people living in an evacuation shelter when they fell ill (https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf, read); 7.4% of the 3,754 deaths in the three prefectures = 279."
+      },
+      "exposedPersons": {
+        "lo": 130000,
+        "mid": 165000,
+        "hi": 210000,
+        "tag": "guess",
+        "basis": "Average number in shelters over the first 92 days. Peak about 470,000 on day 3 (Fire and Disaster Management Agency, https://www.fdma.go.jp/disaster/higashinihon/item/higashinihon001_21_03-06.pdf; search snippet); my recalled path of 390,000 at one week, 250,000 at two weeks, 150,000 at one month and 88,000 at three months gives 15.2 million person-days."
+      },
+      "exposureDays": {
+        "lo": 92,
+        "mid": 92,
+        "hi": 92,
+        "tag": "guess",
+        "basis": "First three months, when nearly all shelter deaths occurred."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 10.4,
+        "mid": 18.4,
+        "hi": 33.4,
+        "tag": "derived",
+        "basis": "mid = 279 / (165,000 x 92) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf",
+      "notes": "Unheated gyms in March, thin bedding, little water or food in the first days, no usual medication. Residents were mostly elderly."
+    },
+    {
+      "event": "Tohoku earthquake and tsunami, Japan, 2011 (disaster-related deaths)",
+      "cause": "cold",
+      "deaths": {
+        "lo": 30,
+        "mid": 67,
+        "hi": 150,
+        "tag": "guess",
+        "basis": "Hypothermia was the direct cause in 10 of 276 certified deaths in Ishinomaki (3.6%) (https://pmc.ncbi.nlm.nih.gov/articles/PMC8998736, read); applied to 1,856 deaths in the first three months = 67. Pneumonia (27% of Ishinomaki deaths) was partly cold-related and is not counted."
+      },
+      "exposedPersons": {
+        "lo": 5000000,
+        "mid": 5710000,
+        "hi": 5800000,
+        "tag": "guess",
+        "basis": "Residents of Iwate, Miyagi and Fukushima at the 2010 census: 1.33 + 2.35 + 2.03 = 5.71 million (recalled). Not everyone lost utilities or was displaced, so this is a generous denominator; the peak number in shelters was about 470,000."
+      },
+      "exposureDays": {
+        "lo": 7,
+        "mid": 14,
+        "hi": 30,
+        "tag": "guess",
+        "basis": "Days without heating in freezing weather after 11 March."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.172,
+        "mid": 0.838,
+        "hi": 4.29,
+        "tag": "derived",
+        "basis": "mid = 67 / (5,710,000 x 14) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8998736",
+      "notes": "People soaked by the tsunami and then left without heat."
+    },
+    {
+      "event": "Tohoku earthquake and tsunami, Japan, 2011 (disaster-related deaths)",
+      "cause": "interrupted care or devices",
+      "deaths": {
+        "lo": 410,
+        "mid": 500,
+        "hi": 575,
+        "tag": "derived",
+        "basis": "In the 1,263 deaths analysed, hospital shutdown was named 373 times (delayed first treatment 90, worsening of existing illness 283) and transport delays 17 times, out of 1,950 cause entries (https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf): between 22% and 31% of deaths. Mid 27% of the 1,856 deaths in the first three months."
+      },
+      "exposedPersons": {
+        "lo": 5000000,
+        "mid": 5710000,
+        "hi": 5800000,
+        "tag": "guess",
+        "basis": "Residents of Iwate, Miyagi and Fukushima at the 2010 census: 1.33 + 2.35 + 2.03 = 5.71 million (recalled). Not everyone lost utilities or was displaced, so this is a generous denominator; the peak number in shelters was about 470,000."
+      },
+      "exposureDays": {
+        "lo": 92,
+        "mid": 92,
+        "hi": 92,
+        "tag": "data",
+        "basis": "First three months."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.768,
+        "mid": 0.952,
+        "hi": 1.25,
+        "tag": "derived",
+        "basis": "mid = 500 / (5,710,000 x 92) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf",
+      "notes": "Other named causes: fatigue of shelter life 638 entries (33%), fatigue of moving between shelters 401 (21%, 380 of them in Fukushima), stress of the quake and tsunami 150. Sixty-four percent of the dead had a known pre-existing illness."
+    },
+    {
+      "event": "Tohoku earthquake and tsunami, Japan, 2011 (disaster-related deaths)",
+      "cause": "water or food",
+      "deaths": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 20,
+        "tag": "guess",
+        "basis": "No category for thirst or hunger exists in the official cause table (https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf); case notes mention poor food and fluid intake as a contributor in frail people."
+      },
+      "exposedPersons": {
+        "lo": 5000000,
+        "mid": 5710000,
+        "hi": 5800000,
+        "tag": "guess",
+        "basis": "Residents of Iwate, Miyagi and Fukushima at the 2010 census: 1.33 + 2.35 + 2.03 = 5.71 million (recalled). Not everyone lost utilities or was displaced, so this is a generous denominator; the peak number in shelters was about 470,000."
+      },
+      "exposureDays": {
+        "lo": 3,
+        "mid": 7,
+        "hi": 14,
+        "tag": "guess",
+        "basis": "Days until regular supplies reached most shelters."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 1.33,
+        "tag": "derived",
+        "basis": "mid = 0 / (5,710,000 x 7) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.reconstruction.go.jp/topics/20120821_shinsaikanrenshihoukoku.pdf",
+      "notes": ""
+    },
+    {
+      "event": "Superstorm Sandy, October 2012",
+      "cause": "all causes",
+      "deaths": {
+        "lo": 117,
+        "mid": 159,
+        "hi": 300,
+        "tag": "guess",
+        "basis": "Lo: 117 deaths tracked by the Red Cross to 30 November (https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm, read). Mid: 72 direct plus at least 87 indirect US deaths in the National Hurricane Center report (search snippet). Hi is my allowance for uncounted deaths among the old and ill."
+      },
+      "exposedPersons": {
+        "lo": 15000000,
+        "mid": 19000000,
+        "hi": 22000000,
+        "tag": "guess",
+        "basis": "About 8.5 million customers lost power at the peak (recalled from the National Hurricane Center report, which I could not open); at about 2.2 residents per customer account that is 19 million people."
+      },
+      "exposureDays": {
+        "lo": 2.5,
+        "mid": 3.3,
+        "hi": 5,
+        "tag": "guess",
+        "basis": "Mean outage length from my recollection of the restoration curve (8.5 million at peak, about 3.6 million on day 4, 1.4 million on day 7)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 1.06,
+        "mid": 2.54,
+        "hi": 8,
+        "tag": "derived",
+        "basis": "mid = 159 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
+      "notes": "60 of the 117 died in the first two days. Mean age 60, median 65."
+    },
+    {
+      "event": "Superstorm Sandy, October 2012",
+      "cause": "injury",
+      "deaths": {
+        "lo": 75,
+        "mid": 81,
+        "hi": 90,
+        "tag": "data",
+        "basis": "Drowning 40, crush or struck 24, falls 11, motor vehicle 6 (https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm)."
+      },
+      "exposedPersons": {
+        "lo": 15000000,
+        "mid": 19000000,
+        "hi": 22000000,
+        "tag": "guess",
+        "basis": "About 8.5 million customers lost power at the peak (recalled from the National Hurricane Center report, which I could not open); at about 2.2 residents per customer account that is 19 million people."
+      },
+      "exposureDays": {
+        "lo": 2.5,
+        "mid": 3.3,
+        "hi": 5,
+        "tag": "guess",
+        "basis": "Mean outage length from my recollection of the restoration curve (8.5 million at peak, about 3.6 million on day 4, 1.4 million on day 7)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.682,
+        "mid": 1.29,
+        "hi": 2.4,
+        "tag": "derived",
+        "basis": "mid = 81 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
+      "notes": "Mostly storm-day deaths, not outage deaths."
+    },
+    {
+      "event": "Superstorm Sandy, October 2012",
+      "cause": "injury (drowning at home, New York City evacuation Zone A)",
+      "deaths": {
+        "lo": 18,
+        "mid": 18,
+        "hi": 20,
+        "tag": "data",
+        "basis": "18 of the 20 drownings in flooded New York homes were inside evacuation Zone A (https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm)."
+      },
+      "exposedPersons": {
+        "lo": 190000,
+        "mid": 260000,
+        "hi": 300000,
+        "tag": "guess",
+        "basis": "Zone A had about 375,000 residents under a mandatory order, of whom roughly 70% stayed (recalled)."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 1,
+        "hi": 1,
+        "tag": "data",
+        "basis": "Night of 29 October."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 60,
+        "mid": 69.2,
+        "hi": 105,
+        "tag": "derived",
+        "basis": "mid = 18 / (260,000 x 1) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
+      "notes": "The price of ignoring an evacuation order in a surge zone: about 70 micromorts in one night."
+    },
+    {
+      "event": "Superstorm Sandy, October 2012",
+      "cause": "co",
+      "deaths": {
+        "lo": 9,
+        "mid": 9,
+        "hi": 15,
+        "tag": "data",
+        "basis": "9 carbon monoxide deaths among 10 poisonings (https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm)."
+      },
+      "exposedPersons": {
+        "lo": 15000000,
+        "mid": 19000000,
+        "hi": 22000000,
+        "tag": "guess",
+        "basis": "About 8.5 million customers lost power at the peak (recalled from the National Hurricane Center report, which I could not open); at about 2.2 residents per customer account that is 19 million people."
+      },
+      "exposureDays": {
+        "lo": 2.5,
+        "mid": 3.3,
+        "hi": 5,
+        "tag": "guess",
+        "basis": "Mean outage length from my recollection of the restoration curve (8.5 million at peak, about 3.6 million on day 4, 1.4 million on day 7)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.0818,
+        "mid": 0.144,
+        "hi": 0.4,
+        "tag": "derived",
+        "basis": "mid = 9 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
+      "notes": "Late October, with generators and indoor combustion for heat."
+    },
+    {
+      "event": "Superstorm Sandy, October 2012",
+      "cause": "fire",
+      "deaths": {
+        "lo": 2,
+        "mid": 6,
+        "hi": 8,
+        "tag": "data",
+        "basis": "6 deaths from burns or electric current, not separated (https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm)."
+      },
+      "exposedPersons": {
+        "lo": 15000000,
+        "mid": 19000000,
+        "hi": 22000000,
+        "tag": "guess",
+        "basis": "About 8.5 million customers lost power at the peak (recalled from the National Hurricane Center report, which I could not open); at about 2.2 residents per customer account that is 19 million people."
+      },
+      "exposureDays": {
+        "lo": 2.5,
+        "mid": 3.3,
+        "hi": 5,
+        "tag": "guess",
+        "basis": "Mean outage length from my recollection of the restoration curve (8.5 million at peak, about 3.6 million on day 4, 1.4 million on day 7)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.0182,
+        "mid": 0.0957,
+        "hi": 0.213,
+        "tag": "derived",
+        "basis": "mid = 6 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
+      "notes": ""
+    },
+    {
+      "event": "Superstorm Sandy, October 2012",
+      "cause": "cold",
+      "deaths": {
+        "lo": 2,
+        "mid": 10,
+        "hi": 40,
+        "tag": "guess",
+        "basis": "Not a category in the Red Cross data. The National Hurricane Center attributed about 50 indirect deaths to extended outages in cold weather: hypothermia, falls in the dark and carbon monoxide together (recalled, report not opened)."
+      },
+      "exposedPersons": {
+        "lo": 15000000,
+        "mid": 19000000,
+        "hi": 22000000,
+        "tag": "guess",
+        "basis": "About 8.5 million customers lost power at the peak (recalled from the National Hurricane Center report, which I could not open); at about 2.2 residents per customer account that is 19 million people."
+      },
+      "exposureDays": {
+        "lo": 2.5,
+        "mid": 3.3,
+        "hi": 5,
+        "tag": "guess",
+        "basis": "Mean outage length from my recollection of the restoration curve (8.5 million at peak, about 3.6 million on day 4, 1.4 million on day 7)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.0182,
+        "mid": 0.159,
+        "hi": 1.07,
+        "tag": "derived",
+        "basis": "mid = 10 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
+      "notes": "Night temperatures of 0-5 C in early November, far milder than Texas 2021."
+    },
+    {
+      "event": "Superstorm Sandy, October 2012",
+      "cause": "interrupted care or devices (dialysis patients)",
+      "deaths": {
+        "lo": 31,
+        "mid": 39,
+        "hi": 50,
+        "tag": "guess",
+        "basis": "30-day mortality 1.83% among dialysis patients in the worst-hit areas against 1.47% and 1.60% in comparison groups (Kelman et al. 2015, https://pubmed.ncbi.nlm.nih.gov/25156306/; search snippet): an excess of 0.23-0.36 points on 13,264 patients = 31-48 deaths."
+      },
+      "exposedPersons": {
+        "lo": 13264,
+        "mid": 13264,
+        "hi": 13836,
+        "tag": "guess",
+        "basis": "Dialysis patients in the study area; sources give 13,264 to 13,836."
+      },
+      "exposureDays": {
+        "lo": 2,
+        "mid": 4,
+        "hi": 7,
+        "tag": "guess",
+        "basis": "Days of disrupted dialysis for the average patient."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 320,
+        "mid": 735,
+        "hi": 1880,
+        "tag": "derived",
+        "basis": "mid = 39 / (13,264 x 4) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://pubmed.ncbi.nlm.nih.gov/25156306/",
+      "notes": "A profile-specific anchor: several hundred micromorts per patient-day of disruption even though 60% had early dialysis before the storm. Use it to check criticalDrug and powerDependent multipliers, not the general curve."
+    },
+    {
+      "event": "Superstorm Sandy, October 2012",
+      "cause": "water or food",
+      "deaths": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 2,
+        "tag": "data",
+        "basis": "None reported (https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm)."
+      },
+      "exposedPersons": {
+        "lo": 15000000,
+        "mid": 19000000,
+        "hi": 22000000,
+        "tag": "guess",
+        "basis": "About 8.5 million customers lost power at the peak (recalled from the National Hurricane Center report, which I could not open); at about 2.2 residents per customer account that is 19 million people."
+      },
+      "exposureDays": {
+        "lo": 2.5,
+        "mid": 3.3,
+        "hi": 5,
+        "tag": "guess",
+        "basis": "Mean outage length from my recollection of the restoration curve (8.5 million at peak, about 3.6 million on day 4, 1.4 million on day 7)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0.0533,
+        "tag": "derived",
+        "basis": "mid = 0 / (19,000,000 x 3.3) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
+      "notes": ""
+    },
+    {
+      "event": "Hurricane Katrina, Louisiana, 2005",
+      "cause": "all causes",
+      "deaths": {
+        "lo": 971,
+        "mid": 986,
+        "hi": 1440,
+        "tag": "data",
+        "basis": "971 deaths in Louisiana plus 15 among evacuees; upper bound 1,440 if indeterminate cases are included (https://doi.org/10.1097/DMP.0b013e31818aaf55, read via https://damfailures.org/sites/default/files/wp-pdf/IR_DisasterMed_Katrina.pdf)."
+      },
+      "exposedPersons": {
+        "lo": 70000,
+        "mid": 110000,
+        "hi": 200000,
+        "tag": "guess",
+        "basis": "People who had not evacuated Orleans, St Bernard and Jefferson parishes (2000 census 1,007,369; Brunkard et al.): about 100,000 remained in New Orleans (search snippet), 80-90% having left."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 5,
+        "hi": 7,
+        "tag": "derived",
+        "basis": "81% of deaths with a known date fell on 29 August (https://doi.org/10.1097/DMP.0b013e31818aaf55, read); the last people were evacuated about a week later."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 694,
+        "mid": 1790,
+        "hi": 20600,
+        "tag": "derived",
+        "basis": "mid = 986 / (110,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://doi.org/10.1097/DMP.0b013e31818aaf55",
+      "notes": "About 0.9% of those who stayed died, most of them on the first day; per resident of the three parishes it is about 980 micromorts. Rates per 10,000 residents by age: under 18, 1; 18-29, 2; 30-44, 3; 45-54, 14; 55-64, 25; 65-74, 36; 75 and over, 121."
+    },
+    {
+      "event": "Hurricane Katrina, Louisiana, 2005",
+      "cause": "injury",
+      "deaths": {
+        "lo": 633,
+        "mid": 768,
+        "hi": 900,
+        "tag": "derived",
+        "basis": "Drowning 387 and injury or trauma 246 among the 800 deaths with a known cause (https://doi.org/10.1097/DMP.0b013e31818aaf55); scaled to 971 = 768."
+      },
+      "exposedPersons": {
+        "lo": 70000,
+        "mid": 110000,
+        "hi": 200000,
+        "tag": "guess",
+        "basis": "People who had not evacuated Orleans, St Bernard and Jefferson parishes (2000 census 1,007,369; Brunkard et al.): about 100,000 remained in New Orleans (search snippet), 80-90% having left."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 1,
+        "hi": 2,
+        "tag": "data",
+        "basis": "Levee failures on 29 August."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 1580,
+        "mid": 6980,
+        "hi": 12900,
+        "tag": "derived",
+        "basis": "mid = 768 / (110,000 x 1) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://doi.org/10.1097/DMP.0b013e31818aaf55",
+      "notes": "Flood drowning, concentrated near the levee breaches. 178 people aged 75 or over died in their homes, 115 of them by drowning."
+    },
+    {
+      "event": "Hurricane Katrina, Louisiana, 2005",
+      "cause": "heat",
+      "deaths": {
+        "lo": 6,
+        "mid": 15,
+        "hi": 60,
+        "tag": "guess",
+        "basis": "6 deaths had heat exposure as the specified mechanism, but the mechanism was unspecified for 226 of 246 injury deaths (https://doi.org/10.1097/DMP.0b013e31818aaf55)."
+      },
+      "exposedPersons": {
+        "lo": 70000,
+        "mid": 110000,
+        "hi": 200000,
+        "tag": "guess",
+        "basis": "People who had not evacuated Orleans, St Bernard and Jefferson parishes (2000 census 1,007,369; Brunkard et al.): about 100,000 remained in New Orleans (search snippet), 80-90% having left."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 5,
+        "hi": 7,
+        "tag": "derived",
+        "basis": "81% of deaths with a known date fell on 29 August (https://doi.org/10.1097/DMP.0b013e31818aaf55, read); the last people were evacuated about a week later."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 4.29,
+        "mid": 27.3,
+        "hi": 857,
+        "tag": "derived",
+        "basis": "mid = 15 / (110,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://doi.org/10.1097/DMP.0b013e31818aaf55",
+      "notes": "Days above 32 C with no power, on roofs, in attics and in crowded mass shelters."
+    },
+    {
+      "event": "Hurricane Katrina, Louisiana, 2005",
+      "cause": "interrupted care or devices",
+      "deaths": {
+        "lo": 150,
+        "mid": 190,
+        "hi": 340,
+        "tag": "derived",
+        "basis": "Heart disease 107 and other illness 46 among 800 with a known cause, scaled to 971 = 186; hi adds the 185 'unspecified, Katrina-related' deaths (https://doi.org/10.1097/DMP.0b013e31818aaf55)."
+      },
+      "exposedPersons": {
+        "lo": 70000,
+        "mid": 110000,
+        "hi": 200000,
+        "tag": "guess",
+        "basis": "People who had not evacuated Orleans, St Bernard and Jefferson parishes (2000 census 1,007,369; Brunkard et al.): about 100,000 remained in New Orleans (search snippet), 80-90% having left."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 5,
+        "hi": 7,
+        "tag": "derived",
+        "basis": "81% of deaths with a known date fell on 29 August (https://doi.org/10.1097/DMP.0b013e31818aaf55, read); the last people were evacuated about a week later."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 107,
+        "mid": 345,
+        "hi": 4860,
+        "tag": "derived",
+        "basis": "mid = 190 / (110,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://doi.org/10.1097/DMP.0b013e31818aaf55",
+      "notes": "At least 70 hospital inpatients died between 29 August and 2 September and 57 more bodies were recovered from hospitals; at least 78 died in nursing homes. The true denominator is a few thousand patients and residents who were not evacuated, so risk per person was far higher than shown."
+    },
+    {
+      "event": "Hurricane Katrina, Louisiana, 2005",
+      "cause": "co",
+      "deaths": {
+        "lo": 3,
+        "mid": 3,
+        "hi": 8,
+        "tag": "data",
+        "basis": "3 gas poisonings among deaths with a specified mechanism (https://doi.org/10.1097/DMP.0b013e31818aaf55)."
+      },
+      "exposedPersons": {
+        "lo": 70000,
+        "mid": 110000,
+        "hi": 200000,
+        "tag": "guess",
+        "basis": "People who had not evacuated Orleans, St Bernard and Jefferson parishes (2000 census 1,007,369; Brunkard et al.): about 100,000 remained in New Orleans (search snippet), 80-90% having left."
+      },
+      "exposureDays": {
+        "lo": 1,
+        "mid": 5,
+        "hi": 7,
+        "tag": "derived",
+        "basis": "81% of deaths with a known date fell on 29 August (https://doi.org/10.1097/DMP.0b013e31818aaf55, read); the last people were evacuated about a week later."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 2.14,
+        "mid": 5.45,
+        "hi": 114,
+        "tag": "derived",
+        "basis": "mid = 3 / (110,000 x 5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://doi.org/10.1097/DMP.0b013e31818aaf55",
+      "notes": ""
+    },
+    {
+      "event": "Hurricane Katrina, Louisiana, 2005",
+      "cause": "water or food",
+      "deaths": {
+        "lo": 0,
+        "mid": 3,
+        "hi": 17,
+        "tag": "guess",
+        "basis": "No death is attributed to dehydration or hunger in the cause table (https://doi.org/10.1097/DMP.0b013e31818aaf55); 17 bodies were recovered from the Superdome and Convention Center, the upper bound for deaths there from any cause."
+      },
+      "exposedPersons": {
+        "lo": 30000,
+        "mid": 45000,
+        "hi": 55000,
+        "tag": "guess",
+        "basis": "People at the Superdome and Convention Center (recalled)."
+      },
+      "exposureDays": {
+        "lo": 3,
+        "mid": 4,
+        "hi": 5,
+        "tag": "guess",
+        "basis": "Days with little water or food before evacuation (prior-art.md)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0,
+        "mid": 16.7,
+        "hi": 189,
+        "tag": "derived",
+        "basis": "mid = 3 / (45,000 x 4) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://doi.org/10.1097/DMP.0b013e31818aaf55",
+      "notes": "The worst rich-country case of people stranded without water, and still at most a handful of deaths from it."
+    },
+    {
+      "event": "Iberian blackout, 28 April 2025",
+      "cause": "all causes",
+      "deaths": {
+        "lo": 7,
+        "mid": 147,
+        "hi": 330,
+        "tag": "data",
+        "basis": "Spain's daily mortality monitoring found 147 excess deaths over 28-30 April (95% CI -35 to 330; not significant): -20, +84, +83 by day (https://pmc.ncbi.nlm.nih.gov/articles/PMC12231376/, read). A preprint estimates +167 (28-300) (https://www.medrxiv.org/content/10.1101/2025.06.03.25328877; search snippet). Lo is the 7 deaths reported in Spain; 8 with Portugal."
+      },
+      "exposedPersons": {
+        "lo": 44000000,
+        "mid": 45500000,
+        "hi": 47000000,
+        "tag": "guess",
+        "basis": "Residents of mainland Spain, about 45.5 million (recalled); mortality was measured for Spain only. More than 50 million people were affected including Portugal."
+      },
+      "exposureDays": {
+        "lo": 0.4,
+        "mid": 0.5,
+        "hi": 0.75,
+        "tag": "data",
+        "basis": "Began 12:33 on 28 April and lasted about 10 hours, fully restored early on 29 April (https://pmc.ncbi.nlm.nih.gov/articles/PMC12231376/, read)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.199,
+        "mid": 6.46,
+        "hi": 18.8,
+        "tag": "derived",
+        "basis": "mid = 147 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12231376/",
+      "notes": "3.2 micromorts per resident for the event on the central estimate. Excess was concentrated at ages 65-84 (94 deaths) and among women. Mild spring weather, so no cold or heat component."
+    },
+    {
+      "event": "Iberian blackout, 28 April 2025",
+      "cause": "co",
+      "deaths": {
+        "lo": 3,
+        "mid": 3,
+        "hi": 5,
+        "tag": "guess",
+        "basis": "Three members of one family in Taboadela, Galicia, killed by fumes from a petrol generator indoors (news reports, search snippet)."
+      },
+      "exposedPersons": {
+        "lo": 44000000,
+        "mid": 45500000,
+        "hi": 47000000,
+        "tag": "guess",
+        "basis": "Residents of mainland Spain, about 45.5 million (recalled); mortality was measured for Spain only. More than 50 million people were affected including Portugal."
+      },
+      "exposureDays": {
+        "lo": 0.4,
+        "mid": 0.5,
+        "hi": 0.75,
+        "tag": "data",
+        "basis": "Began 12:33 on 28 April and lasted about 10 hours, fully restored early on 29 April (https://pmc.ncbi.nlm.nih.gov/articles/PMC12231376/, read)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.0851,
+        "mid": 0.132,
+        "hi": 0.284,
+        "tag": "derived",
+        "basis": "mid = 3 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.euronews.com/2025/04/29/power-returns-after-massive-blackout-in-spain-and-portugal-as-fallout-continues",
+      "notes": ""
+    },
+    {
+      "event": "Iberian blackout, 28 April 2025",
+      "cause": "fire",
+      "deaths": {
+        "lo": 1,
+        "mid": 1,
+        "hi": 3,
+        "tag": "guess",
+        "basis": "One death in a Madrid flat fire started by a candle (news reports, search snippet)."
+      },
+      "exposedPersons": {
+        "lo": 44000000,
+        "mid": 45500000,
+        "hi": 47000000,
+        "tag": "guess",
+        "basis": "Residents of mainland Spain, about 45.5 million (recalled); mortality was measured for Spain only. More than 50 million people were affected including Portugal."
+      },
+      "exposureDays": {
+        "lo": 0.4,
+        "mid": 0.5,
+        "hi": 0.75,
+        "tag": "data",
+        "basis": "Began 12:33 on 28 April and lasted about 10 hours, fully restored early on 29 April (https://pmc.ncbi.nlm.nih.gov/articles/PMC12231376/, read)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.0284,
+        "mid": 0.044,
+        "hi": 0.17,
+        "tag": "derived",
+        "basis": "mid = 1 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://www.euronews.com/2025/04/29/power-returns-after-massive-blackout-in-spain-and-portugal-as-fallout-continues",
+      "notes": ""
+    },
+    {
+      "event": "Iberian blackout, 28 April 2025",
+      "cause": "interrupted care or devices",
+      "deaths": {
+        "lo": 1,
+        "mid": 3,
+        "hi": 150,
+        "tag": "guess",
+        "basis": "One or two reported deaths of people on home oxygen or ventilation (recalled, not confirmed by search). Hi allows most of the statistical excess to be care-related, as the surveillance authors suggest (https://pmc.ncbi.nlm.nih.gov/articles/PMC12231376/)."
+      },
+      "exposedPersons": {
+        "lo": 44000000,
+        "mid": 45500000,
+        "hi": 47000000,
+        "tag": "guess",
+        "basis": "Residents of mainland Spain, about 45.5 million (recalled); mortality was measured for Spain only. More than 50 million people were affected including Portugal."
+      },
+      "exposureDays": {
+        "lo": 0.4,
+        "mid": 0.5,
+        "hi": 0.75,
+        "tag": "data",
+        "basis": "Began 12:33 on 28 April and lasted about 10 hours, fully restored early on 29 April (https://pmc.ncbi.nlm.nih.gov/articles/PMC12231376/, read)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0.0284,
+        "mid": 0.132,
+        "hi": 8.52,
+        "tag": "derived",
+        "basis": "mid = 3 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12231376/",
+      "notes": ""
+    },
+    {
+      "event": "Iberian blackout, 28 April 2025",
+      "cause": "water or food",
+      "deaths": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "None reported. Upper floors in buildings with booster pumps lost water for some hours."
+      },
+      "exposedPersons": {
+        "lo": 44000000,
+        "mid": 45500000,
+        "hi": 47000000,
+        "tag": "guess",
+        "basis": "Residents of mainland Spain, about 45.5 million (recalled); mortality was measured for Spain only. More than 50 million people were affected including Portugal."
+      },
+      "exposureDays": {
+        "lo": 0.4,
+        "mid": 0.5,
+        "hi": 0.75,
+        "tag": "data",
+        "basis": "Began 12:33 on 28 April and lasted about 10 hours, fully restored early on 29 April (https://pmc.ncbi.nlm.nih.gov/articles/PMC12231376/, read)."
+      },
+      "micromortsPerExposedPersonDay": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0.0568,
+        "tag": "derived",
+        "basis": "mid = 0 / (45,500,000 x 0.5) x 1e6; lo = lowest deaths over highest exposure, hi = highest deaths over lowest exposure, so the range is wider than a 90% interval."
+      },
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12231376/",
+      "notes": ""
+    }
+  ],
+  "blockedSources": [
+    "https://www.transportation.gov/office-policy/transportation-policy/revised-departmental-guidance-on-valuation-of-a-statistical-life-in-economic-analysis (403): US DOT value of a statistical life and its base year; also the DOT benefit-cost guidance PDF for the hourly value of personal travel time.",
+    "https://www.oecd.org/en/publications/mortality-risk-valuation-in-policy-assessment_76ca89a2-en/full-report/recommended-vsl-estimates-for-policy-analysis_9b41dca3.html (403, also on the oecd-ilibrary mirrors): Table 6.1, the recommended base VSL by country group, price year and transfer formula.",
+    "https://www.nhc.noaa.gov/data/tcr/AL182012_Sandy.pdf (403; the LSU mirror exceeds the fetch size limit): Sandy direct and indirect deaths, the number attributed to cold-weather outages, and customers without power.",
+    "https://www.medrxiv.org/content/10.1101/2025.06.03.25328877.full.pdf (403): the second excess-mortality estimate for the Iberian blackout, with Portugal.",
+    "https://gwtoday.gwu.edu/node/9876 (403): the George Washington University estimate of 2,975 excess deaths after Maria and its population adjustment.",
+    "https://pubmed.ncbi.nlm.nih.gov/25156306/ (cookie wall): number of dialysis patients in the Sandy study.",
+    "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2771392 (not fetched; figures from a search snippet): nursing-home excess deaths after Irma.",
+    "https://www.eia.gov/pressroom/releases/press510.php (503): RECS 2020 shares for air conditioning and cooking fuel.",
+    "https://www.mercadolibre.com.ar/filtro-de-agua-sawyer-mini-de-01-micras-con-un-peso-de-2-on/p/MLA2006831107 (403): Mercado Libre prices for sample items; I used search snippets instead.",
+    "https://ldh.la.gov/assets/oph/Center-PHCH/Center-CH/stepi/specialstudies/DisasterMedPHPrep2008No1KatrinaDeaths.pdf (403): Brunkard et al.; read instead through the damfailures.org copy.",
+    "https://buzzfeednews.github.io/2021-05-tx-winter-storm-deaths (numbers only in an embedded image): read instead through KUT's report of the analysis.",
+    "Cabinet Office of Japan series of shelter population by date: not found; the decline after the 470,000 peak is from memory."
+  ],
+  "openQuestions": [
+    "Most deaths the model can avert are of people aged 75 or over, with perhaps eight discounted life-years left. A population-average micromort value overstates them about threefold relative to a life-year approach (HHS value per statistical life year $611,000 at 3%). Official US practice does not adjust for age and the OECD advises against it, so I give the unadjusted value, but the engine should offer a per-life-year option.",
+    "To compare an all-ages anchor with a healthy-adult mortality curve, divide the anchor by the population-average multiplier. With US age shares (under 15, 18%; 15-59, 59%; 60-74, 16%; 75 and over, 7%) and the multipliers here it is 0.18 x 0.15 + 0.59 + 0.16 x 7 + 0.07 x 25 = 3.5. Texas cold: 8.5 / 3.5 = 2.4 micromorts per healthy-adult day without power, which agrees with the direct under-60 figure of 1.9-2.9.",
+    "Age multipliers differ by cause by a factor of five (about 10 at 75 and over for cold and injury, 45-75 for heat and interrupted care). Need-level multipliers from the item researchers should override these cross-cutting ones where they exist.",
+    "Anchor denominators mix two conventions: people in homes that lost a utility (Texas, Irma, Sandy) and all residents (New York, British Columbia, Japan, Maria, Iberia). The notes give the alternative where it changes the figure by more than a factor of 1.5.",
+    "Excess-death estimates are two to four times the certified counts (Texas 702 against 246; Irma; Iberia 147 against 8). Mortality curves fitted to certified counts will understate harm to the old and chronically ill by about that factor.",
+    "priceIndex for Buenos Aires hides a fivefold spread between locally stocked goods and branded imports; item-level availability and price would be better.",
+    "storageCostUsdPerLitreYear is given by dwelling type only. Rents per square metre differ by location (Buenos Aires about 40% below US levels), but so do dwelling sizes; I did not split it.",
+    "The November 2026 price level is my assumption (3.5% above the 2025 average, 14% above 2022); replace with the published CPI.",
+    "homePresence is an annual average. Absence is correlated with some hazards (holiday travel in winter storms, summer holidays in heat waves) and warning brings people home before others.",
+    "shareHeatingNeedsGrid counts main heating only. The share of households with a secondary heat source that works unpowered (fireplace, wood stove, unpowered gas heater) is the warmth researcher's baseline and I have only a rough 20% for US houses."
+  ]
+}

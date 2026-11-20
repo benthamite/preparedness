@@ -1,0 +1,632 @@
+{
+  "kind": "items",
+  "group": "money-docs",
+  "needs": [
+    {
+      "id": "payments",
+      "definition": "A day on which shops and fuel stations the household can reach are open and stocked, but it cannot pay: card terminals, ATMs and branches are not working, or its accounts are frozen or capped below essential spending, and its cash has run out. A day on which a withdrawal cap still covers essential spending (Greece 2015: 60 euros a day per depositor per bank) is not an unmet day.",
+      "baselineCoverageDays": {
+        "lo": 0, "mid": 1, "hi": 4, "tag": "derived",
+        "basis": "Wallet cash only: 76% of US consumers carry cash, mean $69 (Fed Diary 2026, https://www.frbservices.org/binaries/content/assets/crsocms/news/research/2026-diary-consumer-payments-choice.pdf), so two wallets hold roughly $60-140 against a need of $50 a day for 2.5 people. Euro-area median is 59 euros per person (about 2 days; ECB SPACE 2024); the 45% of US and 35% of euro-area consumers who keep a reserve (US mean $364) are already prepared and are not the baseline."
+      },
+      "dailyRequirementUsdPerPersonDay": {
+        "lo": 10, "mid": 20, "hi": 40, "tag": "derived",
+        "basis": "CEX 2025 food at home $6,491 plus gasoline $2,503 per consumer unit = $8,994 / 365 / 2.5 = $9.86 per person-day (https://www.bls.gov/news.release/cesan.nr0.htm), doubled for emergency purchases at higher prices. Checks: Riksbank SEK 1,000 per adult for a week is about $15 a day; authorities cited by the ECB advise 70-100 euros per person for 72 hours, about $27-38 a day."
+      },
+      "hardshipUsdPerPersonDay": {
+        "tag": "guess",
+        "basis": "No willingness-to-pay study found. Each step is the chance that the household must buy something that day times the value lost, plus time spent searching: days 1-2, 0.3 x $15 + $4 (the pantry is intact; in Spain's 28 April 2025 blackout spending fell 34% on the day but only 15% net after two days, https://www.caixabankresearch.com/es/analisis-sectorial/consumo/impacto-economico-del-apagon-detalle); days 3-7, 0.6 x $30 + $6 (after Helene a family of four with $80 could not cover fuel and food, and neighbours paid for each other, https://carolinapublicpress.org/66855/cash-only-economy-surprised-nc-helene-survivors/); days 8-30, 0.9 x $40; later, some adaptation through shop credit, barter and substitute currencies as in Argentina in 2002.",
+        "steps": [
+          {"fromDay": 1, "lo": 2, "mid": 7, "hi": 25},
+          {"fromDay": 3, "lo": 6, "mid": 25, "hi": 80},
+          {"fromDay": 8, "lo": 10, "mid": 40, "hi": 120},
+          {"fromDay": 31, "lo": 6, "mid": 30, "hi": 100}
+        ]
+      },
+      "mortalityMicromortsPerPersonDay": {
+        "tag": "guess",
+        "basis": "No death in the Texas 2021, Hurricane Irma or Greek 2015 bank-closure records in prior-art.md is attributed to being unable to pay. The remaining path is an unbought drug or fuel, which is mostly counted on the medication and warmth needs.",
+        "steps": [
+          {"fromDay": 1, "lo": 0, "mid": 0.005, "hi": 0.05},
+          {"fromDay": 8, "lo": 0, "mid": 0.02, "hi": 0.3}
+        ]
+      },
+      "multipliers": [
+        {"profile": "criticalDrug", "hardship": 1.5, "mortality": 5, "tag": "guess", "basis": "A daily drug must be bought on schedule; an unpaid refill is the main way an unmet payment day could kill. No data."},
+        {"profile": "age75plus", "hardship": 1.3, "mortality": 3, "tag": "guess", "basis": "Greek pensioners without cards queued at specially opened branches for 120 euros a week in 2015 (search snippet, AP via Washington Times); older people are less able to queue or search for a working ATM. Offsetting: people 55 and over carry about three times the cash of those aged 18-24 (Fed Diary 2026)."},
+        {"profile": "limitedMobility", "hardship": 1.3, "mortality": 2, "tag": "guess", "basis": "Cannot travel between ATMs and shops to find one that works. No data."},
+        {"profile": "child", "hardship": 1.2, "mortality": 1, "tag": "guess", "basis": "Infant formula and nappies cannot be deferred or improvised. No data."}
+      ],
+      "notes": "How often and how long payments fail (hazard owners decide the windows; these are my readings). (1) One bank or processor: hours; nine UK banks logged 803 hours over 158 incidents in two years and 1 in 7 UK adults had a card made unusable by a glitch in 2018 (both search snippets); a second card solves these. (2) National network: Visa Europe 1 June 2018 about 10 hours with 10% of 51.2 million transactions failing (read on The Register); Interac during the Rogers outage 2022 about 15 hours, Square 2023 15.5 hours, Nets in the Nordics 2025 about 3 hours (snippets); Iberian blackout 2025 up to 22 hours (ECB). All under one day. (3) Regional disaster with power and data down: Boone a couple of days, Asheville groceries and fuel almost a week after Helene, most ATMs down or empty (Carolina Public Press); Puerto Rico after Maria half of bank branches open a month later (snippet). My derived US frequency: cash-only for a day or more about 1% a year (0.3-3%), four days or more 0.2-0.3% (0.05-1%), from NREL's 3.5%, 1.0% and 0.13% a year for outages over 1, 3 and 7 days times a guessed 0.3-0.5 share in which shops are open but cash-only. Suggested window given such an event: p50 2 days, p90 7, p99 30. (4) Bank holiday or freeze: 6 holidays in 151 crises, five of 4-8 days and Greece 21; 8 deposit freezes (IMF WP 18/206); Argentina's lasted 12 months for demand deposits (Yale), Cyprus's cash limits about 12 months and its last controls 24 (search snippets). In these events banked households could usually still pay: Greek cards worked domestically, Argentine card payments were not disrupted, and caps covered subsistence. Count only the days of full closure with empty ATMs as unmet (p50 2, p90 8, p99 30 for a household with a card); the rest of the harm is on financialLoss. Cash is spent at dailyRequirementUsdPerPersonDay, so $100 covers 5 person-days at US prices; scale by local prices elsewhere."
+    }
+  ],
+  "channels": [
+    {
+      "id": "financialLoss",
+      "definition": "Money the household loses outright because of an event, after insurance payouts and aid: uninsured or under-insured property damage and deductibles, spoiled food, lost income, deposits frozen and then devalued, converted or cut, and the fees and time of replacing documents and data. It excludes hardship (carried by the needs) and the cost of leaving (handled by the engine).",
+      "everydayAnnualUsdPerHousehold": {
+        "lo": 60, "mid": 250, "hi": 900, "tag": "guess",
+        "basis": "Insured US homeowner losses per house-year, from claim frequency times severity 2020-2024 (https://www.iii.org/fact-statistic/facts-statistics-homeowners-and-renters-insurance): fire 0.21% x $101,092 = $212, water 1.42% x $17,240 = $245, wind and hail 2.97% x $15,708 = $467, theft 0.11% x $6,184 = $7, total $931 gross (it matches the $1,737 average premium x 53.6% incurred-loss ratio). The household's own share is the deductible on about 4.7 claims per 100 house-years ($50-120 a year), losses too small to claim, and the whole loss for the uninsured; $250 is my guess at that share, and the high end is the gross figure for a household with no cover."
+      },
+      "inHazards": "bankingCrisis: loss = liquid savings held in the domestic banking system x a loss fraction. Argentina 2001-02 type (freeze, devaluation, forced conversion): 70-75% in dollar terms on peso deposits and 42-56% on dollar deposits paid out in 2002 (1.40 pesos plus indexation against a market rate of 3.4-3.9), less for savers who sued or waited; in local purchasing power the peso saver lost about 29% (2002 inflation 41%, recalled) and the converted dollar saver nothing. Cyprus 2013 type: nothing on insured deposits up to 100,000 euros, 47.5% above that at Bank of Cyprus. Greece 2015 type: nothing, access capped. For US and Western European households under the insurance cap I put the expected principal loss given a freeze at 5% (0-30%, guess), the high end being a redenomination. houseFire, flood, earthquake, hurricane, wildfire, storms: property damage net of insurance, plus deductibles, spoiled food and lost income; average insured fire claim $101,092 and NFIP paid flood claims averaged about $100,000-160,000 in the largest events (III); flood and earthquake are excluded from standard policies, so the uninsured share there is most of the loss. Any outage: lost income (20% of households in a 3-day outage, mean $1,157 among those, per prior-art.md) and spoiled food.",
+      "multipliers": []
+    }
+  ],
+  "items": [
+    {
+      "id": "cash-small-notes",
+      "name": "Cash at home in small notes",
+      "spec": "US currency in $5, $10 and $20 notes kept hidden at home; one unit is $100. Elsewhere the local equivalent: euros in Western Europe; in Buenos Aires no more than a week of pesos, the rest in US dollar notes.",
+      "fromLonglistRows": [97],
+      "scalesWith": "household",
+      "unit": "100 US dollars",
+      "ladder": [
+        {"label": "$100", "units": 1},
+        {"label": "$200", "units": 2},
+        {"label": "$300", "units": 3},
+        {"label": "$500", "units": 5},
+        {"label": "$1,000", "units": 10},
+        {"label": "$2,000", "units": 20},
+        {"label": "$5,000", "units": 50}
+      ],
+      "price": {
+        "usdPerUnit": {"lo": 100, "mid": 100, "hi": 100, "tag": "data", "basis": "Face value; there is no purchase price."},
+        "product": "US banknotes at face value",
+        "source": "",
+        "verified": true
+      },
+      "lifeYears": {"lo": 20, "mid": 50, "hi": 100, "tag": "guess", "basis": "US notes are never demonetised; some European series have been withdrawn but stay exchangeable. Irrelevant to cost when everydayShare is 1."},
+      "setupHours": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "One bank or ATM visit and asking for small notes."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.5, "tag": "guess", "basis": "Checking it is still there and topping up after use."},
+      "upkeepUsdPerYear": {
+        "lo": 0.8, "mid": 3.6, "hi": 6.5, "tag": "derived",
+        "basis": "Per $100: inflation $3.2 (CPI +3.7% in the 12 months to September 2026, https://www.bls.gov/news.release/archives/cpi_11102026.htm; I use a longer-run 3.2) minus the $0.39 an average savings account would pay (https://www.fdic.gov/national-rates-and-rate-caps) plus theft and loss $0.8 (burglary 1.3% of households a year x 40% found, fire claims 0.21% x 25%, misplaced 0.25%; the three shares are guesses). The low end is theft and loss alone, for money that would otherwise sit in an account paying about inflation or for a reader who counts only what a current account pays; the high end is the 4.1-4.35% a top savings account pays plus high theft."
+      },
+      "everydayShare": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "Set as the assignment instructs: the money remains the household's, so the cost is the carrying cost in upkeepUsdPerYear."},
+      "volumeLitresPerUnit": 0.01,
+      "reliability": {"lo": 0.75, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "Spent beforehand, stolen, forgotten, or in $100 notes a cash-only shop cannot change: three quarters of the value of cash Americans store is in $100s (Fed Diary 2026)."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "supply", "need": "payments", "amountPerUnit": 100, "amountUnit": "usd", "notes": "Spent at about $20 per person per day (10-40) at US prices, so $100 covers 5 person-days, or 2 days for a household of 2.5."},
+        {"type": "other", "description": "Pays for fuel and lodging when the household leaves during a payment failure; after Helene fuel stations were cash-only for up to a week. Late buying works before a storm (ATMs are stocked until the last day or two) but not in a banking crisis, where limits are announced while banks are shut."}
+      ],
+      "evidence": [
+        {"claim": "76% of US consumers carried cash, mean $69; 45% stored cash elsewhere, mean $364, three quarters of it in $100 notes (2025 data).", "source": "https://www.frbservices.org/binaries/content/assets/crsocms/news/research/2026-diary-consumer-payments-choice.pdf", "year": 2026, "verified": true},
+        {"claim": "Euro-area median cash in wallet 59 euros; 35% keep a cash reserve.", "source": "https://www.ecb.europa.eu/stats/ecb_surveys/space/shared/pdf/ecb.space2024~19d46f0f17.en.pdf", "year": 2024, "verified": true},
+        {"claim": "Dutch, Austrian and Finnish authorities suggest about 70-100 euros per household member, or enough for essentials for about 72 hours.", "source": "https://www.ecb.europa.eu/press/economic-bulletin/articles/2025/html/ecb.ebart202506_02~1a773e2ca3.en.html", "year": 2025, "verified": true},
+        {"claim": "Riksbank benchmark: about SEK 1,000 in cash per adult, derived from a week of food spending, in mixed denominations; also cards on different networks.", "source": "https://www.riksbank.se/en-gb/payments--cash/payments-in-sweden/payments-report-2026/the-riksbanks-policy-recommendations/households-should-have-multiple-payment-methods-so-that-they-can-pay-in-the-event-of-disruptions-for-example-sek-1000-in-cash-per-adult/", "year": 2026, "verified": true},
+        {"claim": "After Helene it was almost a week before grocery stores and fuel stations could take cards; most ATMs were down or empty; Boone was cash-only for a couple of days.", "source": "https://carolinapublicpress.org/66855/cash-only-economy-surprised-nc-helene-survivors/", "year": 2024, "verified": true},
+        {"claim": "Spain, 28 April 2025: in-person card spending fell 42% on the peninsula, total spending 34%; net loss after the two-day rebound 15%.", "source": "https://www.caixabankresearch.com/es/analisis-sectorial/consumo/impacto-economico-del-apagon-detalle", "year": 2025, "verified": true},
+        {"claim": "FDIC national deposit rates on 16 November 2026: savings 0.39%, interest checking 0.07%.", "source": "https://www.fdic.gov/national-rates-and-rate-caps", "year": 2026, "verified": true},
+        {"claim": "Household burglary or trespassing: 13.1 per 1,000 households (NCVS).", "source": "https://bjs.ojp.gov/document/cv24.pdf", "year": 2024, "verified": false}
+      ],
+      "confidence": "derived",
+      "notes": "The supply quantity and the cost are derived from data; the hardship it averts is a guess. What $100 at home truly costs a year depends on where the money would otherwise be: about $1.2 if in an average savings account (0.39% plus theft), about $5 if in a top savings account or money-market fund, about $9 if it would be invested. The engine adds price x r to this upkeep, so with r at 3% its total is about $6.60. On my numbers the first $100 averts roughly $0.3 of expected hardship a year for an average US household (1% a year x one or two unmet days x 2.5 people x $7), so cash will rank low unless the hazard files give longer or likelier payments windows than I found."
+    },
+    {
+      "id": "second-payment-route",
+      "name": "Second bank and second card network",
+      "spec": "A current account at a second, unrelated bank with its own debit card, plus a credit card on the other network (one Visa, one Mastercard); physical cards with PINs known; about a month of spending kept in the second account.",
+      "fromLonglistRows": [101],
+      "scalesWith": "household",
+      "unit": "second account and card, set up once",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0, "hi": 25, "tag": "guess", "basis": "Free current accounts and no-fee credit cards are widely offered; not priced on a fetched page."},
+        "product": "No-fee current account and no-annual-fee credit card",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 15, "hi": 30, "tag": "guess", "basis": "Lasts until the bank closes the account or the household lets it lapse."},
+      "setupHours": {"lo": 1, "mid": 2, "hi": 4, "tag": "guess", "basis": "Opening an account and a card online and funding it."},
+      "upkeepHoursPerYear": {"lo": 0.5, "mid": 1, "hi": 3, "tag": "guess", "basis": "Keeping both active and watching a second statement."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 60, "tag": "guess", "basis": "Zero if the fee-waiver conditions are met; monthly fees otherwise."},
+      "everydayShare": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Most of its use is everyday: a card blocked for fraud, a lost wallet, one bank's IT failure. 1 in 7 UK adults had a card made unusable by a glitch in 2018 (Which? survey, search snippet)."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "The second card is at home, active and its PIN remembered."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce", "target": "payments", "hazards": ["bankingCrisis"],
+          "fractionRemoved": {"lo": 0.05, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Greece's 2015 cap was 60 euros per depositor per credit institution per day (legal act quoted in search snippets), so a second bank doubled it, and a second bank survives the resolution of the first (Laiki in Cyprus). It does nothing on days when every bank and ATM is shut."},
+          "adherence": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Share of owners who keep a usable balance in the second account."},
+          "notes": "No effect in storms, earthquakes or grid failure: both routes need the same power and data lines."
+        },
+        {"type": "other", "description": "Everyday and single-institution failures outside the model's hazards: nine UK banks logged at least 803 hours of outages in 158 incidents over two years, and TSB's 2018 migration disrupted some services for weeks (search snippets). A second route removes almost all of that harm. Deposit insurance is per bank, so it also doubles the insured ceiling."}
+      ],
+      "evidence": [
+        {"claim": "Greece 2015: cash withdrawals above 60 euros per depositor (customer ID), per credit institution, per day were not permitted; opening new accounts was barred.", "source": "https://www.mondaq.com/financial-services/414114/capital-controls", "year": 2015, "verified": false},
+        {"claim": "Visa Europe, 1 June 2018: about 10 hours; about 10% of 51.2 million transactions failed; 2.4 million of 27.6 million (9%) on UK cards; peaks of 35% for 10 and 50 minutes.", "source": "https://www.theregister.com/2018/06/19/visa_pins_payment_problems_on_very_rare_fault_in_data_centre_switch/", "year": 2018, "verified": true},
+        {"claim": "Nine UK banks and building societies: at least 803 hours of unplanned outages in 158 incidents, January 2023 to February 2025.", "source": "https://www.computerweekly.com/news/366620352/Big-bank-systems-down-for-over-800-hours-in-last-two-years-due-to-IT-outages", "year": 2025, "verified": false},
+        {"claim": "Riksbank recommends cards from different card networks so that a failure at one network or issuing bank does not leave a household unable to pay.", "source": "https://www.riksbank.se/en-gb/payments--cash/payments-in-sweden/payments-report-2026/the-riksbanks-policy-recommendations/households-should-have-multiple-payment-methods-so-that-they-can-pay-in-the-event-of-disruptions-for-example-sek-1000-in-cash-per-adult/", "year": 2026, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Almost free, but its value lies mostly outside the modelled hazards. Mobile pay and a second e-ID add no route of their own: they run on the same cards and networks."
+    },
+    {
+      "id": "document-copies",
+      "name": "Copies of documents and a home inventory",
+      "spec": "Photos or scans of IDs, insurance policies, deed or lease, medical and bank details, and a ten-minute phone video of every room as an inventory; kept encrypted in the cloud and on a USB stick, with paper copies in a waterproof pouch.",
+      "fromLonglistRows": [98],
+      "scalesWith": "household",
+      "unit": "set of copies for the household",
+      "price": {
+        "usdPerUnit": {"lo": 5, "mid": 15, "hi": 30, "tag": "guess", "basis": "Waterproof pouch and USB stick; the longlist's estimate of $10-20, not checked on a retailer page."},
+        "product": "Waterproof document pouch and USB stick",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 3, "mid": 5, "hi": 10, "tag": "guess", "basis": "Until documents expire or policies change enough that the set must be redone."},
+      "setupHours": {"lo": 1.5, "mid": 3, "hi": 6, "tag": "guess", "basis": "Gathering, scanning, filming and filing."},
+      "upkeepHoursPerYear": {"lo": 0.25, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "Yearly refresh, as Ready.gov and the Red Cross advise."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 25, "tag": "guess", "basis": "Fits in free cloud storage; a paid tier otherwise."},
+      "everydayShare": {"lo": 0.2, "mid": 0.4, "hi": 0.7, "tag": "guess", "basis": "Also used after a lost wallet and for loan, visa and tax paperwork."},
+      "volumeLitresPerUnit": 0.5,
+      "reliability": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Out of date, password forgotten, or the cloud unreachable while communications are down."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce", "target": "financialLoss", "hazards": ["houseFire", "flood", "wildfire", "hurricane", "earthquake"],
+          "fractionRemoved": {"lo": 0.01, "mid": 0.04, "hi": 0.12, "tag": "guess", "basis": "An inventory raises the contents payout and proof of ownership unlocks aid. Only 10% (six months) to 23% (twelve months) of Los Angeles total-loss claimants got their full contents limit without an itemised inventory, and FEMA declared about 60% of Hurricane Maria applications ineligible, many for lack of ownership papers (search snippets). The size of the gain is my guess."},
+          "adherence": {"lo": 0.5, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Share of owners whose copies are current and retrievable when needed."},
+          "notes": "Applies to households with something to claim. Nothing in a banking crisis."
+        },
+        {
+          "type": "reduce", "target": "displacement", "hazards": ["houseFire", "flood", "wildfire", "hurricane", "earthquake"],
+          "fractionRemoved": {"lo": 0.005, "mid": 0.02, "hi": 0.06, "tag": "guess", "basis": "Hours not spent proving identity and re-creating policy and account details while displaced; perhaps 5-15 hours over a displacement of weeks."},
+          "adherence": {"lo": 0.5, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Same as above."}
+        }
+      ],
+      "evidence": [
+        {"claim": "About 60% of Hurricane Maria applications to FEMA's housing programme were declared ineligible; advocates count over 77,000 households denied over proof of ownership.", "source": "https://theconversation.com/more-than-60-of-puerto-ricans-seeking-fema-aid-after-hurricane-maria-had-their-applications-denied-will-the-agency-approve-more-this-time-192383", "year": 2022, "verified": false},
+        {"claim": "Los Angeles wildfires: 10% of total-loss survivors at six months, 23% at twelve, received full contents limits without an itemised inventory.", "source": "https://uphelp.org/wp-content/uploads/2025/11/REPORT_-2025-LA-Wildfires-6-Month-Survey-Results.pdf", "year": 2025, "verified": false},
+        {"claim": "Insured fire and lightning claims: 0.21 per 100 house-years, average $101,092 (2020-2024).", "source": "https://www.iii.org/fact-statistic/facts-statistics-homeowners-and-renters-insurance", "year": 2025, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Rough value at US rates: 0.2% a year of a major loss x 4% x a $30,000 net loss = $2.40 a year, plus the everyday uses, against about $15 a year of time and materials. It is marginal unless the household is in a hazard zone."
+    },
+    {
+      "id": "fire-document-box",
+      "name": "Fire-resistant document chest",
+      "spec": "SentrySafe 1200 fire chest, 0.18 cubic feet, UL classified for 30 minutes at 1,550 F, key lock, not waterproof; holds passports, certificates, titles and the cash reserve.",
+      "fromLonglistRows": [99],
+      "scalesWith": "household",
+      "unit": "chest",
+      "price": {
+        "usdPerUnit": {"lo": 20, "mid": 30, "hi": 50, "tag": "data", "basis": "Manufacturer page lists the model in a $20-$50 band (https://www.sentrysafe.com/product/1200); $29.99 on the manufacturer's store and $25-31 at Walmart are from search snippets."},
+        "product": "SentrySafe 1200 Small Fire Chest",
+        "source": "https://www.sentrysafe.com/product/1200",
+        "verified": true
+      },
+      "lifeYears": {"lo": 10, "mid": 20, "hi": 40, "tag": "guess", "basis": "No moving parts beyond the lock."},
+      "setupHours": {"lo": 0.3, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "Buying it and gathering the originals."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Returning documents after use."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "A fixed place for important papers has some everyday use."},
+      "volumeLitresPerUnit": 16,
+      "reliability": {"lo": 0.4, "mid": 0.65, "hi": 0.85, "tag": "guess", "basis": "The originals are in it, the fire stays within the 30-minute rating, and hose water does not ruin the contents (this model is not waterproof)."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce", "target": "financialLoss", "hazards": ["houseFire", "wildfire"],
+          "fractionRemoved": {"lo": 0.002, "mid": 0.005, "hi": 0.02, "tag": "guess", "basis": "Replacing passports, birth certificates and titles costs perhaps $300-600 in fees plus 10-20 hours, about $700, against an average fire claim of $101,092 (III): under 1% of the loss."},
+          "adherence": {"lo": 0.5, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Share of owners who actually keep the originals in it."}
+        },
+        {"type": "other", "description": "Protects a cash reserve stored inside from fire; fire claims run at 0.21 per 100 house-years, so this is worth about $0.05 a year per $100 of cash."}
+      ],
+      "evidence": [
+        {"claim": "Model 1200: UL classified for 30 minutes at up to 1,550 F; interior 3.5 x 12 x 7.5 inches, 0.18 cubic feet; price band $20-$50; no waterproof claim.", "source": "https://www.sentrysafe.com/product/1200", "year": 2026, "verified": true},
+        {"claim": "Insured fire and lightning claims: 0.21 per 100 house-years, average $101,092.", "source": "https://www.iii.org/fact-statistic/facts-statistics-homeowners-and-renters-insurance", "year": 2025, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Expected value about 0.21% x $700 x 0.5 = $0.70 a year against about $2 a year of cost, so it should rank low. Cloud copies do most of the same job, and originals can be replaced."
+    },
+    {
+      "id": "legal-documents",
+      "name": "Will, power of attorney and advance directive",
+      "spec": "A will, durable financial power of attorney and advance healthcare directive for each adult, made with an online service or free statutory forms, correctly signed and witnessed, with account beneficiaries checked.",
+      "fromLonglistRows": [102],
+      "scalesWith": "household",
+      "unit": "documents for two adults",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 199, "hi": 1000, "tag": "data", "basis": "LegalZoom basic will from $99 for one person and $199 for two (https://www.legalzoom.com/personal/estate-planning/last-will-and-testament-pricing.html). Free options exist (FreeWill, state forms); an attorney charges $300-600 for a simple will and more for the set (search snippets)."},
+        "product": "LegalZoom Basic Last Will for two people",
+        "source": "https://www.legalzoom.com/personal/estate-planning/last-will-and-testament-pricing.html",
+        "verified": true
+      },
+      "lifeYears": {"lo": 3, "mid": 7, "hi": 15, "tag": "guess", "basis": "Until a marriage, birth, move or large change in assets."},
+      "setupHours": {"lo": 2, "mid": 4, "hi": 10, "tag": "guess", "basis": "Deciding, filling in, signing with witnesses or a notary."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Occasional review."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 20, "tag": "guess", "basis": "None unless a storage or update subscription is bought."},
+      "everydayShare": {"lo": 0.95, "mid": 0.985, "hi": 0.999, "tag": "derived", "basis": "The documents matter when an adult dies or loses capacity. The modelled catastrophes add perhaps 50 micromorts a year (5-200) to an all-cause risk of about 3,500 a year for adults aged 25-64 (recalled), so about 1.5% of the value is preparedness."},
+      "volumeLitresPerUnit": 0.1,
+      "reliability": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Validly executed, current, and found by the people who need it."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "other", "description": "Does not change the chance of death or incapacity. If an adult dies or is incapacitated, valid documents spare surviving household members court costs and delay, which I guess at $2,000-10,000 (intestate probate, guardianship). Preparedness value = catastrophe risk x that saving: 50 micromorts x 2 adults x $5,000 = about $0.50 a year (0.02-4). Benefits to heirs outside the household are outside the model."}
+      ],
+      "evidence": [
+        {"claim": "LegalZoom basic last will package starts at $99 for one person and $199 for two.", "source": "https://www.legalzoom.com/personal/estate-planning/last-will-and-testament-pricing.html", "year": 2026, "verified": true},
+        {"claim": "FreeWill offers a will, advance healthcare directive and durable financial power of attorney free; attorneys charge $300-600 for a simple will.", "source": "https://freewill.com/learn/trust-and-will-review", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Worth doing for ordinary reasons; as preparedness it is negligible and should not rank on this list."
+    },
+    {
+      "id": "data-backup",
+      "name": "Automatic data backup",
+      "spec": "Continuous cloud backup of the main computer (Backblaze Personal Backup) and cloud sync of phone photos, plus a 2 TB external drive updated automatically.",
+      "fromLonglistRows": [103],
+      "scalesWith": "household",
+      "unit": "backup set-up for the household",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 75, "hi": 110, "tag": "guess", "basis": "A 2 TB portable drive, the longlist's $60-80 estimate; not read on a retailer page. Zero if cloud only."},
+        "product": "2 TB portable external drive",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 3, "mid": 5, "hi": 8, "tag": "guess", "basis": "Typical service life of a portable drive."},
+      "setupHours": {"lo": 1, "mid": 2, "hi": 4, "tag": "guess", "basis": "Installing, choosing what to back up, first upload left running."},
+      "upkeepHoursPerYear": {"lo": 0.2, "mid": 0.5, "hi": 2, "tag": "guess", "basis": "Checking that backups still run and a test restore."},
+      "upkeepUsdPerYear": {"lo": 12, "mid": 99, "hi": 120, "tag": "data", "basis": "Backblaze Personal Backup is $99 a year for unlimited data (https://www.backblaze.com/cloud-backup/personal/pricing); the low end is a 50 GB phone-photo plan at about $1 a month (recalled)."},
+      "everydayShare": {"lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Disasters destroy devices far less often than everyday causes: fire claims 0.21% and burglary 1.3% of households a year against roughly 5% a year for drive failure, loss, theft and accidents per device (recalled)."},
+      "volumeLitresPerUnit": 0.3,
+      "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.97, "tag": "guess", "basis": "Backups that silently stopped, lost passwords, files excluded."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce", "target": "financialLoss", "hazards": ["houseFire", "flood", "wildfire", "hurricane", "earthquake"],
+          "fractionRemoved": {"lo": 0.005, "mid": 0.03, "hi": 0.1, "tag": "guess", "basis": "Assumes a household values its photos and records at about $3,000 ($500-10,000), against an average fire claim of $101,092. The valuation is a guess; the loss is not a market loss."},
+          "adherence": {"lo": 0.6, "mid": 0.85, "hi": 0.97, "tag": "guess", "basis": "Share of set-ups still working when the loss happens."}
+        }
+      ],
+      "evidence": [
+        {"claim": "Backblaze Personal Backup costs $99 a year with unlimited data.", "source": "https://www.backblaze.com/cloud-backup/personal/pricing", "year": 2026, "verified": true},
+        {"claim": "Insured fire claims 0.21 and theft claims 0.11 per 100 house-years.", "source": "https://www.iii.org/fact-statistic/facts-statistics-homeowners-and-renters-insurance", "year": 2025, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Sensible for everyday reasons. As preparedness: 0.3% a year x $3,000 = about $9 a year against a preparedness share of cost of about $6 a year."
+    },
+    {
+      "id": "emergency-fund",
+      "name": "Emergency fund",
+      "spec": "Liquid savings in an insured high-yield savings account or Treasury money-market fund, on top of everyday balances. One unit is $1,000; the ladder is one, three and six months of average US household spending ($81,905 a year in 2025, so $6,825 a month).",
+      "fromLonglistRows": [100],
+      "scalesWith": "household",
+      "unit": "1,000 US dollars",
+      "ladder": [
+        {"label": "1 month of spending", "units": 7},
+        {"label": "3 months of spending", "units": 20},
+        {"label": "6 months of spending", "units": 41}
+      ],
+      "price": {
+        "usdPerUnit": {"lo": 1000, "mid": 1000, "hi": 1000, "tag": "data", "basis": "Face value; there is no purchase price."},
+        "product": "Balance in a savings account",
+        "source": "",
+        "verified": true
+      },
+      "lifeYears": {"lo": 20, "mid": 50, "hi": 100, "tag": "guess", "basis": "Does not wear out. Irrelevant to cost when everydayShare is 1."},
+      "setupHours": {"lo": 0.5, "mid": 1, "hi": 3, "tag": "guess", "basis": "Opening the account and setting up a transfer; the saving itself is not counted."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.2, "hi": 1, "tag": "guess", "basis": "Checking the rate now and then."},
+      "upkeepUsdPerYear": {
+        "lo": 0, "mid": 5, "hi": 35, "tag": "derived",
+        "basis": "Per $1,000. The best savings accounts pay 4.1-4.35% (search snippets) against inflation of 3.7% (BLS), so the fund holds its real value and the cost is the yield forgone by not investing, which the engine's price x r term already charges. If it sits in an average savings account at 0.39% (https://www.fdic.gov/national-rates-and-rate-caps) it loses about $33 a year to inflation."
+      },
+      "everydayShare": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "The money remains the household's. Separately, about 90-95% of what the fund is used for is everyday (job loss, repairs, medical bills), which matters if the capital charge is to be shared out."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.8, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Spent on something else first, or out of reach while payments are down. In a banking crisis it is inside the frozen system."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "other", "description": "Pays for leaving, deductibles and lost income without borrowing. Value = borrowing cost averted: credit-card accounts assessed interest paid 22.3% in 2025 (Fed G.19, search snippet), so a $2,000 shock repaid over a year costs about $240. That applies to the 37% of US adults who would not cover a $400 expense with cash or its equivalent; for the 12% who could not pay at all the fund is what makes leaving possible. For a household with other liquid assets or cheap credit the preparedness value is close to zero. Expected value for a constrained household: 2-3% a year chance of a $2,000 disaster expense x $240 = $5-7 a year for the first $2,000, and little for later units. It does nothing in a banking crisis unless part is held as cash or abroad."}
+      ],
+      "evidence": [
+        {"claim": "55% of US adults had three months of expenses set aside in 2025; 63% would cover a $400 emergency with cash or its equivalent; 12% could not pay it by any means; 15% would carry it on a credit card.", "source": "https://www.federalreserve.gov/publications/2026-economic-well-being-of-us-households-in-2025-savings-investments.htm", "year": 2026, "verified": true},
+        {"claim": "Average annual expenditures per consumer unit were $81,905 in 2025.", "source": "https://www.bls.gov/news.release/cesan.nr0.htm", "year": 2026, "verified": true},
+        {"claim": "FDIC national average savings rate 0.39% on 16 November 2026.", "source": "https://www.fdic.gov/national-rates-and-rate-caps", "year": 2026, "verified": true},
+        {"claim": "Credit-card interest rate on accounts assessed interest averaged 22.3% in 2025.", "source": "https://fred.stlouisfed.org/data/TERMCBCCINTNS", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "A personal-finance measure more than a preparedness one. A household carrying card debt at 22% should repay that before building more than a small buffer."
+    },
+    {
+      "id": "hard-currency-notes",
+      "name": "Foreign-currency notes as a store of value",
+      "spec": "US $100 notes of the current blue series, held outside the banking system at home or in a safe-deposit box. One unit is $1,000. For a household whose deposits are in a currency or banking system with a record of freezes and devaluation, chiefly Buenos Aires.",
+      "fromLonglistRows": [97, 100],
+      "scalesWith": "household",
+      "unit": "1,000 US dollars in notes",
+      "ladder": [
+        {"label": "$1,000", "units": 1},
+        {"label": "$3,000", "units": 3},
+        {"label": "$10,000", "units": 10}
+      ],
+      "price": {
+        "usdPerUnit": {"lo": 1000, "mid": 1000, "hi": 1000, "tag": "data", "basis": "Face value. Buying them cost a 1-2% spread in 2026 and a parallel-market premium of 100-230% during the 2019-2025 controls (search snippets); the premium is the market price of the same asset, not a cost."},
+        "product": "US $100 banknotes",
+        "source": "",
+        "verified": true
+      },
+      "lifeYears": {"lo": 20, "mid": 50, "hi": 100, "tag": "guess", "basis": "US notes are never demonetised. Irrelevant to cost when everydayShare is 1."},
+      "setupHours": {"lo": 0.5, "mid": 1, "hi": 3, "tag": "guess", "basis": "Buying and hiding or boxing them."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.2, "hi": 1, "tag": "guess", "basis": "Checking them."},
+      "upkeepUsdPerYear": {
+        "lo": 30, "mid": 55, "hi": 110, "tag": "guess",
+        "basis": "Per $1,000: US inflation $32 (BLS, 3.7% to September 2026; I use 3.2), theft and loss $20 (1-3% a year in Buenos Aires, guess), and $3 for the buying spread and the 2-5% discount on old or marked notes (search snippets). Compared with a dollar deposit in a local bank the extra cost is only the theft risk, $10-30."
+      },
+      "everydayShare": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "The money remains the household's."},
+      "volumeLitresPerUnit": 0.01,
+      "reliability": {"lo": 0.8, "mid": 0.92, "hi": 0.98, "tag": "guess", "basis": "Stolen, lost, or in notes that changers discount."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "other", "description": "Loss averted per $1,000 in an Argentina 2001-02 type event: $700-750 against a peso deposit (1,000 pesos fell to $255-295 at 3.4-3.9 pesos per dollar) and $420-560 against a dollar deposit paid out in 2002 (1,400 pesos plus indexation, $440-580), less for the 21% of deposits later paid at the market rate by court order. At two such freezes in 48 years (4% a year) the expected loss on a local dollar deposit is about 2% a year, roughly equal to the theft cost of notes at home: break-even. In a Cyprus or Greece type freeze notes avert no loss on insured deposits and only supply liquidity above the cap. Under exchange controls without a freeze (2011-15, 2019-25) local dollar deposits stayed withdrawable (recalled), so notes protected against peso erosion, not against the banks. In 2024-25 peso instruments beat the dollar (recalled): the hedge can lose."},
+        {"type": "other", "description": "Also works as payments supply for large purchases where dollars are accepted, but must be changed for daily shopping."}
+      ],
+      "evidence": [
+        {"claim": "Corralito from 1 December 2001: withdrawals limited to 250 pesos or dollars a week per account holder, 300 pesos from 9 January 2002; bank holidays 21-26 December 2001 and 19-25 April 2002; dollar deposits converted at 1.4 pesos indexed to inflation; demand deposits freed 2 December 2002; about 21% of deposits paid through court orders.", "source": "https://newbagehot.yale.edu/docs/argentina-national-bank-holidays-2001", "year": 2002, "verified": true},
+        {"claim": "Card, debit and cheque payments were not disrupted; the market rate reached about 4 pesos per dollar; many Argentines had no bank account and dealt only in cash.", "source": "https://en.wikipedia.org/wiki/Corralito", "year": 2002, "verified": true},
+        {"claim": "In December 2006 the Supreme Court ordered dollar deposits repaid at 1.40 pesos plus an adjustment coefficient and 4% annual interest, so that savers recover 100% of their value; about 50,000 depositors were affected.", "source": "https://en.mercopress.com/2006/12/28/argentine-banks-must-return-2001-02-frozen-deposits", "year": 2006, "verified": true},
+        {"claim": "Deposit freezes occurred in 8 of 151 banking crises, 1970-2017; 6 bank holidays, five of 4-8 days and Greece 21.", "source": "https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf.md", "year": 2018, "verified": true},
+        {"claim": "Exchange controls limited individuals to $200 a month from 2019 and were lifted for individuals on 14 April 2025; the parallel premium was 103% in May 2020 and over 230% at the end of 2023.", "source": "https://trade.gov/market-intelligence/argentina-eliminates-capital-controls-and-payment-timelines", "year": 2025, "verified": false},
+        {"claim": "19.9% of Argentines surveyed in June 2025 said they held dollars outside the banking system; INDEC puts such holdings at about $220-260 billion.", "source": "https://www.perfil.com/noticias/economia/encuesta-el-72-dice-que-no-tiene-dolares-ahorrados.phtml", "year": 2025, "verified": false}
+      ],
+      "confidence": "derived",
+      "notes": "For US and euro-area households this entry is the same thing as cash-small-notes; foreign notes add nothing there. The engine's capital charge assumes the alternative earns r in real dollars, which has not been true of Argentine deposits, so this entry needs a location-specific counterfactual before it is ranked."
+    },
+    {
+      "id": "account-abroad",
+      "name": "Account in another country",
+      "spec": "A bank, brokerage or e-money account in another jurisdiction and currency, funded in advance, with a debit card issued there: a US or Uruguayan account for residents of Argentina, an account in another member state or outside the euro for euro-area residents. One unit is the account; the balance is the reader's choice.",
+      "fromLonglistRows": [100, 101],
+      "scalesWith": "household",
+      "unit": "account, opened and funded",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0, "hi": 100, "tag": "guess", "basis": "Opening is usually free; some banks require a visit or a minimum deposit. Not priced on a fetched page."},
+        "product": "Foreign current or multi-currency account",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 3, "mid": 10, "hi": 30, "tag": "guess", "basis": "Until the provider closes non-resident accounts or rules change."},
+      "setupHours": {"lo": 2, "mid": 5, "hi": 15, "tag": "guess", "basis": "Identity checks, funding, learning the tax reporting."},
+      "upkeepHoursPerYear": {"lo": 0.5, "mid": 2, "hi": 6, "tag": "guess", "basis": "Foreign-account tax reporting and keeping the account active."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 30, "hi": 250, "tag": "guess", "basis": "Account fees and a 0.4-2% currency cost on each transfer; the balance itself can earn dollar money-market rates, so it has no carrying cost beyond the engine's."},
+      "everydayShare": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Also used for travel, cheaper currency exchange and investing."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Non-resident accounts get closed, compliance freezes happen, and controls can block topping it up; the card needs working ATMs and terminals."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce", "target": "payments", "hazards": ["bankingCrisis"],
+          "fractionRemoved": {"lo": 0.15, "mid": 0.5, "hi": 0.85, "tag": "guess", "basis": "In Greece in 2015 cards issued abroad were exempt from the 60-euro limit as long as ATMs held cash (Greek foreign ministry notice, seen in a search snippet only). It fails when ATMs are empty or merchants refuse cards."},
+          "adherence": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Share of owners with a useful balance abroad and the card at hand when controls arrive."}
+        },
+        {"type": "other", "description": "Store of value: money abroad was untouched by Argentina's 2002 forced conversion, the Cyprus bail-in and the Greek controls, so it averts the same loss as foreign notes ($420-750 per $1,000 in an Argentina 2001-02 type event, nothing on insured deposits in a Greece or Cyprus type event) without the theft risk and while earning interest. It must exist and be funded before the crisis: Greece barred new accounts and transfers abroad, and Argentina rationed dollar purchases to $200 a month."}
+      ],
+      "evidence": [
+        {"claim": "Greek controls did not apply to ATM withdrawals with debit or credit cards issued abroad.", "source": "https://www.mfa.gr/usa/en/?p=4271", "year": 2015, "verified": false},
+        {"claim": "Cyprus 2013: 47.5% of deposits above 100,000 euros at Bank of Cyprus were seized; no insured deposit of 100,000 euros or less was affected.", "source": "https://en.wikipedia.org/wiki/2012–2013_Cypriot_financial_crisis", "year": 2013, "verified": true},
+        {"claim": "Greek rules barred opening new accounts and transfers abroad.", "source": "https://www.reedsmith.com/de/perspectives/2015/07/capital-controls", "year": 2015, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Dominates notes at home for larger sums where it is legal and practical. For US households under the FDIC cap there is no historical loss for it to avert."
+    },
+    {
+      "id": "gold-coins",
+      "name": "Gold bullion coins",
+      "spec": "One-ounce bullion coins such as the American Gold Eagle (fractional coins carry higher premiums), stored at home. One unit is $1,000 of gold at spot.",
+      "fromLonglistRows": [100],
+      "scalesWith": "household",
+      "unit": "1,000 US dollars of gold at spot",
+      "price": {
+        "usdPerUnit": {"lo": 1000, "mid": 1000, "hi": 1000, "tag": "derived", "basis": "Spot value by definition; the dealer premium and resale discount are in upkeepUsdPerYear. Spot was about $4,000-4,500 an ounce in late 2026 (search snippets), so the smallest practical purchase is about $450 (a tenth-ounce coin)."},
+        "product": "American Gold Eagle bullion coin",
+        "source": "https://www.apmex.com/product/316824/2026-1-oz-american-gold-eagle-bu",
+        "verified": false
+      },
+      "lifeYears": {"lo": 20, "mid": 50, "hi": 100, "tag": "guess", "basis": "Does not wear out. Irrelevant to cost when everydayShare is 1."},
+      "setupHours": {"lo": 1, "mid": 2, "hi": 5, "tag": "guess", "basis": "Choosing a dealer, buying, storing."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.2, "hi": 1, "tag": "guess", "basis": "Checking it."},
+      "upkeepUsdPerYear": {
+        "lo": 8, "mid": 20, "hi": 45, "tag": "guess",
+        "basis": "Per $1,000: a round-trip dealer cost of 4-8% (premiums of 3.5-6.5% over spot for one-ounce coins in April 2026, search snippet, plus a resale discount) spread over ten years is $4-8, and theft and loss at about 1% a year is $10. It ignores price risk: annual swings of about 15% and falls of 30-45% (recalled)."
+      },
+      "everydayShare": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "The asset remains the household's."},
+      "volumeLitresPerUnit": 0.01,
+      "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Must find a buyer at a fair price when needed; may be down sharply at that moment."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "other", "description": "A hedge against collapse of the home currency, not a means of payment: it has to be sold first, so it supplies nothing in a payments window. In Argentina 2001-02 gold did about as well as dollar notes (dollar gold rose roughly 25% in 2002, recalled). In a freeze without devaluation (Cyprus, Greece) it averts no loss on insured deposits. For US and Western European households the loss it would avert is a severe currency crisis, which has not happened in a rich democracy since the 1940s (base-rates.md), and its own price risk is larger than the risk hedged."}
+      ],
+      "evidence": [
+        {"claim": "One-ounce American Gold Eagle premiums ranged from about 3.5% to 6.5% over spot across dealers in April 2026; the lowest-dealer average was 1-3% during 2026.", "source": "https://www.usagold.com/american-gold-eagle-value-premiums-and-buying-guide-2026/", "year": 2026, "verified": false},
+        {"claim": "No hyperinflation in a rich democracy since the 1940s.", "source": "research/step2/base-rates.md (recalled there)", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Reported because the longlist names it. I expect it not to pay in any of the three locations at forecast probabilities."
+    },
+    {
+      "id": "crypto-stablecoins",
+      "name": "Dollar stablecoins or bitcoin",
+      "spec": "US-dollar stablecoins (USDC, USDT) or bitcoin, held in a hardware wallet or on a large exchange. One unit is $1,000.",
+      "fromLonglistRows": [100],
+      "scalesWith": "household",
+      "unit": "1,000 US dollars of stablecoin",
+      "price": {
+        "usdPerUnit": {"lo": 1000, "mid": 1000, "hi": 1000, "tag": "derived", "basis": "Face value by definition; fees and risks are in upkeepUsdPerYear."},
+        "product": "USDC or USDT bought on an exchange",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 3, "mid": 10, "hi": 30, "tag": "guess", "basis": "Depends on the issuer and the exchange surviving. Irrelevant to cost when everydayShare is 1."},
+      "setupHours": {"lo": 2, "mid": 5, "hi": 15, "tag": "guess", "basis": "Exchange account, identity checks, wallet, learning to move funds safely."},
+      "upkeepHoursPerYear": {"lo": 0.5, "mid": 1, "hi": 4, "tag": "guess", "basis": "Key and password hygiene, tax records."},
+      "upkeepUsdPerYear": {
+        "lo": 25, "mid": 60, "hi": 120, "tag": "guess",
+        "basis": "Per $1,000: US inflation $32 unless it earns a yield, loss from hacks, lost keys, exchange failure or a broken peg at 1-4% a year ($10-40, guess), and buying and selling fees of 0.5-2% each way spread over five years ($2-8). Bitcoin instead adds price swings of 50% a year or more (recalled)."
+      },
+      "everydayShare": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "The asset remains the household's."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Needs power, internet and someone willing to give local money or goods for it; exchanges can freeze withdrawals and keys get lost."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "other", "description": "Sits outside the home banking system, so in an Argentina-type freeze or under exchange controls it averts the same loss as dollar notes ($420-750 per $1,000 in a 2001-02 type event) if the owner can still sell it. It is itself exposed to banking trouble: USDC fell to about $0.88 on 11 March 2023 when $3.3 billion of its reserves (8%) were stuck at Silicon Valley Bank, and recovered by 13 March (search snippets). It supplies nothing in a payments window caused by a power or communications failure."}
+      ],
+      "evidence": [
+        {"claim": "USDC traded as low as about $0.88 on 11 March 2023 with $3.3 billion of reserves at Silicon Valley Bank, and regained its peg on 13 March.", "source": "https://www.federalreserve.gov/econres/notes/feds-notes/in-the-shadow-of-bank-run-lessons-from-the-silicon-valley-bank-failure-and-its-impact-on-stablecoins-20251217.html", "year": 2025, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Reported because the longlist names it. Costs and failure risks are guesses; I found no loss-rate data for retail holders."
+    },
+    {
+      "id": "insurance-renters",
+      "name": "Renters or contents insurance",
+      "spec": "A standard US renters policy (HO-4): contents, liability and additional living expenses. Flood and earthquake are excluded.",
+      "fromLonglistRows": [118],
+      "scalesWith": "household",
+      "unit": "policy-year",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0, "hi": 0, "tag": "data", "basis": "No purchase price; the premium is in upkeepUsdPerYear."},
+        "product": "Renters insurance policy (premium in upkeep)",
+        "source": "https://www.iii.org/fact-statistic/facts-statistics-homeowners-and-renters-insurance",
+        "verified": true
+      },
+      "lifeYears": {"lo": 1, "mid": 1, "hi": 1, "tag": "data", "basis": "Annual policy."},
+      "setupHours": {"lo": 0.5, "mid": 1, "hi": 3, "tag": "guess", "basis": "Quotes and application."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Renewal."},
+      "upkeepUsdPerYear": {"lo": 120, "mid": 173, "hi": 300, "tag": "data", "basis": "Average US renters premium $173 in 2023 (NAIC figures on https://www.iii.org/fact-statistic/facts-statistics-homeowners-and-renters-insurance); the range covers state differences."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0, "tag": "derived", "basis": "The premium is a pure cost; the payout is the benefit."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "Chance a real loss is covered and paid: exclusions, sub-limits (cash is typically covered only to about $200, recalled) and disputes."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "other", "description": "Not ranked: the model is risk-neutral. Premium $173 a year; expected payout about $100 ($85-125), that is 58 cents per premium dollar; loading 73% (40-105%). Basis: the homeowners line, which includes renters, paid out 53.6% of premiums as incurred losses in 2025, a benign year, and 0.60-0.65 over longer periods (recalled); no renters-only loss ratio was found. It is worth buying only for risk aversion: it turns a rare loss of tens of thousands of dollars into a fixed $173."}
+      ],
+      "evidence": [
+        {"claim": "Average renters premium: $174 (2019), $173, $170, $171, $173 (2023).", "source": "https://www.iii.org/fact-statistic/facts-statistics-homeowners-and-renters-insurance", "year": 2025, "verified": true},
+        {"claim": "Homeowners line 2025: incurred losses 53.6% of premiums, loss and adjustment expenses 61.1%, expenses 26.4%, combined ratio 87.8%.", "source": "https://www.iii.org/fact-statistic/facts-statistics-homeowners-and-renters-insurance", "year": 2025, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "Health and life insurance are excluded from this file; see excluded."
+    },
+    {
+      "id": "insurance-flood",
+      "name": "Flood insurance",
+      "spec": "A National Flood Insurance Program policy on a home in a flood-prone area (building cover up to $250,000, contents up to $100,000), or a private equivalent.",
+      "fromLonglistRows": [119],
+      "scalesWith": "household",
+      "unit": "policy-year",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0, "hi": 0, "tag": "data", "basis": "No purchase price; the premium is in upkeepUsdPerYear."},
+        "product": "NFIP flood policy (premium in upkeep)",
+        "source": "https://www.gao.gov/products/GAO-23-105977",
+        "verified": true
+      },
+      "lifeYears": {"lo": 1, "mid": 1, "hi": 1, "tag": "data", "basis": "Annual policy."},
+      "setupHours": {"lo": 0.5, "mid": 1.5, "hi": 4, "tag": "guess", "basis": "Quote through an agent; an elevation certificate in some cases."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Renewal."},
+      "upkeepUsdPerYear": {"lo": 500, "mid": 920, "hi": 2500, "tag": "guess", "basis": "National average NFIP premium $899-926 in 2025 (Bankrate and NerdWallet, search snippets); the median was $689 in December 2022 against a full-risk median of $1,288 (https://www.gao.gov/products/GAO-23-105977)."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0, "tag": "derived", "basis": "The premium is a pure cost; the payout is the benefit."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "Chance a flood loss is covered and paid; new policies have a 30-day wait (recalled)."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": ["flood"],
+      "effects": [
+        {"type": "other", "description": "Not ranked: the model is risk-neutral. Premium about $920 a year; expected payout about 65 cents per premium dollar (45 cents to $1.50), about $600; loading 54% (from minus 33% to plus 120%). Basis: about two thirds of policyholders still paid less than the full-risk rate in 2023, the median paying 53% of it, and full-risk rates carry an expense load I put at 45-50% (guess); the programme has collected about $60 billion in premiums and paid about $96 billion in losses, expenses and interest (Senate testimony, search snippet). For policies still on the subsidy glide path (increases capped at 18% a year) the expected payout can exceed the premium, which makes this the one insurance that can pay even without risk aversion. Private flood insurers ran combined ratios of 34-83% in 2018-2025."}
+      ],
+      "evidence": [
+        {"claim": "Median NFIP premium $689 in December 2022 against a full-risk median of $1,288; about one third of policyholders already paid full-risk rates; most annual increases are capped at 18%; $36.5 billion borrowed from the Treasury since 2005.", "source": "https://www.gao.gov/products/GAO-23-105977", "year": 2023, "verified": true},
+        {"claim": "Average paid NFIP loss in the largest events: Helene $103,426, Ian $97,646, Harvey $154,682, Katrina $160,565 (2025 dollars); private flood combined ratios 33.9-82.8% in 2018-2025.", "source": "https://www.iii.org/fact-statistic/facts-statistics-flood-insurance", "year": 2026, "verified": true},
+        {"claim": "The NFIP has collected $60 billion in premiums and paid $96 billion in costs including losses, operating expenses and interest.", "source": "https://www.banking.senate.gov/download/hecht-testimony-1-25-24&download=1", "year": 2024, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "The expected payout depends entirely on the property; the range is wide because some policies are subsidised and some are not."
+    },
+    {
+      "id": "insurance-earthquake",
+      "name": "Earthquake insurance",
+      "spec": "A California Earthquake Authority policy on a home in a seismic zone, with a deductible of 5-25% of the dwelling cover.",
+      "fromLonglistRows": [119],
+      "scalesWith": "household",
+      "unit": "policy-year",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0, "hi": 0, "tag": "data", "basis": "No purchase price; the premium is in upkeepUsdPerYear."},
+        "product": "CEA earthquake policy (premium in upkeep)",
+        "source": "https://www.insurance.ca.gov/0400-news/0200-studies-reports/0300-earthquake-study/upload/EQEXP2025Summary.pdf",
+        "verified": false
+      },
+      "lifeYears": {"lo": 1, "mid": 1, "hi": 1, "tag": "data", "basis": "Annual policy."},
+      "setupHours": {"lo": 0.5, "mid": 1, "hi": 3, "tag": "guess", "basis": "Added through the home insurer."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Renewal."},
+      "upkeepUsdPerYear": {"lo": 300, "mid": 965, "hi": 3000, "tag": "guess", "basis": "About $934 million of written premium over about 968,000 CEA policies in 2025 is $965 a policy (California Department of Insurance summary, read only as a search snippet); about $1,770 for a $500,000 house on another site."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0, "tag": "derived", "basis": "The premium is a pure cost; the payout is the benefit."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.97, "tag": "guess", "basis": "Chance a damaging earthquake produces a payment: most moderate damage falls under the deductible."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": ["earthquake"],
+      "effects": [
+        {"type": "other", "description": "Not ranked: the model is risk-neutral. Premium about $965 a year; expected payout about 35 cents per premium dollar (20-55 cents), about $340; loading about 185% (80-400%). Basis: the authority budgeted $515 million for reinsurance and catastrophe bonds in 2025, 55% of its premium (search snippets), and risk transfer typically costs 1.5-3 times the expected loss it covers (recalled). No published expected-loss figure was found, so this is a guess."}
+      ],
+      "evidence": [
+        {"claim": "CEA budgeted $515 million for its 2025 risk-transfer programme; rates rose 6.8% on 1 January 2025.", "source": "https://www.intelligentinsurer.com/cea-cuts-2025-reinsurance-budget-17-as-exposures-shrink-rates-ease", "year": 2025, "verified": false},
+        {"claim": "CEA written premium about $934 million across about 968,000 policies in 2025.", "source": "https://www.insurance.ca.gov/0400-news/0200-studies-reports/0300-earthquake-study/upload/EQEXP2025Summary.pdf", "year": 2025, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "The weakest of the three insurance estimates."
+    }
+  ],
+  "excluded": [
+    {"what": "Row 100, debt reduction", "reason": "A personal-finance decision with no event-specific effect; its return is the interest rate on the debt (22.3% on card balances), which no preparedness item on this list will beat. Mentioned in the emergency-fund notes."},
+    {"what": "Row 118, health and life insurance", "reason": "Risk transfer for everyday medical costs and for dependants; no effect on the model's needs or channels, and insurance cannot rank in a risk-neutral model. Life insurance mostly benefits people the model does not count once the insured has died."},
+    {"what": "Row 101, mobile pay and second e-ID", "reason": "Mobile wallets run on the same cards and networks, so they add no independent route. A second e-ID matters only where bank log-in depends on one (Sweden, Norway); no US equivalent. Folded into second-payment-route."},
+    {"what": "Bank safe-deposit box", "reason": "Candidate I considered for notes and originals: removes theft and fire risk at $50-300 a year (guess), but it sits inside a bank that may be shut when it is needed. Not priced."},
+    {"what": "Cheque book, prepaid cards, traveller's cheques", "reason": "Cheques were accepted by one grocery chain after Helene (search snippet) and cost nothing to keep, but acceptance is unreliable; prepaid cards use the card networks. No separate entry."},
+    {"what": "Burglary-rated home safe", "reason": "Would cut the theft part of the cash carrying cost (about $0.5 per $100 a year) at a price of $150 or more: it cannot pay for itself below roughly $20,000 of cash."}
+  ],
+  "blockedSources": [
+    "https://www.frbservices.org/binaries/content/assets/crsocms/news/research/2026-diary-consumer-payments-choice.pdf: the fetch tool could not parse the PDF; I read it by extracting text from the downloaded copy. It gives no median holdings.",
+    "https://store.sentrysafe.com/products/1200 (HTTP 429): the exact price of the fire chest ($29.99 in a search snippet).",
+    "https://www.mfa.gr/usa/en/?p=4271 (HTTP 403): the Greek notice that foreign-issued cards were exempt from the 2015 withdrawal limit.",
+    "https://travel.state.gov/content/travel/en/passports/how-apply/fees.html (HTTP 403): passport replacement fees.",
+    "https://bjs.ojp.gov/document/cv24.pdf: not opened; the burglary rate of 13.1 per 1,000 households comes from a search snippet.",
+    "https://www.aol.com/article/finance/2017/09/28/cash-demand-soars-in-puerto-rico-after-hurricane-hit-atms-card-systems/23226064 (HTTP 404): Reuters on Puerto Rico's cash shortage after Maria.",
+    "https://www.bde.es/f/webbe/GAP/Secciones/Publicaciones/InformesBoletinesRevistas/RevistaEstabilidadFinanciera/25/3_FSR49_Apagon.pdf: not opened; Banco de España's analysis of payments in the 2025 blackout (card operations down 55%).",
+    "https://content.naic.org/sites/default/files/publication-hmr-zu-homeowners-report.pdf: not opened; a renters-only loss ratio was not found anywhere.",
+    "https://www.earthquakeauthority.com/about-cea/financials/financial-statements: returned navigation only; CEA's expected loss and loss ratio.",
+    "FEMA NFIP cumulative earned premium and paid losses since 1978: not found on a page I could open.",
+    "UK Treasury Committee bank-outage data and the CRTC report on the 2022 Rogers outage: read only through news summaries.",
+    "https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf.md: opened, but the fetch tool's reading of the appendix table was garbled; I rely on the text sentences only."
+  ],
+  "openQuestions": [
+    "Cash cost convention: the assignment's wording can be read three ways, and they differ by a factor of five. I used inflation minus the average savings rate plus theft ($3.6 per $100). Interest forgone plus theft gives $1.2 (average account) or $5 (top account); theft alone gives $0.8. The engine then adds price x r, which is right only if r is a real rate and the alternative holds its real value. This choice decides whether cash ranks, so it should be made deliberately.",
+    "The cash supply effect is in 'usd'; the engine needs the payments requirement of $20 per person per day (10-40) at US prices, stored in the need as dailyRequirementUsdPerPersonDay, and a local price level for Western Europe and Buenos Aires.",
+    "Payments windows: I recommend that hazard owners count only days when a household with a card and a bank account could not pay at all. In banking crises that is a few days; the larger harm is on financialLoss.",
+    "Store-of-value items are given as 'other' effects with dollar losses averted per $1,000, because a fractional 'reduce' would depend on the liquid savings the bankingCrisis exposure assumes. Whoever owns bankingCrisis needs to state that amount.",
+    "Buenos Aires counterfactual: the engine charges r on money held as notes or abroad as if the alternative earned r in real dollars. Argentine deposits have not, so these items will look worse there than they are.",
+    "financialLoss is defined here net of insurance and aid; hazard files should use the same convention.",
+    "Cash also makes leaving possible during a payment failure (fuel, lodging). The engine's leave option does not check ability to pay."
+  ]
+}

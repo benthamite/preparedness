@@ -1,0 +1,342 @@
+{
+  "kind": "items",
+  "group": "cooling",
+  "needs": [
+    {
+      "id": "cooling",
+      "definition": "A person-day spent at home while the home stays at or above about 31 °C (88 °F) through most of the day and night and no mechanical cooling works: there is no air conditioner, or it is broken, or there is no power to run it. Reference intensity for the curves: a severe heat wave, or a summer outage in a hot climate, with outdoor highs of roughly 35-40 °C. Days spent somewhere cooled do not count.",
+      "baselineCoverageDays": {
+        "lo": 0, "mid": 0, "hi": 1, "tag": "guess",
+        "basis": "Nothing in an ordinary home substitutes for cooling. The building's thermal lag (BC 2021: 8 and 13 deaths on the first two days against 231 on the fifth) is put into the low day-1 step of the curves instead of here."
+      },
+      "hardshipUsdPerPersonDay": {
+        "tag": "guess",
+        "basis": "No willingness-to-pay study for a hot day at home was found. Anchored on whole-outage figures in prior-art.md (ICE 2.0 $54 per household for 24 h; FEMA $33 per person-day; Baik $43-60 per household-day; 42% would relocate in a 3-day outage) and on a hotel room at about $50 per person-night as a ceiling; rises as sleep is lost night after night.",
+        "steps": [
+          {"fromDay": 1, "lo": 4, "mid": 12, "hi": 40},
+          {"fromDay": 2, "lo": 6, "mid": 20, "hi": 60},
+          {"fromDay": 3, "lo": 8, "mid": 30, "hi": 90}
+        ]
+      },
+      "mortalityMicromortsPerPersonDay": {
+        "tag": "derived",
+        "basis": "All-ages deaths per million person-days without cooling: BC 2021 2.5 on day 1, 17 on day 3, 73 on day 5 (576 deaths in homes without AC, 3.44M people without AC, daily counts 8-13-53-131-231); France 2003 4.8, 20 and 37 on days 1, 5 and 9 (excess of 286, 1,202 and 2,197 deaths on 4, 8 and 12 August over about 59.6M people, a recalled denominator); Hurricane Beryl 2024 about 1 on official attributions. I take a mid all-ages curve of 1.5-3-6-10-14 and multiply by 5% for a healthy adult aged 15-59: adults 15-59 run at 10-15% of the all-ages rate in BC, France and Europe 2022, and I guess healthy adults at a third of that. Sources: https://nanaimo.ca/docs/public-safety-department/bc-coroners-reportheat_related_deaths_in_bc_knowledge_update.cleaned.pdf and https://www.inserm.fr/wp-content/uploads/2017-11/inserm-rapportthematique-surmortalitecaniculeaout2003-rapportetape.pdf",
+        "steps": [
+          {"fromDay": 1, "lo": 0.01, "mid": 0.08, "hi": 0.5},
+          {"fromDay": 2, "lo": 0.02, "mid": 0.15, "hi": 1},
+          {"fromDay": 3, "lo": 0.04, "mid": 0.3, "hi": 2},
+          {"fromDay": 5, "lo": 0.06, "mid": 0.5, "hi": 3.5},
+          {"fromDay": 8, "lo": 0.08, "mid": 0.7, "hi": 5}
+        ]
+      },
+      "multipliers": [
+        {
+          "profile": "child", "hardship": 1, "mortality": 0.3, "tag": "derived",
+          "basis": "BC 2021: no heat deaths under age 19 among 526. France 2003: ages 1-14 observed 104 against 99 expected. So at most a tenth of the average adult rate, about 0.3 of the healthy-adult rate; infants are probably higher. Hardship multiplier is a guess."
+        },
+        {
+          "profile": "age60to74", "hardship": 1.2, "mortality": 30, "tag": "derived",
+          "basis": "Rate relative to all adults 15-59: Europe 2022 10x (160 against 16 per million, ages 65-79 against 0-64, https://europepmc.org/article/PMC/PMC10353926); France 2003 about 8x; BC 2021 about 12x (population denominators for France and BC recalled, not fetched). Times 3 because the baseline is a healthy adult. Hardship multiplier is a guess."
+        },
+        {
+          "profile": "age75plus", "hardship": 1.6, "mortality": 150, "tag": "derived",
+          "basis": "Rate relative to all adults 15-59: BC 2021 about 45x (community deaths only); Europe 2022 105x for ages 80+; France 2003 about 108x including care homes, which took 24% of excess deaths at 75+. Times 3 for the healthy baseline gives 135-320; I take the low end because only BC excludes institutions. Hardship multiplier is a guess that adds the cost of non-fatal heat illness."
+        },
+        {
+          "profile": "limitedMobility", "hardship": 1.5, "mortality": 4, "tag": "derived",
+          "basis": "Bouchama 2007 meta-analysis of six case-control studies: confined to bed OR 6.44 (4.5-9.2), unable to care for oneself 2.97 (1.8-4.8), not leaving home daily 3.35 (1.6-6.9). https://europepmc.org/article/MED/17698676"
+        },
+        {
+          "profile": "criticalDrug", "hardship": 1.2, "mortality": 2.5, "tag": "derived",
+          "basis": "Proxy: people on such drugs have serious chronic illness. Bouchama 2007: cardiovascular illness OR 2.48 (1.3-4.8), psychiatric illness 3.61 (1.3-9.8), pulmonary illness 1.61 (1.2-2.1). https://europepmc.org/article/MED/17698676"
+        },
+        {
+          "profile": "powerDependent", "hardship": 1.3, "mortality": 2.5, "tag": "guess",
+          "basis": "No direct data. Users of oxygen concentrators and similar devices mostly have the pulmonary or cardiac illness that carries odds ratios of 1.6-2.5 in Bouchama 2007. Loss of the device itself belongs to medicalPower."
+        }
+      ],
+      "notes": "Risk scales steeply with intensity. Days in an ordinary summer outage (highs 32-35 °C, Houston after Beryl) run at roughly a fifth of the mid curve; the peak days of record events (BC 2021, France 2003, Chicago 1995) run at 5-7 times it. A modelled 2-day blackout in a Phoenix heat wave gives 917 deaths per 100,000 (Stone 2023), far above my 95th percentile; I treat it as outside the curve. Who is exposed: 88% of US households use air conditioning (49% on the Pacific coast), so most US homes have unmet days only when power or equipment fails; most Western European homes have none. Multipliers are relative to a healthy adult and describe the average person in each group. France 2003 found no harvesting, so these are not deaths brought forward by days."
+    }
+  ],
+  "items": [
+    {
+      "id": "room-air-conditioner",
+      "name": "Room air conditioner for a home without one",
+      "spec": "One 5,000-6,000 BTU window unit (or an 8,000-10,000 BTU portable unit where the windows will not take one) to keep one bedroom-sized room below 26 °C; fitted before summer and test-run each June.",
+      "fromLonglistRows": [],
+      "scalesWith": "household",
+      "unit": "device",
+      "price": {
+        "usdPerUnit": {"lo": 140, "mid": 169, "hi": 400, "tag": "data",
+          "basis": "GE AHEC05AC 5,000 BTU listed at $169.00, on sale at $161.20, read on geappliances.com 19 Nov 2026. Low end is discount-store units seen in search snippets; high end is a portable unit (guess)."},
+        "product": "GE 5,000 BTU mechanical window air conditioner AHEC05AC",
+        "source": "https://www.geappliances.com/appliance/GE-5-000-BTU-Mechanical-Window-Air-Conditioner-for-Small-Rooms-up-to-150-sq-ft-AHEC05AC",
+        "verified": true
+      },
+      "lifeYears": {"lo": 6, "mid": 10, "hi": 15, "tag": "guess", "basis": "Typical service life of a room unit, recalled; the GE and Midea pages give only a 1-year warranty."},
+      "setupHours": {"lo": 1, "mid": 2, "hi": 4, "tag": "guess", "basis": "Choose, buy, fit in the window, seal the gaps."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Net of everyday use: a June test run and filter rinse. Gross seasonal fitting and removal is about 1 hour."},
+      "upkeepUsdPerYear": {"lo": 2, "mid": 8, "hi": 25, "tag": "derived", "basis": "Electricity on dangerous days only: about 450 W (Midea figure from a search snippet) x 12 h x 10 days = 54 kWh at about $0.15/kWh. Everyday running costs are covered by the everyday share."},
+      "everydayShare": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "88% of US households choose to have air conditioning for comfort alone (https://www.eia.gov/todayinenergy/detail.php?id=52558), so in a hot-summer climate most of the cost is justified without any emergency."},
+      "volumeLitresPerUnit": 51,
+      "reliability": {"lo": 0.8, "mid": 0.92, "hi": 0.98, "tag": "guess", "basis": "A recent unit test-run each June. Broken units are the main failure in old systems: in Maricopa County 2024, 88% of indoor heat deaths had an AC unit and 70% of those units did not work."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": ["hotSummers"],
+      "effects": [
+        {
+          "type": "reduce", "target": "cooling", "hazards": ["heatWave"],
+          "fractionRemoved": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "derived",
+            "basis": "Working home air conditioning OR 0.23 (0.1-0.6) in Bouchama 2007; 0.3 in Chicago 1995; 0.2 (0.1-0.7) in Chicago 1999. That is 77% removed; cut to 70% for confounding by wealth and health and because one room unit cools one room."},
+          "adherence": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "derived",
+            "basis": "NYC 2022 survey: 14% of adults with AC use it half the time or less when hot because of cost. BC 2021: of the 7% of decedents who had AC, only 15% had it running."},
+          "notes": "Applies only to a household with no working air conditioning, and only on days with grid power. Compared with a household that improvises with fans, showers and outings, which is what the case-control studies compare."
+        },
+        {
+          "type": "capability", "capability": "airConditioning",
+          "notes": "New capability id. Lets the engine treat the home as air-conditioned. Load is about 450-500 W running and 5-8 kWh a day in extreme heat, so it also covers outage days only with a generator of about 2 kW; a 1 kWh power station runs it for about 2 hours."
+        },
+        {
+          "type": "other",
+          "description": "Backup for homes that already have central air conditioning: equipment breakdown left 4.9M US air-conditioned households uncomfortably hot for 24 h or more in 2023 against 1.3M from power outages (AHS, in base-rates.md), and a room unit is the only air conditioner a portable generator can run. Not quantified: the model has no breakdown hazard."
+        }
+      ],
+      "evidence": [
+        {"claim": "Meta-analysis of 6 case-control studies, 1,065 heat-wave deaths: working home air conditioning OR 0.23 (95% CI 0.1-0.6).", "source": "https://europepmc.org/article/MED/17698676", "year": 2007, "verified": true},
+        {"claim": "Chicago 1995, 339 cases and 339 controls: working air conditioner OR 0.3; living alone 2.3; confined to bed 8.2; top floor 4.7.", "source": "https://europepmc.org/article/MED/8649494", "year": 1996, "verified": true},
+        {"claim": "Chicago 1999, 63 cases and 77 controls: working air conditioner OR 0.2 (0.1-0.7), the strongest protective factor.", "source": "https://europepmc.org/article/MED/11988377", "year": 2002, "verified": true},
+        {"claim": "BC 2021: 93% of heat-dome decedents lived without air conditioning; among those with it only 15% had it running.", "source": "https://europepmc.org/article/PMC/PMC11346563", "year": 2024, "verified": true},
+        {"claim": "Only 34% of BC homes had any air conditioning in 2018, mostly in the interior.", "source": "https://europepmc.org/article/PMC/PMC8835552", "year": 2022, "verified": true},
+        {"claim": "New York City heat-stress deaths with exposure at home, 2016-2025: of 25 with information, none had or was using air conditioning; about 9% of adults have none.", "source": "https://a816-dohbesp.nyc.gov/IndicatorPublic/data-features/heat-report/", "year": 2025, "verified": true},
+        {"claim": "Maricopa County 2024: among indoor heat deaths 88% had an AC unit present and 70% of those units were not working.", "source": "https://www.maricopa.gov/CivicAlerts.aspx?AID=3222", "year": 2025, "verified": true},
+        {"claim": "88% of US households used air conditioning in 2020; West 73%, Pacific marine zone 49%.", "source": "https://www.eia.gov/todayinenergy/detail.php?id=52558", "year": 2022, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "The strongest single measure in the heat literature, but its odds ratios are observational. Many apartment buildings forbid window units; a portable unit costs about twice as much and cools less. Air conditioners sell out within days of a heat-wave forecast, hence specialty."
+    },
+    {
+      "id": "battery-fan-kit",
+      "name": "Battery fan and spray bottle",
+      "spec": "One 10-inch fan that runs on D cells or a USB battery, 12 D cells (two sets) or a 20,000 mAh power bank, a trigger spray bottle, and a note of the rule: wet skin and clothing and sit in the airflow; above about 35 °C indoors (for the old) or 38 °C (for younger adults) use the water without the fan.",
+      "fromLonglistRows": [28],
+      "scalesWith": "household",
+      "unit": "kit serving one or two people in one room",
+      "price": {
+        "usdPerUnit": {"lo": 25, "mid": 53, "hi": 80, "tag": "derived",
+          "basis": "Treva (O2COOL) 10-inch battery fan with AC adapter $34.99 read on target.com 19 Nov 2026; plus 12 D cells at about $15 and a spray bottle at about $3 (both estimates)."},
+        "product": "Treva 10-inch battery-powered fan with AC adapter, 12 D cells, spray bottle",
+        "source": "https://www.target.com/p/treva-10in-battery-powered-personal-desk-fan-white/-/A-1002616307",
+        "verified": true
+      },
+      "lifeYears": {"lo": 4, "mid": 7, "hi": 10, "tag": "guess", "basis": "Limited by the shelf life of alkaline cells (about 10 years, per the longlist) and by cheap fan motors."},
+      "setupHours": {"lo": 0.3, "mid": 0.5, "hi": 1, "tag": "guess", "basis": "Buy, test, store with the batteries outside the fan."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Yearly test."},
+      "upkeepUsdPerYear": {"lo": 1, "mid": 2, "hi": 4, "tag": "derived", "basis": "$15 of D cells replaced about every 7 years."},
+      "everydayShare": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Some use for camping, and on mains power in summer."},
+      "volumeLitresPerUnit": 10,
+      "reliability": {"lo": 0.7, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Losses: leaked or borrowed batteries, kit not found."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": ["hotSummers"],
+      "effects": [
+        {
+          "type": "reduce", "target": "cooling",
+          "hazards": ["localOutage", "severeStorm", "hurricane", "earthquake", "wildfire", "flood", "gridLong"],
+          "fractionRemoved": {"lo": 0, "mid": 0.15, "hi": 0.35, "tag": "derived",
+            "basis": "Fan use OR 0.60 (0.4-1.1) and extra showers or baths OR 0.32 (0.1-1.1) in Bouchama 2007, neither significant. Trials in older adults: fans lower core temperature by 0.1-0.2 °C at 31-38 °C, do nothing at 36 °C and 45% humidity, and raise it by 0.3 °C at 45 °C dry. So about a third of the raw fan effect."},
+          "adherence": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Share of hot outage days on which an owner uses it as intended. Old people often do not feel the heat and do not act."},
+          "notes": "The fraction is for mortality. For hardship the effect is larger, about 0.3 (0.15-0.5): fans cut symptom scores and improve thermal comfort even where they do not lower core temperature. The counterfactual household has no working fan in an outage but could wet skin with tap water if it knew to."
+        },
+        {
+          "type": "reduce", "target": "cooling", "hazards": ["heatWave"],
+          "fractionRemoved": {"lo": 0, "mid": 0.15, "hi": 0.35, "tag": "derived", "basis": "Same reasoning as the outage effect."},
+          "adherence": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Same as the outage effect."},
+          "notes": "Applies only to heat-wave days inside the power window. With the grid up, a mains fan that most households already own does the same job, so the battery fan adds nothing."
+        }
+      ],
+      "evidence": [
+        {"claim": "Meta-analysis: fan use OR 0.60 (0.4-1.1); extra showers or baths OR 0.32 (0.1-1.1); both reported only as trends.", "source": "https://europepmc.org/article/MED/17698676", "year": 2007, "verified": true},
+        {"claim": "Biophysical model: fan use is never detrimental below 39 °C for young adults, 38 °C for healthy older adults and 37 °C for older adults on anticholinergic drugs.", "source": "https://europepmc.org/article/MED/34119011", "year": 2021, "verified": true},
+        {"claim": "Review: fans do not meaningfully lower core temperature above 35 °C; advises against fan use above 35 °C, especially at 65 and over.", "source": "https://europepmc.org/article/MED/38580427", "year": 2024, "verified": true},
+        {"claim": "Crossover trial, 58 adults of mean age 68: at 38 °C and 60% humidity a fan lowered rectal temperature by 0.1 °C and improved comfort; at 45 °C and 15% humidity it raised rectal temperature by 0.3 °C and (primary trial) tripled cardiac strain; skin wetting cut sweat loss by 67-121 mL/h and improved thermal sensation in both.", "source": "https://europepmc.org/article/PMC/PMC12308431", "year": 2025, "verified": true},
+        {"claim": "Older adults at 36 °C and 45% humidity for a day: a pedestal fan did not reduce physiological strain; core temperature rose about 1.0 °C with or without it.", "source": "https://europepmc.org/article/PMC/PMC12181687", "year": 2025, "verified": true},
+        {"claim": "Bed-resting older adults at 31 °C and 45% humidity: a ceiling fan lowered peak core temperature by 0.2 °C (0.1-0.3) and heart rate by 5 beats a minute.", "source": "https://europepmc.org/article/PMC/PMC13542677", "year": 2026, "verified": true},
+        {"claim": "New York City: of 31 heat-stress decedents exposed at home, 7 (23%) had an electric fan present and on.", "source": "https://a816-dohbesp.nyc.gov/IndicatorPublic/data-features/heat-report/", "year": 2025, "verified": true},
+        {"claim": "Retailer listings give 20-24 h on high and 43-53 h on low for six D cells in the O2COOL 10-inch fan.", "source": "https://www.academy.com/p/o2-cool-10-in-portable-camping-fan-with-lights", "year": 2026, "verified": false}
+      ],
+      "confidence": "derived",
+      "notes": "Cheap, and mostly a comfort item. No study shows that fans prevent heat deaths, and in very hot dry rooms a fan alone does harm; the spray bottle and the temperature rule are what make the kit safe. D cells keep for years with no charging routine, which is why I prefer them to a lithium fan."
+    },
+    {
+      "id": "heat-plan",
+      "name": "Heat plan with indoor thermometer",
+      "spec": "One page, written before summer: two cooled places within reach (one outside the local grid area or with backup power), their hours and how to get there; the trigger (act at 26 °C indoors for the old or ill, leave or cool actively at 31 °C); the routine (cool shower or wet cloths, covers shut by day, windows open at night, drink water); signs of heat stroke. Plus one indoor thermometer with a high-temperature alert.",
+      "fromLonglistRows": [],
+      "scalesWith": "household",
+      "unit": "plan and one thermometer",
+      "price": {
+        "usdPerUnit": {"lo": 9, "mid": 12, "hi": 20, "tag": "data",
+          "basis": "Govee H5075 Bluetooth thermometer with out-of-range phone alerts: $27.99 for three ($9.33 each), $9.99 each in a two-pack, read on us.govee.com 19 Nov 2026; single-unit price not captured, assumed about $12."},
+        "product": "Govee H5075 Bluetooth thermometer-hygrometer with app alerts",
+        "source": "https://us.govee.com/collections/thermo-hydrometer/products/govee-bluetooth-hygrometer-thermometer-h5075",
+        "verified": true
+      },
+      "lifeYears": {"lo": 3, "mid": 5, "hi": 10, "tag": "guess", "basis": "Places close and people move, so the plan needs rewriting every few years."},
+      "setupHours": {"lo": 1, "mid": 2, "hi": 4, "tag": "guess", "basis": "Find and check the places, write the page, set the alert."},
+      "upkeepHoursPerYear": {"lo": 0.25, "mid": 0.5, "hi": 1, "tag": "guess", "basis": "Spring check of hours, addresses and thermometer batteries."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 1, "hi": 3, "tag": "derived", "basis": "Two AAA cells lasting about 6 months, per the Govee page; cell price estimated."},
+      "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "The thermometer has some everyday use."},
+      "volumeLitresPerUnit": 0.2,
+      "reliability": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Chance the plan is current and remembered when the heat arrives."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": ["hotSummers"],
+      "effects": [
+        {
+          "type": "reduce", "target": "cooling", "hazards": ["all"],
+          "fractionRemoved": {"lo": 0.2, "mid": 0.5, "hi": 0.7, "tag": "derived",
+            "basis": "Visiting cool environments OR 0.34 (0.2-0.5) in Bouchama 2007, cut from 66% to 50% for confounding (people who can go out are fitter) and because a 2-hour cooling break loses its physiological effect within about 2 hours of returning to the heat (Kenny 2024)."},
+          "adherence": {"lo": 0.05, "mid": 0.15, "hi": 0.35, "tag": "guess",
+            "basis": "The extra share of dangerous days on which a household spends several hours somewhere cooled because it has a plan and a trigger, beyond what it would improvise. No data found; a CDC-commissioned review found no direct evidence that cooling centres reduce deaths."},
+          "notes": "Adherence is net of improvisation, so the product (about 0.08) is the plan's whole effect. In a wide outage fewer cooled places are open, which is one reason for the wide range. Overnight relocation belongs to the engine's leave option. A car's air conditioning is the usual improvised refuge in an outage; never idle it in a garage."
+        }
+      ],
+      "evidence": [
+        {"claim": "Meta-analysis: visiting cool environments OR 0.34 (0.2-0.5); increased social contact OR 0.40 (0.2-0.8).", "source": "https://europepmc.org/article/MED/17698676", "year": 2007, "verified": true},
+        {"claim": "Review of indoor overheating: older adults show no undue strain after a day at 26 °C or below; 31 °C or above should be avoided by heat-susceptible people; 2 h at 23 °C lowers core temperature but the effect fades within about 2 h; a CDC-commissioned review found no direct evidence that cooling centres reduce mortality.", "source": "https://europepmc.org/article/PMC/PMC11346563", "year": 2024, "verified": true},
+        {"claim": "Chicago 1995: access to transportation OR 0.3; not leaving home each day OR 6.7.", "source": "https://europepmc.org/article/MED/8649494", "year": 1996, "verified": true},
+        {"claim": "BC 2021: 98% of 619 heat deaths occurred indoors; there was a lag between heat alerts and the public response.", "source": "https://news.gov.bc.ca/releases/2022PSSG0042-000903", "year": 2022, "verified": true},
+        {"claim": "BC 2021, greater Vancouver: deaths stayed elevated for three days after temperatures returned to baseline; one monitored home without air conditioning ranged between 30 and 40 °C indoors.", "source": "https://europepmc.org/article/PMC/PMC8835552", "year": 2022, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Almost free, so it ranks on whether people act on it, which is the number I know least about. The thermometer matters because old people often do not feel heat; its phone alert needs the phone within Bluetooth range."
+    },
+    {
+      "id": "heat-check-in",
+      "name": "Daily check-in for someone living alone",
+      "spec": "For a person aged 60 or over who lives alone: a named relative, friend or neighbour phones or visits twice a day whenever a heat warning is in force or the power is out in hot weather, holds a key, and has agreed in advance to move the person somewhere cooled or call an ambulance if they are confused, unwell or do not answer.",
+      "fromLonglistRows": [],
+      "scalesWith": "household",
+      "unit": "arrangement",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 5, "hi": 20, "tag": "guess", "basis": "A spare key for the checker; nothing else is bought."},
+        "product": "Spare house key",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 2, "mid": 5, "hi": 10, "tag": "guess", "basis": "Arrangements lapse as people move or fall out of touch."},
+      "setupHours": {"lo": 0.5, "mid": 1.5, "hi": 3, "tag": "guess", "basis": "One conversation, a key, and agreeing what the checker will do."},
+      "upkeepHoursPerYear": {"lo": 1, "mid": 3, "hi": 8, "tag": "derived", "basis": "About 10 warning days a year x 2 contacts x 5 minutes x 2 people = 3.3 hours, counting the checker's time."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 5, "tag": "guess", "basis": "Phone calls."},
+      "everydayShare": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "The same arrangement covers falls, strokes and cold spells, and is ordinary good practice for anyone old who lives alone."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Chance the checker is reachable, unaffected and in fact calls."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": ["hotSummers", "age60plus"],
+      "effects": [
+        {
+          "type": "reduce", "target": "cooling", "hazards": ["all"],
+          "fractionRemoved": {"lo": 0.1, "mid": 0.3, "hi": 0.55, "tag": "derived",
+            "basis": "Increased social contact OR 0.40 (0.2-0.8); living alone OR 2.3 (Chicago 1995) and 8.1 (Chicago 1999). Halved from the implied 60% because contact alone often fails: in Chicago 1999 over half of decedents had been seen or spoken to on the day of death or the day before, and a Rome monitoring programme showed 25 against 29 deaths per 1,000 over-75s in summer 2015."},
+          "adherence": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Share of dangerous days on which the check happens and leads to action when needed."},
+          "notes": "Only for a one-person household aged 60 or over. The check must carry authority to act; a phone call that ends with 'I am fine' is what failed in Chicago."
+        },
+        {
+          "type": "other",
+          "description": "The same arrangement should cut cold deaths in winterStorm for old people living alone and shorten the time to help in a homeMedicalEmergency. Not quantified here; a first guess is the same 0.3 on warmth."
+        }
+      ],
+      "evidence": [
+        {"claim": "Meta-analysis: increased social contact OR 0.40 (0.2-0.8).", "source": "https://europepmc.org/article/MED/17698676", "year": 2007, "verified": true},
+        {"claim": "Chicago 1995: living alone OR 2.3.", "source": "https://europepmc.org/article/MED/8649494", "year": 1996, "verified": true},
+        {"claim": "Chicago 1999: living alone OR 8.1 (1.4-48.1); over half of decedents had been seen or spoken to on the day of death or the day before.", "source": "https://europepmc.org/article/MED/11988377", "year": 2002, "verified": true},
+        {"claim": "BC 2021: 56% of 619 decedents lived alone and 67% were aged 70 or over; over 60% had seen a medical professional in the month before death.", "source": "https://news.gov.bc.ca/releases/2022PSSG0042-000903", "year": 2022, "verified": true},
+        {"claim": "Rome, summer 2015, residents over 75: cumulative mortality 25 per 1,000 in three areas with a community monitoring programme against 29 per 1,000 in four areas without (unadjusted).", "source": "https://europepmc.org/article/MED/29641436", "year": 2018, "verified": true},
+        {"claim": "Rome 2014-2019, over-80s: incidence rate ratio 0.44 (0.32-0.60) for the same programme in an ecological study.", "source": "https://www.mdpi.com/1660-4601/18/21/11587", "year": 2021, "verified": false}
+      ],
+      "confidence": "derived",
+      "notes": "Aimed at the group that carries most of the deaths: a 75-year-old living alone runs at well over 150 times the healthy-adult rate. Overlaps longlist row 116 (neighbour network), which another group owns. The model has no flag for living alone."
+    },
+    {
+      "id": "window-shading",
+      "name": "Sun-blocking window covers",
+      "spec": "Blackout roller blinds or reflective insulating shades on the three or so windows that take direct sun, kept shut by day in hot weather. Where the building allows, exterior shade cloth, awnings or shutters instead, which work about three times as well.",
+      "fromLonglistRows": [],
+      "scalesWith": "household",
+      "unit": "set of three blinds",
+      "price": {
+        "usdPerUnit": {"lo": 45, "mid": 120, "hi": 400, "tag": "derived",
+          "basis": "3 x $39.99 for the IKEA FRIDANS blackout roller blind, 34 x 76.75 in, read on ikea.com 19 Nov 2026. Low end is reflective film or foil-faced board (estimate); high end is exterior shades (estimate)."},
+        "product": "IKEA FRIDANS blackout roller blind, 34 x 76.75 in, three of them",
+        "source": "https://www.ikea.com/us/en/p/fridans-blackout-roller-blind-white-10396944",
+        "verified": true
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 15, "tag": "guess", "basis": "Ordinary life of a roller blind."},
+      "setupHours": {"lo": 1, "mid": 2, "hi": 4, "tag": "guess", "basis": "Measure, buy, fit three blinds."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "None beyond drawing them, counted once a year as a check."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 5, "tag": "guess", "basis": "None expected."},
+      "everydayShare": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "Dark bedrooms, privacy, and lower cooling bills: PNNL reports 15-25% summer cooling savings from high-efficiency shades."},
+      "volumeLitresPerUnit": 3,
+      "reliability": {"lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Fitted in place; little to go wrong."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": ["hotSummers"],
+      "effects": [
+        {
+          "type": "reduce", "target": "cooling", "hazards": ["all"],
+          "fractionRemoved": {"lo": 0.03, "mid": 0.12, "hi": 0.3, "tag": "derived",
+            "basis": "Simulated home without AC in the 2021 Portland heat wave (Rempel 2022, via PNNL): hours in the danger heat-index bands fall 18% with interior roller shades, 23% with insulating shades and 55% with exterior shades. I take 18-23% and cut it by about a third because an unprepared household already has some curtains and can hang sheets or foil. https://basc.pnnl.gov/resource-guides/window-attachments-solar-control-and-energy-efficiency"},
+          "adherence": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "They work only if shut during the day; people at home often open them for light or air."},
+          "notes": "Works with or without power, in homes with and without air conditioning. For exterior shades use about 0.35 (0.15-0.55). The step from fewer dangerous hours to fewer deaths is assumed proportional."
+        }
+      ],
+      "evidence": [
+        {"claim": "Modelled home without air conditioning, Portland 2021 heat wave: exterior shades cut hours in the danger and extreme-danger heat-index bands by about 55%, insulating cellular shades by about 23%, interior roller shades by about 18%.", "source": "https://basc.pnnl.gov/resource-guides/window-attachments-solar-control-and-energy-efficiency", "year": 2022, "verified": true},
+        {"claim": "Review: interior curtains or blinds cut heat gain by up to 33%; modelled UK shutters lower indoor temperature by 1.3-1.9 °C; modelled shading cuts heat-related mortality risk by up to 60%; low-cost window films are an option but no figure is given.", "source": "https://europepmc.org/article/PMC/PMC11346563", "year": 2024, "verified": true},
+        {"claim": "Modelled blackout during a heat wave: cool roofs cut heat deaths by 21% (Atlanta), 23% (Detroit) and 66% (Phoenix); street trees by 14-27%.", "source": "https://europepmc.org/article/PMC/PMC10249403", "year": 2023, "verified": true},
+        {"claim": "BC 2021 case-control: greenness within 100 m, adjusted OR 0.78 (0.64-0.91) per interquartile range.", "source": "https://europepmc.org/article/PMC/PMC8835552", "year": 2022, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "All the evidence is building simulation; no study links blinds to deaths. Its merit is that it needs no power and no decision in the moment beyond pulling a cord."
+    }
+  ],
+  "excluded": [
+    {"what": "Row 29, electrolytes and sports drinks", "reason": "No evidence found that they change deaths or illness for people sitting in a hot home; water and ordinary food cover the losses, and oral rehydration salts are already in row 59."},
+    {"what": "Row 29, sun protection", "reason": "Protects skin outdoors; the modelled harm is heat indoors (98% of BC 2021 deaths)."},
+    {"what": "Row 29, extra water allowance", "reason": "Belongs to the water ladder. My assumption for its owner: add about 1 litre (0.5-2) per person per unmet cooling day."},
+    {"what": "Power station sized to run a fan (row 37)", "reason": "Owned by the power group. A USB fan draws about 3-5 W, so 12 D cells or a $25 power bank already run it for days; a mains box fan at 40-50 W needs about 1 kWh a day. Not a separate cooling entry."},
+    {"what": "Power station or generator to run an air conditioner (rows 37-38)", "reason": "Owned by the power group. A 5,000 BTU unit needs about 450-500 W running and 5-8 kWh a day; only a generator supplies that."},
+    {"what": "Spray bottle and wet towels as a separate entry", "reason": "Merged into battery-fan-kit: a $3 bottle, and the household already has towels and usually tap water."},
+    {"what": "Indoor thermometer as a separate entry", "reason": "Merged into heat-plan; it is the plan's trigger and has no effect alone."},
+    {"what": "Evaporative cooler", "reason": "Works only in dry air, needs power and water, and no health evidence was found."},
+    {"what": "Cooling towels, neck wraps, ice vests, frozen bottles", "reason": "Relief for an hour or two; no outcome evidence; lower-leg immersion in 20 °C water did not lower core temperature in older adults (Kenny 2024). Frozen bottles are row 15."},
+    {"what": "Reflective window film alone", "reason": "Folded into window-shading as its low-price variant; the review found no figure for its effect."},
+    {"what": "Central air conditioning, heat pump, cool roof, shade trees", "reason": "Thousands of dollars and owner-only; they belong with structural measures (row 121). Stone 2023 models cool roofs cutting blackout heat deaths by 21-66%."}
+  ],
+  "blockedSources": [
+    "https://pubmed.ncbi.nlm.nih.gov/: cookie wall on every abstract; read the same abstracts through the Europe PMC API instead.",
+    "https://www2.gov.bc.ca/assets/gov/birth-adoption-death-marriage-and-divorce/deaths/coroners-service/death-review-panel/extreme_heat_death_review_panel_report.pdf: the full coroners panel report (final 619-death tables by age, air conditioner and fan presence, living alone). Connection dropped twice; used the October 2021 knowledge update (526 deaths), the news release and Kenny 2024.",
+    "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC1950160/fullTextXML: Fouillet 2006 on France 2003 (HTTP 500); used the INSERM report of 25 September 2003 instead.",
+    "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11581471/fullTextXML: O'Connor 2024 JAMA trial of fans at 36 °C (HTTP 500; jamanetwork.com 404); used later abstracts from the same group.",
+    "NEJM full texts: Semenza 1996 (odds ratios for fans and for visiting air-conditioned places in Chicago) and Chaseling 2024 (cardiac strain with fans); abstracts and a secondary analysis only.",
+    "https://www150.statcan.gc.ca/n1/pub/91-215-x/2021001/sec2-eng.htm: BC population by age (HTTP 403); age denominators for BC and France are recalled, so the age multipliers lean on Ballester 2023, which reports rates directly.",
+    "Maricopa County final 2024 heat deaths report PDF: indoor death counts by age and reason the air conditioner failed; only the county news release was found.",
+    "https://www.cdc.gov/extreme-heat/prevention/index.html: CDC's current fan threshold; page came back empty.",
+    "https://www.walmart.com/ip/212092810, https://www.academy.com/p/o2-cool-10-battery-operated-camping-fan, https://o2cbrands.com/products/10-inch-battery-or-electric-portable-fan, https://www.frigidaire.com/: prices and battery runtimes; bot walls, HTTP 429 or timeouts.",
+    "CenterPoint restoration counts for 13-19 July 2024: needed for person-days without power after Beryl; my 8M customer-days rests on projections after 12 July.",
+    "https://www.npr.org/2021/09/07/1034775749/hurricane-ida-power-outages-new-orleans-seniors: Ida outage length and numbers who stayed (timeout); the Ida anchor has a guessed denominator."
+  ],
+  "openQuestions": [
+    "The engine needs a household flag for air conditioning. Homes without it have an unmet cooling day on every dangerous-heat day; homes with it only when power or equipment fails. US 88% have it (Pacific coast 49%); Western Europe roughly a fifth (unverified).",
+    "New capability id: airConditioning, provided by room-air-conditioner.",
+    "A livesAlone condition is needed for heat-check-in; I used age60plus alone.",
+    "One fractionRemoved covers hardship and mortality together. For the fan kit they differ (about 0.3 for hardship, 0.15 for mortality); I entered the mortality figure.",
+    "My curve is for one reference intensity. If the heatWave owner defines the hazard as a record event, scale mortality up about 5 times; if hotShare in ordinary summer outages counts days with highs of 32-35 °C, scale down about 5 times. An intensity factor per hazard would be better than one curve.",
+    "The age multipliers (30 and 150) put almost all cooling deaths at ages 60 and over. If the value of a micromort does not fall with age, the cooling items will be worth about 50 times more to a household aged 75 or over than to a young one; France 2003 found no harvesting, so this is not an artefact of deaths brought forward by days.",
+    "Equipment breakdown is not a hazard but leaves about four times as many US air-conditioned households hot for 24 hours as outages do (AHS 2023), and 70% of AC units in Maricopa indoor heat deaths were broken. Should heatWave carry a breakdown probability?",
+    "battery-fan-kit in heatWave must be gated on the power window; I could not express that in the schema.",
+    "heat-check-in probably also reduces warmth deaths and speeds help in medical emergencies; no group owns that number.",
+    "The plan and check-in adherence figures are guesses with no data behind them; they decide where those two entries rank."
+  ]
+}

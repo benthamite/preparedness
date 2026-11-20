@@ -335,7 +335,8 @@ export function buildWorld(m, settings) {
   const needIndex = Object.fromEntries(needIds.map((id, k) => [id, k]));
   const needs = needIds.map((id) => {
     const n = m.needs[id];
-    const who = people.filter((p) => !n.who || n.who === 'all' || p.flags[n.who]);
+    // A need may apply to some people only, or to some households only.
+    const who = n.if && !holds(n.if, settings) ? [] : people.filter((p) => !n.who || n.who === 'all' || p.flags[n.who]);
     return {
       id,
       spec: n,
@@ -384,11 +385,15 @@ export function buildWorld(m, settings) {
       exposures: (h.exposures || []).map((x) => {
         const ch = (m.channels || {})[x.channel] || {};
         const mults = x.multipliers || ch.multipliers;
+        // Some exposures differ by kind of home or by place (house fires).
+        const es = h.exposureScale || {};
+        const scale = (es.dwelling && es.dwelling[settings.dwelling] !== undefined ? es.dwelling[settings.dwelling] : 1)
+          * (es.location && es.location[loc] !== undefined ? es.location[loc] : 1);
         return {
           c: channelIndex[x.channel],
-          mm: (x.micromortsPerPerson || 0) * people.reduce((s, q) => s + multiplier(mults, q, 'mortality'), 0),
-          usd: (x.hardshipUsdPerPerson || 0) * people.reduce((s, q) => s + multiplier(mults, q, 'hardship'), 0)
-            + (x.financialUsdPerHousehold || 0),
+          mm: scale * (x.micromortsPerPerson || 0) * people.reduce((s, q) => s + multiplier(mults, q, 'mortality'), 0),
+          usd: scale * ((x.hardshipUsdPerPerson || 0) * people.reduce((s, q) => s + multiplier(mults, q, 'hardship'), 0)
+            + (x.financialUsdPerHousehold || 0)),
         };
       }),
     };
@@ -429,6 +434,8 @@ export function buildWorld(m, settings) {
   // Leave options per event.
   const Lopt = new Float64Array(E * J).fill(Infinity);
   const leaveCost = new Float64Array(E * J);
+  // Options in use per event: "stay", then the leave days, which fill a prefix.
+  const nOpt = new Uint8Array(E).fill(1);
   const active = [];
   for (let e = 0; e < E; e++) {
     const hz = hazards[ev.hz[e]];
@@ -445,6 +452,7 @@ export function buildWorld(m, settings) {
         if (L < T) {
           Lopt[e * J + i + 1] = L;
           leaveCost[e * J + i + 1] = hz.leaveFixed + hz.leavePerDay * (T - L);
+          nOpt[e] = i + 2;
         }
       });
     }
@@ -452,6 +460,7 @@ export function buildWorld(m, settings) {
 
   // ---- items ----
   const leaveFx = [];
+  let review = null;
   const capProviders = {};
   const capFuel = {};
   const suppliers = needs.map(() => []);
@@ -472,8 +481,10 @@ export function buildWorld(m, settings) {
       : 1;
     const life = it.lifeYears;
     const e = it.everydayShare || 0;
-    const unitUsd = it.price * priceIndex;
-    const perUnit = unitUsd * ((1 - e) * crf(rate, life) + e * rate)
+    // Cash is priced in dollars everywhere, and its cost is given whole as
+    // upkeep, so it carries no price index and no charge for capital.
+    const unitUsd = it.price * (it.capitalFree ? 1 : priceIndex);
+    const perUnit = (it.capitalFree ? 0 : unitUsd * ((1 - e) * crf(rate, life) + e * rate))
       + (it.upkeepUsdPerUnitYear || 0) + (it.volumeLitres || 0) * storage;
     // A fixed price is paid once, with the first level (a heater, as against
     // the fuel that is the item's ladder).
@@ -494,6 +505,7 @@ export function buildWorld(m, settings) {
       needSet: new Set(),
       chanSet: new Set(),
       sideRisks: [],
+      annual: null,
     };
     if (!applicable) return item;
     for (const fx of it.effects || []) {
@@ -514,10 +526,13 @@ export function buildWorld(m, settings) {
       } else if (fx.type === 'reduce') {
         // `othersOnly`: the item protects everyone but the member who holds
         // it (someone trained in CPR cannot resuscitate themselves).
-        const f = fx.fraction * (fx.adherence === undefined ? 1 : fx.adherence)
+        const adj = (fx.adherence === undefined ? 1 : fx.adherence)
           * (fx.othersOnly ? Math.max(0, nPeople - 1) / Math.max(1, nPeople) : 1);
+        const f = (fx.fraction || 0) * adj;
         const red = {
           i, f, on: fx.on || 'both', group: fx.group || null,
+          // A fraction that grows with the level owned (deeper stocks).
+          byLevel: fx.fractionByLevel ? fx.fractionByLevel.map((x) => x * adj) : null,
           hazards: !fx.hazards || fx.hazards.includes('all') ? null : new Set(fx.hazards),
         };
         if (fx.target in needIndex) {
@@ -538,6 +553,12 @@ export function buildWorld(m, settings) {
           hazards: !fx.hazards || fx.hazards.includes('all') ? null : new Set(fx.hazards),
         });
         item.leave = true;
+      } else if (fx.type === 'annualRisk') {
+        // A risk of owning the thing at all, every year (a firearm at home).
+        item.annual = { mm: (fx.micromortsPerPersonYear || 0) * nPeople, usd: fx.usdPerHouseholdYear || 0 };
+      } else if (fx.type === 'review') {
+        // Practice makes every other item likelier to work when needed.
+        review = { i, factor: fx.failureFactor };
       }
     }
     return item;
@@ -550,6 +571,12 @@ export function buildWorld(m, settings) {
         for (const c of it.chanSet) items[p].chanSet.add(c);
       }
     }
+  }
+  // Practice touches everything.
+  if (review) {
+    const it = items[review.i];
+    needs.forEach((_, k) => it.needSet.add(k));
+    channelIds.forEach((_, c) => it.chanSet.add(c));
   }
   // Whatever reduces a channel also reduces the side risks on that channel.
   for (const it of items) {
@@ -583,14 +610,29 @@ export function buildWorld(m, settings) {
   for (const it of items) it.events = eventsFor(it.needSet, it.leave);
 
   // ---- what the household has in a given event ----
-  function unitsIn(e, it, level) {
-    const hz = hazards[ev.hz[e]];
-    let u = 0;
-    if (level[it.i] > 0 && hash01(ev.key[e], it.i, 1) < it.reliability) u = it.unitsAt(level[it.i]);
-    const pLate = hz.late[it.lateClass];
-    if (pLate > 0 && it.applicable && hash01(ev.key[e], it.i, 2) < pLate) {
-      u = Math.min(it.unitsAt(it.maxLevel), u + it.unitsAt(it.lateLevel));
+  function reliabilityOf(it, level) {
+    if (review && review.i !== it.i && level[review.i] > 0) return 1 - (1 - it.reliability) * review.factor;
+    return it.reliability;
+  }
+  const fractionAt = (r, lv) => (r.byLevel ? (lv > 0 ? r.byLevel[Math.min(lv, r.byLevel.length) - 1] : 0) : r.f);
+  // Whether each item works, and whether it could be bought late, is fixed
+  // per event in advance.
+  const N = items.length;
+  const workDraw = new Float32Array(E * N);
+  const boughtLate = new Uint8Array(E * N);
+  for (let e = 0; e < E; e++) {
+    const late = hazards[ev.hz[e]].late;
+    for (let i = 0; i < N; i++) {
+      workDraw[e * N + i] = hash01(ev.key[e], i, 1);
+      const pLate = late[items[i].lateClass];
+      boughtLate[e * N + i] = pLate > 0 && items[i].applicable && hash01(ev.key[e], i, 2) < pLate ? 1 : 0;
     }
+  }
+  function unitsIn(e, it, level) {
+    const lv = level[it.i];
+    let u = 0;
+    if (lv > 0 && workDraw[e * N + it.i] < reliabilityOf(it, level)) u = it.unitsAt(lv);
+    if (boughtLate[e * N + it.i]) u = Math.min(it.unitsAt(it.maxLevel), u + it.unitsAt(it.lateLevel));
     return u;
   }
   function hasCap(e, cap, level) {
@@ -609,8 +651,9 @@ export function buildWorld(m, settings) {
       if (r.hazards && !r.hazards.has(hazardId)) continue;
       const it = items[r.i];
       if (unitsIn(e, it, level) <= 0 || !works(e, it, level)) continue;
-      if (r.group) { groups ||= {}; groups[r.group] = Math.max(groups[r.group] || 0, r.f); }
-      else keep *= 1 - r.f;
+      const f = fractionAt(r, level[it.i] > 0 ? level[it.i] : it.lateLevel);
+      if (r.group) { groups ||= {}; groups[r.group] = Math.max(groups[r.group] || 0, f); }
+      else keep *= 1 - f;
     }
     if (groups) for (const g of Object.values(groups)) keep *= 1 - g;
     return keep;
@@ -651,9 +694,9 @@ export function buildWorld(m, settings) {
       copingFactor += cp.share * reduction(chanReducers[channelIndex[cp.channel]] || [], e, level, 'mortality', hz.id);
     }
     const risky = sideRiskOf[k];
-    for (let j = 0; j < J; j++) {
+    const nj = nOpt[e];
+    for (let j = 0; j < nj; j++) {
       const L = Lopt[e * J + j];
-      if (j > 0 && L === Infinity) { out$[j] = out$[0]; outM[j] = outM[0]; continue; }
       const gL = n.leaveEnds ? Math.min(g, L) : g;
       let covered;
       if (spec.special === 'food') {
@@ -682,6 +725,9 @@ export function buildWorld(m, settings) {
   // ---- state for the current kit ----
   const R$ = new Float64Array(E * K * J);
   const RM = new Float64Array(E * K * J);
+  // Totals over needs, per event and leave option.
+  const S$ = new Float64Array(E * J);
+  const SM = new Float64Array(E * J);
   const cur$ = new Float64Array(E);
   const curM = new Float64Array(E);
   const tmp$ = new Float64Array(J), tmpM = new Float64Array(J);
@@ -691,18 +737,32 @@ export function buildWorld(m, settings) {
   // Harm in event e. Needs in `fresh` are recomputed for `level`; the rest
   // come from the cache. With `store`, recomputed rows replace the cache.
   function eventHarm(e, fresh, level, store) {
-    for (let j = 0; j < J; j++) { tot$[j] = leaveCost[e * J + j]; totM[j] = 0; }
-    for (const k of active[e]) {
-      const base = (e * K + k) * J;
-      if (fresh === null || fresh.has(k)) {
+    const nj = nOpt[e];
+    const sb = e * J;
+    if (fresh === null) {
+      for (let j = 0; j < nj; j++) { tot$[j] = 0; totM[j] = 0; }
+      for (const k of active[e]) {
+        const base = (e * K + k) * J;
         needRow(e, k, level, tmp$, tmpM);
-        for (let j = 0; j < J; j++) { tot$[j] += tmp$[j]; totM[j] += tmpM[j]; }
-        if (store) for (let j = 0; j < J; j++) { R$[base + j] = tmp$[j]; RM[base + j] = tmpM[j]; }
-      } else {
-        for (let j = 0; j < J; j++) { tot$[j] += R$[base + j]; totM[j] += RM[base + j]; }
+        for (let j = 0; j < nj; j++) { tot$[j] += tmp$[j]; totM[j] += tmpM[j]; R$[base + j] = tmp$[j]; RM[base + j] = tmpM[j]; }
       }
+      for (let j = 0; j < nj; j++) { S$[sb + j] = tot$[j]; SM[sb + j] = totM[j]; }
+    } else {
+      // Start from the stored totals and swap in the rows that changed.
+      for (let j = 0; j < nj; j++) { tot$[j] = S$[sb + j]; totM[j] = SM[sb + j]; }
+      const row = ev.gaps[e];
+      for (const k of fresh) {
+        if (!(row[k] > 0)) continue;
+        const base = (e * K + k) * J;
+        needRow(e, k, level, tmp$, tmpM);
+        for (let j = 0; j < nj; j++) {
+          tot$[j] += tmp$[j] - R$[base + j]; totM[j] += tmpM[j] - RM[base + j];
+          if (store) { R$[base + j] = tmp$[j]; RM[base + j] = tmpM[j]; }
+        }
+      }
+      if (store) for (let j = 0; j < nj; j++) { S$[sb + j] = tot$[j]; SM[sb + j] = totM[j]; }
     }
-    if (Lopt[e * J + 1] === Infinity) { res.usd = tot$[0]; res.mm = totM[0]; return res; }
+    if (nj === 1) { res.usd = tot$[0]; res.mm = totM[0]; return res; }
     // Items that make leaving likelier to be possible, or cheaper.
     const hz = hazards[ev.hz[e]];
     let f = hz.feasible;
@@ -721,9 +781,8 @@ export function buildWorld(m, settings) {
     let best = 0;
     let bestUsd = tot$[0];
     let bestCost = tot$[0] + v * totM[0];
-    for (let j = 1; j < J; j++) {
-      if (Lopt[e * J + j] === Infinity) continue;
-      const usd = tot$[j] - cut * leaveCost[e * J + j];
+    for (let j = 1; j < nj; j++) {
+      const usd = tot$[j] + (1 - cut) * leaveCost[sb + j];
       const c = usd + v * totM[j];
       if (c < bestCost) { bestCost = c; best = j; bestUsd = usd; }
     }
@@ -744,13 +803,18 @@ export function buildWorld(m, settings) {
       const it = items[r.i];
       if (!it.applicable) continue;
       const pLate = hz.late[it.lateClass];
-      let pHave = level[it.i] > 0 ? it.reliability + (1 - it.reliability) * pLate : pLate;
+      const rel = reliabilityOf(it, level);
+      const owned = level[it.i] > 0;
+      let pHave = owned ? rel + (1 - rel) * pLate : pLate;
       for (const cap of it.requires) {
         if (!(capProviders[cap] || []).some((p) => level[p] > 0)) pHave = 0;
       }
       if (pHave <= 0) continue;
-      if (r.group) (groups[r.group] ||= []).push([r.f, pHave]);
-      else keep *= 1 - pHave * r.f;
+      // Expected fraction removed: the owned level if it works, else
+      // whatever could be bought late.
+      const removed = (owned ? rel * fractionAt(r, level[it.i]) + (1 - rel) * pLate * fractionAt(r, it.lateLevel) : pLate * fractionAt(r, it.lateLevel));
+      if (r.group) (groups[r.group] ||= []).push([removed / pHave, pHave]);
+      else keep *= 1 - removed;
     }
     for (const list of Object.values(groups)) {
       // Within a group only the best item present counts.
@@ -779,10 +843,11 @@ export function buildWorld(m, settings) {
     hazards.forEach((hz, h) => { curX[h] = exposureHarm(hz, level); });
   }
 
-  function total() {
+  function total(level) {
     let usd = 0, mm = 0;
     for (let e = 0; e < E; e++) { usd += ev.w[e] * cur$[e]; mm += ev.w[e] * curM[e]; }
     for (const x of curX) { usd += x[0]; mm += x[1]; }
+    if (level) for (const it of items) if (it.annual && level[it.i] > 0) { usd += it.annual.usd; mm += it.annual.mm; }
     return { usd, mm };
   }
 
@@ -819,6 +884,10 @@ export function buildWorld(m, settings) {
         if (commit) curX[h] = x;
       });
     }
+    add.forEach(([i, lv], n) => {
+      const a = items[i].annual;
+      if (a && old[n] === 0 && lv > 0) { usd -= a.usd; mm -= a.mm; }
+    });
     if (!commit) add.forEach(([i], n) => { level[i] = old[n]; });
     return { usd, mm, per };
   }
@@ -907,24 +976,51 @@ export function rank(data, settings) {
   const baseline = (() => {
     const W0 = buildWorld(m, settings);
     W0.refresh(W0.newLevel());
-    return W0.total();
+    return W0.total(null);
   })();
-  const start = W.total();
+  const start = W.total(level);
   const entries = [];
   let cumUpfront = 0, cumAnnual = 0;
+  // A candidate's value is kept from one round to the next unless the entry
+  // just taken could have changed it: one that shares a channel with it, or,
+  // because the decision to leave ties all needs together, any other entry
+  // that acts on a need when this one does.
+  const cache = new Map();
+  const touched = (add) => {
+    const t = { needs: false, chans: new Set(), all: false };
+    for (const [i] of add) {
+      const it = W.items[i];
+      if (it.needSet.size || it.leave) t.needs = true;
+      for (const c of it.chanSet) t.chans.add(c);
+      if (it.spec.effects && it.spec.effects.some((fx) => fx.type === 'review')) t.all = true;
+    }
+    return t;
+  };
   for (;;) {
     const cands = candidates(W, level);
     if (!cands.length) break;
     let best = null;
     for (const add of cands) {
-      const d = W.delta(level, add);
+      const key = add.map((a) => a.join(':')).join('+');
+      let hit = cache.get(key);
+      if (!hit) {
+        const x = W.delta(level, add);
+        hit = { usd: x.usd, mm: x.mm, t: touched(add) };
+        cache.set(key, hit);
+      }
       const c = costOf(W, level, add);
-      const value = d.usd + W.v * d.mm;
+      const value = hit.usd + W.v * hit.mm;
       const ratio = ratioOf(value, c.annual);
       if (!best || ratio > best.ratio || (ratio === best.ratio && value > best.value)) best = { add, c, value, ratio };
     }
     const { add, c } = best;
     const d = W.delta(level, add, { commit: true, byHazard: true });
+    const took = touched(add);
+    for (const [key, hit] of cache) {
+      let stale = took.all || hit.t.all || (took.needs && hit.t.needs);
+      if (!stale) for (const ch of hit.t.chans) if (took.chans.has(ch)) { stale = true; break; }
+      if (stale) cache.delete(key);
+    }
     cumUpfront += c.upfront; cumAnnual += c.annual;
     const value = d.usd + W.v * d.mm;
     const byHazard = W.hazards
@@ -955,7 +1051,7 @@ export function rank(data, settings) {
     entries,
     micromortValueUsd: W.v,
     timeValueUsdPerHour: W.timeValue,
-    harm: { unprepared: baseline, start, end: W.total() },
+    harm: { unprepared: baseline, start, end: W.total(level) },
     hazards: W.hazards.map((hz) => ({ id: hz.id, p: hz.p })),
     events: W.E,
   };

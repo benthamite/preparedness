@@ -1,0 +1,1511 @@
+{
+  "kind": "items",
+  "group": "fire-co",
+  "channels": [
+    {
+      "id": "fire",
+      "definition": "Death, injury and property loss from a fire in the household's own home. The everyday figures are for the model's empty-kit state: a US home with no working smoke alarm, otherwise average. Multiply by 0.45 for a home that already has a working alarm.",
+      "everydayAnnualMicromortsPerPerson": {
+        "lo": 6,
+        "mid": 10,
+        "hi": 20,
+        "tag": "derived",
+        "basis": "Adult 15-59 in a home with no working smoke alarm. NFPA 2019-2023 home fire death rates by age give 5.2 per million for ages 15-59 (7.8 all ages; 8.6 in 2023 and 2024), so 5.4; divided by (1 - 0.84 x 0.55) because 84% of homes have a working alarm (CPSC 2024) that removes about 55%. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/US-Fire-Problem/oshomevictims.pdf"
+      },
+      "everydayAnnualUsdPerHousehold": {
+        "lo": 75,
+        "mid": 110,
+        "hi": 160,
+        "tag": "derived",
+        "basis": "Home with no working alarm. Reported direct property damage $8.9bn a year in 2019-2023 and $11.4bn in 2024 over about 131M households is $68-87, about $85 in 2026 dollars; plus about $6 for 9,000-10,800 injuries at a guessed $70,000 each; scaled by 1.27 for the no-alarm state. Gross of insurance. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/US-Fire-Problem/osFireLoss.pdf"
+      },
+      "inHazards": "Inside outages the fire risk comes from coping: candles, improvised heating, cooking on open flame, fuel storage. Texas, February 2021: 10 fire deaths among about 16.7M residents who lost power and stayed home for a mean 1.75 days, so about 0.6 micromorts per exposed person per event, or 0.34 per person-day, in a cold-weather outage; I take 0.2 (0.05-0.5) per person-day for a multi-day cold outage and about a quarter of that in mild weather. That is roughly 6% of the hypothermia toll (10 against 161). Item-level side risks are in the top-level sideRisks array. In an earthquake the fire service is overwhelmed and gas leaks add ignitions (at least 50 gas-related structure fires after Northridge 1994); the earthquake researcher owns that exposure. Region scaling of the everyday figure: Western Europe about 0.5 (England 2024/25: 208 dwelling-fire deaths, 3.6 per million); Buenos Aires about 1.0 (0.4-2.0), a guess, since no national figure was found.",
+      "multipliers": [
+        {
+          "profile": "child",
+          "mortality": 0.77,
+          "hardship": 0.45,
+          "tag": "derived",
+          "basis": "NFPA 2019-2023 home fire deaths per million: under 5 5.3, 5-9 4.2, 10-14 2.6, population-weighted 4.0, against 5.2 for ages 15-59; injuries 15 against 33 per million. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/US-Fire-Problem/oshomevictims.pdf"
+        },
+        {
+          "profile": "age60to74",
+          "mortality": 3.0,
+          "hardship": 1.15,
+          "tag": "derived",
+          "basis": "NFPA 2019-2023: 55-64 12.5 and 65-74 16.5 deaths per million, about 15.4 for 60-74, against 5.2 for ages 15-59; injuries 38 against 33. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/US-Fire-Problem/oshomevictims.pdf"
+        },
+        {
+          "profile": "age75plus",
+          "mortality": 4.1,
+          "hardship": 1.2,
+          "tag": "derived",
+          "basis": "NFPA 2019-2023: 75-84 19.9 and 85+ 25.2 deaths per million, weighted 21.3, against 5.2 for ages 15-59; injuries 39 against 33. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/US-Fire-Problem/oshomevictims.pdf"
+        },
+        {
+          "profile": "limitedMobility",
+          "mortality": 2.5,
+          "tag": "guess",
+          "basis": "NFPA 2018-2022: 16-23% of home fire victims were physically disabled against a guessed 7-8% of the population with a serious mobility limitation; overlaps with the age multipliers, so do not stack fully. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Detection-and-signaling/ossmokealarms.pdf"
+        }
+      ]
+    },
+    {
+      "id": "co",
+      "definition": "Death or poisoning from carbon monoxide not caused by a fire, while at home. The everyday figures are for the empty-kit state: a US home that has a fuel-burning appliance or an attached garage and no working CO alarm. They exclude generator use during weather outages, which is carried by the sideRisks. An all-electric home with no garage and no combustion coping is near zero.",
+      "everydayAnnualMicromortsPerPerson": {
+        "lo": 0.5,
+        "mid": 1.1,
+        "hi": 2.0,
+        "tag": "derived",
+        "basis": "CPSC 2020-2022: 238 consumer-product CO deaths a year, 126 in ordinary homes; minus about 18 from weather-outage generator use, plus a guessed 100 vehicle-exhaust deaths in home garages, is about 210 a year or 0.63 per million people; divided by 0.78 (homes with a CO source, a guess) and by (1 - 0.49 x 0.6) for the 49% with a working alarm. Adults 15-59 are at the population average. https://www.cpsc.gov/s3fs-public/Non-Fire-Carbon-Monoxide-Deaths-Associated-with-the-Use-of-Consumer-Products-2022-Annual-Estimates.pdf"
+      },
+      "everydayAnnualUsdPerHousehold": {
+        "lo": 2,
+        "mid": 6,
+        "hi": 15,
+        "tag": "derived",
+        "basis": "CDC: more than 100,000 emergency visits and 14,000 hospital stays a year. At a guessed $3,000 per treated-and-released visit and $40,000 per admission that is about $0.8bn a year, $6 per household on average; about two thirds is home-related, scaled up for the no-alarm, fuel-burning home. https://www.cdc.gov/carbon-monoxide/about/index.html"
+      },
+      "inHazards": "Inside outages CO deaths come almost entirely from coping: generators run indoors, in garages or near windows; charcoal grills and camp equipment indoors; unvented heaters; cars idling in garages; gas ovens used for heat. Population baseline for an unprepared household that stays: Texas 2021, 19 CO deaths among about 16.7M residents without power for a mean 1.75 days, 0.65 micromorts per person-day; Hurricane Irma, 16 CO deaths over roughly 15M people for about 4 days, 0.27 per person-day (exposure recalled, not verified). I take 0.4 (0.15-1.0) per person per outage-day once an outage passes about 6 hours in weather that needs heating or cooling, and near zero for shorter outages. That is about 12% of the hypothermia toll in Texas (19 against 161). What unprepared Texans who stayed did (UH survey): gas oven or cooktop for heat 26%, wood fireplace 16%, gas fireplace 15%, portable generator 12%, grill or smoker indoors 8%, outdoor propane heater indoors 5%. A battery CO alarm removes about 0.6-0.7 of this. Region scaling of the everyday figure: Western Europe about 0.8 (0.3-1.3: England and Wales about 0.45 deaths per million a year, Germany about 1.4, France 1.5-2.0, against 1.6 in the US); Buenos Aires about 2 (0.7-4): Argentina's health ministry has long cited about 200 deaths a year, 4.3 per million, though surveillance confirmed only 34 deaths in 2019-May 2024 and cases concentrate in the cold south.",
+      "multipliers": [
+        {
+          "profile": "child",
+          "mortality": 0.25,
+          "hardship": 2.0,
+          "tag": "derived",
+          "basis": "CPSC 2020-2022: under-15s are 3% of consumer-product CO deaths and 18% of the population (ratio 0.16); CDC 1999-2010 rates under 25 are about 0.4 of the overall rate; I take 0.25. Children are over-represented among non-fatal cases: 42% of Texas 2021 poisonings and relative risk 2.0 in Mecklenburg 2002. https://www.cpsc.gov/s3fs-public/Non-Fire-Carbon-Monoxide-Deaths-Associated-with-the-Use-of-Consumer-Products-2022-Annual-Estimates.pdf"
+        },
+        {
+          "profile": "age60to74",
+          "mortality": 1.6,
+          "tag": "derived",
+          "basis": "CPSC 2020-2022: ages 45-64 are 41% of deaths and 25% of the population (1.64); 65 and over are 27% against 17% (1.6). https://www.cpsc.gov/s3fs-public/Non-Fire-Carbon-Monoxide-Deaths-Associated-with-the-Use-of-Consumer-Products-2022-Annual-Estimates.pdf"
+        },
+        {
+          "profile": "age75plus",
+          "mortality": 2.2,
+          "tag": "guess",
+          "basis": "CDC QuickStats 1999-2010 (search snippet, page not opened): rates at 65+ were 0.42 (men) and 0.18 (women) per 100,000 against 0.22 and 0.07 overall, about double; I assume the oldest sit a little above the 65+ average."
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "smoke-alarm-basic",
+      "name": "Smoke alarms, first working set",
+      "spec": "Two 10-year sealed-battery photoelectric smoke alarms: one in the hallway outside the bedrooms, one on another level or in the living area. For a household with no working alarm, which includes one whose alarms are past 10 years, silent on test or missing a battery.",
+      "fromLonglistRows": [
+        82
+      ],
+      "scalesWith": "household",
+      "unit": "2-pack of alarms",
+      "price": {
+        "usdPerUnit": {
+          "lo": 20,
+          "mid": 40,
+          "hi": 60,
+          "tag": "data",
+          "basis": "$39.99 for the 2-pack read on Target's listing, 19 Nov 2026; single 10-year units on the same page $25.99-29.99; 9-volt alarms cost less. https://www.target.com/s/smoke+detector+carbon+monoxide+detector+combo+10+year+battery"
+        },
+        "product": "First Alert 2-pack 10-Year Battery Photoelectric Slim Profile smoke alarms",
+        "source": "https://www.target.com/s/smoke+detector+carbon+monoxide+detector+combo+10+year+battery",
+        "verified": true
+      },
+      "lifeYears": {
+        "lo": 6,
+        "mid": 9,
+        "hi": 10,
+        "tag": "derived",
+        "basis": "Makers and NFPA 72 say replace at 10 years; in the Dallas programme the benefit faded after year 6 as lithium-battery units died."
+      },
+      "setupHours": {
+        "lo": 0.3,
+        "mid": 0.75,
+        "hi": 1.5,
+        "tag": "guess",
+        "basis": "Buy, screw two bases to ceilings, test."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0.05,
+        "mid": 0.2,
+        "hi": 0.4,
+        "tag": "guess",
+        "basis": "A one-minute monthly test of two alarms; CPSC found 61% of households test less often than monthly and 33% never."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 2,
+        "tag": "guess",
+        "basis": "Sealed battery; nothing to replace."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "derived",
+        "basis": "Everyday fire and CO are modelled as the hazards houseFire and coIncident, so the item's everyday benefit is counted there and no share of cost is set aside."
+      },
+      "volumeLitresPerUnit": 1,
+      "reliability": {
+        "lo": 0.8,
+        "mid": 0.9,
+        "hi": 0.96,
+        "tag": "derived",
+        "basis": "Battery-only alarms operated in 85% of reported fires large enough to trigger them and hardwired ones in 94% (NFPA 2018-2022); 9% of alarms CPSC tested were dead. Sealed units remove the missing-battery failure, the largest cause. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Detection-and-signaling/ossmokealarms.pdf"
+      },
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "capability",
+          "capability": "smokeAlarm",
+          "notes": "Quantified by the reduce effect below; do not count both. Also mitigates the fire side risks of candles and combustion heaters."
+        },
+        {
+          "type": "reduce",
+          "target": "fire",
+          "hazards": [
+            "houseFire",
+            "localOutage",
+            "severeStorm",
+            "winterStorm",
+            "hurricane",
+            "earthquake",
+            "flood",
+            "gridLong"
+          ],
+          "fractionRemoved": {
+            "lo": 0.3,
+            "mid": 0.55,
+            "hi": 0.7,
+            "tag": "derived",
+            "basis": "Share of fire deaths removed when an alarm operates. NFPA: 60% lower death rate per reported fire where an alarm operated; NIST: casualties cut by a factor of 2.5-3.5 (60-71%); Dallas programme 63%; case-control OR 0.39. All observational and confounded by income and housing age, so the middle is set a little below them and the low end at half. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Detection-and-signaling/ossmokealarms.pdf"
+          },
+          "hardshipFractionRemoved": {
+            "lo": 0.05,
+            "mid": 0.25,
+            "hi": 0.5,
+            "tag": "guess",
+            "basis": "Injuries. NIST's casualty estimate includes injuries, but NFPA shows 36% of injuries in alarmed fires come while fighting the fire, so the injury effect is smaller than the death effect."
+          },
+          "financialFractionRemoved": {
+            "lo": 0.05,
+            "mid": 0.25,
+            "hi": 0.5,
+            "tag": "guess",
+            "basis": "Property. NIST finds alarmed homes report 3.5-5 times fewer fires, read as early discovery letting occupants put fires out; much of that gap is confounding, and nobody is home or awake for many fires."
+          },
+          "adherence": {
+            "lo": 0.85,
+            "mid": 0.95,
+            "hi": 1.0,
+            "tag": "guess",
+            "basis": "Share of owners who leave the alarm mounted and enabled; nuisance alarms near kitchens lead some to take them down."
+          },
+          "notes": "fractionRemoved is for mortality; hardshipFractionRemoved and financialFractionRemoved are extra fields for injury and property loss. Measured against a home with no working alarm. Net of reliability and adherence the effect is 0.47, which matches NFPA's presence-based 50%. For two adults under 60 that is about 9.4 micromorts a year."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "2018-2022: 14.4 deaths per 1,000 reported home fires with no alarm or none that operated, 5.8 where an alarm operated (60% lower); 59% of home fire deaths were in homes with no alarm (43%) or an alarm that failed (16%).",
+          "source": "https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Detection-and-signaling/ossmokealarms.pdf",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "By presence alone: death rate per 1,000 fires 50% lower with any alarm, 30% lower with battery-only alarms, 67% lower with hardwired alarms. Battery-only alarms operated in 85% of fires large enough to trigger them, hardwired in 94%.",
+          "source": "https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Detection-and-signaling/ossmokealarms.pdf",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "99% of US households have a smoke alarm but only 84% have at least one working alarm; 9% of 1,314 alarms tested were dead and 13% needed a battery fix.",
+          "source": "https://cpsc.gov/s3fs-public/CPSC_SCOA_Study_Full_Report_Final_6b_09_06_24.pdf",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "NIST: installing alarms in homes without them cuts expected casualties by a factor of 2.5 to 3.5 and reported fires by 3.5 to 5; true alarm use is likely below 92%.",
+          "source": "https://nvlpubs.nist.gov/nistpubs/TechnicalNotes/NIST.TN.2020.pdf",
+          "year": 2018,
+          "verified": true
+        },
+        {
+          "claim": "Dallas installation programme: house fire deaths and injuries 68% lower in programme houses (rate ratio 0.32, 0.10-0.84), 63% after adjustment; the effect faded after year 6. Read in a search snippet only.",
+          "source": "https://injuryprevention.bmj.com/content/20/2/97.abstract",
+          "year": 2014,
+          "verified": false
+        },
+        {
+          "claim": "Case-control study: a functioning smoke detector lowered the odds of death in a residential fire (OR 0.39, 0.18-0.83). The one randomised give-away trial (DiGuiseppi 2002) found no effect on injuries, with few alarms installed. Search snippets only.",
+          "source": "https://www.cochrane.org/CD002246/INJ_interventions-for-promoting-smoke-alarm-ownership-and-function",
+          "year": 2001,
+          "verified": false
+        },
+        {
+          "claim": "2019-2023 annual average: 328,590 reported home fires, 2,600 deaths, 10,770 injuries, $8.9bn damage; one- or two-family homes are 67% of housing units and 85% of deaths.",
+          "source": "https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Building-and-life-safety/oshomes.pdf",
+          "year": 2025,
+          "verified": true
+        }
+      ],
+      "confidence": "derived",
+      "notes": "The benchmark item. 84% of US households already have a working alarm (England 92%; rare in Argentine homes, my impression), so the model needs an 'already owned' switch: for those households this entry is worth nothing and only smoke-alarm-upgrade applies. Apartments run at about 0.5 of the average per-person fire death rate and houses at 1.15 (85% of deaths in the 67% of units that are one- or two-family, adjusted for household size)."
+    },
+    {
+      "id": "smoke-alarm-upgrade",
+      "name": "Smoke alarms, full interconnected coverage",
+      "spec": "Three more alarms so that every bedroom and every level has one, all interconnected so that one sounding sets off the rest: hardwired units where the wiring exists, wireless battery units otherwise. For a home that already has at least one working alarm.",
+      "fromLonglistRows": [
+        82
+      ],
+      "scalesWith": "household",
+      "unit": "3-pack of interconnected alarms",
+      "price": {
+        "usdPerUnit": {
+          "lo": 80,
+          "mid": 90,
+          "hi": 200,
+          "tag": "data",
+          "basis": "$89.99 for the hardwired 3-pack read on Target's listing, 19 Nov 2026; needs existing interconnect wiring. Wireless battery interconnect units run about $45-65 each (not verified), hence the high end. https://www.target.com/s/smoke+detector+carbon+monoxide+detector+combo+10+year+battery"
+        },
+        "product": "First Alert SMI100-AC hardwired interconnect smoke alarm, 3-pack",
+        "source": "https://www.target.com/s/smoke+detector+carbon+monoxide+detector+combo+10+year+battery",
+        "verified": true
+      },
+      "lifeYears": {
+        "lo": 8,
+        "mid": 10,
+        "hi": 10,
+        "tag": "data",
+        "basis": "Ten-year replacement interval printed by makers and required by NFPA 72."
+      },
+      "setupHours": {
+        "lo": 1,
+        "mid": 2,
+        "hi": 4,
+        "tag": "guess",
+        "basis": "Swapping three hardwired heads or mounting and pairing three wireless ones; longer if bases differ."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0.1,
+        "mid": 0.3,
+        "hi": 0.5,
+        "tag": "guess",
+        "basis": "Monthly test of the whole set."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 2,
+        "hi": 6,
+        "tag": "guess",
+        "basis": "Back-up batteries in hardwired units."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "derived",
+        "basis": "Everyday fire and CO are modelled as the hazards houseFire and coIncident, so the item's everyday benefit is counted there and no share of cost is set aside."
+      },
+      "volumeLitresPerUnit": 1.5,
+      "reliability": {
+        "lo": 0.85,
+        "mid": 0.93,
+        "hi": 0.97,
+        "tag": "derived",
+        "basis": "Hardwired alarms operated in 94% of reported fires large enough to trigger them (NFPA 2018-2022). https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Detection-and-signaling/ossmokealarms.pdf"
+      },
+      "lateBuyClass": "staple",
+      "requires": [
+        "smokeAlarm"
+      ],
+      "conditions": [
+        "house"
+      ],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "fire",
+          "hazards": [
+            "houseFire",
+            "localOutage",
+            "severeStorm",
+            "winterStorm",
+            "hurricane",
+            "earthquake",
+            "flood",
+            "gridLong"
+          ],
+          "fractionRemoved": {
+            "lo": 0.08,
+            "mid": 0.22,
+            "hi": 0.45,
+            "tag": "guess",
+            "basis": "Share of the deaths that remain once one alarm works. NFPA: 28% of deaths in homes with a working alarm happened when it failed to alert the occupants, and 28% of deaths in homes with alarms were where none operated; CPSC survey: interconnected alarms alerted occupants in 26% of fires against 10%, and only 31% of homes had alarms in all bedrooms. I assume full coverage fixes most of the first group and part of the second. Hardwired homes show a 53% lower death rate per fire than battery-only homes, but they are newer houses. https://www.cpsc.gov/s3fs-public/UnreportedResidentialFires.pdf"
+          },
+          "adherence": {
+            "lo": 0.9,
+            "mid": 0.97,
+            "hi": 1.0,
+            "tag": "guess",
+            "basis": "Hardwired and sealed units are hard to disable."
+          },
+          "notes": "Applies to what is left after smoke-alarm-basic: about 4.5 micromorts a year per adult under 60, so roughly 1 micromort per adult. Mortality only; no property effect claimed."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "Interconnected alarms sounded in 53.3% of home fire incidents against 27.0% for stand-alone ones and alerted occupants in 26.0% against 10.0%. Alarms on all floors sounded in 37.1% of incidents, against 4.1% in homes without them. 84% of households had alarms on all floors, 31% in all bedrooms, 19% interconnected.",
+          "source": "https://www.cpsc.gov/s3fs-public/UnreportedResidentialFires.pdf",
+          "year": 2009,
+          "verified": true
+        },
+        {
+          "claim": "Of deaths in homes with working alarms, 28% occurred when the alarm failed to alert occupants and 9% when occupants were alerted but did not respond.",
+          "source": "https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Detection-and-signaling/ossmokealarms.pdf",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "80% of alarms tested in 2019-2024 were stand-alone, 20% interconnected; 54% ran on a replaceable battery.",
+          "source": "https://cpsc.gov/s3fs-public/CPSC_SCOA_Study_Full_Report_Final_6b_09_06_24.pdf",
+          "year": 2024,
+          "verified": true
+        }
+      ],
+      "confidence": "guess",
+      "notes": "The 'adding or replacing' case. Replacing a dead or expired alarm is not this entry: a home whose alarms do not work is in the no-alarm state and gets the full smoke-alarm-basic effect. Value is highest in multi-storey houses where people sleep behind closed doors."
+    },
+    {
+      "id": "co-alarm",
+      "name": "Carbon monoxide alarm, battery powered",
+      "spec": "One battery-powered or battery-backed CO alarm listed to UL 2034, outside the bedrooms; a second for another occupied level. Not a plug-in unit without a battery, which is dead in an outage.",
+      "fromLonglistRows": [
+        83
+      ],
+      "scalesWith": "household",
+      "unit": "alarm",
+      "price": {
+        "usdPerUnit": {
+          "lo": 18,
+          "mid": 22,
+          "hi": 45,
+          "tag": "data",
+          "basis": "$21.99 read on Target's listing, 19 Nov 2026; the 10-year sealed First Alert CO710 was $44.49 and the plug-in CO605 with battery back-up $23.99 on the same page. https://www.target.com/s/smoke+detector+carbon+monoxide+detector+combo+10+year+battery"
+        },
+        "product": "First Alert CO400 battery-powered carbon monoxide alarm",
+        "source": "https://www.target.com/s/smoke+detector+carbon+monoxide+detector+combo+10+year+battery",
+        "verified": true
+      },
+      "lifeYears": {
+        "lo": 5,
+        "mid": 7,
+        "hi": 10,
+        "tag": "guess",
+        "basis": "Electrochemical sensors are sold with 7- or 10-year end-of-life signals; the figure for this model was not read on a fetched page."
+      },
+      "setupHours": {
+        "lo": 0.2,
+        "mid": 0.4,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "Buy, fit batteries, place on a shelf or wall, test."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0.05,
+        "mid": 0.15,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "Monthly test, yearly battery change."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 1.5,
+        "hi": 4,
+        "tag": "guess",
+        "basis": "Two AA cells a year; nothing for a sealed unit."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "derived",
+        "basis": "Everyday fire and CO are modelled as the hazards houseFire and coIncident, so the item's everyday benefit is counted there and no share of cost is set aside."
+      },
+      "volumeLitresPerUnit": 0.5,
+      "reliability": {
+        "lo": 0.7,
+        "mid": 0.85,
+        "hi": 0.95,
+        "tag": "derived",
+        "basis": "CPSC 2024: of households whose CO alarms were tested, 84% had at least one working; 9% of all households have CO alarms and none working. Among generator deaths with an alarm present, most alarms had missing, dead or wrongly fitted batteries. https://cpsc.gov/s3fs-public/CPSC_SCOA_Study_Full_Report_Final_6b_09_06_24.pdf"
+      },
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "capability",
+          "capability": "coAlarm",
+          "notes": "Mitigates the CO side risk of generators, combustion heaters, stoves and grills; the per-activity fraction is in sideRisks."
+        },
+        {
+          "type": "reduce",
+          "target": "co",
+          "hazards": [
+            "coIncident",
+            "localOutage",
+            "severeStorm",
+            "winterStorm",
+            "heatWave",
+            "hurricane",
+            "earthquake",
+            "flood",
+            "gridLong"
+          ],
+          "fractionRemoved": {
+            "lo": 0.3,
+            "mid": 0.6,
+            "hi": 0.85,
+            "tag": "derived",
+            "basis": "Share of at-home CO deaths removed by a sounding alarm. Yoon 1998: 65% of residential deaths preventable. CPSC: an alarm sounded in 5% of generator deaths with known status against 49% of households with a working alarm, an unadjusted 88-95% lower risk. Mecklenburg 2002: 1 of 31 exposed people with a working alarm was severely poisoned against 25 of 127 without (84% lower). Law evaluations show smaller or no effects, and careful people both own alarms and place generators well, so the middle sits below the observational figures. https://www.cpsc.gov/s3fs-public/Generators-and-OEDT-CO-Poisoning-Fatalities-Report-2023-final.pdf"
+          },
+          "hardshipFractionRemoved": {
+            "lo": 0.2,
+            "mid": 0.5,
+            "hi": 0.8,
+            "tag": "guess",
+            "basis": "Non-fatal poisoning: an alarm turns a poisoning into an evacuation. In Mecklenburg 16 of 34 symptom-free exposures but 15 of 124 symptomatic cases were in homes with a working alarm."
+          },
+          "adherence": {
+            "lo": 0.75,
+            "mid": 0.9,
+            "hi": 0.98,
+            "tag": "guess",
+            "basis": "Share of soundings that are heeded. CPSC lists 13 generator deaths where the alarm sounded but was misread or switched off, or sounded in the house while the victim was in the garage."
+          },
+          "notes": "fractionRemoved is for mortality. Measured against a home with no working CO alarm. Everyday: about 1.1 x 0.6 x 0.9 x 0.85 = 0.5 micromorts a year per adult. In outages it also scales down every CO side risk; that is where most of its value lies for a household that owns a generator or indoor heater."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "Generator CO deaths 2012-2022 with known alarm status (159): no alarm 83%, alarm present 17%, alarm present and sounded 5%; most alarms that failed had missing, dead or wrongly inserted batteries or were plug-in units without power.",
+          "source": "https://www.cpsc.gov/s3fs-public/Generators-and-OEDT-CO-Poisoning-Fatalities-Report-2023-final.pdf",
+          "year": 2023,
+          "verified": true
+        },
+        {
+          "claim": "49% of US households have at least one working CO alarm, 9% have only non-working ones, 42% have none; among households whose CO alarms were tested 84% had at least one working.",
+          "source": "https://cpsc.gov/s3fs-public/CPSC_SCOA_Study_Full_Report_Final_6b_09_06_24.pdf",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "Mecklenburg County ice storm, December 2002 (78.9% of households without power): 124 symptomatic poisonings, 1 death; 25 of 26 severe poisonings were in homes with no functioning CO alarm. With a working alarm 15 exposed people had symptoms and 16 had none; without, 109 and 18.",
+          "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm5309a1.htm",
+          "year": 2004,
+          "verified": true
+        },
+        {
+          "claim": "New Mexico 1980-1995, 136 non-fire unintentional CO deaths: audible alarms might have prevented 78 (57%), 52 of 80 residential deaths (65%), counting anyone with blood alcohol above 0.01% as not preventable.",
+          "source": "https://jamanetwork.com/journals/jama/fullarticle/187288",
+          "year": 1998,
+          "verified": true
+        },
+        {
+          "claim": "New York City alarm law: hospitalisations fell about 25% and deaths about 50%, not statistically significant; a 2023 analysis found no detectable effect of state alarm laws on deaths. Search snippets only.",
+          "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4504304/",
+          "year": 2015,
+          "verified": false
+        },
+        {
+          "claim": "CPSC estimates 238 non-fire consumer-product CO deaths a year in 2020-2022 (274 in 2022): generators 98, portable heaters 31, furnaces 23, charcoal 14, ranges and ovens 10, grills and camp stoves 8; 126 in ordinary homes.",
+          "source": "https://www.cpsc.gov/s3fs-public/Non-Fire-Carbon-Monoxide-Deaths-Associated-with-the-Use-of-Consumer-Products-2022-Annual-Estimates.pdf",
+          "year": 2026,
+          "verified": true
+        },
+        {
+          "claim": "CDC: more than 400 deaths, 100,000 emergency visits and 14,000 hospital stays a year from non-fire CO; provisional CDC data show 624 accidental CO deaths in 2022.",
+          "source": "https://usafacts.org/articles/is-carbon-monoxide-still-a-problem-in-the-us/",
+          "year": 2024,
+          "verified": true
+        }
+      ],
+      "confidence": "derived",
+      "notes": "49% of US households already have a working CO alarm. Worth nothing in an all-electric home with no attached garage and no plan to burn anything indoors; the model needs a household flag for that (see openQuestions). lateBuyClass is specialty because almost nobody buys one in the pre-storm rush: 83% of generator deaths with known status had no alarm."
+    },
+    {
+      "id": "smoke-co-combo-alarm",
+      "name": "Combination smoke and CO alarm",
+      "spec": "One 10-year sealed-battery combination smoke and carbon monoxide alarm on the ceiling of the hallway outside the bedrooms. The one-device answer for an apartment or small single-level home with no working alarm of either kind.",
+      "fromLonglistRows": [
+        82,
+        83
+      ],
+      "scalesWith": "household",
+      "unit": "alarm",
+      "price": {
+        "usdPerUnit": {
+          "lo": 27,
+          "mid": 46,
+          "hi": 61,
+          "tag": "data",
+          "basis": "$45.99 read on Target's listing, 19 Nov 2026; First Alert SMICO100 with replaceable batteries $50.99 and Kidde 30CUD10 $60.99 on the same page; a $26.99 sale price for the SMICO100 appeared in a search snippet. https://www.target.com/s/smoke+detector+carbon+monoxide+detector+combo+10+year+battery"
+        },
+        "product": "First Alert SMCO210 slim 10-year battery combination smoke and CO alarm",
+        "source": "https://www.target.com/s/smoke+detector+carbon+monoxide+detector+combo+10+year+battery",
+        "verified": true
+      },
+      "lifeYears": {
+        "lo": 7,
+        "mid": 10,
+        "hi": 10,
+        "tag": "guess",
+        "basis": "Sold as a 10-year sealed unit; the CO cell is usually the part that expires first."
+      },
+      "setupHours": {
+        "lo": 0.2,
+        "mid": 0.5,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "Buy, mount one base, test."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0.03,
+        "mid": 0.1,
+        "hi": 0.2,
+        "tag": "guess",
+        "basis": "Monthly test of one device."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 2,
+        "tag": "guess",
+        "basis": "Sealed battery."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "derived",
+        "basis": "Everyday fire and CO are modelled as the hazards houseFire and coIncident, so the item's everyday benefit is counted there and no share of cost is set aside."
+      },
+      "volumeLitresPerUnit": 0.6,
+      "reliability": {
+        "lo": 0.8,
+        "mid": 0.9,
+        "hi": 0.96,
+        "tag": "derived",
+        "basis": "Same basis as smoke-alarm-basic: 85-94% of alarms operate in fires large enough, and a sealed battery removes the main failure. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Detection-and-signaling/ossmokealarms.pdf"
+      },
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "capability",
+          "capability": "smokeAlarm",
+          "notes": "Quantified by the reduce effect on fire."
+        },
+        {
+          "type": "capability",
+          "capability": "coAlarm",
+          "notes": "Quantified by the reduce effect on co; battery powered, so it works in an outage."
+        },
+        {
+          "type": "reduce",
+          "target": "fire",
+          "hazards": [
+            "houseFire",
+            "localOutage",
+            "severeStorm",
+            "winterStorm",
+            "hurricane",
+            "earthquake",
+            "flood",
+            "gridLong"
+          ],
+          "fractionRemoved": {
+            "lo": 0.25,
+            "mid": 0.5,
+            "hi": 0.68,
+            "tag": "derived",
+            "basis": "As smoke-alarm-basic (0.55) less a little for one alarm instead of two: equal in a single-level apartment, weaker in a multi-level house, where alarms not on every floor sounded in 4% of incidents against 37% (CPSC 2009). https://www.cpsc.gov/s3fs-public/UnreportedResidentialFires.pdf"
+          },
+          "hardshipFractionRemoved": {
+            "lo": 0.05,
+            "mid": 0.22,
+            "hi": 0.45,
+            "tag": "guess",
+            "basis": "Injuries; as smoke-alarm-basic, slightly lower."
+          },
+          "financialFractionRemoved": {
+            "lo": 0.05,
+            "mid": 0.22,
+            "hi": 0.45,
+            "tag": "guess",
+            "basis": "Property; as smoke-alarm-basic, slightly lower."
+          },
+          "adherence": {
+            "lo": 0.85,
+            "mid": 0.95,
+            "hi": 1.0,
+            "tag": "guess",
+            "basis": "As smoke-alarm-basic."
+          },
+          "notes": "fractionRemoved is for mortality. Substitute for smoke-alarm-basic: put both in one group so that only the better one counts."
+        },
+        {
+          "type": "reduce",
+          "target": "co",
+          "hazards": [
+            "coIncident",
+            "localOutage",
+            "severeStorm",
+            "winterStorm",
+            "heatWave",
+            "hurricane",
+            "earthquake",
+            "flood",
+            "gridLong"
+          ],
+          "fractionRemoved": {
+            "lo": 0.3,
+            "mid": 0.6,
+            "hi": 0.85,
+            "tag": "derived",
+            "basis": "Same sensor and standard as co-alarm; see that entry. https://www.cpsc.gov/s3fs-public/Generators-and-OEDT-CO-Poisoning-Fatalities-Report-2023-final.pdf"
+          },
+          "hardshipFractionRemoved": {
+            "lo": 0.2,
+            "mid": 0.5,
+            "hi": 0.8,
+            "tag": "guess",
+            "basis": "As co-alarm."
+          },
+          "adherence": {
+            "lo": 0.75,
+            "mid": 0.9,
+            "hi": 0.98,
+            "tag": "guess",
+            "basis": "As co-alarm."
+          },
+          "notes": "Substitute for co-alarm: same group."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "2018-2022: 14.4 deaths per 1,000 reported home fires with no alarm or none that operated, 5.8 where an alarm operated (60% lower); 59% of home fire deaths were in homes with no alarm (43%) or an alarm that failed (16%).",
+          "source": "https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Detection-and-signaling/ossmokealarms.pdf",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "99% of US households have a smoke alarm but only 84% have at least one working alarm; 9% of 1,314 alarms tested were dead and 13% needed a battery fix.",
+          "source": "https://cpsc.gov/s3fs-public/CPSC_SCOA_Study_Full_Report_Final_6b_09_06_24.pdf",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "Generator CO deaths 2012-2022 with known alarm status (159): no alarm 83%, alarm present 17%, alarm present and sounded 5%; most alarms that failed had missing, dead or wrongly inserted batteries or were plug-in units without power.",
+          "source": "https://www.cpsc.gov/s3fs-public/Generators-and-OEDT-CO-Poisoning-Fatalities-Report-2023-final.pdf",
+          "year": 2023,
+          "verified": true
+        },
+        {
+          "claim": "49% of US households have at least one working CO alarm, 9% have only non-working ones, 42% have none; among households whose CO alarms were tested 84% had at least one working.",
+          "source": "https://cpsc.gov/s3fs-public/CPSC_SCOA_Study_Full_Report_Final_6b_09_06_24.pdf",
+          "year": 2024,
+          "verified": true
+        },
+        {
+          "claim": "New Mexico 1980-1995, 136 non-fire unintentional CO deaths: audible alarms might have prevented 78 (57%), 52 of 80 residential deaths (65%), counting anyone with blood alcohol above 0.01% as not preventable.",
+          "source": "https://jamanetwork.com/journals/jama/fullarticle/187288",
+          "year": 1998,
+          "verified": true
+        }
+      ],
+      "confidence": "derived",
+      "notes": "One combination unit costs $46 against $62 for the smoke 2-pack plus a CO alarm. It is the better buy for an apartment; a house wants the two-alarm set plus a separate CO alarm on the sleeping level. Do not credit it on top of smoke-alarm-basic or co-alarm."
+    },
+    {
+      "id": "fire-extinguisher",
+      "name": "ABC fire extinguisher",
+      "spec": "One 2.5 lb multipurpose dry-chemical extinguisher rated 1-A:10-B:C, mounted by the kitchen exit, with the household told to use it only on a small fire with the way out behind them.",
+      "fromLonglistRows": [
+        84
+      ],
+      "scalesWith": "household",
+      "unit": "extinguisher",
+      "price": {
+        "usdPerUnit": {
+          "lo": 20,
+          "mid": 23,
+          "hi": 55,
+          "tag": "data",
+          "basis": "$22.99 read on Target's listing, 19 Nov 2026; larger First Alert HOME2 $54.99 on the same page. https://www.target.com/s/fire+extinguisher"
+        },
+        "product": "First Alert HOME1 rechargeable ABC fire extinguisher, 1-A:10-B:C",
+        "source": "https://www.target.com/s/fire+extinguisher",
+        "verified": true
+      },
+      "lifeYears": {
+        "lo": 8,
+        "mid": 10,
+        "hi": 12,
+        "tag": "guess",
+        "basis": "Ten-year warranty per the step 2 longlist; NFPA 10 retires non-rechargeable units at 12 years."
+      },
+      "setupHours": {
+        "lo": 0.2,
+        "mid": 0.4,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "Buy, mount the bracket, read the label, show the household."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0.02,
+        "mid": 0.05,
+        "hi": 0.2,
+        "tag": "guess",
+        "basis": "A glance at the gauge a few times a year."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 2,
+        "tag": "guess",
+        "basis": "None unless discharged."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "derived",
+        "basis": "Everyday fire and CO are modelled as the hazards houseFire and coIncident, so the item's everyday benefit is counted there and no share of cost is set aside."
+      },
+      "volumeLitresPerUnit": 3,
+      "reliability": {
+        "lo": 0.5,
+        "mid": 0.75,
+        "hi": 0.9,
+        "tag": "guess",
+        "basis": "Charged, findable in seconds and usable. In a university trial 98% of 276 untrained people managed to discharge one (as reported in an industry fact sheet); home units lose pressure or get buried in cupboards. https://femalifesafety.org/wp-content/uploads/2021/02/Portable-Fire-Extinguishers-are-Effective-Easy-to-Use-Safe-and-Cost-Efficient.pdf"
+      },
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "fire",
+          "hazards": [
+            "houseFire",
+            "localOutage",
+            "severeStorm",
+            "winterStorm",
+            "hurricane",
+            "earthquake",
+            "flood",
+            "gridLong"
+          ],
+          "fractionRemoved": {
+            "lo": 0,
+            "mid": 0.03,
+            "hi": 0.08,
+            "tag": "guess",
+            "basis": "Mortality. No outcome study exists. Fatal fires are mostly found late by people asleep or unable to act; only 2% of deaths but 30% of injuries happen during fire control (NFPA 2019-2023). A small gain from stopping fires early, partly offset by people who stay to fight. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Building-and-life-safety/oshomes.pdf"
+          },
+          "hardshipFractionRemoved": {
+            "lo": 0,
+            "mid": 0,
+            "hi": 0.05,
+            "tag": "guess",
+            "basis": "Injuries: no net effect assumed, because fighting the fire is itself the leading activity at injury."
+          },
+          "financialFractionRemoved": {
+            "lo": 0.04,
+            "mid": 0.16,
+            "hi": 0.4,
+            "tag": "guess",
+            "basis": "Property. CPSC 2004-2005: extinguishers were used in 5% of 7.4M home fires a year and put the fire out completely in about half; that is 0.44% of owning households a year. If 5% (1-15%) of uses stop a fire that would have become a reported fire at about $30,000, owners save $7 a year against an $85 average loss, 8% net; divided by adherence 0.65 and reliability 0.75 that is 0.16. https://www.cpsc.gov/s3fs-public/UnreportedResidentialFires.pdf"
+          },
+          "adherence": {
+            "lo": 0.4,
+            "mid": 0.65,
+            "hi": 0.9,
+            "tag": "guess",
+            "basis": "Share of suitable small fires where an owner reaches for it and aims at the base; most small fires are handled with water, a lid or the power switch."
+          },
+          "notes": "fractionRemoved is for mortality; financialFractionRemoved is the extra field that carries most of the value. Net of adherence and reliability: 1.5% of deaths and 8% of property loss. Property loss is gross of insurance: an insured owner keeps the deductible and uninsured contents, perhaps 25-40% of it. After an earthquake or in a long grid failure the fire service may not come, and the property effect could be several times larger (guess)."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "2004-2005 survey: 7.4M home fires a year, 97% never reported; 76.4% of households had an extinguisher; extinguishers were used in 5% of incidents (4.5% of unattended, 17.7% of attended fires) and put the fire out completely in about half of uses.",
+          "source": "https://www.cpsc.gov/s3fs-public/UnreportedResidentialFires.pdf",
+          "year": 2009,
+          "verified": true
+        },
+        {
+          "claim": "2019-2023: fire control was the activity at injury for 30% of non-fatal home fire injuries and 2% of deaths.",
+          "source": "https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Building-and-life-safety/oshomes.pdf",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "No published estimate of the effect of home extinguishers on deaths or losses was found by this search or by the step 2 prior-art review.",
+          "source": "research/step2/prior-art.md",
+          "year": 2026,
+          "verified": false
+        }
+      ],
+      "confidence": "guess",
+      "notes": "About three quarters of US households already own one (2004-2005). On these numbers it is worth about 0.1-0.3 micromorts and $7-9 of property a year per household, so it clears its $2-3 annual cost but sits far below the first smoke alarm."
+    },
+    {
+      "id": "fire-blanket",
+      "name": "Kitchen fire blanket",
+      "spec": "One glass-fibre fire blanket of about 1 m by 1 m, hung by the kitchen exit, for a pan fire or burning clothing. Prefer one certified to EN 1869:2019 or ASTM F1989.",
+      "fromLonglistRows": [
+        84
+      ],
+      "scalesWith": "household",
+      "unit": "blanket",
+      "price": {
+        "usdPerUnit": {
+          "lo": 10,
+          "mid": 26,
+          "hi": 30,
+          "tag": "data",
+          "basis": "$25.99 read on Target's listing, 19 Nov 2026; generic blankets sell for $10-20 (longlist estimate $15-25, not verified). https://www.target.com/s/fire+extinguisher"
+        },
+        "product": "Prepared Hero Fire Blanket",
+        "source": "https://www.target.com/s/fire+extinguisher",
+        "verified": true
+      },
+      "lifeYears": {
+        "lo": 10,
+        "mid": 15,
+        "hi": 20,
+        "tag": "guess",
+        "basis": "No expiry; single use."
+      },
+      "setupHours": {
+        "lo": 0.1,
+        "mid": 0.2,
+        "hi": 0.5,
+        "tag": "guess",
+        "basis": "Buy, hang on a hook, show the household how to pull it."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0.02,
+        "hi": 0.1,
+        "tag": "guess",
+        "basis": "None beyond knowing where it is."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "None."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "derived",
+        "basis": "Everyday fire and CO are modelled as the hazards houseFire and coIncident, so the item's everyday benefit is counted there and no share of cost is set aside."
+      },
+      "volumeLitresPerUnit": 1,
+      "reliability": {
+        "lo": 0.4,
+        "mid": 0.6,
+        "hi": 0.85,
+        "tag": "guess",
+        "basis": "A Swiss consumer test reported one blanket failing outright and others failing when the pan was not fully covered; a US television test saw flames pass the edges. Both read in search snippets only."
+      },
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "fire",
+          "hazards": [
+            "houseFire"
+          ],
+          "fractionRemoved": {
+            "lo": 0,
+            "mid": 0.005,
+            "hi": 0.02,
+            "tag": "guess",
+            "basis": "Mortality. Cooking causes 16% of home fire deaths and clothing ignitions kill mainly people over 55; a blanket helps in a small part of either, and a pan lid does the same job on a stove fire."
+          },
+          "financialFractionRemoved": {
+            "lo": 0,
+            "mid": 0.02,
+            "hi": 0.06,
+            "tag": "guess",
+            "basis": "Property. Cooking is 13% of home fire property damage; a blanket helps only on a contained pan fire reached in the first minute, where a lid or the extinguisher would also serve."
+          },
+          "adherence": {
+            "lo": 0.3,
+            "mid": 0.5,
+            "hi": 0.8,
+            "tag": "guess",
+            "basis": "Share of pan fires where the owner uses it rather than a lid, water or flight."
+          },
+          "notes": "fractionRemoved is for mortality. Overlaps almost wholly with fire-extinguisher: with one owned, credit the blanket at about a third of these figures."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "2019-2023: cooking caused 49% of reported home fires, 16% of deaths, 36% of injuries and 13% of property damage.",
+          "source": "https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Building-and-life-safety/oshomes.pdf",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "More than two thirds (68%) of people killed in home fires that began with clothing ignition were 55 or older.",
+          "source": "https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/US-Fire-Problem/oshomevictims.pdf",
+          "year": 2025,
+          "verified": true
+        },
+        {
+          "claim": "No controlled study of fire blankets in homes was found; EN 1869 was revised in 2019 to add cooking-oil tests. Search snippets only.",
+          "source": "https://bsigroup.com/en-SG/blog/fire-and-flood-blog/the-importance-of-a-good-quality-fire-blanket-part-2",
+          "year": 2019,
+          "verified": false
+        }
+      ],
+      "confidence": "guess",
+      "notes": "Dominated by the extinguisher at the same price and by a pan lid at no price. Its niche is a household member who cannot lift or aim an extinguisher. I would leave it out of the headline list."
+    },
+    {
+      "id": "gas-shutoff-tool",
+      "name": "Gas and water shut-off tool and know-how",
+      "spec": "A 2-in-1 gas and water shut-off wrench kept by the meter, plus about 45 minutes finding the gas meter valve, the water main and the breaker panel and showing every adult. Rule: shut the gas only if you smell or hear a leak or the building is damaged, and leave relighting to the utility.",
+      "fromLonglistRows": [
+        85
+      ],
+      "scalesWith": "household",
+      "unit": "tool plus one walk-through",
+      "price": {
+        "usdPerUnit": {
+          "lo": 5,
+          "mid": 18,
+          "hi": 22,
+          "tag": "data",
+          "basis": "$17.98 read on the seller's page, 19 Nov 2026; a plain gas wrench is $5-10 and the longlist's 4-in-1 tool $21.99 (both unverified). https://www.sosproducts.com/gas-and-water-shut-off-tool-p/12350.htm"
+        },
+        "product": "SOS Products 2-in-1 emergency shut-off wrench for gas and water meter valves",
+        "source": "https://www.sosproducts.com/gas-and-water-shut-off-tool-p/12350.htm",
+        "verified": true
+      },
+      "lifeYears": {
+        "lo": 20,
+        "mid": 30,
+        "hi": 50,
+        "tag": "guess",
+        "basis": "A steel wrench; the knowledge needs refreshing."
+      },
+      "setupHours": {
+        "lo": 0.3,
+        "mid": 0.75,
+        "hi": 1.5,
+        "tag": "guess",
+        "basis": "Find the three shut-offs, check the wrench fits, show the household."
+      },
+      "upkeepHoursPerYear": {
+        "lo": 0,
+        "mid": 0.1,
+        "hi": 0.25,
+        "tag": "guess",
+        "basis": "A yearly reminder; new household members."
+      },
+      "upkeepUsdPerYear": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "None."
+      },
+      "everydayShare": {
+        "lo": 0,
+        "mid": 0.1,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "Occasional use for plumbing repairs and leaks."
+      },
+      "volumeLitresPerUnit": 0.3,
+      "reliability": {
+        "lo": 0.5,
+        "mid": 0.75,
+        "hi": 0.9,
+        "tag": "guess",
+        "basis": "Someone who knows is at home, the valve is not seized and the tool is where it was left."
+      },
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [
+        "earthquake",
+        "house"
+      ],
+      "effects": [
+        {
+          "type": "capability",
+          "capability": "utilityShutoff",
+          "notes": "New capability id; nothing else depends on it yet."
+        },
+        {
+          "type": "reduce",
+          "target": "fire",
+          "hazards": [
+            "earthquake"
+          ],
+          "fractionRemoved": {
+            "lo": 0.02,
+            "mid": 0.1,
+            "hi": 0.25,
+            "tag": "guess",
+            "basis": "Share of the household's post-earthquake fire risk. Gas fed at least 50 structure fires after Northridge, by my recollection a quarter to a half of ignitions, against 14,000 leaks on customer lines; a manual shut-off helps only where the leak is noticed before it ignites, which I put at about a third. https://www.osti.gov/scitech/biblio/403466"
+          },
+          "adherence": {
+            "lo": 0.3,
+            "mid": 0.5,
+            "hi": 0.8,
+            "tag": "guess",
+            "basis": "Someone is home, checks for a leak and acts within minutes."
+          },
+          "notes": "Relative to the fire exposure the earthquake researcher sets. Shutting off without a leak has a cost: days to weeks without gas until the utility relights."
+        },
+        {
+          "type": "other",
+          "description": "Water main shut-off. In a freeze, closing the main and draining the pipes when the heat fails, or closing it the moment a pipe bursts, avoids much of the water damage that made up most insured losses in Texas 2021. If the winterStorm or earthquake hazard carries burst-pipe damage as a financialLoss exposure, a guess is that this removes 0.3 (0.1-0.6) of it at adherence 0.5. Not entered as a reduce effect because I do not own that exposure."
+        },
+        {
+          "type": "other",
+          "description": "Everyday gas leaks. Knowing to leave, shut the meter valve from outside and call the utility. Home gas fires and explosions are a small part of the fire baseline (tens of deaths a year in the US, recalled, not verified), so this is worth well under 0.05 micromorts a year per person."
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "Northridge 1994: fire departments took more than 1,000 leak reports, the gas utility logged over 14,000 leaks on customers' lines, and there were at least 50 gas-related structure fires in six communities.",
+          "source": "https://www.osti.gov/scitech/biblio/403466",
+          "year": 1996,
+          "verified": true
+        },
+        {
+          "claim": "The California Seismic Safety Commission's 2002 report on natural gas safety in earthquakes covers manual and automatic shut-off; it could not be opened (certificate error), so the share of ignitions that were gas-fed is from memory.",
+          "source": "https://ssc.ca.gov/wp-content/uploads/sites/9/2020/08/cssc_2002-03_natural_gas_safety.pdf",
+          "year": 2002,
+          "verified": false
+        }
+      ],
+      "confidence": "guess",
+      "notes": "Only for houses with piped gas in earthquake country; apartment tenants rarely have access to the meter. The fire effect is small and uncertain. The water shut-off may be worth more, in any cold-winter house, than the gas shut-off is in earthquake zones; the owner of the winterStorm financial exposure should decide."
+    }
+  ],
+  "sideRisks": [
+    {
+      "activity": "Portable gasoline generator, typical placement (includes those who run it indoors, in a garage or by a window)",
+      "channel": "co",
+      "micromortsPerDayOfUse": {
+        "lo": 0.5,
+        "mid": 1.5,
+        "hi": 4,
+        "tag": "derived",
+        "basis": "National: CPSC estimates 98 generator CO deaths a year (2020-2022), 24% of those with a known reason in weather or grid outages, so about 24; over 21.46M generators in use x 0.27 with an outage of 6 hours or more x 0.8 that run it x 1.3 days = 6.0M household-days, 3.9 per household-day, 1.6 per person. Texas 2021 gives 1.7 if 6 of the 19 CO deaths were generators (12% of 5.9M households, 2.8 people, 1.75 days). The exposure shares are guesses. https://www.cpsc.gov/s3fs-public/Generators-and-OEDT-CO-Poisoning-Fatalities-Report-2023-final.pdf"
+      },
+      "fractionRemovedByAlarm": {
+        "lo": 0.4,
+        "mid": 0.7,
+        "hi": 0.9,
+        "tag": "derived",
+        "basis": "Battery CO alarm. An alarm sounded in 5% of generator deaths with known status against 49% of households with a working alarm; unadjusted that is 88-95% lower risk, discounted for careful people owning both alarms and long cords. https://www.cpsc.gov/s3fs-public/Generators-and-OEDT-CO-Poisoning-Fatalities-Report-2023-final.pdf"
+      },
+      "notes": "Per household member per day the equipment is run, typical user with no CO alarm. Ownership as a whole: 98 deaths over 21.46M generators is 4.6 micromorts per generator-year for the household, about 50 over an 11-year life. Placement is nearly everything: only 5-6% of deaths had the generator outdoors, so a unit kept 6 m or more from any opening is about 0.1 (0.02-0.3) per person-day and one in the house or garage about 6. In 66% of home deaths no venting was attempted."
+    },
+    {
+      "activity": "Indoor-rated portable propane heater (oxygen-depletion and tip-over cut-offs), used as instructed with a window cracked",
+      "channel": "co",
+      "micromortsPerDayOfUse": {
+        "lo": 0.03,
+        "mid": 0.2,
+        "hi": 1,
+        "tag": "guess",
+        "basis": "CPSC: about 25 deaths a year from portable propane heaters, many in tents, campers and vehicles. If about 3M households run one about 15 days a year (guess), 45M household-days, 0.55 per household-day and about 0.2 per person. https://www.cpsc.gov/s3fs-public/Non-Fire-Carbon-Monoxide-Deaths-Associated-with-the-Use-of-Consumer-Products-2022-Annual-Estimates.pdf"
+      },
+      "fractionRemovedByAlarm": {
+        "lo": 0.4,
+        "mid": 0.7,
+        "hi": 0.9,
+        "tag": "guess",
+        "basis": "CO builds slowly from a heater, the case alarms are designed for; same basis as the generator figure."
+      },
+      "notes": "Per household member per day the equipment is run, typical user with no CO alarm. Highest when used overnight in a small sealed room or tent. The warmth researcher's indoor-propane-heater entry should carry this."
+    },
+    {
+      "activity": "Outdoor-only propane heater (patio, construction or camping radiant heater without cut-offs) used indoors",
+      "channel": "co",
+      "micromortsPerDayOfUse": {
+        "lo": 0.3,
+        "mid": 1.5,
+        "hi": 5,
+        "tag": "derived",
+        "basis": "Texas 2021: 5% of the 5.9M households that stayed without power used an outdoor propane heater indoors; if 2 (0-4) of the 19 CO deaths were heaters, 2 / (297,000 x 2.8 x 1.75) = 1.4 per person-day. The split of the 19 deaths by source is my assumption; DSHS names the sources without counts. https://www.uh.edu/hobby/winter2021/storm.pdf"
+      },
+      "fractionRemovedByAlarm": {
+        "lo": 0.4,
+        "mid": 0.7,
+        "hi": 0.9,
+        "tag": "guess",
+        "basis": "As for the indoor-rated heater."
+      },
+      "notes": "Per household member per day the equipment is run, typical user with no CO alarm. This is what an unprepared household improvises; owning an indoor-rated heater replaces it."
+    },
+    {
+      "activity": "Kerosene portable heater indoors",
+      "channel": "co",
+      "micromortsPerDayOfUse": {
+        "lo": 0.05,
+        "mid": 0.3,
+        "hi": 1.5,
+        "tag": "guess",
+        "basis": "CPSC: about 6 deaths a year (2020-2022) on an unknown but small user base; set between the two propane cases. https://www.cpsc.gov/s3fs-public/Non-Fire-Carbon-Monoxide-Deaths-Associated-with-the-Use-of-Consumer-Products-2022-Annual-Estimates.pdf"
+      },
+      "fractionRemovedByAlarm": {
+        "lo": 0.4,
+        "mid": 0.7,
+        "hi": 0.9,
+        "tag": "guess",
+        "basis": "As for propane heaters."
+      },
+      "notes": "Per household member per day the equipment is run, typical user with no CO alarm. Kerosene smoke and smell give some warning that propane does not."
+    },
+    {
+      "activity": "Portable combustion heater indoors (propane or kerosene): fire and burns",
+      "channel": "fire",
+      "micromortsPerDayOfUse": {
+        "lo": 0.02,
+        "mid": 0.1,
+        "hi": 0.5,
+        "tag": "guess",
+        "basis": "Space heaters and heating stoves account for about 380-420 home fire deaths a year (NFPA, search snippet); over a guessed 40M using households x 90 days that is 0.11 per household-day, 0.045 per person; doubled for improvised outage use near bedding."
+      },
+      "fractionRemovedByAlarm": {
+        "lo": 0.25,
+        "mid": 0.5,
+        "hi": 0.65,
+        "tag": "derived",
+        "basis": "Smoke alarm, as for home fires in general. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Detection-and-signaling/ossmokealarms.pdf"
+      },
+      "notes": "Per household member per day of use. Keep a metre clear and never refuel hot."
+    },
+    {
+      "activity": "Charcoal grill, hibachi or smoker burned indoors or in a garage",
+      "channel": "co",
+      "micromortsPerDayOfUse": {
+        "lo": 1,
+        "mid": 3,
+        "hi": 10,
+        "tag": "derived",
+        "basis": "Texas 2021: 8% of the 5.9M households that stayed used a grill or smoker indoors; if 6 (3-10) of the 19 CO deaths were charcoal, 6 / (475,000 x 2.8 x 1.75) = 2.6 per person-day. Charcoal was the leading source of poisonings there and in Mecklenburg 2002 (26 of 60 incidents). The split of deaths is my assumption. https://www.uh.edu/hobby/winter2021/storm.pdf"
+      },
+      "fractionRemovedByAlarm": {
+        "lo": 0.4,
+        "mid": 0.7,
+        "hi": 0.9,
+        "tag": "guess",
+        "basis": "Smouldering charcoal gives no smell or smoke, so an alarm is the only warning; same basis as generators."
+      },
+      "notes": "Per household member per day the equipment is run, typical user with no CO alarm. Nationally charcoal is linked to about 14 CO deaths a year, mostly from heating enclosed spaces. No preparedness item involves doing this; it is what unprepared households do, so it belongs in the baseline."
+    },
+    {
+      "activity": "Propane or butane camp stove used indoors for cooking, short burns with a window open",
+      "channel": "co",
+      "micromortsPerDayOfUse": {
+        "lo": 0.003,
+        "mid": 0.03,
+        "hi": 0.3,
+        "tag": "guess",
+        "basis": "CPSC: about 6 deaths a year from propane grills and camp stoves, mostly in tents and campers, against tens of millions of uses; no denominator exists. https://www.cpsc.gov/s3fs-public/Non-Fire-Carbon-Monoxide-Deaths-Associated-with-the-Use-of-Consumer-Products-2022-Annual-Estimates.pdf"
+      },
+      "fractionRemovedByAlarm": {
+        "lo": 0.3,
+        "mid": 0.6,
+        "hi": 0.85,
+        "tag": "guess",
+        "basis": "As the everyday CO alarm figure."
+      },
+      "notes": "Per household member per day the equipment is run, typical user with no CO alarm. Risk rises about a hundredfold if the stove is left burning for warmth in a closed room; then treat it as the outdoor-only heater."
+    },
+    {
+      "activity": "Gas oven or cooktop run for space heat",
+      "channel": "co",
+      "micromortsPerDayOfUse": {
+        "lo": 0.02,
+        "mid": 0.1,
+        "hi": 0.5,
+        "tag": "derived",
+        "basis": "Texas 2021: 26% of households that stayed did this; if 1 (0-2) of the 19 CO deaths was an oven, 1 / (1.54M x 2.8 x 1.75) = 0.13 per person-day. Nationally CPSC links about 10 deaths a year to ranges and ovens, many used for heat. https://www.uh.edu/hobby/winter2021/storm.pdf"
+      },
+      "fractionRemovedByAlarm": {
+        "lo": 0.3,
+        "mid": 0.6,
+        "hi": 0.85,
+        "tag": "guess",
+        "basis": "As the everyday CO alarm figure."
+      },
+      "notes": "Per household member per day the equipment is run, typical user with no CO alarm. The most common improvised heat source and the least deadly per use; also adds nitrogen dioxide and a small fire risk not counted here."
+    },
+    {
+      "activity": "Candles used for light",
+      "channel": "fire",
+      "micromortsPerDayOfUse": {
+        "lo": 0.03,
+        "mid": 0.1,
+        "hi": 0.4,
+        "tag": "derived",
+        "basis": "NFPA: candles cause 70-81 home fire deaths a year; 34% of deaths in the fatal fires reviewed were in homes without power and 12% of those were temporary outages, so about 4% or 3-5 deaths a year. Over a guessed 0.25-0.4 dark outage evenings per household a year x 35% lighting candles x 2.5 people = 29-46M person-evenings, 0.09-0.14 each. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/US-Fire-Problem/Fire-causes/osCandles.pdf"
+      },
+      "fractionRemovedByAlarm": {
+        "lo": 0.25,
+        "mid": 0.5,
+        "hi": 0.65,
+        "tag": "derived",
+        "basis": "Smoke alarm, as for home fires in general; battery or battery-backed units keep working in an outage. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Detection-and-signaling/ossmokealarms.pdf"
+      },
+      "notes": "Per household member per evening of candle light. About 25 times the everyday rate of 0.004 per person per burn-day (70-81 deaths over roughly 7bn household burn-days if 70% of households burn candles 1.5 days a week, a guess). Property: 5,830 fires and $270M a year in total. Sleep was a factor in 15% of candle fire deaths."
+    },
+    {
+      "activity": "Vehicle idling in an attached or closed garage for warmth or charging",
+      "channel": "co",
+      "micromortsPerDayOfUse": {
+        "lo": 2,
+        "mid": 10,
+        "hi": 50,
+        "tag": "guess",
+        "basis": "Texas 2021 deaths included a mother and daughter killed by a car run in an attached garage. If 4 (2-6) of the 19 CO deaths were vehicles and 1.5% of households that stayed did this (a pure guess), 4 / (89,000 x 2.8 x 1.75) = 9 per person-day. https://www.propublica.org/article/texas-carbon-monoxide-poisoning"
+      },
+      "fractionRemovedByAlarm": {
+        "lo": 0.1,
+        "mid": 0.3,
+        "hi": 0.6,
+        "tag": "guess",
+        "basis": "The alarm is in the house, not the garage: CPSC lists deaths where it sounded indoors while the victim was in the attached garage. It protects the people inside the house."
+      },
+      "notes": "Per household member per day on which the car is run this way. A car idling outdoors with the exhaust clear is safe; the risk is entirely the enclosed space, door open or not."
+    }
+  ],
+  "everydayHazards": [
+    {
+      "id": "houseFire",
+      "definition": "A fire in the household's home that the fire service attends. United States unless stated.",
+      "annualProbabilityPerHousehold": {
+        "us": 0.0025,
+        "basis": "328,590 reported home fires a year (2019-2023) and 329,500 in 2024 over about 131M households. Unreported fires are about 30 times as many (7.4M a year in 2004-2005) and nearly harmless. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/Building-and-life-safety/oshomes.pdf"
+      },
+      "deathsPer1000ReportedFires": {
+        "all": 8.9,
+        "noAlarmOrNotOperated": 14.4,
+        "alarmOperated": 5.8,
+        "oneOrTwoFamily": 10.2,
+        "apartment": 4.5,
+        "basis": "NFPA Fire Loss 2024 and Smoke Alarms 2024."
+      },
+      "annualMicromortsPerPerson": {
+        "allAgesAverage": 8.2,
+        "adult15to59Average": 5.4,
+        "adult15to59NoWorkingAlarm": 10.0,
+        "adult15to59WorkingAlarm": 4.5,
+        "allAgesNoWorkingAlarm": 15.2,
+        "allAgesWorkingAlarm": 6.9,
+        "observedInNoWorkingAlarmHomes": 30,
+        "observedInWorkingAlarmHomes": 4.0,
+        "basis": "Averages from NFPA rates by age. The no-alarm and with-alarm rows assume homes differ only by the alarm (55% reduction, 84% prevalence). The observed rows divide deaths by alarm status (59% and 41% of 2,650) by the people in the 16% and 84% of households; the 7.5-fold gap is mostly poverty, smoking, old housing and misclassification, so it is not used."
+      },
+      "byAgeDeathsPerMillion": {
+        "under5": 5.3,
+        "5to9": 4.2,
+        "10to14": 2.6,
+        "15to19": 2.1,
+        "20to24": 2.3,
+        "25to34": 3.9,
+        "35to44": 5.0,
+        "45to54": 6.8,
+        "55to64": 12.5,
+        "65to74": 16.5,
+        "75to84": 19.9,
+        "85plus": 25.2,
+        "total": 7.8,
+        "source": "https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/US-Fire-Problem/oshomevictims.pdf"
+      },
+      "dwellingFactorPerPerson": {
+        "house": 1.15,
+        "apartment": 0.5,
+        "basis": "One- or two-family homes: 67% of housing units, 85% of deaths in 2019-2023 and 88% in 2024; converted to per person with 2.7 and 2.0 people per household."
+      },
+      "injuriesPerMillionPersons": 32.4,
+      "propertyLossUsdPerHousehold": {
+        "average2026Usd": 85,
+        "house": 105,
+        "apartment": 45,
+        "basis": "$8.9bn a year in 2019-2023, $11.4bn in 2024 ($9.4bn houses, $2.0bn apartments), inflated to 2026; gross of insurance."
+      },
+      "regionFactor": {
+        "us": 1,
+        "westernEurope": {
+          "lo": 0.3,
+          "mid": 0.5,
+          "hi": 1.0,
+          "tag": "derived",
+          "basis": "England 2024/25: 208 dwelling-fire deaths in 57.7M people, 3.6 per million, against 8.2 in the US; other countries from memory. https://www.gov.uk/government/statistics/detailed-analysis-of-fires-england-april-2024-to-march-2025/detailed-analysis-of-fires-and-response-times-to-fires-attended-by-fire-and-rescue-services-england-april-2024-to-march-2025"
+        },
+        "buenosAires": {
+          "lo": 0.4,
+          "mid": 1.0,
+          "hi": 2.0,
+          "tag": "guess",
+          "basis": "No national count of home fire deaths was found for Argentina; masonry construction argues for fewer, informal housing and wiring for more."
+        }
+      },
+      "alreadyOwned": {
+        "workingSmokeAlarmUs": 0.84,
+        "workingSmokeAlarmEngland": 0.92,
+        "anyExtinguisherUs": 0.76,
+        "interconnectedAlarmsUs": 0.2
+      }
+    },
+    {
+      "id": "coIncident",
+      "definition": "Non-fire carbon monoxide poisoning at home from an appliance, heater, engine or vehicle. United States unless stated.",
+      "annualDeathsUs": {
+        "allSourcesAccidentalNonFire": {
+          "lo": 430,
+          "mid": 540,
+          "hi": 624
+        },
+        "consumerProducts2020to2022": 238,
+        "inOrdinaryHomes": 126,
+        "generators": 98,
+        "portableHeaters": 31,
+        "furnaces": 23,
+        "charcoal": 14,
+        "rangesOvens": 10,
+        "grillsCampStoves": 8,
+        "basis": "CDC: 430 a year in 1999-2010 and more than 400 today; 543 in 2021 (search snippet) and 624 in 2022 (USAFacts, provisional). CPSC for consumer products; the rest is mostly motor vehicles and work."
+      },
+      "annualMicromortsPerPerson": {
+        "allSourcesAllPlacesAverage": 1.6,
+        "atHomeAverage": 0.63,
+        "atHomeFuelBurningNoAlarm": 1.1,
+        "atHomeFuelBurningWithAlarm": 0.45,
+        "allElectricNoGarage": 0.05,
+        "basis": "See the channel entry. The all-electric figure is a guess for leakage from neighbours and visitors' equipment."
+      },
+      "nonFatalPerYearUs": {
+        "emergencyVisits": 100000,
+        "hospitalStays": 14000,
+        "source": "https://www.cdc.gov/carbon-monoxide/about/index.html"
+      },
+      "ageShareOfDeathsVsPopulation": {
+        "under15": "3% vs 18%",
+        "15to24": "5% vs 13%",
+        "25to44": "24% vs 27%",
+        "45to64": "41% vs 25%",
+        "65plus": "27% vs 17%",
+        "source": "https://www.cpsc.gov/s3fs-public/Non-Fire-Carbon-Monoxide-Deaths-Associated-with-the-Use-of-Consumer-Products-2022-Annual-Estimates.pdf"
+      },
+      "seasonality": "59% of consumer-product CO deaths fall in November-February.",
+      "dwellingFactorPerPerson": {
+        "house": 1.15,
+        "apartment": 0.5,
+        "basis": "Guess: generators, furnaces and attached garages are house equipment; 64% of fatal generator incidents with known size were in houses under 1,500 sq ft."
+      },
+      "regionFactor": {
+        "us": 1,
+        "westernEurope": {
+          "lo": 0.3,
+          "mid": 0.8,
+          "hi": 1.3,
+          "tag": "derived",
+          "basis": "France: about 300 CO deaths a year of which 45% accidental and non-fire, 2.0 per million (page dated 2008; a later press figure of about 100 gives 1.5). England and Wales: about 25-30 a year, 0.45 per million; Germany 118 in 2020, 1.4 per million (both search snippets). US all sources 1.6. https://www.santepubliquefrance.fr/en/exposition-a-des-substances-chimiques/monoxyde-de-carbone/carbon-monoxide"
+        },
+        "buenosAires": {
+          "lo": 0.7,
+          "mid": 2.0,
+          "hi": 4.0,
+          "tag": "guess",
+          "basis": "Health ministry estimate of about 200 deaths a year (4.3 per million; search snippet of a 2014 guide) against 34 deaths confirmed by surveillance in 2019-May 2024; 38.5% of cases are in the cold south, so Buenos Aires is below the national rate. Unflued gas heaters are the main source. https://chequeado.com/el-explicador/intoxicacion-por-monoxido-de-carbono-los-casos-aumentaron-un-57-en-lo-que-va-del-2025/"
+        }
+      },
+      "alreadyOwned": {
+        "workingCoAlarmUs": 0.49,
+        "anyCoAlarmUs": 0.58
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "what": "Row 84: extinguishing spray (aerosol can)",
+      "reason": "A third of the agent of a 2.5 lb extinguisher and a 3-year life at about half the price ($11.99); dominated by fire-extinguisher."
+    },
+    {
+      "what": "Row 82: 'tested monthly'",
+      "reason": "Folded into upkeep hours and reliability of the alarm entries rather than a separate action."
+    },
+    {
+      "what": "Home fire sprinklers",
+      "reason": "NFPA shows a 90% lower death rate per fire with sprinklers plus alarms, but a retrofit costs thousands of dollars and is a building measure, not a kit item (row 121 territory)."
+    },
+    {
+      "what": "Fire escape plan, closed bedroom doors, escape ladder",
+      "reason": "No outcome data to put a number on; the plan belongs with row 115 (household plan). Of deaths in homes with working alarms, 9% were alerted and did not respond, which caps what a plan alone can add."
+    },
+    {
+      "what": "Automatic seismic gas shut-off valve",
+      "reason": "$300-600 installed (recalled); a structural measure for the earthquake researcher. Most surveyed valves within 29 km of the Northridge epicentre tripped."
+    },
+    {
+      "what": "Smart or monitored alarms, heat alarms, natural-gas (methane) detectors",
+      "reason": "Same detection as the basic alarms at several times the cost, or aimed at risks (gas explosions) worth well under 0.1 micromorts a year."
+    },
+    {
+      "what": "Generator placement kit (6 m cord, CO shut-off generator)",
+      "reason": "Belongs to the power researcher's generator entry; the sideRisks array gives the numbers: about 0.1 micromorts per person-day placed well against 1.5 typical."
+    }
+  ],
+  "blockedSources": [
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC4504304/: New York City CO alarm law evaluation (reCAPTCHA); effect sizes taken from a search snippet.",
+    "https://www.sciencedirect.com/science/article/pii/S2950541024000206: sources of CO exposure after Winter Storm Uri (403); would have replaced my assumed split of the 19 Texas CO deaths.",
+    "https://www.texastribune.org/2021/12/17/texas-generators-winter-storm-carbon-monoxide-deaths/: Texas CO deaths by source (403).",
+    "https://injuryprevention.bmj.com/content/20/2/97.abstract: Istre 2014 Dallas smoke alarm programme (403); figures from a search snippet.",
+    "https://pubmed.ncbi.nlm.nih.gov/: Marshall 1998 case-control study of fatal residential fires (cookie wall); odds ratio from a search snippet.",
+    "https://ssc.ca.gov/wp-content/uploads/sites/9/2020/08/cssc_2002-03_natural_gas_safety.pdf: share of post-earthquake fires fed by gas and the case for manual shut-off (certificate error).",
+    "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/adhocs/12420numberofdeathsfromaccidentalpoisoningbycarbonmonoxideenglandandwalesdeathsregisteredin2019: England and Wales CO deaths (figures are in a spreadsheet the fetcher could not read).",
+    "https://www.walmart.com, https://www.homedepot.com, https://www.acehardware.com, https://www.firstalert.com: second price checks (bot walls or 404); all prices are from Target and one specialist seller.",
+    "NFPA Home Heating Fires report: not fetched; the space-heater death share is from a search snippet.",
+    "Argentina: no national count of home fire deaths found; the ministry's '200 CO deaths a year' was seen only in a search snippet of a provincial guide."
+  ],
+  "openQuestions": [
+    "The model needs 'already owned' switches. 84% of US households have a working smoke alarm, 49% a working CO alarm, about 76% an extinguisher. The channel baselines here are for a home with neither alarm; if the engine cannot mark items as owned, use the with-alarm baselines in everydayHazards and drop smoke-alarm-basic for those households.",
+    "CO needs a household flag for 'has a fuel-burning appliance or attached garage, or will burn fuel indoors in an outage'. Without it the CO alarm is over-valued for all-electric apartments.",
+    "New capability id: utilityShutoff (gas-shutoff-tool).",
+    "Reduce effects carry two extra fields, hardshipFractionRemoved (injury) and financialFractionRemoved (property), following the warmth file's convention; fractionRemoved is mortality only. For the extinguisher nearly all the value is in financialFractionRemoved.",
+    "Property loss is gross of insurance. Whether an insured loss counts as harm to the household is a modelling decision; if not, scale the fire channel's dollar figure by roughly 0.25-0.4 for insured owners.",
+    "Group smoke-co-combo-alarm with smoke-alarm-basic on fire and with co-alarm on co so that only the best one present counts.",
+    "The split of the 19 Texas CO deaths by source is assumed (generators 6, charcoal 6, vehicles 4, heaters 2, ovens 1). Any real tabulation would tighten four of the side risks.",
+    "The outage CO baseline in the co channel (0.4 micromorts per person-day) already contains the coping mix of unprepared households. A kit with a generator or heater should replace the matching part of that baseline with its own side risk, not add to it.",
+    "Water shut-off in a freeze may be the more valuable half of row 85; it needs a burst-pipe financial exposure in winterStorm, which I do not own."
+  ]
+}

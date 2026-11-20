@@ -1,0 +1,502 @@
+{
+  "kind": "hazards",
+  "group": "hazards-ordinary",
+  "hazards": [
+    {
+      "id": "localOutage",
+      "definition": "The home is completely without grid power for 6 hours or more from a cause that is not a regional disaster: equipment failure, vehicle strike, planned work, an ordinary thunderstorm or wind event, or a storm outage that ends within 12 hours. Outages of 12 hours or more caused by a regional storm, winter storm, heat wave, hurricane or wildfire shut-off belong to those hazards.",
+      "annualProbability": [
+        {
+          "location": "us", "outlook": "all", "lo": 0.06, "mid": 0.11, "hi": 0.16, "tag": "derived",
+          "basis": "AHS 2023: 25.4% of households had a complete outage in 12 months and about 70% of those had one of 6 h or more, so 17.7% (https://www.census.gov/library/stories/2024/10/power-outages.html). Minus 6.9% a year for regional-event outages of 12 h or more (EIA and NREL arithmetic in the .md) leaves about 11%. Urban 22.8% and rural 35.4% for any outage, so scale by 0.9 and 1.4."
+        }
+      ],
+      "tickBox": null,
+      "windows": {
+        "power": {
+          "pOccur": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "True by the definition of the event."},
+          "days": {"p50": 0.33, "p90": 0.5, "p99": 1.8},
+          "tag": "guess",
+          "basis": "No source gives the duration distribution of non-major outages of 6 h or more. EIA 2015-2025: CAIDI without major event days is 109-124 minutes (https://www.eia.gov/electricity/annual/html/epa_11_01.html); NREL assumes such outages end within 12 h (PNNL-33340). I assume 90% end within 12 h and 99% within about two days."
+        },
+        "comms": {
+          "pOccur": {"lo": 0.02, "mid": 0.05, "hi": 0.15, "tag": "guess", "basis": "Home internet stops with the router, but mobile service normally continues on tower batteries and generators; both fail only in a minority of longer local outages. No measurement found."},
+          "days": {"p50": 0.15, "p90": 0.4, "p99": 1},
+          "tag": "guess",
+          "basis": "Shorter than the power window because towers hold several hours of battery (recalled, not checked)."
+        }
+      },
+      "coldShare": {"lo": 0.07, "mid": 0.15, "hi": 0.3, "tag": "guess", "basis": "For a cold-winter household, the share of local outages on days cold enough to chill an unheated home. December to February is 25% of the year, but non-storm outages peak in summer (47% of weather-related major outages fall in May-September, Climate Central) and the worst winter outages sit under winterStorm."},
+      "hotShare": {"lo": 0.05, "mid": 0.12, "hi": 0.25, "tag": "guess", "basis": "For a hot-summer household: about 40% of outages fall in June to August (guess from the Climate Central seasonal share) times about 30% of summer days with dangerous heat."},
+      "leave": {
+        "feasible": {"lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Power is on a short drive away. AHS 2023: 8.4% of households with any outage stayed away overnight (2.9M of 33.9M), so few bother, but nearly all could."},
+        "earliestDay": {"lo": 0, "mid": 0.05, "hi": 0.25, "tag": "guess", "basis": "Within an hour or two; longer at night or without a car."},
+        "fixedUsdPerHousehold": {"lo": 10, "mid": 30, "hi": 120, "tag": "guess", "basis": "About 20 miles of driving at $0.70 a mile plus an hour of packing at $20."},
+        "usdPerPersonDay": {"lo": 10, "mid": 45, "hi": 95, "tag": "derived", "basis": "Hotel: US average daily rate $177.65 in the week of 11-17 October 2026 (CoStar, https://www.hospitalitynet.org/news/4135070/us-hotel-results-for-week-ending-17-october) x 1.12 tax / 2.5 people + $15 of meals out = $95. Staying with relatives or friends: about $10. Blend 40% hotel, 60% hosts (44% of Texans who left in 2021 went to a local relative, UH survey) = $44."}
+      },
+      "warningDays": {"lo": 0, "mid": 0, "hi": 0.1, "tag": "guess", "basis": "Equipment faults and ordinary storms give no usable warning."},
+      "lateBuy": {
+        "staple": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "No warning, but shops outside the small affected area are open and stocked once the outage starts; fails at night or without transport."},
+        "specialty": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "A local event causes no regional run on generators, heaters or power stations, but few households buy one for an outage expected to end in hours."}
+      },
+      "exposures": [
+        {
+          "channel": "co",
+          "description": "Carbon monoxide from improvised power, heat or cooking (grill, camp stove, car in garage) in a home with no generator.",
+          "micromortsPerPerson": {"lo": 0.01, "mid": 0.04, "hi": 0.2, "tag": "guess", "basis": "CPSC counts about 70 generator CO deaths a year, 157 in 11 years tied to weather outages (prior-art.md). 14 a year over about 59 million person-events of 6 h+ outages (17.7% x 335M) is 0.24 micromorts, concentrated in generator owners and long cold outages; I take a sixth of that for a short outage in a home without a generator."}
+        },
+        {
+          "channel": "fire",
+          "description": "Fire from candles and improvised lighting or heating.",
+          "micromortsPerPerson": {"lo": 0.005, "mid": 0.02, "hi": 0.1, "tag": "guess", "basis": "Texas 2021 had 10 fire deaths over about 14 million people with long outages (0.7 micromorts) in extreme cold; a half-day outage in ordinary weather is guessed at 3% of that."}
+        },
+        {
+          "channel": "financialLoss",
+          "description": "Spoiled refrigerated food and basement flooding from a dead sump pump; excludes lost income.",
+          "financialUsdPerHousehold": {"lo": 10, "mid": 35, "hi": 120, "tag": "guess", "basis": "AHS 2023: 14% of households with an outage of any length lost food (4.9M of 33.9M) and 1.0% had basement water from sump-pump failure (343,000). For 6 h+ outages I take 20% x $90 of food plus 0.5% x $4,000 of water damage; the dollar amounts are guesses."}
+        }
+      ],
+      "dwellingNotes": "Apartments: fewer outages (AHS 2023 any-outage rate: renters 19.9%, owners 28.3%; urban 22.8%, rural 35.4%), but lifts stop, booster-pumped water above about the sixth floor fails within hours, electronic door entry and corridor lighting may fail, and a fuel generator cannot be run. Houses: wells and septic or sump pumps stop with the power (673,000 units had frozen pipes and 343,000 flooded basements in outages, AHS 2023); a generator can be run outdoors.",
+      "evidence": [
+        {"claim": "25.4% of US households (33.9M) were completely without power at least once in 12 months; about 70% of them (23.6M) for 6 h or more; 2.9M (8.4%) stayed away overnight; 4.9M lost food; urban 22.8%, rural 35.4%; Detroit 44.8%, Miami 5.8%.", "source": "https://www.census.gov/library/stories/2024/10/power-outages.html", "year": 2024, "verified": true},
+        {"claim": "SAIDI without major event days 116-132 minutes, SAIFI 1.01-1.09, CAIDI 109-124 minutes, 2015-2025.", "source": "https://www.eia.gov/electricity/annual/html/epa_11_01.html", "year": 2026, "verified": true},
+        {"claim": "Customers average more than one outage a year under 12 hours; NREL assumes non-major-event outages last under 12 hours.", "source": "https://www.pnnl.gov/main/publications/external/technical_reports/PNNL-33340.pdf", "year": 2022, "verified": true}
+      ],
+      "notes": "No water, sanitation or food window: mains water keeps flowing in a local outage and shops outside the small affected area are open. Homes on wells or booster pumps lose water with the power; that is left to the engine's pumped-water setting. California public-safety power shut-offs are not included here (NREL: 66% exceed a day, 13% exceed 3 days); they belong with wildfire or need their own entry."
+    },
+    {
+      "id": "severeStorm",
+      "definition": "A regional storm that is neither tropical nor a winter storm (derecho, tornado outbreak, severe thunderstorm complex, windstorm, atmospheric-river wind) and that leaves the home without grid power for 12 hours or more. Storm outages shorter than 12 hours count under localOutage.",
+      "annualProbability": [
+        {
+          "location": "us", "outlook": "all", "lo": 0.012, "mid": 0.025, "hi": 0.05, "tag": "derived",
+          "basis": "EIA 2015-2025: major event days add a mean 258 minutes and 0.33 interruptions per customer-year (https://www.eia.gov/electricity/annual/html/epa_11_01.html). With NREL's major-event duration table (50.3% over 12 h; mean 27 h from my bin midpoints) that is 0.138 large outages a year, so 6.9% of customers a year with 12 h or more from all causes. I assign 35% to severe convective and wind storms (58% of weather-related major outage events by count, Climate Central, but shorter than hurricane and ice outages): 2.4%."
+        }
+      ],
+      "tickBox": null,
+      "windows": {
+        "power": {
+          "pOccur": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "True by the definition of the event."},
+          "days": {"p50": 1.4, "p90": 3.2, "p99": 9},
+          "tag": "derived",
+          "basis": "NREL/PNNL 2022 Table 13, mean of the Central, Eastern and Western regions (little hurricane influence), conditional on exceeding 12 h: 65% exceed 1 day, 30% 2 days, 12% 3 days, 5.5% 4 days, 3.2% 5 days, 1.1% 7 days (https://www.pnnl.gov/main/publications/external/technical_reports/PNNL-33340.pdf). Log-linear interpolation gives p50 1.35 and p90 3.2. NREL's own p99 is about 7 days; raised to 9 because the authors say the method undercounts long outages and urge caution beyond 5 days."
+        },
+        "water": {
+          "pOccur": {"lo": 0.01, "mid": 0.04, "hi": 0.1, "tag": "guess", "basis": "Mains homes only: a storm-caused boil notice or loss of pressure. Treatment plants and pumping stations mostly have backup power; EPA attributes only 2.2% of 2021 boil-water advisories to power outages and 1.4% to natural disasters. Homes on wells or booster pumps are excluded here because the engine's pumped-water setting ties their tap to the power window."},
+          "days": {"p50": 1, "p90": 2.5, "p99": 5},
+          "shareTreatable": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Mostly boil notices with water still flowing; the rest is loss of pressure."},
+          "tag": "guess",
+          "basis": "Net of relief: bottled water is on sale a short drive away within a day or two, well before a boil notice is lifted. No measurement of that delay was found."
+        },
+        "food": {
+          "pOccur": {"lo": 0.1, "mid": 0.25, "hi": 0.5, "tag": "guess", "basis": "Share of events in which local shops are shut or unreachable for more than half a day: unpowered stores and roads blocked by trees. No US measurement found for non-winter storms."},
+          "days": {"p50": 0.7, "p90": 1.5, "p99": 4},
+          "tag": "guess",
+          "basis": "Net of relief: stores on generators and shops a short drive away are open within a day or two in ordinary US storms, far sooner than the last customers are reconnected."
+        },
+        "comms": {
+          "pOccur": {"lo": 0.15, "mid": 0.3, "hi": 0.5, "tag": "guess", "basis": "Both mobile and home internet down. Upper analogue: Texas February 2021, where 47% lost mobile service and 71% internet (UH survey); ordinary wind storms damage fewer towers."},
+          "days": {"p50": 0.7, "p90": 2.5, "p99": 6},
+          "tag": "guess",
+          "basis": "Mobile service usually returns before household power as carriers bring generators to towers; no duration data found."
+        },
+        "sanitation": {
+          "pOccur": {"lo": 0.002, "mid": 0.01, "hi": 0.04, "tag": "guess", "basis": "Mains homes only: loss of water pressure or sewer backup when lift stations lose power. Pumped-water homes are handled by the engine's pumped-water setting."},
+          "days": {"p50": 1, "p90": 2, "p99": 4},
+          "tag": "guess",
+          "basis": "Pressure is restored before boil notices are lifted."
+        },
+        "medication": {
+          "pOccur": {"lo": 0.1, "mid": 0.25, "hi": 0.45, "tag": "guess", "basis": "Local pharmacies shut while unpowered; same reasoning as the food window."},
+          "days": {"p50": 0.7, "p90": 1.5, "p99": 4},
+          "tag": "guess",
+          "basis": "A pharmacy a short drive away is open within a day or two."
+        },
+        "emergencyCare": {
+          "pOccur": {"lo": 0.03, "mid": 0.1, "hi": 0.25, "tag": "guess", "basis": "Blocked roads and overloaded 911 delay ambulances in the first hours to a day of a major wind event."},
+          "days": {"p50": 0.3, "p90": 1, "p99": 3},
+          "tag": "guess",
+          "basis": "Main roads are usually cleared within a day."
+        },
+        "payments": {
+          "pOccur": {"lo": 0.1, "mid": 0.25, "hi": 0.45, "tag": "guess", "basis": "Shops that open on generators or without network often take cash only; ATMs are down with the power."},
+          "days": {"p50": 0.7, "p90": 2, "p99": 5},
+          "tag": "guess",
+          "basis": "Ends as power and network return to shops, which are restored before most homes."
+        },
+        "displacement": {
+          "pOccur": {"lo": 0.01, "mid": 0.03, "hi": 0.07, "tag": "guess", "basis": "Homes made uninhabitable by tornado, wind or tree damage, as a share of households with a 12 h+ storm outage. Census Pulse data put all-cause disaster displacement at 1.3% of adults a year (base-rates.md); the tornado and wind share was not found."},
+          "days": {"p50": 5, "p90": 45, "p99": 300},
+          "tag": "guess",
+          "basis": "Pulse durations for all disasters: nearly half under a week, a tenth over six months (base-rates.md)."
+        }
+      },
+      "coldShare": {"lo": 0.02, "mid": 0.07, "hi": 0.15, "tag": "guess", "basis": "Severe convective storms are a warm-season hazard; only autumn and winter windstorms (Pacific Northwest, Northeast) coincide with cold."},
+      "hotShare": {"lo": 0.15, "mid": 0.3, "hi": 0.5, "tag": "guess", "basis": "47% of weather-related major outages fall in May-September (Climate Central), and derechos peak in June and July; the June 2012 derecho was followed by a heat wave."},
+      "leave": {
+        "feasible": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "The damaged area is tens of miles wide, so unaffected towns are within an hour or two, but local roads are blocked and nearby hotels fill. 42% say they would relocate in a 3-day outage (ICE 2.0, prior-art.md)."},
+        "earliestDay": {"lo": 0.2, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "After roads are cleared of trees and lines."},
+        "fixedUsdPerHousehold": {"lo": 25, "mid": 80, "hi": 300, "tag": "guess", "basis": "About 100 miles of driving at $0.70 a mile, plus packing time."},
+        "usdPerPersonDay": {"lo": 10, "mid": 45, "hi": 100, "tag": "derived", "basis": "Same blend as localOutage: hotel $95 a person-day from the $177.65 average daily rate (https://www.hospitalitynet.org/news/4135070/us-hotel-results-for-week-ending-17-october), hosts about $10, 40/60."}
+      },
+      "warningDays": {"lo": 0.02, "mid": 0.3, "hi": 2, "tag": "guess", "basis": "Tornado and derecho warnings give minutes to hours; windstorms and atmospheric rivers are forecast one to two days ahead."},
+      "lateBuy": {
+        "staple": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Few people shop on a severe-thunderstorm watch, and after the storm local shops are shut for the first day."},
+        "specialty": {"lo": 0.05, "mid": 0.15, "hi": 0.4, "tag": "guess", "basis": "Generators, fuel cans, ice and chainsaws sell out regionally within a day of a large event."}
+      },
+      "exposures": [
+        {
+          "channel": "trauma",
+          "description": "Death from the storm itself: tornado, falling trees, wind-borne debris. Reduced by shelter and warning, not by supplies.",
+          "micromortsPerPerson": {"lo": 2, "mid": 6, "hi": 15, "tag": "derived", "basis": "NWS 2016-2025 means: 51 tornado and 57 wind deaths a year (https://www.weather.gov/media/hazstat/81year_2025.pdf). If 60% fall among the 8.4 million people a year in such events (2.5% x 335M) that is 7.7 micromorts; x 0.8 for a healthy adult in a site-built home. The 60% and 0.8 are guesses."}
+        },
+        {
+          "channel": "co",
+          "description": "Carbon monoxide from improvised power and cooking in a home with no generator.",
+          "micromortsPerPerson": {"lo": 0.03, "mid": 0.15, "hi": 0.6, "tag": "guess", "basis": "About 14 weather-outage generator CO deaths a year (CPSC, prior-art.md) over roughly 23 million person-events of 12 h+ outages (6.9% x 335M) is 0.6 micromorts averaged over all homes; a quarter of that without a generator, in warm weather."}
+        },
+        {
+          "channel": "fire",
+          "description": "Fire from candles and improvised cooking during a multi-day outage.",
+          "micromortsPerPerson": {"lo": 0.02, "mid": 0.1, "hi": 0.4, "tag": "guess", "basis": "Texas 2021: 10 fire deaths over about 14 million people with long outages, 0.7 micromorts, driven by improvised heating; a warm-season outage is guessed at a seventh of that."}
+        },
+        {
+          "channel": "financialLoss",
+          "description": "Spoiled refrigerated and frozen food and basement flooding from a dead sump pump; excludes structural storm damage and lost income.",
+          "financialUsdPerHousehold": {"lo": 60, "mid": 200, "hi": 800, "tag": "guess", "basis": "Texas 2021: 47% reported spoiled food even in freezing weather (UH survey). I take 55% x $130 of fridge food, 25% x $200 of freezer food and 2% x $4,000 of basement water. Dollar amounts are guesses. ICE 2.0: 20% of households would lose income in a 3-day outage, mean $1,157 among them (prior-art.md); not included."}
+        }
+      ],
+      "dwellingNotes": "Apartments: lifts are out for days (people with limited mobility on high floors are stranded), pumped water and central hot water fail, a fuel generator cannot be used, upper floors overheat in summer outages; underground urban lines mean fewer and shorter outages. Houses: tree damage to service drops puts the house at the end of the restoration queue; wells, septic pumps and sump pumps stop; a generator and a chainsaw are usable.",
+      "evidence": [
+        {"claim": "Of customer outages in major events, 50.3% exceed 12 h, 35.7% 1 day, 18.5% 2 days, 9.9% 3 days, 3.5% 5 days, 1.3% 1 week (contiguous US, 2015-2021); regional tables give Central 0.7%, Eastern 0.2%, Southern 2.2%, Western 0.6% over a week.", "source": "https://www.pnnl.gov/main/publications/external/technical_reports/PNNL-33340.pdf", "year": 2022, "verified": true},
+        {"claim": "Recurrence per customer, contiguous US: 12-24 h 67 years, 1-2 d 59, 2-3 d 127, 3-5 d 152, 5-7 d 495, over 1 week 790; centred on 2013-2020 reliability data. The method undercounts long outages; estimates beyond 5 days need caution.", "source": "https://www.pnnl.gov/main/publications/external/technical_reports/PNNL-33340.pdf", "year": 2022, "verified": true},
+        {"claim": "SAIDI with and without major event days, minutes: 2020 456.1 / 116.0; 2023 366.6 / 123.9; 2024 662.6 / 131.6; 2025 269.2 / 125.3. SAIFI 2024 1.531 / 1.065.", "source": "https://www.eia.gov/electricity/annual/html/epa_11_01.html", "year": 2026, "verified": true},
+        {"claim": "RECS 2020 question POWEROUT: 'During the past year, has your entire home had a power outage lasting at least 24 hours?' Follow-up reasons include 'Unable to pay electric bills'. Fielded September 2020 to April 2021.", "source": "https://www.eia.gov/survey/form/eia_457/archive/2020_RECS-457A.pdf", "year": 2020, "verified": true},
+        {"claim": "RECS 2024 wording: 'During the past year, has your entire home experienced a power outage lasting at least 24 hours?' (Spanish: 'En los ultimos 12 meses').", "source": "https://www.eia.gov/survey/form/eia_457/RECS%20457%20A_Questionnaire%20Content.pdf", "year": 2024, "verified": true},
+        {"claim": "1,755 weather-related major outages (50,000+ customers) in 2000-2023: severe weather 58%, winter 23%, tropical cyclones 14%, extreme heat about 3%, wildfire about 2%; twice as many in 2014-2023 as in 2000-2009.", "source": "https://www.climatecentral.org/climate-matters/weather-related-power-outages-rising", "year": 2024, "verified": true},
+        {"claim": "US weather deaths, 2016-2025 mean: tornado 51, wind 57, winter storm 27, cold 35, heat 279.", "source": "https://www.weather.gov/media/hazstat/81year_2025.pdf", "year": 2026, "verified": true},
+        {"claim": "August 2020 Iowa derecho: 9,850 Linn County customers still without power on day 11; last reconnections after 15-18 days.", "source": "https://www.thegazette.com/?p=81644", "year": 2020, "verified": false}
+      ],
+      "notes": "The 35% share of long outages assigned to this hazard is my allocation, not a published figure; regional variation is large (AHS any-outage rate 5.8% in Miami, 44.8% in Detroit). The trend is upward: major-event minutes averaged 229 a year in 2015-2020 and 294 in 2021-2025."
+    },
+    {
+      "id": "winterStorm",
+      "definition": "A snow, ice or extreme-cold event that leaves the home without grid power, piped gas or its normal heating for 12 hours or more while it is below freezing outside.",
+      "annualProbability": [
+        {
+          "location": "us", "outlook": "all", "lo": 0.008, "mid": 0.02, "hi": 0.045, "tag": "derived",
+          "basis": "Exposed = a place where a multi-day spell below freezing occurs in most winters (about 70% of US households, guess). AHS 2021 by metro, share uncomfortably cold for 24 h+ times share blaming a utility interruption: Atlanta 0.9%, Washington 0.7%, Chicago 0.9%, Boston 1.1%, Philadelphia 0.9%, Detroit 1.7%, Seattle 2.0% (https://stacker.com/stories/real-estate/how-heating-problems-compare-among-15-largest-metros). Median 0.9% / 0.65 for the 12 h threshold = 1.4%, plus a Uri-class year (Houston 45%, Dallas 32%) once in 50-100 years = 2.0%. Cross-check: 20% of the 6.9% all-cause rate, over 70% of households, is also 2.0%."
+        }
+      ],
+      "tickBox": "coldWinters",
+      "windows": {
+        "power": {
+          "pOccur": {"lo": 0.85, "mid": 0.95, "hi": 1, "tag": "guess", "basis": "Nearly all such events are power failures; a few percent are gas-supply or fuel-delivery failures with the grid up."},
+          "days": {"p50": 1.4, "p90": 3.5, "p99": 10},
+          "tag": "derived",
+          "basis": "NREL/PNNL 2022 non-southern regional mean conditional on 12 h (p50 1.35, p90 3.2 days; see severeStorm), with the tail lengthened for ice storms, which NREL's 2015-2021 sample barely contains. Texas February 2021: mean 42 h and median 36 h without power among the 69% who lost it; longest single block mean 31 h (https://www.uh.edu/hobby/winter2021/storm.pdf)."
+        },
+        "gas": {
+          "pOccur": {"lo": 0.005, "mid": 0.03, "hi": 0.1, "tag": "guess", "basis": "Piped-gas loss in cold snaps is rare in the US (wellhead freeze-offs in Texas 2021; a New Mexico outage in 2011, recalled). No frequency data found."},
+          "days": {"p50": 2, "p90": 5, "p99": 9},
+          "tag": "guess",
+          "basis": "Gas relights are house by house and take days once pressure is lost (recalled from the 2011 New Mexico event)."
+        },
+        "water": {
+          "pOccur": {"lo": 0.07, "mid": 0.2, "hi": 0.45, "tag": "derived", "basis": "Mains homes only (pumped-water homes are handled by the engine's setting). Texas 2021: 49% of residents lost running water and over 17 million were under boil notices (UH survey; https://journals.plos.org/water/article?id=10.1371/journal.pwat.0000137). Texas was about 27% of US winter-storm person-events in 2015-2025 (14M of 52M); weighting it at 0.55, other southern events (10%) at 0.4 and northern events (63%) at 0.05 gives 0.22. The last two rates are guesses."},
+          "days": {"p50": 1.5, "p90": 3, "p99": 7},
+          "shareTreatable": {"lo": 0.3, "mid": 0.55, "hi": 0.8, "tag": "guess", "basis": "Tap water under a boil notice, or snow and ice to melt, on about half the days; the rest are days with nothing from the tap and nothing to melt. Boiling or melting needs a heat source."},
+          "tag": "derived",
+          "basis": "Texas 2021: median 48 h without running water; people with running water could not drink it for a mean 40 h in the survey week; 63% had difficulty getting bottled water; boil notices lasted a mean 8.0 days (range 1-36). Net of relief I count until shops and distribution sites work, about 2 to 5 days there."
+        },
+        "food": {
+          "pOccur": {"lo": 0.25, "mid": 0.5, "hi": 0.75, "tag": "guess", "basis": "Texas 2021: 75% of all residents had difficulty obtaining food or groceries (UH survey); 'difficulty' is weaker than 'no way to obtain', so I take about two thirds of that for affected households."},
+          "days": {"p50": 1.5, "p90": 3, "p99": 6},
+          "tag": "guess",
+          "basis": "Roads are impassable and shops shut for the cold spell itself, usually 1 to 3 days; a multi-day driving ban as in Buffalo in December 2022 (recalled) sets the tail."
+        },
+        "comms": {
+          "pOccur": {"lo": 0.25, "mid": 0.45, "hi": 0.65, "tag": "derived", "basis": "Texas 2021: 47% of all residents lost mobile service and 71% internet (UH survey); households with long outages will be somewhat above the 47%, other storms below."},
+          "days": {"p50": 1, "p90": 3, "p99": 7},
+          "tag": "guess",
+          "basis": "Assumed to track the power window with towers restored somewhat earlier; no duration data found."
+        },
+        "sanitation": {
+          "pOccur": {"lo": 0.05, "mid": 0.15, "hi": 0.4, "tag": "guess", "basis": "Mains homes with no running water (the water window above), less those able to flush with stored or melted water."},
+          "days": {"p50": 1.5, "p90": 3, "p99": 7},
+          "tag": "guess",
+          "basis": "Follows loss of running water (Texas 2021 median 48 h)."
+        },
+        "medication": {
+          "pOccur": {"lo": 0.2, "mid": 0.4, "hi": 0.65, "tag": "guess", "basis": "Pharmacies shut or unreachable on ice; set a little below the food window because chains reopen early."},
+          "days": {"p50": 1.5, "p90": 3, "p99": 6},
+          "tag": "guess",
+          "basis": "Same road and store closures as food."
+        },
+        "emergencyCare": {
+          "pOccur": {"lo": 0.08, "mid": 0.2, "hi": 0.4, "tag": "guess", "basis": "Ambulances delayed or unable to reach homes on ice and snow; hospitals in Texas 2021 lost water pressure. No frequency data found."},
+          "days": {"p50": 0.7, "p90": 2, "p99": 4},
+          "tag": "guess",
+          "basis": "Lasts while roads are impassable."
+        },
+        "payments": {
+          "pOccur": {"lo": 0.15, "mid": 0.3, "hi": 0.5, "tag": "guess", "basis": "The few shops open during a regional outage are often cash-only."},
+          "days": {"p50": 1, "p90": 2.5, "p99": 5},
+          "tag": "guess",
+          "basis": "Ends when shops regain power and network."
+        },
+        "displacement": {
+          "pOccur": {"lo": 0.01, "mid": 0.03, "hi": 0.08, "tag": "guess", "basis": "Burst pipes making the home unlivable. AHS 2023: 673,000 units had frozen pipes in outages, 2% of the 33.9M outage households; Texas 2021: 31% reported water damage and 29% difficulty finding a plumber."},
+          "days": {"p50": 10, "p90": 60, "p99": 240},
+          "tag": "guess",
+          "basis": "Repairs after a regional freeze queue for weeks because plumbers and materials are short."
+        }
+      },
+      "coldShare": {"lo": 0.9, "mid": 1, "hi": 1, "tag": "derived", "basis": "True by the definition of the event."},
+      "hotShare": {"lo": 0, "mid": 0, "hi": 0, "tag": "derived", "basis": "Cannot coincide with heat."},
+      "leave": {
+        "feasible": {"lo": 0.3, "mid": 0.55, "hi": 0.8, "tag": "guess", "basis": "Texas 2021: 18% of residents left home when they lost power and heat; 44% of those went to a local relative and 3% left the state (UH survey). Icy roads make driving dangerous (22 crash deaths in Texas) and the affected area can be hundreds of miles wide."},
+        "earliestDay": {"lo": 0.3, "mid": 1, "hi": 3, "tag": "guess", "basis": "When roads are passable again; immediately for those with a warm house nearby."},
+        "fixedUsdPerHousehold": {"lo": 30, "mid": 100, "hi": 400, "tag": "guess", "basis": "A longer drive than in a wind storm, in bad conditions."},
+        "usdPerPersonDay": {"lo": 10, "mid": 45, "hi": 100, "tag": "derived", "basis": "Same blend as localOutage: hotel $95 a person-day from the $177.65 average daily rate (https://www.hospitalitynet.org/news/4135070/us-hotel-results-for-week-ending-17-october), hosts about $10, 40/60."}
+      },
+      "warningDays": {"lo": 1, "mid": 2.5, "hi": 5, "tag": "guess", "basis": "Winter storms and cold waves are forecast days ahead."},
+      "lateBuy": {
+        "staple": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "derived", "basis": "Texas 2021: 61% bought extra food and 58% bottled water before the storm (UH survey), so most who tried succeeded; shelves of bread, milk and water empty in the last day."},
+        "specialty": {"lo": 0.05, "mid": 0.2, "hi": 0.45, "tag": "guess", "basis": "Heaters, propane, firewood and generators sell out in the days before a forecast storm; only 10% of Texans bought generator fuel."}
+      },
+      "exposures": [
+        {
+          "channel": "co",
+          "description": "Carbon monoxide from improvised heating (grill or smoker indoors, car in garage, gas oven) in a home with no generator.",
+          "micromortsPerPerson": {"lo": 0.2, "mid": 0.7, "hi": 2.5, "tag": "derived", "basis": "Texas 2021: 19 CO deaths (DSHS, prior-art.md) over about 14 million people with 12 h+ outages (29.5M x 0.915 x 0.69 x 0.75) = 1.4 micromorts; halved to exclude generator deaths, which belong to the generator's side risk. Of those who stayed, 26% heated with a gas oven and 8% used a grill indoors (UH survey)."}
+        },
+        {
+          "channel": "fire",
+          "description": "House fire from candles, fireplaces and improvised heaters.",
+          "micromortsPerPerson": {"lo": 0.15, "mid": 0.5, "hi": 1.5, "tag": "derived", "basis": "Texas 2021: 10 fire deaths over about 14 million people = 0.7 micromorts all ages; x 0.7 for a healthy adult."},
+          "multipliers": [
+            {"profile": "age75plus", "mortality": 3, "tag": "guess", "basis": "Older adults die in home fires at about three times the average rate (NFPA, recalled, not checked)."}
+          ]
+        },
+        {
+          "channel": "trauma",
+          "description": "Road crashes and falls on ice; reduced by not needing to go out.",
+          "micromortsPerPerson": {"lo": 0.5, "mid": 1.5, "hi": 5, "tag": "derived", "basis": "Texas 2021: 22 vehicle and 9 fall deaths (DSHS, prior-art.md) over about 14 million people = 2.2 micromorts all ages; x 0.7 for a healthy adult, since falls are concentrated in the old."},
+          "multipliers": [
+            {"profile": "age75plus", "mortality": 3, "tag": "guess", "basis": "Fall deaths rise steeply with age; 60% of all Texas storm deaths were aged 60 or over."}
+          ]
+        },
+        {
+          "channel": "financialLoss",
+          "description": "Uninsured cost of burst pipes plus spoiled food; excludes lost income.",
+          "financialUsdPerHousehold": {"lo": 80, "mid": 300, "hi": 1500, "tag": "guess", "basis": "Texas 2021: 31% of residents had water damage, an upper case for homes not built for cold. I take 8% x $2,500 of deductible or uninsured repair plus $60 of food and $40 of other losses."}
+        }
+      ],
+      "dwellingNotes": "Apartments: interior units lose heat more slowly and pipes freeze less, but there is no fireplace, wood stove or generator, central boilers and booster pumps need power, and one burst pipe can flood many units. Houses: 16% of Texans who stayed used a wood fire and 15% a gas fireplace (warmth.md); frozen and burst pipes are a house problem (673,000 units in AHS 2023); wells stop; draining pipes and shutting the main is possible only where the occupant controls the plumbing.",
+      "evidence": [
+        {"claim": "Texas, 14-20 February 2021: 69% lost power, mean 42 h (median 36), longest single block mean 31 h (median 19); 49% lost running water, mean 52 h (median 48); those with running water could not drink it for a mean 40 h; 75% had difficulty obtaining food, 63% bottled water; 71% lost internet, 47% mobile service, 47% had spoiled food, 31% water damage; 18% left home, 44% of them to a local relative; beforehand 61% bought food, 58% bottled water, 55% filled the car.", "source": "https://www.uh.edu/hobby/winter2021/storm.pdf", "year": 2021, "verified": true},
+        {"claim": "AHS 2021: about 9% of households (over 11 million) were uncomfortably cold for 24 h+; Houston 57.7% (77.3% citing utility interruption), Dallas 41.6% (76.5%), Detroit 7.7% (21.5%), Seattle 8.1% (24.1%), Boston 6.1% (18%), Chicago 5.5% (17%), Atlanta 5% (17.1%), Philadelphia 6.4% (13.9%), Washington 5.3% (13.3%).", "source": "https://stacker.com/stories/real-estate/how-heating-problems-compare-among-15-largest-metros", "year": 2023, "verified": true},
+        {"claim": "AHS 2019: 7.5 million of 124 million households were uncomfortably cold for 24 h+.", "source": "https://www.census.gov/content/dam/Census/library/visualizations/2021/demo/AHS-Housing%20Quality-FINAL.pdf", "year": 2021, "verified": true},
+        {"claim": "Winter Storm Uri: 2,080 Texas water systems issued boil-water advisories covering over 17 million people; mean length 7.96 days (SD 3.57), range 1-36; the longest were small rural systems.", "source": "https://journals.plos.org/water/article?id=10.1371/journal.pwat.0000137", "year": 2023, "verified": true},
+        {"claim": "Texas DSHS: 246 storm deaths: hypothermia 158, vehicle crashes 22, CO 19, fire 10, falls 9; 59.8% aged 60+.", "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf", "year": 2021, "verified": false}
+      ],
+      "notes": "Households outside cold-winter areas are not immune: the worst US case was Texas. If the tick-box is off the engine drops this hazard; a Uri-class event at about 1 in 50 to 100 years per southern metro would be a fair residual. Hypothermia is in the warmth need, not in these exposures."
+    },
+    {
+      "id": "heatWave",
+      "definition": "Three or more consecutive days on which the outdoor heat index reaches about 40 C (105 F), or the local National Weather Service extreme-heat warning level, so that a home without working cooling stays at or above about 31 C indoors. The grid usually stays up.",
+      "annualProbability": [
+        {
+          "location": "us", "outlook": "all", "lo": 0.25, "mid": 0.5, "hi": 0.9, "tag": "guess",
+          "basis": "Exposed = a place where warning-level heat occurs in most summers (South, Southwest, lower Midwest, mid-Atlantic). No household-level frequency was found; the figure is definitional. Check: with cooling.md's all-ages curve and the heat durations in `heat`, 0.5 a year gives about 17 micromorts a year per person without cooling, or roughly 350 deaths over an assumed 20 million such people, against perhaps 500-900 certified indoor heat deaths a year (recalled CDC totals, not checked)."
+        }
+      ],
+      "tickBox": "hotSummers",
+      "windows": {
+        "power": {
+          "pOccur": {"lo": 0.003, "mid": 0.01, "hi": 0.03, "tag": "derived", "basis": "Climate Central: 48 heat-caused major outages in 2000-2023, two a year. At a guessed 300,000 customers each that is 0.4% of customers a year, mostly rotating cuts of an hour or two. AHS 2023: 1.0% of households (1.3M) with air conditioning were uncomfortably hot for 24 h+ because of a power cut of any cause, storms included. I take 0.5% a year for a heat-driven cut of 6 h or more, which is 1% of events at 0.5 a year."},
+          "days": {"p50": 0.3, "p90": 1, "p99": 4},
+          "tag": "guess",
+          "basis": "Local transformer and feeder failures are repaired within hours to a day; the tail is a network failure such as Queens in July 2006 (about a week, recalled). A city-wide multi-day blackout in a heat wave has not happened in the US and belongs to gridLong."
+        },
+        "emergencyCare": {
+          "pOccur": {"lo": 0.01, "mid": 0.05, "hi": 0.15, "tag": "guess", "basis": "Ambulance and emergency-room overload at the peak of record heat (British Columbia and the Pacific Northwest, June 2021, recalled); not seen in ordinary US heat waves."},
+          "days": {"p50": 1, "p90": 3, "p99": 5},
+          "tag": "guess",
+          "basis": "Lasts for the peak days of the event."
+        }
+      },
+      "coldShare": {"lo": 0, "mid": 0, "hi": 0, "tag": "derived", "basis": "Cannot coincide with cold."},
+      "hotShare": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "True by the definition of the event."},
+      "leave": {
+        "feasible": {"lo": 0.75, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "Cooled places (relatives, libraries, malls, cooling centres, motels) are within reach of most homes; the people who die are those who do not go. Visiting cool places has an odds ratio of 0.34 for death (cooling.md)."},
+        "earliestDay": {"lo": 0, "mid": 0, "hi": 0.3, "tag": "guess", "basis": "Possible from the first hot day."},
+        "fixedUsdPerHousehold": {"lo": 0, "mid": 20, "hi": 100, "tag": "guess", "basis": "A short local trip."},
+        "usdPerPersonDay": {"lo": 5, "mid": 35, "hi": 95, "tag": "guess", "basis": "Between free daytime cooling centres and a hotel at $95 a person-day (US average daily rate $177.65, https://www.hospitalitynet.org/news/4135070/us-hotel-results-for-week-ending-17-october)."}
+      },
+      "warningDays": {"lo": 1, "mid": 3, "hi": 6, "tag": "guess", "basis": "Heat waves are forecast several days ahead."},
+      "lateBuy": {
+        "staple": {"lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Shops stay open and stocked; only ice and bottled water run short locally."},
+        "specialty": {"lo": 0.15, "mid": 0.4, "hi": 0.7, "tag": "guess", "basis": "Window air conditioners and fans sell out regionally in record heat (Pacific Northwest 2021, recalled), less so where most homes already have cooling."}
+      },
+      "exposures": [],
+      "heat": {
+        "pOccur": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "True by the definition of the event."},
+        "days": {"p50": 5, "p90": 10, "p99": 20},
+        "tag": "guess",
+        "basis": "Not a canonical window, so it sits outside `windows`; it is shaped like one so it can be copied in as `windows.heat`. Length of the dangerous heat itself, during which a home without working cooling has unmet cooling days whatever the grid does. British Columbia 2021 lasted 7 days and France 2003 about 12 (cooling.md); the hottest US climates run longer."
+      },
+      "shareOfHarmWithGridUp": {
+        "lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "derived",
+        "basis": "AHS 2023: of 13.2M households uncomfortably hot for 24 h+, 1.3M (10%) blamed a power cut of any cause; 4.9M a broken cooling unit, 2.6M too little capacity, 1.6M had no air conditioning. Maricopa County 2023: about a quarter of 645 heat deaths were indoors, 85% of those with a non-working air conditioner and the rest with none or not in use. Heat-driven cuts are a small part of the 10%."
+      },
+      "dwellingNotes": "Apartments: 12.6% were uncomfortably hot for 24 h+ in AHS 2023 against 8.8% of single-family homes; upper floors and top-floor units are hottest, windows may not take a window unit, and a landlord controls repairs. Houses: mobile homes 11.6%; a house can be shaded and ventilated at night, and a basement is a refuge. Renters 13.6%, owners 8.0%.",
+      "evidence": [
+        {"claim": "AHS 2023: 13.2M households (about 10%) were uncomfortably hot for 24 h+ in 12 months; 9.2M units have no air conditioning, 17.1% of them were hot; of 11.6M hot units with air conditioning, 4.9M cited equipment breakdown, 2.6M inadequate capacity, 1.3M utility interruption or power outage, 0.7M cost.", "source": "https://www.census.gov/library/stories/2025/09/heat-risks-cooling-problems.html", "year": 2025, "verified": true},
+        {"claim": "Maricopa County 2023: 645 heat deaths, about a quarter indoors; in 85% of indoor cases the air conditioner was not working, in the rest it was absent or not in use.", "source": "https://www.kjzz.org/2024-03-13/content-1874049-maricopa-county-reported-645-heat-related-deaths-2023-700-increase-decade-ago", "year": 2024, "verified": true},
+        {"claim": "Extreme heat caused 48 of 1,755 weather-related major outages in 2000-2023 (about 3%).", "source": "https://www.climatecentral.org/climate-matters/weather-related-power-outages-rising", "year": 2024, "verified": true},
+        {"claim": "NWS counts a mean 279 heat deaths a year in 2016-2025 (555 in 2023), fewer than death-certificate totals.", "source": "https://www.weather.gov/media/hazstat/81year_2025.pdf", "year": 2026, "verified": true}
+      ],
+      "notes": "The model has no window for heat itself, so the canonical windows alone would make this hazard nearly harmless. About 95% of heat-wave harm falls on homes with no working cooling while the grid is up. The engine needs the non-canonical `heat` duration and the household's cooling status to place unmet cooling days; see openQuestions. No exposures are listed because heat death is carried by the cooling need."
+    },
+    {
+      "id": "waterSystemFailure",
+      "definition": "The public water system serving the home issues a boil-water, do-not-drink or do-not-use notice covering the home, or loses pressure, for 24 hours or more, when no hurricane, earthquake, flood or winter storm is under way. Private wells are excluded; their failures follow power outages.",
+      "annualProbability": [
+        {
+          "location": "us", "outlook": "all", "lo": 0.01, "mid": 0.03, "hi": 0.07, "tag": "guess",
+          "basis": "No national count of people affected exists: EPA found 4,036 advisories for 2021 from 20 responding states and web searches, and states need not report (EPA 810-R-24-003). Kentucky alone logged 36,673 in 2004-2020, about 2,160 a year (search snippet, https://www.mdpi.com/2073-4441/16/3/443). My estimate: 30,000 advisories a year x 300 people = 9 million person-events, 2.7% of 335 million, plus 0.2-0.5% for city-wide failures (Jackson, Houston, Austin, Memphis, Richmond, recalled). Both multipliers are guesses."
+        }
+      ],
+      "tickBox": null,
+      "windows": {
+        "water": {
+          "pOccur": {"lo": 0.15, "mid": 0.3, "hi": 0.5, "tag": "guess", "basis": "Share of events large enough that local shops are stripped of bottled water, or in which the household cannot shop the same day. 80% of advisories are main breaks or pressure loss covering part of a system (EPA), where shops nearby stay stocked."},
+          "days": {"p50": 1, "p90": 3, "p99": 7},
+          "shareTreatable": {"lo": 0.7, "mid": 0.88, "hi": 0.97, "tag": "guess", "basis": "Tap water keeps flowing and boiling or disinfecting suffices on most advisory days. Subtract about 8% for days with no flow (Jackson 2022: 5 of 49 days) and about 4% for chemical contamination that treatment at home does not fix (Flint, Toledo 2014, Charleston 2014, recalled)."},
+          "tag": "guess",
+          "basis": "Net of relief: the days before bottled water can be bought or collected. Jackson 2022: most residents lost running water on 30 August and the National Guard began distributing water on 31 August (https://en.wikipedia.org/wiki/Jackson,_Mississippi_water_crisis). The advisory itself runs far longer; see grossDays."
+        },
+        "sanitation": {
+          "pOccur": {"lo": 0.04, "mid": 0.1, "hi": 0.2, "tag": "guess", "basis": "Events with loss of pressure rather than a precautionary notice; EPA attributes 12.5% of 2021 advisories to uncontrolled pressure loss from main breaks."},
+          "days": {"p50": 1, "p90": 3, "p99": 7},
+          "tag": "guess",
+          "basis": "Pressure is usually restored within days even when the boil notice continues (Jackson: about 5 days)."
+        }
+      },
+      "coldShare": {"lo": 0.1, "mid": 0.2, "hi": 0.35, "tag": "guess", "basis": "Seasonal coincidence only; main breaks cluster in freeze-thaw weather. Heating still works, so this should not create unmet warmth days."},
+      "hotShare": {"lo": 0.08, "mid": 0.18, "hi": 0.3, "tag": "guess", "basis": "Seasonal coincidence; summer demand strains weak systems (Jackson, July 2022). Matters only through higher drinking needs."},
+      "leave": {
+        "feasible": {"lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Roads, fuel and power are normal and the affected area is one water system."},
+        "earliestDay": {"lo": 0, "mid": 0.2, "hi": 1, "tag": "guess", "basis": "Once the household hears of the notice."},
+        "fixedUsdPerHousehold": {"lo": 20, "mid": 60, "hi": 250, "tag": "guess", "basis": "A drive beyond the system's service area and back."},
+        "usdPerPersonDay": {"lo": 10, "mid": 45, "hi": 100, "tag": "derived", "basis": "Same blend as localOutage: hotel $95 a person-day from the $177.65 average daily rate (https://www.hospitalitynet.org/news/4135070/us-hotel-results-for-week-ending-17-october), hosts about $10, 40/60."}
+      },
+      "warningDays": {"lo": 0, "mid": 0, "hi": 0.2, "tag": "guess", "basis": "Notices follow the failure; they are not forecast."},
+      "lateBuy": {
+        "staple": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Bottled water is on the shelf in a local main-break advisory and gone within hours in a city-wide one."},
+        "specialty": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Filters and purification tablets are stocked by outdoor and hardware shops but in small numbers."}
+      },
+      "exposures": [],
+      "grossDays": {
+        "water": {"p50": 3, "p90": 8, "p99": 45},
+        "tag": "guess",
+        "basis": "Length of the advisory before any relief. Kentucky 2004-2020 mean 5 days (snippet); Texas 2021 mean 8.0 days, range 1-36 (PLOS Water); Jackson 2022, 49 days (28 July to 15 September). A notice cannot be lifted until samples have incubated, so few end within a day."
+      },
+      "dwellingNotes": "Apartments: the same mains water, less storage space, no water-heater tank of their own in some buildings, and higher floors lose pressure first. Houses: a 150-litre water-heater tank is a reserve (water-sanitation.md); homes on private wells (13-17%) are outside this hazard.",
+      "evidence": [
+        {"claim": "EPA identified 4,036 boil-water advisories for 2021; 80% (3,221) from main breaks, repairs or pressure loss, 2.2% (88) power outages, 1.4% (57) natural disasters, 6.3% (256) microbial; 20 states supplied tracking data; states are not required to report; 29.5% had no recorded end by the close of 2021.", "source": "https://19january2025snapshot.epa.gov/system/files/documents/2025-01/10586_boil-water-advisories_final_rtc_20240603_admin.pdf", "year": 2024, "verified": true},
+        {"claim": "Jackson, Mississippi 2022: boil-water advisory 28 July to 15 September; most of about 150,000 residents lost running water on 30 August; National Guard water distribution from 31 August; pressure restored to most by 4 September. The February 2021 storm left residents without water for about a month.", "source": "https://en.wikipedia.org/wiki/Jackson,_Mississippi_water_crisis", "year": 2022, "verified": true},
+        {"claim": "Kentucky 2004-2020: 36,673 boil-water advisories in 378 systems; mean duration 5 days.", "source": "https://www.mdpi.com/2073-4441/16/3/443", "year": 2024, "verified": false},
+        {"claim": "Texas, Winter Storm Uri: boil-water advisories averaged 7.96 days (range 1-36) and covered over 17 million people.", "source": "https://journals.plos.org/water/article?id=10.1371/journal.pwat.0000137", "year": 2023, "verified": true},
+        {"claim": "Flint, Michigan: about 100,000 residents with lead-contaminated water from 2014, state bottled-water distribution until 2018.", "source": "base-rates.md (recalled there)", "year": 2018, "verified": false}
+      ],
+      "notes": "For a typical advisory the household can boil tap water (power and gas work) or buy bottled water the same day, so stored water saves an errand and some boiling, not thirst. The value of stored water here comes from the minority of city-wide events and from days with no flow. Flint-type chemical contamination lasts years, is met by bottled-water distribution and filters, and is not what a two-week store addresses."
+    },
+    {
+      "id": "supplyShock",
+      "definition": "With no physical damage where the household lives, for 7 days or more local shops are out of several staple categories at once (at least a tenth of an ordinary grocery basket unobtainable on a given trip), or most local fuel stations are dry: panic buying, a pipeline, port or trucking stoppage, or a fuel crisis.",
+      "annualProbability": [
+        {
+          "location": "us", "outlook": "all", "lo": 0.02, "mid": 0.05, "hi": 0.12, "tag": "guess",
+          "basis": "Count of episodes a US household met in 55 years, recalled rather than read: fuel crises of 1973-74 and 1979, the March 2020 panic, and the May 2021 Colonial Pipeline shutdown (about 15% of the population): about 3.2 in 55 years, 6% a year. The 2022 infant-formula shortage hit only households with infants; the October 2024 port strike lasted 3 days and stays below the threshold."
+        }
+      ],
+      "tickBox": null,
+      "windows": {
+        "food": {
+          "pOccur": {"lo": 0.005, "mid": 0.03, "hi": 0.1, "tag": "guess", "basis": "A true food window (no way to obtain any food) did not occur for ordinary households in March 2020: specific goods were missing, not calories. The small probability covers households that could not shop at all for some days (no fuel in a fuel shock, purchase limits and queues, no delivery slots)."},
+          "days": {"p50": 1, "p90": 3, "p99": 7},
+          "tag": "guess",
+          "basis": "Partial shortage, not a window: see `partial`. About 12% (5-25%) of an ordinary basket was unobtainable for 2-4 weeks in March-April 2020 and single categories (toilet paper, sanitiser, flour, some canned goods) for 4-8 weeks."
+        }
+      },
+      "coldShare": {"lo": 0.1, "mid": 0.2, "hi": 0.3, "tag": "guess", "basis": "Seasonal coincidence only; power and heating work, so it should not create unmet warmth days unless heating oil or propane deliveries are what is short."},
+      "hotShare": {"lo": 0.08, "mid": 0.15, "hi": 0.25, "tag": "guess", "basis": "Seasonal coincidence only; cooling works."},
+      "leave": {
+        "feasible": {"lo": 0.05, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "A national shock leaves nowhere better to go; a regional fuel shock can be left only by a household with fuel in the tank."},
+        "earliestDay": {"lo": 0.5, "mid": 1, "hi": 3, "tag": "guess", "basis": "A day to decide and travel out of the affected region."},
+        "fixedUsdPerHousehold": {"lo": 50, "mid": 150, "hi": 500, "tag": "guess", "basis": "A drive of a few hundred miles at $0.70 a mile."},
+        "usdPerPersonDay": {"lo": 10, "mid": 45, "hi": 100, "tag": "derived", "basis": "Same blend as localOutage: hotel $95 a person-day from the $177.65 average daily rate (https://www.hospitalitynet.org/news/4135070/us-hotel-results-for-week-ending-17-october), hosts about $10, 40/60."}
+      },
+      "warningDays": {"lo": 0, "mid": 3, "hi": 10, "tag": "guess", "basis": "Colonial 2021: shutdown on 7 May, widespread dry stations from 11-12 May. March 2020: about two weeks between the first warnings and the 13 March peak in buying."},
+      "lateBuy": {
+        "staple": {"lo": 0.35, "mid": 0.65, "hi": 0.9, "tag": "guess", "basis": "A household acting on the first news finds most staples but not the items everyone wants; on 13 March 2020 US spending on consumables was 53% above any 2019 day (IRI, via talkbusiness.net)."},
+        "specialty": {"lo": 0.02, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "The goods the shock is about (respirators and sanitiser in 2020, fuel cans in 2021, a particular formula in 2022) are gone first."}
+      },
+      "exposures": [
+        {
+          "channel": "financialLoss",
+          "description": "Cost of scarcity for a household with no stock: time spent queuing and searching, paying more, doing without preferred goods. Reduced by a rotated pantry, household sundries and a half-full fuel tank.",
+          "hardshipUsdPerPerson": {"lo": 10, "mid": 40, "hi": 150, "tag": "guess", "basis": "One to two extra hours a week of searching and queuing for 4-6 weeks at $20 an hour, shared among 2.5 people, is $30-100 a person; no survey of this cost was found."},
+          "financialUsdPerHousehold": {"lo": 5, "mid": 30, "hi": 150, "tag": "guess", "basis": "Price premiums and forced substitutes on perhaps a tenth of a month's $600 grocery bill at 25-50% more."}
+        }
+      ],
+      "partial": {
+        "shareOfBasketUnobtainable": {"lo": 0.05, "mid": 0.12, "hi": 0.25, "tag": "guess", "basis": "Normal grocery out-of-stock rate 5-7%; Walmart shelf audits found 33% of shelves empty on 19 March 2020; about 10% in August 2020; median stock-out rate of fixed-weight foods up about 130% after 15 March (all search snippets). Excess over normal: roughly 10-25 points at the peak, 4-6 points for months after."},
+        "weeksOfPeakShortage": {"p50": 3, "p90": 8, "p99": 26},
+        "fuel": {
+          "shareOfShocksThatAreFuel": {"lo": 0.2, "mid": 0.4, "hi": 0.6, "tag": "guess", "basis": "Three of the four counted episodes involved fuel; only one was confined to it in the last 40 years."},
+          "daysMostStationsDry": {"p50": 6, "p90": 14, "p99": 60},
+          "basis": "Colonial 2021: over 70% of North Carolina stations without fuel at the peak and 47% on 18 May, day 11 (GasBuddy via abc11). A half-full tank covers about a week of average driving."
+        },
+        "tag": "guess"
+      },
+      "dwellingNotes": "Little difference by dwelling. Apartments have less room for a pantry; city households without a car are untouched by a fuel shock but depend on fewer, smaller shops; rural houses depend on fuel to reach any shop.",
+      "evidence": [
+        {"claim": "March 2020: consumables spending on 13 March was 53% above any 2019 day; week sales of dried beans +377%, rice +234%, shelf-stable tuna +246%, toilet paper +123.5% year on year; some items sold out within hours of delivery into April.", "source": "https://talkbusiness.net/2020/04/the-supply-side-delays-product-scarcity-challenge-retailers-manufacturers/", "year": 2020, "verified": true},
+        {"claim": "Out-of-stocks lingered through the rest of 2020 after the two-month panic; missed sales May 2020-February 2021 of $837M for bath tissue and $689M for paper towels.", "source": "https://supermarketnews.com/consumer-trends/nielseniq-out-stocks-during-pandemic-lead-billions-missed-cpg-sales", "year": 2021, "verified": true},
+        {"claim": "Colonial Pipeline, May 2021: over 70% of North Carolina stations without fuel at the peak; 47% still dry on 18 May, eleven days after the 7 May shutdown.", "source": "https://abc11.com/finance/4725-of-nc-stations-have-no-fuel-with-pipeline-back-up-and-running/10656020/", "year": 2021, "verified": true},
+        {"claim": "Walmart combined out-of-stock rate 33% of audited shelves on 19 March 2020 (Field Agent); normal rate 5-7%, about 10% in August 2020 (IRI).", "source": "search snippets only: Field Agent audit via https://www.cspdailynews.com/general-merchandise/new-tools-help-retailers-navigate-covid-19 (403 on fetch); IRI figure via Toronto Star, 11 August 2020", "year": 2020, "verified": false},
+        {"claim": "Median stock-out rate of fixed-weight food items rose about 130% after 15 March 2020; stock-outs persisted for weeks to months.", "source": "https://doi.org/10.1002/aepp.13362", "year": 2023, "verified": false},
+        {"claim": "Infant formula out-of-stock rate 31% in early April 2022 and about 40% in early May, against 2-8% in early 2021 (Datasembly).", "source": "https://www.businesswire.com/news/home/20220413005974/en", "year": 2022, "verified": false}
+      ],
+      "notes": "This hazard is about convenience and price, not survival: no food window in the model's sense occurred in 2020 or 2021. Its main effect in the model is through lateBuy for other hazards and through the hardship exposure. A pantry earns little here against a 14-day baseline; household sundries, infant formula and a half-full tank earn more."
+    }
+  ],
+  "blockedSources": [
+    "https://www.nrel.gov/docs/fy23osti/83092.pdf: DNS failure; the same report was read in full from the PNNL-33340 mirror.",
+    "https://omb.report/icr/202502-1905-001/doc/152307501: 403; RECS 2024 wording read instead from the form on eia.gov.",
+    "https://www.mdpi.com/2073-4441/16/3/443 and its DOAJ record: 403; Kentucky boil-water advisory counts, durations and population affected. Used from a search snippet only.",
+    "https://www.npr.org/2022/09/15/1123264927/jackson-miss-boil-water-lifted: timeout; Jackson timeline taken from Wikipedia instead.",
+    "https://www.pmmag.com/articles/101880-americans-report-increase-in-instances-of-water-contamination: 403; a survey in which 19% of respondents reported exposure to boil-water alerts, reference period unknown. Not used.",
+    "https://www.epa.gov/climate-indicators/climate-change-indicators-heat-waves: 404; heat-wave frequency and duration in 50 cities. heatWave probability is therefore a guess.",
+    "https://doi.org/10.1002/aepp.13362 (McLaughlin et al. 2023): not opened; stock-out rates by food category in 2020. Blog and press summaries gave no numbers.",
+    "Field Agent, IRI and NielsenIQ out-of-stock percentages for March 2020: only search snippets found.",
+    "Texas DSHS mortality report and CPSC generator report: not re-fetched; figures taken from prior-art.md, where they were verified.",
+    "FCC disaster reporting data on cell-site outages after storms: not searched; comms windows are guesses anchored on the Texas survey.",
+    "AHS 2023 national table of reasons for being uncomfortably cold: not found; 2021 metro figures from a Stacker summary were used."
+  ],
+  "openQuestions": [
+    "heatWave has no canonical window for the heat itself, and the validator rejects a `heat` key inside `windows`. I added a hazard-level field `heat` shaped like a window (pOccur 1; days p50 5, p90 10, p99 20) and `shareOfHarmWithGridUp` (0.95). Unless `heat` is copied into the hazard's windows, a home without working cooling gets no unmet cooling days and the hazard is nearly harmless.",
+    "Water and sanitation windows in my outage hazards cover mains homes only. Homes whose tap needs electricity (private wells, 13-17% of US households, and flats above about the sixth floor, about 2.5%, both from water-sanitation.md) lose water for the length of the power window; I left that to the engine's pumped-water household setting, which should default to on for houses with wells. Rural homes also have outages about 1.4 times as often as average (AHS 2023).",
+    "Net of relief hides a cost: during a long boil notice the household still fetches or boils water every day. I recorded advisory length in a non-canonical `grossDays` field; the engine may want a small hardship per gross day.",
+    "supplyShock food shortages are partial. I recorded them in a non-canonical `partial` field and as a hardship exposure on the financialLoss channel, because the schema has no channel for scarcity.",
+    "RECS (18% in 2020, 22% in 2024 with a 24 h+ outage in the past year) is not reconciled to the last decimal: EIA reliability data cap those years at about 7% and 11%. If RECS were right my storm probabilities would double.",
+    "California public-safety power shut-offs are in none of my hazards; the wildfire researcher or localOutage should carry them.",
+    "winterStorm is tied to the coldWinters tick-box, but the worst US case was in Texas. Should the tick-box mean 'freezing weather possible' rather than 'cold winters'?",
+    "CO and fire exposures here are for a home without a generator or stove; the owner of those channels should check they do not double count with item side risks.",
+    "Probabilities are 2015-2025 averages. Major-event outage minutes rose from 229 a year in 2015-2020 to 294 in 2021-2025; a forward-looking figure may be 10-30% higher."
+  ]
+}

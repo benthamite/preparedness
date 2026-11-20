@@ -1,0 +1,659 @@
+{
+  "kind": "items",
+  "group": "food",
+  "needs": [
+    {
+      "id": "food",
+      "definition": "A person-day inside a food window on which the household has no food left at home and can obtain none from outside. One person-day of food is 2,100 kcal (the humanitarian planning figure). Drinking water is assumed available; thirst is the water need.",
+      "baselineCoverageDays": {
+        "lo": 4,
+        "mid": 14,
+        "hi": 30,
+        "tag": "derived",
+        "basis": "Kitchen inventories: 100 food-secure New Jersey families held a mean of 33.2 days of calories (SD 22.0, range 8.1 to 125.2; https://doi.org/10.1017/S1049023X15004884) and 60 low-income households about 17 (SD 13 to 14; https://research-portal.najah.edu/migrant/35139/). Implied medians of about 28 and 13 give a population median near 20, which I cut by 0.75 for calories nobody eats as meals (oil, flour, sugar, condiments) and 0.9 for urban flats and small households: about 14, with utilities working."
+      },
+      "hardshipUsdPerPersonDay": {
+        "tag": "guess",
+        "basis": "No willingness-to-pay study for a day without food was found. Built as a disability weight (0.05 on day 1 rising to 0.6 after a month) times an assumed $500 per healthy day, and checked against FEMA's $66 per person-day welfare loss for tap water and the $54 per household that co-op members would pay to avoid a 24-hour power cut (both in prior-art.md). Supervised fasters mostly report mild symptoms (https://pmc.ncbi.nlm.nih.gov/articles/PMC5819235/), so the early days are set well below water.",
+        "steps": [
+          {"fromDay": 1, "lo": 8, "mid": 25, "hi": 80},
+          {"fromDay": 2, "lo": 15, "mid": 50, "hi": 200},
+          {"fromDay": 4, "lo": 25, "mid": 80, "hi": 300},
+          {"fromDay": 8, "lo": 35, "mid": 120, "hi": 450},
+          {"fromDay": 15, "lo": 50, "mid": 180, "hi": 700},
+          {"fromDay": 31, "lo": 80, "mid": 300, "hi": 1200}
+        ]
+      },
+      "mortalityMicromortsPerPersonDay": {
+        "tag": "guess",
+        "basis": "Total fast with water, no medical care, healthy adult of average build. Early days are a guess bounded above by data: no deaths in 6,265 water-only fasting days (https://pmc.ncbi.nlm.nih.gov/articles/PMC5819235/) or about 12,300 days at 200 to 250 kcal (https://pmc.ncbi.nlm.nih.gov/articles/PMC6314618/), so under 162 per day at 95% confidence. Late days come from the 1981 hunger strike: nobody died before day 46 and ten lean men died on days 46 to 73, median 61 (https://cain.ulster.ac.uk/events/hstrike/dead.htm); I shift that about 15 to 20 days later for average body fat.",
+        "steps": [
+          {"fromDay": 1, "lo": 0.02, "mid": 0.2, "hi": 2},
+          {"fromDay": 4, "lo": 0.05, "mid": 0.5, "hi": 5},
+          {"fromDay": 8, "lo": 0.2, "mid": 2, "hi": 20},
+          {"fromDay": 15, "lo": 1, "mid": 10, "hi": 100},
+          {"fromDay": 22, "lo": 5, "mid": 50, "hi": 400},
+          {"fromDay": 31, "lo": 50, "mid": 500, "hi": 3000},
+          {"fromDay": 46, "lo": 800, "mid": 5000, "hi": 20000},
+          {"fromDay": 61, "lo": 5000, "mid": 20000, "hi": 100000},
+          {"fromDay": 76, "lo": 20000, "mid": 80000, "hi": 150000}
+        ]
+      },
+      "multipliers": [
+        {
+          "profile": "child",
+          "hardship": 1.5,
+          "mortality": 3,
+          "tag": "guess",
+          "basis": "Relief agencies set the emergency death-rate threshold for under-fives at twice the all-age rate (2 against 1 per 10,000 per day; search snippet, not opened), and young children can become hypoglycaemic within a day's fast. Parents will pay more to feed a child than themselves. Formula-fed infants are far more exposed and are handled by the infant-formula entry, not by this multiplier."
+        },
+        {
+          "profile": "age60to74",
+          "hardship": 1.2,
+          "mortality": 6,
+          "tag": "guess",
+          "basis": "Split of the Dutch famine ratio for people aged 65 and over (about 20 times the under-65 death rate; see age75plus) between the two older profiles. The split itself is my judgment."
+        },
+        {
+          "profile": "age75plus",
+          "hardship": 1.5,
+          "mortality": 25,
+          "tag": "guess",
+          "basis": "Dutch famine 1944-45: 60% of about 20,000 famine deaths among 4.3 million people were aged 65 or over (https://en.wikipedia.org/wiki/Dutch_famine_of_1944%E2%80%931945). If 7% of the population was 65 or over (recalled, not checked), their rate was 12,000/301,000 = 4.0% against 8,000/4.0 million = 0.2% for everyone younger: a ratio of 20. All four hospital admissions in the two fasting-clinic series were aged 67 to 75."
+        },
+        {
+          "profile": "criticalDrug",
+          "hardship": 2,
+          "mortality": 40,
+          "tag": "guess",
+          "basis": "Driven by insulin and sulfonylurea users. Daytime Ramadan fasting raised severe hypoglycaemia to 0.14 episodes a month in type 1 and 0.03 in type 2 diabetes (https://pubmed.ncbi.nlm.nih.gov/15451892/), about 0.5% and 0.1% a day. With an assumed 2% of episodes fatal when no sugar or ambulance is at hand, that is about 30 micromorts a day for these users; if they are 40% of the profile, about 12 a day, or 40 times the healthy early-day figure. It is really an addition of about 12 a day, not a scaling of the late curve."
+        },
+        {
+          "profile": "limitedMobility",
+          "hardship": 1.3,
+          "mortality": 3,
+          "tag": "guess",
+          "basis": "Proxy for frailty, and for being unable to queue, carry or forage, which lengthens the effective window. No data found."
+        }
+      ],
+      "notes": "1. Share of the baseline usable in an outage (https://doi.org/10.1017/S1049023X15004884): calories fall 35% without energy for cooking, 27% once power has been off more than five days, 28% without water, 38% without water and cooking. Assuming half the chilled and frozen calories also need cooking, an all-electric home in a long blackout keeps about 50% (40 to 60%), so about 7 days (2 to 15). With a way to cook it keeps about 73%. 2. Spread across households is about tenfold: in a 2014 survey of 572 US adults, 8% said their food would last 3 days or less, 47% more than 3 days but under a month, 45% a month or more (https://pmc.ncbi.nlm.nih.gov/articles/PMC8702057/); 82% said yes to three days of non-perishable food in the 2013 American Housing Survey; among low-income households 40 to 47% would be out of food three days after losing resources. 3. Rationing. The curves are for days with no food at all. A household that sees a long window coming stretches its stock instead. On half rations (about 1,050 kcal) I put hardship at $20 (6 to 60) per person-day in the first month and $60 (20 to 200) after three months, and death risk for a healthy adult at about 1 (0.1 to 10) micromort a day for the first 90 days and 10 (2 to 50) after. Anchors: 36 young men lost 25% of body weight over 24 weeks on about 1,560 kcal with no deaths; the Dutch famine killed about 0.5% of the population over five months on official rations of 400 to 900 kcal (about 13 micromorts a day for under-65s, my arithmetic). 4. The multipliers are sized for the first two weeks. Applied to the late curve they exceed certainty, so cap daily risk at 150,000 micromorts. 5. No inventory data was found for Western Europe or Buenos Aires; in Germany about half of respondents say they hold about ten days (https://www.fu-berlin.de/en/featured-stories/research/2020/200331-corona-interview-gerhold/index.html)."
+    }
+  ],
+  "items": [
+    {
+      "id": "pantry-no-cook",
+      "name": "Deeper pantry: ready-to-eat food",
+      "spec": "Extra stock of ordinary shelf-stable food the household already eats that needs no cooking, chilling or added water: canned beans, chili, soup, fish, meat and fruit, peanut butter, crackers, cereal, nuts, dried fruit, long-life milk. Bought once on top of the usual shop, then eaten and replaced oldest-first. Units are person-days beyond what the household holds now.",
+      "fromLonglistRows": [9],
+      "scalesWith": "person",
+      "unit": "person-day of food (2,100 kcal)",
+      "ladder": [
+        {"label": "+3 days", "units": 3},
+        {"label": "+7 days", "units": 7},
+        {"label": "+14 days", "units": 14},
+        {"label": "+30 days", "units": 30},
+        {"label": "+60 days", "units": 60}
+      ],
+      "price": {
+        "usdPerUnit": {
+          "lo": 4,
+          "mid": 6,
+          "hi": 9,
+          "tag": "guess",
+          "basis": "Basket for 2,235 kcal: peanut butter 60 g $0.36 (Jif at $2.69/lb, https://www.webstaurantstore.com/search/peanut-butter.html), crackers 100 g $0.45, one can of chili $2.00, one can of beans $1.00, cereal 60 g $0.40, nuts 30 g $0.30, canned fruit or long-life milk $1.00: $5.51, or $5.20 per 2,100 kcal; rounded up for tinned fish and variety. Only the peanut butter price was read on a retailer page; the rest are recalled shelf prices."
+        },
+        "product": "Supermarket basket of canned and dry ready-to-eat foods",
+        "source": "https://www.webstaurantstore.com/search/peanut-butter.html",
+        "verified": false
+      },
+      "lifeYears": {
+        "lo": 1,
+        "mid": 2,
+        "hi": 4,
+        "tag": "guess",
+        "basis": "This is the rotation cycle, not spoilage. Extension services quoting USDA give best quality of 2 to 5 years for low-acid cans and 12 to 18 months for high-acid ones (search snippet; the USDA page refused the fetch); crackers, cereal and nuts keep 6 to 12 months."
+      },
+      "setupHours": {"lo": 0.5, "mid": 2, "hi": 5, "tag": "guess", "basis": "Deciding what to stock, one or two larger shops, shelving and dating. My estimate."},
+      "upkeepHoursPerYear": {"lo": 0.3, "mid": 1.5, "hi": 4, "tag": "guess", "basis": "Checking dates twice a year and keeping the oldest-first habit. My estimate; it grows with depth."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "Waste is carried by everydayShare, so no separate money upkeep."},
+      "everydayShare": {
+        "lo": 0.75,
+        "mid": 0.9,
+        "hi": 0.97,
+        "tag": "guess",
+        "basis": "The food is eaten in the normal course, so the cost is capital, time, space and waste. I assume 10% of each cycle's stock expires uneaten or is eaten grudgingly, about 5% of the stock a year on a two-year cycle. No measurement found; the share falls as the stock gets deeper."
+      },
+      "volumeLitresPerUnit": 1.5,
+      "reliability": {"lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Main failure is having eaten the stock down without replacing it. My estimate."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "supply", "need": "food", "amountPerUnit": 2100, "amountUnit": "kcal", "notes": "One person-day. Usable with no power, gas, water or stove. About half of cans need an opener."},
+        {"type": "other", "description": "A deep pantry also lets a household stay home in a pandemic and eat when shops are open but payments fail. Neither is valued here; see openQuestions."}
+      ],
+      "evidence": [
+        {"claim": "100 food-secure New Jersey families held a mean of 33.16 days of calories (SD 21.97, range 8.14 to 125.17), so the first rungs of this ladder duplicate what many kitchens already hold.", "source": "https://doi.org/10.1017/S1049023X15004884", "year": 2015, "verified": true},
+        {"claim": "In a 2014 online survey of 572 US adults, 4.2% said their food would last under 3 days, 3.7% exactly 3 days, 46.9% more than 3 days but under a month and 45.3% a month or more.", "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8702057/", "year": 2021, "verified": true},
+        {"claim": "82.0% of US households said they had enough non-perishable food for three days; 15.9% said no (2013 American Housing Survey).", "source": "https://www.census.gov/content/dam/Census/library/visualizations/2015/comm/how_ready_are_we_text.pdf", "year": 2015, "verified": true},
+        {"claim": "US shoppers make 1.6 grocery trips a week each and households 2.8, so stock is topped up every two to four days and seldom runs down.", "source": "https://www.fmi.org/newsroom/latest-news/view/2026/05/20/fmi-s-signature-research-examines-the-evolving-physical-store-experience", "year": 2026, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "For a household at the median baseline the first two rungs add days that only the long tail of windows reaches. The ladder matters most to households that hold under a week: the young, people who eat out, and the poor."
+    },
+    {
+      "id": "pantry-cook",
+      "name": "Deeper pantry: food that needs cooking",
+      "spec": "Extra stock of ordinary dry staples the household already cooks: rice, pasta, oats, lentils, dried beans, flour, with oil, salt and seasoning. Rotated like the ready-to-eat pantry. Needs a working way to cook and about 1.5 litres of water per person-day on top of drinking water.",
+      "fromLonglistRows": [9],
+      "scalesWith": "person",
+      "unit": "person-day of food (2,100 kcal)",
+      "ladder": [
+        {"label": "+7 days", "units": 7},
+        {"label": "+14 days", "units": 14},
+        {"label": "+30 days", "units": 30},
+        {"label": "+60 days", "units": 60},
+        {"label": "+90 days", "units": 90}
+      ],
+      "price": {
+        "usdPerUnit": {
+          "lo": 1.7,
+          "mid": 2.2,
+          "hi": 3.5,
+          "tag": "derived",
+          "basis": "BLS average city prices, October 2026: white rice $1.101/lb, spaghetti and macaroni $1.384/lb, dried beans $1.680/lb (https://fred.stlouisfed.org/series/APU0000701312, APU0000701322, APU0000714233). 2,100 kcal as 45% rice (0.571 lb, $0.63), 30% pasta (0.374 lb, $0.52), 25% beans (0.340 lb, $0.57) costs $1.72; I add $0.50 for oil, salt and seasoning."
+        },
+        "product": "Rice, pasta and dried beans at BLS average prices",
+        "source": "https://fred.stlouisfed.org/series/APU0000701312",
+        "verified": false
+      },
+      "lifeYears": {"lo": 2, "mid": 3, "hi": 8, "tag": "guess", "basis": "Rotation cycle. White rice, pasta and dried beans keep for years in shop packaging if dry and pest-free; whole-grain flour and oil are the short-lived parts. Not checked against a source."},
+      "setupHours": {"lo": 0.5, "mid": 1.5, "hi": 4, "tag": "guess", "basis": "One bulk shop plus pest-proof containers. My estimate."},
+      "upkeepHoursPerYear": {"lo": 0.2, "mid": 1, "hi": 3, "tag": "guess", "basis": "Date and pest checks, oldest-first habit. My estimate."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "Waste is carried by everydayShare."},
+      "everydayShare": {"lo": 0.75, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "As for the ready-to-eat pantry: 10% of each cycle lost to expiry, pests or being eaten grudgingly. No measurement found. Lower for households that seldom cook from scratch."},
+      "volumeLitresPerUnit": 0.9,
+      "reliability": {"lo": 0.8, "mid": 0.92, "hi": 0.98, "tag": "guess", "basis": "Given that cooking and water are available. Failures are pests, damp and having eaten it down. My estimate."},
+      "lateBuyClass": "staple",
+      "requires": ["cook"],
+      "conditions": [],
+      "effects": [
+        {"type": "supply", "need": "food", "amountPerUnit": 2100, "amountUnit": "kcal", "notes": "One person-day, only while the household can cook. Uses about 1.5 litres of water (rice takes up twice its weight; pasta and beans more) and about 0.25 hours (0.15 to 0.5) of stove burn per person-day when cooking for three together."}
+      ],
+      "evidence": [
+        {"claim": "Losing energy for cooking removes 35% of the calories in a typical kitchen, losing water 28%, losing both 38%: about a third of ordinary household food is of this kind.", "source": "https://doi.org/10.1017/S1049023X15004884", "year": 2015, "verified": true},
+        {"claim": "BLS average price of long-grain white rice was $1.101/lb and of dried beans $1.680/lb in October 2026.", "source": "https://fred.stlouisfed.org/series/APU0000714233", "year": 2026, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "A third of the cost per calorie of ready-to-eat food and half the volume, but worthless in a blackout to a household that cannot cook. Raw kidney beans are toxic and raw rice and flour are not usefully edible, so no partial credit without the cook capability."
+    },
+    {
+      "id": "freeze-dried-meals",
+      "name": "Freeze-dried meal kit (30-year)",
+      "spec": "Freeze-dried pouches of the Mountain House Just In Case class, kept sealed and not rotated. Prepared by adding water to the pouch; hot water is quicker but room-temperature water works in twice the time. The 14-day kit gives about 1,720 kcal a day, so it is 11.5 person-days at 2,100 kcal.",
+      "fromLonglistRows": [10],
+      "scalesWith": "person",
+      "unit": "person-day of food (2,100 kcal)",
+      "ladder": [
+        {"label": "+3 days", "units": 3},
+        {"label": "+7 days", "units": 7},
+        {"label": "+14 days", "units": 14},
+        {"label": "+30 days", "units": 30}
+      ],
+      "price": {
+        "usdPerUnit": {
+          "lo": 28,
+          "mid": 39,
+          "hi": 45,
+          "tag": "derived",
+          "basis": "$449.00 for the 14-day kit at about 1,720 kcal a day (https://www.firesupplydepot.com/mountain-house-just-in-case-14-day-emergency-food-kit.html): 449 / (14 x 1,720) x 2,100 = $39.16. Low end allows for sale prices near $390 and cheaper large cans; high end for pouches bought singly."
+        },
+        "product": "Mountain House Just In Case 14-Day Emergency Food Supply (42 pouches, 84 servings)",
+        "source": "https://www.firesupplydepot.com/mountain-house-just-in-case-14-day-emergency-food-kit.html",
+        "verified": true
+      },
+      "lifeYears": {"lo": 20, "mid": 30, "hi": 30, "tag": "data", "basis": "Maker's 30-year taste guarantee, as stated on https://www.firesupplydepot.com/mountain-house-just-in-case-14-day-emergency-food-kit.html. Low end allows for hot storage."},
+      "setupHours": {"lo": 0.2, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "Choose, order, shelve. My estimate."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "A glance a year to see it is still there and dry. My estimate."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "Some owners eat it on camping trips; most never open it. My estimate."},
+      "volumeLitresPerUnit": 5.6,
+      "reliability": {"lo": 0.9, "mid": 0.97, "hi": 0.99, "tag": "guess", "basis": "Nobody eats it down, so it is there when wanted. My estimate."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "supply", "need": "food", "amountPerUnit": 2100, "amountUnit": "kcal", "notes": "One person-day. Needs no stove but about 1.3 to 1.7 litres of water per person-day (recalled from pouch instructions, not checked), which the engine should debit from the water stock."}
+      ],
+      "evidence": [
+        {"claim": "The 14-day kit costs $449.00, gives about 1,720 kcal a day from 42 pouches, weighs about 15.6 lb, carries a 30-year guarantee, ships in a 20 x 12.5 x 15.75 inch box (64.5 litres) and can be made with room-temperature water in double the time.", "source": "https://www.firesupplydepot.com/mountain-house-just-in-case-14-day-emergency-food-kit.html", "year": 2026, "verified": true},
+        {"claim": "Budget 25-year pails (Augason Farms 30-day, 1 person) cost about $101 on sale and $183 at list for about 38,700 kcal, or $5.50 to $9.90 per 2,100 kcal, but the contents must be simmered.", "source": "https://augasonfarms.com/products/30-day-1-person-emergency-food-supply-kit-194-servings", "year": 2026, "verified": false}
+      ],
+      "confidence": "derived",
+      "notes": "Six times the price per calorie of rotated ready-to-eat food. What it buys is no rotation and light weight. The cheaper pails need cooking, so they compete with bulk-staples and pantry-cook, not with this entry; see excluded."
+    },
+    {
+      "id": "bulk-staples",
+      "name": "Bulk staples sealed for decades",
+      "spec": "White rice and dried beans (about 60:40 by calories; oats or wheat may replace part) sealed in mylar bags with oxygen absorbers inside lidded buckets, or bought ready-sealed in large cans, and left unopened. Full ration of 2,100 kcal needs about 480 lb per person-year. Needs a way to cook, about 1.7 litres of cooking water and about 0.5 hours of stove burn per person-day.",
+      "fromLonglistRows": [11],
+      "scalesWith": "person",
+      "unit": "person-day of food (2,100 kcal)",
+      "ladder": [
+        {"label": "1 month", "units": 30},
+        {"label": "3 months", "units": 90},
+        {"label": "6 months", "units": 180},
+        {"label": "1 year", "units": 365}
+      ],
+      "price": {
+        "usdPerUnit": {
+          "lo": 1.3,
+          "mid": 2.2,
+          "hi": 4.5,
+          "tag": "derived",
+          "basis": "BLS October 2026 prices (https://fred.stlouisfed.org/series/APU0000701312 and APU0000714233): 1,260 kcal of rice is 0.761 lb x $1.101 = $0.84 and 840 kcal of beans is 0.545 lb x $1.680 = $0.92, so $1.76 of food. Packaging is my estimate: $11 per bucket, lid, bag and absorber holding 33 lb, about 25 person-days, so $0.44. Low end is 25 to 50 lb sacks at warehouse prices; high end is ready-sealed cans."
+        },
+        "product": "Rice and dried beans at BLS average prices, home-packed in buckets",
+        "source": "https://fred.stlouisfed.org/series/APU0000701312",
+        "verified": false
+      },
+      "lifeYears": {"lo": 10, "mid": 25, "hi": 30, "tag": "guess", "basis": "The Church of Jesus Christ store describes its canned white rice as keeping about 25 years cool and dry (search snippet; the store page redirected and could not be read). Home packing is less sure, and old beans cook slowly."},
+      "setupHours": {"lo": 2, "mid": 6, "hi": 15, "tag": "guess", "basis": "Sourcing sacks, buckets and bags and sealing several months' worth. My estimate; near 1 hour if bought ready-sealed."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Yearly look for damp, pests and rodents. My estimate."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.4, "tag": "guess", "basis": "Sealed stock is not rotated, so little of it is ever eaten in normal times. My estimate."},
+      "volumeLitresPerUnit": 0.9,
+      "reliability": {"lo": 0.7, "mid": 0.85, "hi": 0.97, "tag": "guess", "basis": "Home sealing can fail, the household may never have cooked from it, and it is useless without fuel and water. My estimate."},
+      "lateBuyClass": "staple",
+      "requires": ["cook"],
+      "conditions": [],
+      "effects": [
+        {"type": "supply", "need": "food", "amountPerUnit": 2100, "amountUnit": "kcal", "notes": "One person-day, only while the household can cook and has water. A person-year needs about 180 hours of burn (135 butane canisters) and 620 litres of cooking water, so fuel and water, not food, are the binding stocks."},
+        {"type": "other", "description": "Rice and beans alone carry no vitamin C. Without a supplement, count days beyond about day 90 of a window as only partly covered; see the multivitamins entry."}
+      ],
+      "evidence": [
+        {"claim": "Two forum commenters put a person-year of grain and beans at about $300 for 300 lb. At 1,600 kcal per lb that is about 1,300 kcal a day, so a full ration costs about 1.6 times as much before packaging.", "source": "https://www.lesswrong.com/posts/ZMgxFwqabdGepm3e6/accrue-nuclear-dignity-points", "year": 2022, "verified": false},
+        {"claim": "Six months on about half rations (1,560 kcal with required exercise) cost 36 young men 25% of body weight and severe distress but no deaths, so a store that covers half of a long window still prevents most deaths.", "source": "https://en.wikipedia.org/wiki/Minnesota_Starvation_Experiment", "year": 1945, "verified": true},
+        {"claim": "Official rations of 400 to 900 kcal for five months killed about 20,000 of 4.3 million people in the western Netherlands, 60% of them aged 65 or over.", "source": "https://en.wikipedia.org/wiki/Dutch_famine_of_1944%E2%80%931945", "year": 1945, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "Value comes almost wholly from windows of months (nuclearFar, nuclearNear, gridLong), so report the break-even probability. The engine's rule of full rations until the stock is gone, then nothing, will give the first rungs no credit in a window longer than the ladder; see openQuestions."
+    },
+    {
+      "id": "ration-bars",
+      "name": "Emergency ration bars",
+      "spec": "Sealed 3,600 kcal lifeboat ration (Datrex, SOS or Mainstay): 18 wafers of 200 kcal, five-year shelf life, eaten as is with no water or heat. One pack is 1.7 person-days.",
+      "fromLonglistRows": [12],
+      "scalesWith": "person",
+      "unit": "3,600 kcal pack",
+      "ladder": [
+        {"label": "1 pack (1.7 days)", "units": 1},
+        {"label": "2 packs (3.4 days)", "units": 2},
+        {"label": "4 packs (6.9 days)", "units": 4}
+      ],
+      "price": {
+        "usdPerUnit": {
+          "lo": 6.5,
+          "mid": 7.5,
+          "hi": 19,
+          "tag": "data",
+          "basis": "$7.50 regular, $6.50 on sale at https://www.sosproducts.com/Datrex-Food-Bar-3600-Calorie-Each-p/35025.htm. Other shops list the same pack at $14 to $19 (search snippets)."
+        },
+        "product": "Datrex 3600 Calorie Food Bar",
+        "source": "https://www.sosproducts.com/Datrex-Food-Bar-3600-Calorie-Each-p/35025.htm",
+        "verified": true
+      },
+      "lifeYears": {"lo": 5, "mid": 5, "hi": 8, "tag": "data", "basis": "Five years from manufacture, per https://www.sosproducts.com/Datrex-Food-Bar-3600-Calorie-Each-p/35025.htm. High end assumes owners keep them past the date."},
+      "setupHours": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Order and put away. My estimate."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Note the expiry date; replace every five years. My estimate."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "Replacement is covered by lifeYears."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0.05, "tag": "guess", "basis": "Nobody eats these by choice."},
+      "volumeLitresPerUnit": 0.8,
+      "reliability": {"lo": 0.75, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "Risk is being forgotten past expiry or left in a hot car. My estimate."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "supply", "need": "food", "amountPerUnit": 3600, "amountUnit": "kcal", "notes": "1.7 person-days. No water, stove or opener needed. Monotonous: fine for three days, poor for weeks."},
+        {"type": "other", "description": "Compact enough for a go-bag or car, which ordinary pantry food is not. That use belongs to the go-bag entry of another researcher."}
+      ],
+      "evidence": [
+        {"claim": "A 3,600 kcal Datrex pack costs $7.50, holds 18 wafers of 200 kcal and keeps five years from manufacture.", "source": "https://www.sosproducts.com/Datrex-Food-Bar-3600-Calorie-Each-p/35025.htm", "year": 2026, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "At $4.40 per 2,100 kcal with no rotation and no cooking this is the cheapest ready-to-eat stock that asks nothing of the owner. At home it substitutes for the first rungs of pantry-no-cook."
+    },
+    {
+      "id": "multivitamins",
+      "name": "Multivitamins",
+      "spec": "One daily multivitamin-and-mineral tablet per person, with vitamin C and thiamine, replaced every two years. Unit is 365 tablets.",
+      "fromLonglistRows": [13],
+      "scalesWith": "person",
+      "unit": "person-year of daily tablets",
+      "price": {
+        "usdPerUnit": {
+          "lo": 9,
+          "mid": 12,
+          "hi": 20,
+          "tag": "guess",
+          "basis": "Kirkland Signature Daily Multi, 500 tablets, about $13 to $16 in Costco warehouses and $19 online per price trackers (search snippets; costco.com refused the fetch): 365/500 x $16 = $11.70."
+        },
+        "product": "Kirkland Signature Daily Multi, 500 tablets",
+        "source": "https://www.costco.com/p/-/kirkland-signature-daily-multi-500-tablets/11491625",
+        "verified": false
+      },
+      "lifeYears": {"lo": 1.5, "mid": 2, "hi": 4, "tag": "guess", "basis": "Typical printed expiry is about two years; potency fades slowly after. Not checked."},
+      "setupHours": {"lo": 0.1, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Add to a shop. My estimate."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Replace on expiry. My estimate."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "Replacement is covered by lifeYears."},
+      "everydayShare": {"lo": 0, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "1 for the roughly one adult in three who takes one anyway (recalled, not checked) and near 0 otherwise."},
+      "volumeLitresPerUnit": 0.4,
+      "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.97, "tag": "guess", "basis": "Often expired or used up when wanted. My estimate."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "other", "description": "No effect in a food window shorter than about two months. On stored grain and beans alone, scurvy appears after about 12 to 14 weeks without vitamin C and thiamine runs short sooner on polished rice or a near-fast. Suggested rule, a guess: without a supplement, add $100 (30 to 300) of hardship per person-day from day 90 of a staples-only window and 500 (50 to 5,000) micromorts per day from day 150; with it, add nothing."}
+      ],
+      "evidence": [
+        {"claim": "Volunteers on a diet with no vitamin C developed clinical scurvy in 84 to 97 days (Hodges et al. 1971).", "source": "https://www.jci.org/articles/view/106239/pdf", "year": 1971, "verified": false},
+        {"claim": "In the 1981 hunger strike, loss of sight and hearing was attributed to falling vitamin B1.", "source": "https://www.irishtimes.com/culture/books/from-the-archive-starving-to-death-what-it-really-means-and-how-it-was-avoided-1.2468722", "year": 1981, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Worth having only alongside bulk-staples or a pantry-cook ladder of 60 days or more. Sprouting stored beans or wheat also yields vitamin C."
+    },
+    {
+      "id": "camp-stove",
+      "name": "Camping stove with starter fuel",
+      "spec": "Single-burner tabletop butane stove (8,000 BTU/h; Gas One GS-3400P or Choice equivalent) with four 8 oz canisters and two lighters. Boils a litre in about 5 minutes out of the wind. For use with ventilation or outdoors.",
+      "fromLonglistRows": [18],
+      "scalesWith": "household",
+      "unit": "stove kit",
+      "price": {
+        "usdPerUnit": {
+          "lo": 20,
+          "mid": 30,
+          "hi": 55,
+          "tag": "derived",
+          "basis": "$19.50 for the Choice 8,000 BTU butane stove (https://www.webstaurantstore.com/search/butane-stove.html) plus four canisters at $1.79 and about $3 of lighters: $29.66. The dual-fuel Gas One GS-3400P lists at $30 without fuel (https://www.outdoorgearlab.com/reviews/camping-and-hiking/camping-stove/gas-one-gs-3400p)."
+        },
+        "product": "Choice 1-burner 8,000 BTU butane stove plus four 8 oz canisters and two lighters",
+        "source": "https://www.webstaurantstore.com/search/butane-stove.html",
+        "verified": true
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 20, "tag": "guess", "basis": "Simple device with a regulator and a piezo igniter that wear. My estimate."},
+      "setupHours": {"lo": 0.5, "mid": 1, "hi": 2, "tag": "guess", "basis": "Buy, read the instructions and cook one meal on it. My estimate."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Light it once a year. My estimate."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 2, "tag": "guess", "basis": "A canister now and then for testing."},
+      "everydayShare": {"lo": 0, "mid": 0.2, "hi": 0.6, "tag": "guess", "basis": "Some owners use it for camping or table cooking; most would not. My estimate."},
+      "volumeLitresPerUnit": 15,
+      "reliability": {"lo": 0.7, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "Can be mislaid, never tried, or out of fuel. Butane works poorly near freezing, so in an unheated home in a winter storm take the low end unless the stove also takes propane."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "capability", "capability": "cook", "notes": "Unlocks the 35% of ordinary household calories that need cooking, and the pantry-cook and bulk-staples entries. Many households can already cook in an outage; see notes. Indoor combustion risk belongs to another researcher."},
+        {"type": "capability", "capability": "treatWater", "notes": "By boiling. About 0.09 hours of burn per litre in still air and 0.23 in wind, so a canister boils about 6 to 15 litres."},
+        {"type": "supply", "need": "food", "amountPerUnit": 5.3, "amountUnit": "hours of stove burn at full output (cooking fuel, not calories)", "notes": "Four canisters. About 20 person-days of cooked staples at 0.25 hours each."},
+        {"type": "other", "description": "Hot meals and drinks for a household that would otherwise eat cold: about $3 (1 to 10) per person per day of outage. A guess, sized as a small part of the $54 per household that co-op members would pay to avoid a 24-hour power cut."}
+      ],
+      "evidence": [
+        {"claim": "The Gas One GS-3400P lists at $30, puts out 8,000 BTU/h on butane, boiled 1 litre in 5 min 15 s without wind and 14 min in a fan's wind, and butane performs poorly in the cold.", "source": "https://www.outdoorgearlab.com/reviews/camping-and-hiking/camping-stove/gas-one-gs-3400p", "year": 2026, "verified": true},
+        {"claim": "About 38% of US households cook with natural gas (70% in California, 69% in New Jersey).", "source": "https://www.eia.gov/todayinenergy/detail.php?id=53439", "year": 2022, "verified": true},
+        {"claim": "70% of US households and 80% of homeowners own a grill or smoker.", "source": "https://members.hpba.org/Resources/PressRoom/ID/2259/2023-State-of-the-Barbecue-Industry", "year": 2023, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "Share of households that can already cook without grid power, my arithmetic from the two ownership figures: with piped gas flowing, 1 - (1 - 0.38)(1 - 0.70 x 0.7 usable) = 0.68 overall, about 0.73 for houses and 0.6 for flats; with gas also off, about 0.5 overall, 0.56 for houses and 0.35 for flats (I assume 80% of houses own a grill, usable 70% of the time, and that 35% of flat-dwellers have a usable one). The stove earns its value only in the remaining households."
+    },
+    {
+      "id": "stove-fuel",
+      "name": "Extra stove fuel",
+      "spec": "8 oz (227 g) butane canisters for the camping stove, bought in packs of twelve and stored cool, beyond the four in the stove kit.",
+      "fromLonglistRows": [18],
+      "scalesWith": "household",
+      "unit": "8 oz butane canister",
+      "ladder": [
+        {"label": "12 canisters (16 h)", "units": 12},
+        {"label": "36 canisters (48 h)", "units": 36},
+        {"label": "96 canisters (128 h)", "units": 96}
+      ],
+      "price": {
+        "usdPerUnit": {
+          "lo": 1.6,
+          "mid": 1.79,
+          "hi": 3.1,
+          "tag": "data",
+          "basis": "$21.49 per pack of twelve, $1.79 each, at https://www.webstaurantstore.com/choice-butane-fuel-refill-8-oz-canister-pack/174BUTANE12.html. Home Depot lists a Gas One twelve-pack at $36.78 (search snippet)."
+        },
+        "product": "Choice Butane Fuel Refill, 8 oz canister, pack of 12",
+        "source": "https://www.webstaurantstore.com/choice-butane-fuel-refill-8-oz-canister-pack/174BUTANE12.html",
+        "verified": true
+      },
+      "lifeYears": {"lo": 5, "mid": 8, "hi": 15, "tag": "guess", "basis": "Sealed canisters keep for years; seals and rust set the limit. Not checked against a maker's figure."},
+      "setupHours": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Order and find a cool place away from heat. My estimate."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Check for rust. My estimate."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.5, "tag": "guess", "basis": "Used up in normal life only by owners who camp or cook at the table. My estimate."},
+      "volumeLitresPerUnit": 0.7,
+      "reliability": {"lo": 0.9, "mid": 0.97, "hi": 0.99, "tag": "guess", "basis": "Little to go wrong. My estimate."},
+      "lateBuyClass": "specialty",
+      "requires": ["camp-stove"],
+      "conditions": [],
+      "effects": [
+        {"type": "supply", "need": "food", "amountPerUnit": 1.33, "amountUnit": "hours of stove burn at full output (cooking fuel, not calories)", "notes": "227 g of butane holds about 10,640 BTU, so 1.33 hours at 8,000 BTU/h; the seller claims 2 to 4 hours at lower settings. One canister cooks about 5 person-days of staples (3 to 9) or boils 6 to 15 litres of water. The schema has no fuel stock, so this is filed under food; see openQuestions."}
+      ],
+      "evidence": [
+        {"claim": "A twelve-pack of 8 oz butane canisters costs $21.49 and each canister is said to burn for about 2 to 4 hours depending on the setting.", "source": "https://www.webstaurantstore.com/choice-butane-fuel-refill-8-oz-canister-pack/174BUTANE12.html", "year": 2026, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "Ninety-six canisters cook for a household of three for about five months. For longer, a 20 lb propane cylinder with the stove's adapter holds about 54 hours of burn for one refill, but must be kept outdoors, so it suits houses only. Limits on keeping many canisters in a flat were not checked."
+    },
+    {
+      "id": "grill",
+      "name": "Outdoor grill with spare fuel",
+      "spec": "22-inch charcoal kettle grill with two 16 lb bags of briquettes kept in reserve, used outdoors only. A household that already owns a grill needs only the spare fuel (about $22, or a spare propane cylinder).",
+      "fromLonglistRows": [19],
+      "scalesWith": "household",
+      "unit": "grill plus 32 lb of charcoal",
+      "price": {
+        "usdPerUnit": {
+          "lo": 22,
+          "mid": 171,
+          "hi": 300,
+          "tag": "guess",
+          "basis": "Weber Original Kettle 22-inch $149.00 on weber.com plus two 16 lb bags of Kingsford at $10.92 (both search snippets; weber.com and the grocers refused the fetch): $170.84. Low end is spare fuel alone for a household that owns a grill."
+        },
+        "product": "Weber Original Kettle 22-inch plus two 16 lb bags of Kingsford briquettes",
+        "source": "https://www.weber.com/US/en/grills/charcoal-grills/original-kettle/original-kettle-charcoal-grill-22/741001.html",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 20, "tag": "guess", "basis": "Enamelled steel kettle kept outdoors. My estimate."},
+      "setupHours": {"lo": 0.5, "mid": 1.5, "hi": 3, "tag": "guess", "basis": "Buy, assemble, cook once. My estimate."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Keep the reserve bags dry and unused. My estimate."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 5, "tag": "guess", "basis": "Charcoal that gets damp."},
+      "everydayShare": {"lo": 0.5, "mid": 0.85, "hi": 0.98, "tag": "guess", "basis": "Seven households in ten own a grill for ordinary cooking, so most of the cost is justified by everyday use. The reserve fuel is the preparedness part."},
+      "volumeLitresPerUnit": 250,
+      "reliability": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Needs dry fuel and weather that allows cooking outside; unusable in high wind, heavy rain or under a burn ban. My estimate."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": ["house"],
+      "effects": [
+        {"type": "capability", "capability": "cook", "notes": "Outdoors only. Never indoors or in a garage; that risk belongs to another researcher."},
+        {"type": "supply", "need": "food", "amountPerUnit": 12, "amountUnit": "hours of grill cooking (cooking fuel, not calories)", "notes": "32 lb of briquettes at 2 to 3 lb per one-hour session. Slow and wasteful for boiling water."}
+      ],
+      "evidence": [
+        {"claim": "70% of US households and 80% of homeowners already own a grill or smoker.", "source": "https://members.hpba.org/Resources/PressRoom/ID/2259/2023-State-of-the-Barbecue-Industry", "year": 2023, "verified": true},
+        {"claim": "The model fire code bars charcoal and other open-flame cooking on combustible balconies or within 10 feet of combustible construction, with exceptions for one- and two-family houses, sprinklered buildings and 1 lb gas cylinders.", "source": "https://dos.ny.gov/tb-3005-fcnys-open-flame-cooking-devices-combustible-balconies-and-decks", "year": 2015, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Limited to houses because most flats may not use one on a balcony. For the 80% of homeowners who already have a grill, the entry reduces to a $22 fuel reserve and is then one of the cheapest ways to hold the cook capability."
+    },
+    {
+      "id": "kitchen-sundries",
+      "name": "Can opener, lighters and matches",
+      "spec": "One sturdy manual can opener, two butane lighters and a box of waterproof or strike-anywhere matches, kept with the food store.",
+      "fromLonglistRows": [14, 20],
+      "scalesWith": "household",
+      "unit": "bundle",
+      "price": {
+        "usdPerUnit": {
+          "lo": 10,
+          "mid": 22,
+          "hi": 35,
+          "tag": "guess",
+          "basis": "$14.99 KitchenAid can opener (item-longlist.md, from NBC Select) plus about $3 for two lighters and $4 for matches. The lighter and match prices are recalled, not read."
+        },
+        "product": "KitchenAid manual can opener, two disposable lighters, one box of waterproof matches",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 30, "tag": "guess", "basis": "The opener lasts decades; lighters leak down over some years. My estimate."},
+      "setupHours": {"lo": 0.1, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Add to a shop. My estimate."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "Check the lighters spark. My estimate."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 1, "tag": "guess", "basis": "A lighter now and then."},
+      "everydayShare": {"lo": 0.3, "mid": 0.7, "hi": 0.95, "tag": "guess", "basis": "Most kitchens already own and use an opener and some source of flame. My estimate."},
+      "volumeLitresPerUnit": 0.5,
+      "reliability": {"lo": 0.85, "mid": 0.95, "hi": 0.99, "tag": "guess", "basis": "Small things get lost. My estimate."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "capability", "capability": "ignition", "notes": "Lights a gas hob whose electric spark is dead in a power cut, a grill, or a stove whose igniter has failed. New capability id. I guess one household in five (5 to 40%) has no working flame source."},
+        {"type": "other", "description": "Opens cans without ring-pulls, perhaps half of canned food. I guess one household in ten (3 to 25%) has only an electric opener or none. A knife, a spoon or a concrete step will open a can, slowly and with some risk of a cut, so the harm avoided is small."}
+      ],
+      "evidence": [
+        {"claim": "A manual can opener is on the Ready.gov, Red Cross, German and Swedish kit lists; matches or lighters are on nearly every list.", "source": "https://www.ready.gov/kit", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "No survey of can-opener or lighter ownership was found; the Hiatt et al. survey may hold it but its full text is paywalled. Cheap enough that the ranking will turn on the two ownership guesses."
+    },
+    {
+      "id": "infant-formula",
+      "name": "Infant formula buffer",
+      "spec": "For each formula-fed infant, unopened powder of the usual brand beyond the tub in use, rotated oldest-first, with a few bottles of ready-to-feed for days without safe water. One infant-day is about 28 fl oz prepared (125 g of powder, about 560 kcal).",
+      "fromLonglistRows": [16],
+      "scalesWith": "fixed",
+      "unit": "infant-day of formula",
+      "ladder": [
+        {"label": "+7 days", "units": 7},
+        {"label": "+14 days", "units": 14},
+        {"label": "+30 days", "units": 30}
+      ],
+      "price": {
+        "usdPerUnit": {
+          "lo": 3,
+          "mid": 8,
+          "hi": 11,
+          "tag": "derived",
+          "basis": "Enfamil NeuroPro powder, 20.7 oz tub, $42.99, shown as $0.29 per prepared fl oz (https://www.enfamil.com/products/enfamil-neuropro-infant-formula/ready-to-use-32-fl-oz-bottle/): 28 fl oz x $0.29 = $8.12. Low end is store-brand powder (recalled, not read); high end is ready-to-feed at $11.48 per 32 fl oz (search snippet)."
+        },
+        "product": "Enfamil NeuroPro infant formula powder, 20.7 oz tub",
+        "source": "https://www.enfamil.com/products/enfamil-neuropro-infant-formula/ready-to-use-32-fl-oz-bottle/",
+        "verified": true
+      },
+      "lifeYears": {"lo": 0.5, "mid": 1, "hi": 1.5, "tag": "guess", "basis": "The infant outgrows formula at about 12 months; unopened powder is dated a year or more ahead (not checked)."},
+      "setupHours": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Buy extra tubs. My estimate."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Use oldest first; re-buy as the baby's needs change. My estimate."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "Waste is carried by everydayShare."},
+      "everydayShare": {"lo": 0.8, "mid": 0.95, "hi": 1, "tag": "guess", "basis": "Used up in the normal course unless the infant weans or changes formula first. My estimate."},
+      "volumeLitresPerUnit": 0.3,
+      "reliability": {"lo": 0.8, "mid": 0.92, "hi": 0.98, "tag": "guess", "basis": "Powder needs safe water and clean bottles; the buffer may have been run down. My estimate."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": ["infant"],
+      "effects": [
+        {"type": "supply", "need": "food", "amountPerUnit": 1, "amountUnit": "infant-day of formula (28 fl oz, about 560 kcal)", "notes": "Covers the infant only. Pantry food does not feed an infant under about six months, so the infant's food need is separate from the household's. Powder also draws about 0.85 litres of safe water a day."},
+        {"type": "other", "description": "Infant parameters, all guesses. Ordinary stock: 5 days (2 to 14). An infant-day without formula, with the household improvising from cow's or evaporated milk and soft foods: hardship $150 (40 to 600) to the parents and 30 (3 to 300) micromorts for the first week, rising after. If the household has no food of any kind, far higher. Formula is also its own supply shock: in 2022 shelves were 43 to 70% empty for about two months, and the harm then was search time and worry, not deaths."}
+      ],
+      "evidence": [
+        {"claim": "Of US infants born in 2023, 62.8% were breastfed at six months and 29.8% exclusively through six months, so about seven in ten receive some formula by then.", "source": "https://www.cdc.gov/breastfeeding-data/about/index.html", "year": 2026, "verified": true},
+        {"claim": "In autumn 2022, 34.7% of parents of infants under one had trouble getting formula in the past week; 57.5% went to another shop and 55.2% changed brand.", "source": "https://www.census.gov/library/stories/2024/04/infant-formula-shortage.html", "year": 2024, "verified": true},
+        {"claim": "Formula out-of-stock rates reached 43% in early May 2022 and 70% from 22 May to early July; a handful of hospital admissions and no deaths were attributed to the shortage itself.", "source": "https://en.wikipedia.org/wiki/2022_United_States_infant_formula_shortage", "year": 2022, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Row 16 also lists baby food and nappies. Baby food for infants over six months is covered by the same buffer logic at lower stakes; nappies belong to sanitation. Breastfed infants need none of this while the mother is fed and well."
+    },
+    {
+      "id": "pet-food",
+      "name": "Pet food buffer",
+      "spec": "One extra unopened bag or case of the pet's usual food, rotated oldest-first. One pet-day is about 230 g of dry food for a 30 lb dog (800 kcal) or 60 g for a cat (250 kcal).",
+      "fromLonglistRows": [17],
+      "scalesWith": "fixed",
+      "unit": "pet-day of food",
+      "ladder": [
+        {"label": "+14 days", "units": 14},
+        {"label": "+30 days", "units": 30},
+        {"label": "+60 days", "units": 60}
+      ],
+      "price": {
+        "usdPerUnit": {
+          "lo": 0.25,
+          "mid": 0.4,
+          "hi": 1.5,
+          "tag": "guess",
+          "basis": "Purina Dog Chow 44 lb at $28.88 to $30.49 (search snippets from H-E-B and Chewy; both refused the fetch), about $1.50 per kg, times 0.23 kg a day: $0.35 for a 30 lb dog. Cats eat less of a dearer food; premium foods cost several times more."
+        },
+        "product": "Purina Dog Chow Complete Adult, 44 lb bag",
+        "source": "https://www.chewy.com/dog-chow-complete-adult-lamb-flavor/dp/918902",
+        "verified": false
+      },
+      "lifeYears": {"lo": 0.5, "mid": 1, "hi": 1.5, "tag": "guess", "basis": "Dry food is dated about a year ahead unopened. Not checked."},
+      "setupHours": {"lo": 0.1, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Buy one bag ahead. My estimate."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.5, "tag": "guess", "basis": "Buy the next bag when the spare is opened. My estimate."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0.9, "mid": 0.97, "hi": 1, "tag": "guess", "basis": "All of it is eaten in the normal course. My estimate."},
+      "volumeLitresPerUnit": 0.5,
+      "reliability": {"lo": 0.9, "mid": 0.97, "hi": 0.99, "tag": "guess", "basis": "Hard to get wrong. My estimate."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": ["pet"],
+      "effects": [
+        {"type": "supply", "need": "food", "amountPerUnit": 470, "amountUnit": "kcal", "notes": "Human food not diverted to the animal: the mean of a dog's 800 and a cat's 250 kcal (525), times a 0.9 chance that the owner would otherwise share. A guess."},
+        {"type": "other", "description": "Owner's distress at a hungry animal when there is nothing to share: about $10 (3 to 30) per pet-day. A guess. The carrier and identity tag in row 17 help with evacuation and belong to that researcher."}
+      ],
+      "evidence": [
+        {"claim": "A 44 lb bag of Purina Dog Chow costs about $29 to $30 and holds 405 kcal per cup.", "source": "https://www.chewy.com/dog-chow-complete-adult-lamb-flavor/dp/918902", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Nearly free to hold, because it is pure rotation. Its effect in the model is small and rests on guesses about how owners behave."
+    }
+  ],
+  "excluded": [
+    {"what": "Row 15: frozen water bottles as ice packs, fridge and freezer thermometers", "reason": "Acts on the refrigeration need, which another researcher owns. It adds no food beyond keeping frozen food about a day longer."},
+    {"what": "Row 21: mess kit, disposable plates and cutlery, foil, pot", "reason": "Nearly every kitchen has pots and cutlery. Disposable plates matter only when there is no water to wash up, which is a water and sanitation question."},
+    {"what": "Row 16 in part: nappies", "reason": "Sanitation, not food."},
+    {"what": "Row 17 in part: pet carrier, identity tag, pet water", "reason": "Carrier and tag are evacuation aids; pet water (about 1 litre a day for a 30 lb dog) belongs with the water ladder."},
+    {"what": "Budget 25-year meal pails (Augason Farms, ReadyWise)", "reason": "Not a separate entry. About $5.50 to $9.90 per 2,100 kcal (unverified), must be simmered, and a '30-day' pail is 18 person-days at 2,100 kcal. It does the job of bulk-staples at three times the price with less work, so the ranking is set by that entry."},
+    {"what": "Military-style ready meals (MRE)", "reason": "Not on the longlist; five-year life at roughly $10 or more a meal. Dominated by ration bars for compactness and by the pantry for cost."},
+    {"what": "Wheat with a grain mill, seeds, food growing", "reason": "Longlist row 122 (grid independence), outside rows 9 to 21."},
+    {"what": "Electric cooking from a power station or generator", "reason": "Depends on the mainsPower capability, owned by another researcher."},
+    {"what": "20 lb propane cylinder as bulk stove fuel", "reason": "Folded into the stove-fuel notes. Outdoor storage only, so houses only."}
+  ],
+  "blockedSources": [
+    "https://www.cambridge.org/core/journals/prehospital-and-disaster-medicine/article/emergency-food-supplies-in-food-secure-households/72CFA8F950C6E48F0CEECF5C691D0865: full text paywalled (abstract read). Would give the median and spread of days of food and the split into ready-to-eat, needs-cooking and chilled.",
+    "https://www.cambridge.org/core/journals/disaster-medicine-and-public-health-preparedness/article/household-food-and-water-emergency-preparedness-practices-across-the-united-states/8979E601643EB8751C4C38E82860E950: full text paywalled. Would give ownership of manual can openers and of ways to cook without power.",
+    "Golem et al. 2016, Topics in Clinical Nutrition 31(3):213-221: only the abstract was read, on a mirror. Would say what 'loss of resources' means in the finding that 40 to 47% of low-income households run out in three days.",
+    "https://store.churchofjesuschrist.org/white-rice---case-of-6-cans/5638681311.p: redirects by location. Would give the price and shelf life of ready-sealed rice and beans.",
+    "https://mountainhouse.com, https://augasonfarms.com, https://gasone.com, https://amer.weber.com, https://www.costco.com, https://www.chewy.com: HTTP 429. Would give maker prices for freeze-dried kits, meal pails, the stove, the grill, multivitamins and pet food.",
+    "https://www.walmart.com and https://www.samsclub.com: robot check. Would give supermarket prices for the pantry basket.",
+    "https://www.fns.usda.gov/research/cnpp/usda-food-plans/cost-food-monthly-reports: HTTP 403. Would give the Thrifty Food Plan cost per person as a check on pantry prices.",
+    "https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/shelf-stable-food-safety: HTTP 403. Would confirm canned-food shelf lives.",
+    "https://pubmed.ncbi.nlm.nih.gov and https://www.mdpi.com: cookie wall and HTTP 403. The same papers were read through the Europe PMC service.",
+    "Gerhold, Wahl and Dombrowsky 2019, International Journal of Disaster Risk Reduction: not found. Would give measured days of food in German households."
+  ],
+  "openQuestions": [
+    "Rationing. The engine feeds the household in full until the stock is gone and then counts days with nothing. Real households stretch. Under the engine's rule a 90-day store in a 180-day window leaves 90 foodless days, which is certain death, though half rations for six months killed nobody in the Minnesota experiment and about 0.5% of people in the Dutch famine. So the first rungs of bulk-staples get no credit and the greedy ranking can never reach the rung that completes the window. Suggested rule: when a window is longer than about 14 days, let the household eat half rations, so each stored person-day covers two days at the half-ration hardship and mortality given in the food need's notes.",
+    "The baseline differs about tenfold between households (8% say 3 days or less, 45% a month or more). It should be a reader input, for example: how many days could you eat from what is in your kitchen now?",
+    "The baseline needs splitting by utility. About 35% of ordinary household calories need cooking and 27% are lost after five days without power; the engine should apply these when the power or gas window is open and the household lacks the cook capability.",
+    "Capabilities need baseline shares. I estimate that 68% of households can already cook in a power cut while piped gas flows and about 50% when it does not (lower in flats). There is no schema field for this.",
+    "Stove and grill fuel is entered as a supply to the food need with the unit 'hours of burn', because the validator accepts only need ids. The engine needs a cooking-fuel stock that sets how many days the cook capability lasts, at about 0.25 hours per person-day of cooked food and 0.09 hours per litre of water boiled.",
+    "Cooked and freeze-dried food draws on the water stock: about 1.5 litres per person-day for pantry-cook, 1.7 for bulk-staples, 1.3 to 1.7 for freeze-dried meals.",
+    "Infants. A formula-fed infant cannot live on the household pantry and no profile covers infants. The infant-formula entry carries its own guesses for ordinary stock, hardship and mortality.",
+    "Pandemics. A large food store lets a household stop shopping for as many days as it holds, which cuts exposure on the infection channel. By instruction this is not valued here; whoever owns infection should credit the pantry, bulk-staples and freeze-dried entries with it.",
+    "Payments. Stored food also covers days when shops are open but the household cannot pay. That value sits in the payments window and is not credited here.",
+    "New capability id: ignition (matches or a lighter), used by kitchen-sundries.",
+    "The multipliers are single numbers applied to the whole mortality curve. They are sized for the first two weeks; from about day 30 they should be capped (I suggest daily risk no higher than 150,000 micromorts), and the criticalDrug figure is better read as an added 12 micromorts a day.",
+    "Hardship dollars assume $500 per healthy day. If the model's value of a micromort implies a different value of a healthy day, scale the hardship curve by the same ratio.",
+    "Western Europe and Buenos Aires: no kitchen-inventory data was found. Smaller kitchens and more frequent shopping suggest a lower baseline than the US figure, perhaps 10 days, but that is a guess."
+  ]
+}

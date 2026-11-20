@@ -1,0 +1,524 @@
+{
+  "kind": "items",
+  "group": "drugs",
+  "needs": [
+    {
+      "id": "medication",
+      "definition": "A person-day on which someone who takes at least one prescription drug regularly has run out of it and cannot get more from a pharmacy, prescriber, relief clinic or neighbour. The curves are conditional on the person being on regular medication and describe a user whose drugs are not dangerous to interrupt within days (about four in five users); the criticalDrug multiplier covers the rest. People on no regular prescription have no harm on this need.",
+      "baselineCoverageDays": {
+        "lo": 1,
+        "mid": 20,
+        "hi": 85,
+        "tag": "derived",
+        "basis": "Days until the first regular drug runs out, at a random moment. This is a spread over the refill cycle and across people, not parameter uncertainty: lo and hi are the 5th and 95th percentile of that spread, and the engine should integrate over it (about 10% have under 3 days, 18% under 7, 33% under 14, 62% under 30). Anchors: 89.7% of households had a 3-day supply (BRFSS, https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6136a1.htm); 82% of medication users aged 50-80 had 7 days (NPHA 2019, snippet only); refills are picked up with 3-9 days still in hand and roughly half of maintenance days come from 90-day fills (see .md)."
+      },
+      "hardshipUsdPerPersonDay": {
+        "tag": "guess",
+        "basis": "No willingness-to-pay study found. Built from a utility loss per day (about 0.03, 0.06 and 0.09 across the three steps, reflecting that most users of blood-pressure, lipid or thyroid drugs feel nothing for days while antidepressant, pain, reflux, stimulant and contraceptive users are affected sooner) times roughly $450 per quality-adjusted life-day, plus $5-10 a day of worry. Non-fatal events are a small addition at this risk level. 40% of US adults say they could not go more than a week without their regular medication before serious effects (Healthcare Ready 2022, https://healthcareready.org/wp-content/uploads/2022/07/July-Analysis_HcR-2022-Domestic-Preparedness-Poll-Summary_Final-7-18.pdf), which supports a material worry component.",
+        "steps": [
+          {"fromDay": 1, "lo": 4, "mid": 15, "hi": 50},
+          {"fromDay": 4, "lo": 10, "mid": 30, "hi": 90},
+          {"fromDay": 15, "lo": 15, "mid": 45, "hi": 130}
+        ]
+      },
+      "mortalityMicromortsPerPersonDay": {
+        "tag": "guess",
+        "basis": "For a user aged 15-59 of non-critical regular drugs. Reasoning: such a user's all-cause risk is of the order of 10 micromorts a day; if their drugs prevent about 10% of it at steady state, full loss of effect costs about 1 a day, reached only after washout (blood pressure returns over days to two weeks, lipids over weeks), with antidepressant discontinuation adding risk in weeks 1-4. No trial measures this directly. Checked against Puerto Rico after Maria: with the multipliers below, 14.4% of households unable to get medication and about 15 unmet days each, the curve gives roughly 200 deaths, against 300-450 if medication was about 30% of the roughly 1,000-1,500 deaths attributed to interrupted care (https://www.healthcaredive.com/news/a-third-of-hurricane-maria-deaths-stemmed-from-healthcare-disruption-nejm/524517/). Texas 2021 recorded no deaths attributed to lack of drugs, as the curve predicts for a 2-4 day window.",
+        "steps": [
+          {"fromDay": 1, "lo": 0.05, "mid": 0.3, "hi": 1.5},
+          {"fromDay": 4, "lo": 0.15, "mid": 0.6, "hi": 2.5},
+          {"fromDay": 15, "lo": 0.3, "mid": 1.0, "hi": 4}
+        ]
+      },
+      "multipliers": [
+        {
+          "profile": "criticalDrug",
+          "hardship": 8,
+          "mortality": 80,
+          "tag": "derived",
+          "basis": "Plausible range 20-300 for mortality, 3-20 for hardship. Excess deaths per day fully without the drug, age 15-59, by class: methadone 57-68 and buprenorphine 14 (Sordo 2017: 36.1 v 11.3 and 9.5 v 4.3 deaths per 1,000 person-years out of v in treatment; 32.1 in the four weeks after leaving methadone; read via https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5421454/fullTextXML); anticoagulants 5-40 (ROCKET AF: 5-6 strokes or emboli per 100 patient-years in the 30 days after an interruption of 3+ days, 23-26 after permanent discontinuation, about a fifth fatal, scaled down for age); antiepileptics 30-60 (Faught 2008: hazard ratio 3.32 for death in non-adherent quarters); type 1 diabetes 200-1,000 or more from day 2, depending on whether a hospital can be reached (treated ketoacidosis is 0.4% fatal, untreated is fatal); insulin-treated type 2, long-term steroids, heart-failure and coronary drugs, transplant drugs 10-50. Weighted by rough user counts this is 25-100 a day in days 4-14 against 0.6 for the baseline user. Type 1 diabetes is about 8% of the group and most of the total, so the figure is fragile."
+        },
+        {
+          "profile": "age60to74",
+          "hardship": 1.3,
+          "mortality": 5,
+          "tag": "guess",
+          "basis": "All-cause mortality at 60-74 is about five times that at 15-59 and the conditions being treated are more advanced; assumes the drug-preventable share is similar."
+        },
+        {
+          "profile": "age75plus",
+          "hardship": 1.6,
+          "mortality": 15,
+          "tag": "guess",
+          "basis": "All-cause mortality at 75+ is over twenty times that at 15-59, reduced because more of it is not drug-preventable. Japan 2006 flood: age 75+ had 3.6 times the odds of interrupted medication among evacuees (Tomio 2010, PMID 20405461)."
+        },
+        {
+          "profile": "child",
+          "hardship": 1,
+          "mortality": 0.5,
+          "tag": "guess",
+          "basis": "Children's regular drugs are mostly asthma controllers and stimulants; the dangerous ones (insulin, antiepileptics) are covered by criticalDrug."
+        },
+        {
+          "profile": "limitedMobility",
+          "hardship": 1.2,
+          "mortality": 1.5,
+          "tag": "guess",
+          "basis": "Marker of frailty and of being less able to reach a relief clinic. Japan 2006 flood: people receiving long-term care had 4.6 times the odds of interruption (Tomio 2010)."
+        }
+      ],
+      "notes": "Prevalence, needed because the curves are conditional. Any prescription drug in the past 30 days (NHANES 2015-2018, Health United States 2019 table 39, https://www.cdc.gov/nchs/data/hus/2019/039-508.pdf): under 18 21.5%, 18-44 35.7%, 45-64 67.1%, 65+ 88.5%; three or more drugs 3.4%, 10.1%, 36.5%, 66.4%; five or more 1.0%, 4.2%, 18.0%, 41.9%. Regular use is a little lower because the survey counts short courses; my estimate for the model's age bands (guess): child 12% (8-18), 15-59 38% (30-45), 60-74 80% (72-86), 75+ 90% (85-94). Share of all persons on a drug dangerous to interrupt within days (guess from user counts: 7.6M on oral anticoagulants, 7-8.4M on insulin of whom 2.1M type 1, about 1.2% of adults on oral glucocorticoids, about 3M with treated epilepsy, 1.5-2M on opioid-substitution, plus heart-failure and coronary regimens, with overlap): child 1.5% (0.7-3), 15-59 5% (3-9), 60-74 18% (12-26), 75+ 28% (20-40). The mortality curve assumes emergency care is still reachable on most unmet days; where it is not (gridLong, nuclear), type 1 diabetes alone would push the criticalDrug figure several times higher. In-centre dialysis is not a drug supply and belongs with emergencyCare: after Sandy, 30-day mortality of dialysis patients was 1.83% against 1.47% and 1.60% in comparison groups; after Katrina 44% missed a session and 17% missed three or more, with 2.16 times the odds of hospitalisation, but no significant excess mortality was found. United States figures throughout; dispensing intervals differ elsewhere (28-day packs in the UK, larger packs in Germany), which changes baseline coverage.",
+      "evidence": [
+        {"claim": "45.8% of the US population used a prescription drug in the past 30 days in 2015-2016: 18.0% aged 0-11, 27.0% aged 12-19, 46.7% aged 20-59, 85.0% aged 60+.", "source": "https://www.cdc.gov/nchs/products/databriefs/db334.htm", "year": 2019, "verified": true},
+        {"claim": "Katrina (n=1,043 adult survivors): 73.9% had a chronic condition; 20.6% of them cut back or stopped treatment; reasons were access to physicians 41.1%, medications 32.5%, money or insurance 29.3%, transport 23.2%.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:17657545%20AND%20SRC:MED&resultType=core&format=json", "year": 2007, "verified": true},
+        {"claim": "Review of 70 articles: 32-48% of Katrina evacuees lacked adequate medication in three surveys; 34% of households needed a refill within 3 days; refills were 7-48% of visits at Katrina relief clinics; in a 2006 Japanese flood 48% of evacuees left medication behind and 88% left prescription records.", "source": "https://currents.plos.org/disasters/article/disaster-driven-evacuation-and-medication-a-systematic-literature-review/", "year": 2014, "verified": true},
+        {"claim": "Maria: 14.4% of households unable to get medications, 8.6% found medical facilities closed, 6.1% absent doctors; about a third of deaths attributed to delayed or interrupted care.", "source": "https://www.healthcaredive.com/news/a-third-of-hurricane-maria-deaths-stemmed-from-healthcare-disruption-nejm/524517/", "year": 2018, "verified": true},
+        {"claim": "Japan 2006 flood: 9% of medicated outpatients had an interruption (23% of evacuees); interruption carried 4.5 times the odds of worse health a month later (95% CI 1.2-17.6).", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:20405461%20AND%20SRC:MED&resultType=core&format=json", "year": 2010, "verified": true},
+        {"claim": "Sandy dialysis patients (n=13,264): 30-day mortality 1.83% v 1.47% and 1.60% in comparison groups; emergency visits 4.1% v 2.6% and 1.7%.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:25156306%20AND%20SRC:MED&resultType=core&format=json", "year": 2015, "verified": true},
+        {"claim": "Katrina dialysis patients (n=386): 44% missed at least one session, almost 17% three or more; adjusted odds of hospitalisation 2.16 (1.05-4.43) for three or more missed.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:19212421%20AND%20SRC:MED&resultType=core&format=json", "year": 2009, "verified": true},
+        {"claim": "COVID-19: March 2020 had more prescriptions filled than any earlier month (weekly fills rose from about 58.6M to almost 70M), then dispensing fell; discontinuation rose 0.6-2.8 percentage points for a contraceptive, a stimulant, an antidepressant and an antipsychotic, and did not rise for tacrolimus or buprenorphine.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:33793663%20AND%20SRC:MED&resultType=core&format=json", "year": 2021, "verified": true},
+        {"claim": "Opioid-substitution: all-cause mortality per 1,000 person-years 11.3 in and 36.1 out of methadone treatment, 4.3 in and 9.5 out of buprenorphine; 32.1 in the four weeks after leaving methadone.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5421454/fullTextXML", "year": 2017, "verified": true},
+        {"claim": "ROCKET AF: stroke or embolism within 30 days at 5.05-6.20 per 100 patient-years after an interruption of 3+ days and 23.28-25.60 after early permanent discontinuation.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:23391196%20AND%20SRC:MED&resultType=core&format=json", "year": 2013, "verified": true},
+        {"claim": "Antiepileptic non-adherence (33,658 patients): hazard ratio for death 3.32 (3.11-3.54); hospital admissions 1.86 times as frequent.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:18565827%20AND%20SRC:MED&resultType=core&format=json", "year": 2008, "verified": true},
+        {"claim": "In-hospital case fatality of diabetic ketoacidosis fell from 1.1% in 2000 to 0.4% in 2014; admissions were 30.2 per 1,000 people with diabetes in 2014.", "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6712a3.htm", "year": 2018, "verified": true},
+        {"claim": "Oral anticoagulant users in the US: 2.2M warfarin and 5.4M direct agents in 2020.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:38583107%20AND%20SRC:MED&resultType=core&format=json", "year": 2024, "verified": true},
+        {"claim": "2.1 million people in the US have diagnosed type 1 diabetes (1.8M adults, 314,000 under 20).", "source": "https://www.cdc.gov/diabetes/php/data-research/index.html", "year": 2026, "verified": true}
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "prescription-buffer",
+      "name": "Prescription buffer",
+      "spec": "Extra supply of every regular prescription drug, and of what is needed to take it (needles, test strips), beyond the normal refill cycle; kept together in one pouch and used oldest first. Obtained by asking the prescriber for 90-day fills with refills, then refilling on the first day the plan allows each cycle (commonly once 75-80% of the supply is used, which banks about a week per 30-day fill or three weeks per 90-day fill), or by paying cash with a discount card for one extra fill of cheap generics, or by a vacation override. Controlled substances (opioids, stimulants, benzodiazepines, clinic-dispensed methadone) usually cannot be banked.",
+      "fromLonglistRows": [57],
+      "scalesWith": "person",
+      "unit": "person-day of the full regimen, for one person on regular medication",
+      "ladder": [
+        {"label": "7 days", "units": 7},
+        {"label": "14 days", "units": 14},
+        {"label": "30 days", "units": 30},
+        {"label": "60 days", "units": 60},
+        {"label": "90 days", "units": 90}
+      ],
+      "price": {
+        "usdPerUnit": {
+          "lo": 0.15,
+          "mid": 0.5,
+          "hi": 12,
+          "tag": "derived",
+          "basis": "Cash prices with a free discount card, read on singlecare.com on 19 Nov 2026: lisinopril 10 mg, 90 tablets $3.78-6.78 ($0.04-0.08 a day); atorvastatin 40 mg, 30 tablets $5.93 ($0.20 a day); insulin glargine (Lantus) 10 mL vial $64.84 (about $2.60 a day at 40 units); Eliquis 5 mg, 28 tablets $156.92 ($11.20 a day). Mid is two or three generics. Banked through insurance by early refills, the outlay is only the usual copay paid sooner."
+        },
+        "product": "Typical regimen of two or three generic maintenance drugs at pharmacy cash price with a discount card",
+        "source": "https://www.singlecare.com/prescription/atorvastatin-calcium",
+        "verified": true
+      },
+      "lifeYears": {"lo": 1, "mid": 2, "hi": 4, "tag": "guess", "basis": "Pharmacy labels usually give a one-year beyond-use date and manufacturer expiry is two to three years; rotation makes expiry irrelevant, so the effective life is the time until the regimen changes."},
+      "setupHours": {"lo": 0.5, "mid": 1.5, "hi": 4, "tag": "guess", "basis": "One request to the prescriber, one or two conversations with the pharmacy or insurer, and a calendar reminder for the first eligible refill day."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.3, "hi": 1.5, "tag": "guess", "basis": "Using the oldest first and rebuilding the buffer after a change of drug or dose."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 5, "tag": "guess", "basis": "None beyond the drugs themselves; waste from regimen changes is in everydayShare."},
+      "everydayShare": {"lo": 0.7, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "The buffer is consumed in normal use, and it also covers late refills, pharmacy stock-outs and travel. The remainder is stock wasted when a drug or dose is changed."},
+      "volumeLitresPerUnit": 0.005,
+      "reliability": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Covers letting the buffer run down and not rebuilding it, expiry and loss. Automatic-refill and 90-day users already pick up refills with 3-9 days in hand, so discipline is plausible but not universal."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "supply", "need": "medication", "amountPerUnit": 1, "amountUnit": "person-day", "notes": "Adds to baselineCoverageDays for a person on regular medication. Worth nothing to a person on none. For a criticalDrug person the same days are worth the multiplier times as much."}
+      ],
+      "evidence": [
+        {"claim": "89.7% of households had a 3-day supply of prescription drugs for everyone who needed them (14 states, 2006-2010); 79.8% at ages 18-24, 95.8% at 55+, 51.7% of Spanish-language respondents.", "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6136a1.htm", "year": 2012, "verified": true},
+        {"claim": "82% of adults aged 50-80 who take essential medications have a 7-day supply.", "source": "https://ihpi.umich.edu/national-poll-healthy-aging/national-findings/emergency-planning-among-older-adults", "year": 2019, "verified": false},
+        {"claim": "Days of supply still in hand when a refill is picked up: 3.32 (automatic refill) v 5.82 (control) for 30-day fills, 7.19 v 9.38 for 90-day fills; medication possession ratio 81-90%.", "source": "https://www.pharmacytimes.com/view/the-impact-of-automatic-refill-programs-on-medication-adherence", "year": 2016, "verified": true},
+        {"claim": "90-day prescriptions were almost 20% of retail prescriptions in 2019 and 22.9-23.9% in mid 2020; mail was 9.0% of 30-day-equivalent prescriptions; weekly fills rose from about 58.6M to almost 70M in the March 2020 stockpiling weeks.", "source": "https://www.drugchannels.net/2020/08/five-surprising-facts-about-covid-19.html", "year": 2020, "verified": true},
+        {"claim": "Emergency refills without a new prescription: 12 states have rules for declared emergencies (mostly up to 30 days), 23 have general rules (15 of them 72 hours only), 16 have none.", "source": "https://healthcareready.org/?p=11681", "year": 2022, "verified": true},
+        {"claim": "In a Japanese flood, people who had packed an emergency bag were 5.7 times as likely to bring their medication when evacuating; a home stockpile alone made no difference.", "source": "https://currents.plos.org/disasters/article/disaster-driven-evacuation-and-medication-a-systematic-literature-review/", "year": 2014, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "Units are for one person on regular medication; a household buys the ladder once per such person. Late buying is common when there is warning (insurers and several states lift refill limits in declared emergencies, and fills rose about a fifth in March 2020), so staple is the nearest class, but success is lower than for groceries and nil for controlled drugs. Keep the buffer in a grab pouch: the evidence above suggests a home stockpile does not travel with evacuees unless packed."
+    },
+    {
+      "id": "medication-list",
+      "name": "Written medication list",
+      "spec": "One page per person listing every drug, dose and schedule, the prescriber, the pharmacy's phone number and the prescription numbers, plus allergies and conditions; a paper copy in the wallet and go-bag and a photo of each label on the phone.",
+      "fromLonglistRows": [58],
+      "scalesWith": "household",
+      "unit": "set of lists for the household",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0.5, "hi": 2, "tag": "guess", "basis": "Paper and printing only."},
+        "product": "Paper and printing",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 2, "mid": 5, "hi": 10, "tag": "guess", "basis": "Lasts as long as it is kept current; the updating is in upkeep."},
+      "setupHours": {"lo": 0.2, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "Copying labels for a household with one to three people on medication."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.25, "hi": 0.5, "tag": "guess", "basis": "Revising after each change of drug or dose."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 1, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Used at any emergency-department visit, new prescriber or trip."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Chance it is current and with the person when needed."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "medication",
+          "hazards": ["hurricane", "wildfire", "flood", "earthquake", "severeStorm", "winterStorm", "nuclearNear", "civilUnrest"],
+          "fractionRemoved": {"lo": 0.01, "mid": 0.05, "hi": 0.15, "tag": "guess", "basis": "Inside a window as the model defines it (no pharmacy or prescriber at all) a list does nothing. Its effect is to make relief usable sooner: a shelter clinic or an unfamiliar pharmacy can replace a known regimen at once. Chain pharmacies and electronic records now do much of this, so the share of unmet days removed is small."},
+          "adherence": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Share of owners whose list is current and carried."},
+          "notes": "Applies to displaced households and to people separated from their bottles. Hardship and mortality alike, since it shortens the gap."
+        }
+      ],
+      "evidence": [
+        {"claim": "Among US adults who take prescription medicine, 43% could not list all their prescriptions, prescribers and doses if they had to evacuate without them (n=2,596).", "source": "https://healthcareready.org/wp-content/uploads/2022/07/July-Analysis_HcR-2022-Domestic-Preparedness-Poll-Summary_Final-7-18.pdf", "year": 2022, "verified": true},
+        {"claim": "Japan 2006 flood: 88% of evacuees left prescription records behind; after Katrina refills were among the top three or four needs at shelters.", "source": "https://currents.plos.org/disasters/article/disaster-driven-evacuation-and-medication-a-systematic-literature-review/", "year": 2014, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "No study measures the outcome of carrying a list. It could be written at the last minute, but an unprepared household rarely thinks to, so it is classed as not late-buyable."
+    },
+    {
+      "id": "otc-core-kit",
+      "name": "Core over-the-counter kit",
+      "spec": "Store-brand acetaminophen 500 mg (100), ibuprofen 200 mg (100), aspirin 325 mg (100, to chew at the onset of a suspected heart attack), loperamide 2 mg (24), ten 1-litre packets of WHO-formula oral rehydration salts, and an antihistamine (cetirizine 10 mg, 30). Liquid children's acetaminophen or ibuprofen if there are children.",
+      "fromLonglistRows": [59],
+      "scalesWith": "household",
+      "unit": "kit",
+      "price": {
+        "usdPerUnit": {"lo": 25, "mid": 40, "hi": 70, "tag": "guess", "basis": "Only the rehydration salts were read on a seller's page: TRIORAL 15 one-litre packets $16.99 (https://triselfcare.com/). The five store-brand bottles are taken at $4-6 each from memory."},
+        "product": "TRIORAL oral rehydration salts, 15 packets, plus five store-brand bottles",
+        "source": "https://triselfcare.com/",
+        "verified": false
+      },
+      "lifeYears": {"lo": 2, "mid": 3, "hi": 6, "tag": "derived", "basis": "Labelled expiry is two to three years. In the federal Shelf Life Extension Program 88% of 3,005 lots were extended at least a year, by 66 months on average (Lyon 2006, PMID 16721796)."},
+      "setupHours": {"lo": 0.2, "mid": 0.5, "hi": 1, "tag": "guess", "basis": "One shopping trip and reading the dosing labels."},
+      "upkeepHoursPerYear": {"lo": 0.05, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "A yearly look at dates and replacing what was used."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 5, "tag": "guess", "basis": "Replacement is the capital cost recurring at end of life."},
+      "everydayShare": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "The analgesics and antihistamine are used in ordinary life and most households already hold some; the rehydration salts and loperamide are used rarely."},
+      "volumeLitresPerUnit": 1.5,
+      "reliability": {"lo": 0.75, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "Simple, stable products; the main failure is finding the bottle empty."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "other",
+          "description": "Averts about $0.70 (0.2-2.5) of hardship per household member per day on which pharmacies and shops are shut or unreachable (the medication window, for every member whether or not they take prescriptions). No mortality effect from this route. Arithmetic: chance that a person-day carries a symptom the kit relieves and the household would otherwise lack the drug, times the value of relief: pain or fever 10% x 15% x $25, plus gastroenteritis 0.25% x $45 (0.6 episodes a year, 60% of homes without loperamide or salts), plus allergy 4% x 40% x $15.",
+          "window": "medication",
+          "hardshipUsdAvertedPerPersonPerWindowDay": {"lo": 0.2, "mid": 0.7, "hi": 2.5, "tag": "guess", "basis": "See description. Symptom frequencies and the value of a relieved symptom-day (taken as a third to a half of a roughly $50-90 minor restricted-activity day) are recalled, not read."}
+        },
+        {
+          "type": "capability",
+          "capability": "oralRehydration",
+          "notes": "Oral rehydration solution is estimated to prevent 93% of deaths from diarrhoea where it is used (Munos 2010, children in poor countries). The water researcher's mortality curve is illness from unsafe water, so this acts on it: my guess is that the packets remove a quarter of that mortality (see the field below) beyond what a household improvises with sugar, salt or sports drinks. It does nothing for the hardship of the water need and must not be applied to it.",
+          "mortalityFractionRemovedOnWaterNeed": {"lo": 0.05, "mid": 0.25, "hi": 0.6, "tag": "guess", "basis": "About half of adult deaths from water-borne gut infection in a rich country are from fluid loss rather than sepsis (guess), and home-made solutions already do about half the job. Use with adherence 0.6."}
+        },
+        {
+          "type": "reduce",
+          "target": "trauma",
+          "hazards": ["gridLong", "pandemicSevere", "nuclearNear"],
+          "fractionRemoved": {"lo": 0.03, "mid": 0.1, "hi": 0.2, "tag": "guess", "basis": "Aspirin when no emergency care can be reached, scaled to the medical researcher's base of 1.2 micromorts a day for an adult aged 15-59. Heart attacks at that age run at about 1.2 per 1,000 a year (recalled), or 3.4 per million a day. ISIS-2: 9.4% v 11.8% vascular death at five weeks, 23% lower odds; with no other care the baseline is higher, so I take 4 points (2.4-8). 3.4 x 0.04 = 0.14 micromorts a day, 11% of 1.2."},
+          "adherence": {"lo": 0.1, "mid": 0.25, "hi": 0.5, "tag": "guess", "basis": "Chance the symptoms are recognised and aspirin is chewed, net of the roughly half of households that hold aspirin anyway."},
+          "notes": "Aspirin component only. Mortality part of the channel only."
+        },
+        {
+          "type": "reduce",
+          "target": "trauma",
+          "hazards": ["homeMedicalEmergency", "hurricane", "severeStorm", "winterStorm", "heatWave", "pandemicModerate", "nuclearFar"],
+          "fractionRemoved": {"lo": 0.002, "mid": 0.01, "hi": 0.06, "tag": "guess", "basis": "With ambulances running, paramedics give aspirin anyway and ISIS-2 found little dependence on the hour of treatment, so I credit self-treatment with a tenth of the trial effect: 240,000 heart attacks a year at 15-59 x 0.24 points = about 580 deaths, or 3 micromorts a year, about 1% of the medical researcher's everyday base of 280. The high end is Russo 2024, a model in which self-given aspirin within four hours of chest pain delays 13,016 US deaths a year (PMID 38690705)."},
+          "adherence": {"lo": 0.1, "mid": 0.25, "hi": 0.5, "tag": "guess", "basis": "As above."},
+          "notes": "Aspirin component only. Mortality part of the channel only. At these values it is worth about 0.7 micromort a year to an adult aged 15-59 and several times that above 60."
+        }
+      ],
+      "evidence": [
+        {"claim": "ISIS-2 (17,187 patients): aspirin 160 mg a day for a month after suspected heart attack cut five-week vascular mortality from 11.8% to 9.4%.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:2899772%20AND%20SRC:MED&resultType=core&format=json", "year": 1988, "verified": true},
+        {"claim": "Model: self-administered 325 mg aspirin within four hours of severe chest pain would delay 13,016 US deaths a year net of 963 bleeding deaths.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=TITLE:%22Self-Administration%20of%20Aspirin%20After%20Chest%20Pain%22&resultType=core&format=json", "year": 2024, "verified": true},
+        {"claim": "Oral rehydration solution may prevent 93% of diarrhoea deaths (157 papers pooled).", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:20348131%20AND%20SRC:MED&resultType=core&format=json", "year": 2010, "verified": true},
+        {"claim": "In a Hong Kong survey of households with young children, 82.8% held three days of fever or pain medicine.", "source": "https://currents.plos.org/disasters/article/disaster-driven-evacuation-and-medication-a-systematic-literature-review/", "year": 2014, "verified": true},
+        {"claim": "December 2022: CVS limited children's pain and fever products to two per customer and Walgreens to six online, as unit sales ran 69% above the year before.", "source": "https://www.npr.org/2022/12/20/1144363819/cvs-walgreens-childrens-fever-meds-tripledemic", "year": 2022, "verified": false},
+        {"claim": "81% of US adults used at least one medication in the preceding week (Slone survey, n=2,590).", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:11790213%20AND%20SRC:MED&resultType=core&format=json", "year": 2002, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Honest size of the disaster benefit: a three-person household in a five-day window gains about $10 of relief, so at a few percent a year the expected value is cents; the kit is justified by everyday convenience and by the aspirin, which the medical researcher asked this file to cover. In a pandemic wave the gain is about $15 (5-40) per sick person in the roughly 15% of homes that would lack fever medicine. Aspirin can harm if the chest pain is a tear in the aorta or the stroke is a bleed; the trial effect is net of that."
+    },
+    {
+      "id": "otc-wider-kit",
+      "name": "Wider over-the-counter kit",
+      "spec": "Antacid and famotidine, a laxative (polyethylene glycol), a decongestant, a cough suppressant, hydrocortisone 1% cream, petroleum jelly or antibiotic ointment, an antifungal cream, and bite and sunburn gel.",
+      "fromLonglistRows": [60],
+      "scalesWith": "household",
+      "unit": "kit",
+      "price": {
+        "usdPerUnit": {"lo": 25, "mid": 40, "hi": 75, "tag": "guess", "basis": "Eight to nine store-brand items at $4-8 each, from memory; no page read."},
+        "product": "Eight to nine store-brand items",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 2, "mid": 3, "hi": 5, "tag": "guess", "basis": "Labelled expiry two to three years; creams and liquids keep less well than tablets."},
+      "setupHours": {"lo": 0.2, "mid": 0.4, "hi": 1, "tag": "guess", "basis": "One shopping trip."},
+      "upkeepHoursPerYear": {"lo": 0.05, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Yearly check of dates."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 5, "tag": "guess", "basis": "None beyond replacement at end of life."},
+      "everydayShare": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "All are used in ordinary life; some will expire unused."},
+      "volumeLitresPerUnit": 2,
+      "reliability": {"lo": 0.75, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "As for the core kit."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "other",
+          "description": "Averts about $0.40 (0.05-1.2) of hardship per household member per day on which pharmacies and shops are shut or unreachable. No mortality effect. Arithmetic: about 12% of person-days carry heartburn, constipation, congestion, cough or a skin complaint; about half of homes lack the matching product; relief is worth about $7 because the complaints are milder and the drugs weaker than in the core kit.",
+          "window": "medication",
+          "hardshipUsdAvertedPerPersonPerWindowDay": {"lo": 0.05, "mid": 0.4, "hi": 1.2, "tag": "guess", "basis": "See description; every input is a guess."}
+        }
+      ],
+      "evidence": [
+        {"claim": "The Prepared, the source of this row, itself rates antibiotic ointment as no better than petroleum jelly; no study of outcomes from holding these products was found.", "source": "/Users/pablostafforini/repos/preparedness/research/step2/item-longlist.md", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Comfort only. Rank it on everyday use."
+    },
+    {
+      "id": "emergency-antibiotic-pack",
+      "name": "Emergency antibiotic pack",
+      "spec": "Prescription pack sold after an online consultation, with a written guide: one adult course each of amoxicillin-clavulanate, azithromycin, ciprofloxacin, doxycycline and metronidazole (the Jase Case now adds five other drugs). One per household.",
+      "fromLonglistRows": [61],
+      "scalesWith": "household",
+      "unit": "pack",
+      "price": {
+        "usdPerUnit": {"lo": 200, "mid": 289.95, "hi": 330, "tag": "data", "basis": "Jase Case $289.95 on a reseller's listing read 19 Nov 2026 (https://tacda.org/?p=43596); jasemedical.com refused the fetch. The low end allows for cheaper competitors, not checked."},
+        "product": "Jase Medical Jase Case",
+        "source": "https://tacda.org/?p=43596",
+        "verified": true
+      },
+      "lifeYears": {"lo": 2, "mid": 3, "hi": 8, "tag": "derived", "basis": "Labelled expiry one to three years from dispensing. Shelf Life Extension Program: 88% of 3,005 lots of 122 products were extended at least a year, 66 months on average, with wide variation between lots (Lyon 2006, PMID 16721796)."},
+      "setupHours": {"lo": 0.5, "mid": 1.5, "hi": 3, "tag": "guess", "basis": "Online consultation and reading the guide before it is needed."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.5, "tag": "guess", "basis": "A yearly look at dates."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 10, "tag": "guess", "basis": "None; replacement is at end of life."},
+      "everydayShare": {"lo": 0, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "Not meant for use while a clinician can be reached; some value on remote travel."},
+      "volumeLitresPerUnit": 1,
+      "reliability": {"lo": 0.7, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "In date enough to work and findable. Choosing the right drug is in adherence, not here."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "trauma",
+          "hazards": ["gridLong", "nuclearNear", "pandemicSevere"],
+          "fractionRemoved": {"lo": 0.05, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Set to give 0.36 micromorts a day at full adherence on the medical researcher's no-care base of 1.2 a day for an adult aged 15-59. My own sum is higher, about 0.8: with no antibiotics and no hospital, bacterial pneumonia, kidney, skin and wound infection and appendicitis would kill such adults at roughly 50 per 100,000 a year (pneumonia needing hospital runs at about 12 per 10,000 a year at this age and killed a fifth or more before antibiotics; recalled figures), and correctly chosen oral drugs avert about 60%. That is two thirds of the 1.2 base, which suggests the base leaves out slow infections; I use the cautious figure. US infectious mortality fell 8.2% a year from 1938 to 1952 as antibiotics arrived (Armstrong 1999). Net of harm from the drugs, roughly 10-20 micromorts per course from allergy and gut infection."},
+          "adherence": {"lo": 0.25, "mid": 0.5, "hi": 0.75, "tag": "guess", "basis": "Chance a lay person with the booklet treats the right illness with the right drug for long enough."},
+          "notes": "Mortality part of the channel, and only where care cannot be reached at all; where it is merely delayed the pack adds almost nothing. Infections take days to kill, so the effect is weaker in the first week. One adult course of each drug: a second patient in the same window is not covered."
+        }
+      ],
+      "evidence": [
+        {"claim": "Jase Case listed at $289.95 with amoxicillin-clavulanate, azithromycin, ciprofloxacin, doxycycline, metronidazole and five further drugs.", "source": "https://tacda.org/?p=43596", "year": 2026, "verified": true},
+        {"claim": "88% of 3,005 tested lots (122 drug products) were extended at least one year past expiry, by 66 months on average.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:16721796%20AND%20SRC:MED&resultType=core&format=json", "year": 2006, "verified": true},
+        {"claim": "US infectious-disease mortality fell 8.2% a year from 1938 to 1952, from 797 per 100,000 in 1900 to 36 in 1980.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:9892452%20AND%20SRC:MED&resultType=core&format=json", "year": 1999, "verified": true},
+        {"claim": "At least 28% of outpatient antibiotic prescriptions are unnecessary, a warning about self-diagnosis.", "source": "https://www.cdc.gov/antibiotic-use/hcp/data-research/antibiotic-prescribing.html", "year": 2026, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Rough size: 0.3 x 0.5 x 1.2 = about 0.2 micromort averted per adult per day with no medical care (0.4 on my own sum), so a 30-day window is worth 5-12 micromorts a person. Against about $100 a year of cost it pays only if month-long no-care windows are far likelier than base rates suggest. No outcome evidence exists for lay use."
+    },
+    {
+      "id": "spare-rescue-medicine",
+      "name": "Spare inhaler or epinephrine",
+      "spec": "One extra albuterol inhaler (200 puffs) for a person with asthma or chronic lung disease, or one extra two-pack of epinephrine auto-injectors for a person at risk of anaphylaxis; kept at home and swapped into use before it expires.",
+      "fromLonglistRows": [62],
+      "scalesWith": "person",
+      "unit": "device (one inhaler or one two-pack)",
+      "price": {
+        "usdPerUnit": {"lo": 21, "mid": 24, "hi": 172, "tag": "data", "basis": "Read on singlecare.com 19 Nov 2026: albuterol HFA 6.7 g (200 puffs) $21.02-24.02 at Walmart with a free discount card; epinephrine 0.3 mg auto-injector two-pack $168.74-171.74 at CVS. Mid is the inhaler because asthma is several times commoner."},
+        "product": "Generic albuterol sulfate HFA inhaler, 200 puffs",
+        "source": "https://www.singlecare.com/prescription/albuterol-sulfate-hfa",
+        "verified": true
+      },
+      "lifeYears": {"lo": 1, "mid": 1.5, "hi": 2, "tag": "guess", "basis": "Both carry expiry dates 12-24 months out; from memory."},
+      "setupHours": {"lo": 0.3, "mid": 0.75, "hi": 2, "tag": "guess", "basis": "Asking for a second device on the prescription."},
+      "upkeepHoursPerYear": {"lo": 0.05, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Swapping the spare into use and reordering."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 5, "tag": "guess", "basis": "None beyond replacement."},
+      "everydayShare": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "An inhaler spare is used up in rotation and covers the ordinary case of an empty or mislaid device; an epinephrine spare usually expires unused, so its share is nearer the low end."},
+      "volumeLitresPerUnit": 0.2,
+      "reliability": {"lo": 0.75, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "In date and findable."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": ["criticalDrug"],
+      "effects": [
+        {
+          "type": "other",
+          "description": "For a person with asthma, chronic lung disease or anaphylaxis risk: averts about 0.5 micromort (0.1-2.5) and $1 (0.2-5) of hardship per day on which neither a pharmacy nor emergency care is reachable. It does not act through unmet medication days, because a rescue drug is not used up daily, and it must not be valued at the criticalDrug rate. Arithmetic for asthma: about 8% chance the only reliever is empty, expired or missing at the start of a window; a 2% daily chance of an attack needing it; about 0.03% fatal without a reliever when care is delayed (3,500 US asthma deaths a year among 25 million give 0.4 micromorts a day with relievers; recalled); hardship is an avoided emergency visit worth about $500. Epinephrine: 0.02% daily chance of anaphylaxis x 20% chance the first pack is used, expired or missing x 2% fatal untreated gives a similar figure at seven times the price.",
+          "window": "medication",
+          "micromortsAvertedPerPersonPerWindowDay": {"lo": 0.1, "mid": 0.5, "hi": 2.5, "tag": "guess", "basis": "See description; no input was read from a source."},
+          "hardshipUsdAvertedPerPersonPerWindowDay": {"lo": 0.2, "mid": 1, "hi": 5, "tag": "guess", "basis": "See description."}
+        }
+      ],
+      "evidence": [
+        {"claim": "Bronchodilators are the most used prescription drug class in children under 12 (4.3%).", "source": "https://www.cdc.gov/nchs/products/databriefs/db334.htm", "year": 2019, "verified": true},
+        {"claim": "After the 2003 New York blackout, 56 of 65 emergency visits at one hospital were for failed respiratory devices; in the 2004 Niigata earthquake 65% of insulin-pen users could not continue at once because supplies were lost.", "source": "https://currents.plos.org/disasters/article/disaster-driven-evacuation-and-medication-a-systematic-literature-review/", "year": 2014, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Applies to the subset of criticalDrug households whose critical drug is a rescue device (asthma is about 8% of people, anaphylaxis risk perhaps 2%; both recalled). Wildfire smoke raises the attack rate several-fold; the smoke researcher may want to add that."
+    },
+    {
+      "id": "drug-cooler",
+      "name": "Cooler for refrigerated drugs",
+      "spec": "Evaporative cooling wallet for insulin and similar pens or vials (FRIO Large: soaked in water, holds 18-26 C for at least 45 hours per soak in 37.8 C air, no ice or power), or a small hard cooler with four reusable ice packs.",
+      "fromLonglistRows": [62],
+      "scalesWith": "household",
+      "unit": "wallet",
+      "price": {
+        "usdPerUnit": {"lo": 26.95, "mid": 34.95, "hi": 38.95, "tag": "data", "basis": "FRIO wallets: Individual $26.95, Duo $32.95, Large $34.95, Extra Large $38.95, read on https://www.frioinsulincoolingcase.com/ on 19 Nov 2026."},
+        "product": "FRIO Large Wallet",
+        "source": "https://www.frioinsulincoolingcase.com/",
+        "verified": true
+      },
+      "lifeYears": {"lo": 2, "mid": 5, "hi": 10, "tag": "guess", "basis": "Reusable gel crystals; occasional use."},
+      "setupHours": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Buying it and trying one soak."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "None of note."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 2, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Used for summer travel by some owners."},
+      "volumeLitresPerUnit": 0.5,
+      "reliability": {"lo": 0.7, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Needs water and moving air; works poorly in very humid heat."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": ["criticalDrug", "hotSummers"],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "medication",
+          "hazards": ["gridLong", "heatWave"],
+          "fractionRemoved": {"lo": 0, "mid": 0.02, "hi": 0.1, "tag": "guess", "basis": "For a person whose critical drug is refrigerated (about a third of criticalDrug people; scale down if applied to all). Insulin tolerates far more heat than labels imply: unopened vials lose no clinically relevant potency in up to 6 months at 25 C or 2 months at 37 C, though two studies found up to 18% loss within 1-4 weeks at 37 C (Cochrane 2023, PMID 37930742). So spoilage turns stock into unmet days only in weeks of heat above that."},
+          "adherence": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Share of owners who keep it soaked through the outage."},
+          "notes": "Mortality and hardship alike, both small."
+        },
+        {
+          "type": "other",
+          "description": "Averts about $60 (10-500) of loss per power window of two days or more in hot weather for a household holding refrigerated drugs: the chance (about 30%) that a cautious patient discards stock the label says not to use after exposure above 30 C, times its replacement cost ($65 for an insulin vial at discount-card price, several hundred to over a thousand dollars for a box of pens or a biologic).",
+          "window": "power",
+          "financialUsdAvertedPerEvent": {"lo": 10, "mid": 60, "hi": 500, "tag": "guess", "basis": "See description. Insulin vial price read at https://www.singlecare.com/prescription/insulin-glargine ($64.84); the discard probability and the other prices are guesses."}
+        }
+      ],
+      "evidence": [
+        {"claim": "Cochrane review, 17 studies plus manufacturers' data: unopened human insulin keeps its potency for up to 6 months at 25 C and up to 2 months at 37 C; opened vials for up to 12 weeks at up to 37 C.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=TITLE:%22Thermal%20stability%20and%20storage%20of%20human%20insulin%22&resultType=core&format=json", "year": 2023, "verified": true},
+        {"claim": "FRIO keeps in-use insulin at 18-26 C for a minimum of 45 hours in a constant 37.8 C.", "source": "https://www.frioinsulincoolingcase.com/", "year": 2026, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "The evidence cuts against this item for insulin: an unpowered refrigerator, a shaded cupboard or a wet cloth does nearly as well for weeks. Its value is avoiding the discard of costly stock and peace of mind. A cooler with ice lasts one to two days without a freezer and ice sells out, hence the evaporative wallet."
+    },
+    {
+      "id": "spare-glasses",
+      "name": "Spare glasses",
+      "spec": "A second pair of glasses at the current prescription, ordered online and kept by the bed or in the go-bag; contact-lens wearers keep glasses plus two weeks of lenses and solution.",
+      "fromLonglistRows": [55],
+      "scalesWith": "person",
+      "unit": "pair, for a person who depends on vision correction",
+      "price": {
+        "usdPerUnit": {"lo": 11.9, "mid": 20, "hi": 90, "tag": "derived", "basis": "Zenni's '$6.95 Glasses' line read on https://www.zennioptical.com/ on 19 Nov 2026. That basic single-vision lenses are included and that shipping is $4.95 come from third-party reviews, not the page. Mid allows a sturdier frame; the high end is strong or progressive lenses."},
+        "product": "Zenni single-vision glasses from the $6.95 line, plus shipping",
+        "source": "https://www.zennioptical.com/",
+        "verified": true
+      },
+      "lifeYears": {"lo": 2, "mid": 4, "hi": 8, "tag": "guess", "basis": "Until the prescription drifts enough to matter."},
+      "setupHours": {"lo": 0.25, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "Finding the prescription and pupillary distance and ordering."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "None of note."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 5, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0.6, "mid": 0.85, "hi": 0.97, "tag": "guess", "basis": "Ordinary breakage and loss (taken as 10% a year, a week to replace, $40 a day) is worth about $28 a year, far more than the disaster benefit below."},
+      "volumeLitresPerUnit": 0.3,
+      "reliability": {"lo": 0.7, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Findable and still close enough to the current prescription."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "other",
+          "description": "For a person who cannot drive or read without correction (about half of adults): averts about $11 (2-60) of hardship per event with displacement or damage to the home, and nothing otherwise. Arithmetic: 4% chance the only pair is lost or broken in the event (higher for night-time earthquakes, floods and fires, lower for an orderly evacuation by car) x 7 days to replace x $40 a day. No mortality effect claimed. Many wearers already keep an old pair, which the figure allows for.",
+          "window": "displacement",
+          "hardshipUsdAvertedPerPersonPerEvent": {"lo": 2, "mid": 11, "hi": 60, "tag": "guess", "basis": "See description; the loss probability and daily value are guesses. The only data point is extreme: 34% of 323 Katrina evacuees flown to West Virginia needed eyeglasses."}
+        }
+      ],
+      "evidence": [
+        {"claim": "Of 323 adult Katrina evacuees in West Virginia, 34% needed eyeglasses; a US Army unit dispensed 1,600 pairs after the 2001 El Salvador earthquakes.", "source": "https://currents.plos.org/disasters/article/disaster-driven-evacuation-and-medication-a-systematic-literature-review/", "year": 2014, "verified": true},
+        {"claim": "67% of US adults use prescription eyewear (Vision Council survey of over 15,000 adults, 2023); a 2025 YouGov poll gives about 63%.", "source": "https://eyecarebusiness.com/news/2023/tvcs-latest-insights-report-finds-67-of-consumers-use-prescription-eyewear/", "year": 2023, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Hearing-aid batteries from the same longlist row are left to the batteries entry (row 34)."
+    },
+    {
+      "id": "naloxone-nasal-spray",
+      "name": "Naloxone nasal spray",
+      "spec": "One over-the-counter carton of two 4 mg naloxone nasal sprays, kept where everyone in the home can find it, for households in which anyone takes opioids, prescribed or not. Not on the longlist; added because the medical researcher excluded overdose from the trauma baseline and passed it to this file.",
+      "fromLonglistRows": [],
+      "scalesWith": "household",
+      "unit": "carton of two doses",
+      "price": {
+        "usdPerUnit": {"lo": 26.5, "mid": 30, "hi": 45, "tag": "data", "basis": "Narcan two-dose box $26.51-29.51 at Walmart with a free discount card, read on singlecare.com 19 Nov 2026 (the page does not state the strength); average retail price shown there $68.59; the usual shelf price of about $45 is recalled."},
+        "product": "Narcan (naloxone) nasal spray, box of two",
+        "source": "https://www.singlecare.com/prescription/narcan",
+        "verified": true
+      },
+      "lifeYears": {"lo": 2, "mid": 3, "hi": 4, "tag": "guess", "basis": "Labelled shelf life of three to four years, recalled."},
+      "setupHours": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Buying it, reading the leaflet and telling the household where it is."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "Checking the date."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 2, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0.1, "tag": "guess", "basis": "Its whole benefit is the everyday risk counted in the effect, so none of the cost is set aside."},
+      "volumeLitresPerUnit": 0.2,
+      "reliability": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "In date, findable, and someone else at home knows what it is for."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "other",
+          "description": "Everyday risk, not a disruption effect; it protects the opioid user, and is given by someone else in the home. Annual deaths averted per person at risk: about 900 micromorts (200-2,500) for someone who uses illicit opioids or has opioid use disorder; about 150 (40-500) for someone prescribed 50 mg or more of morphine-equivalent a day; about 20 (5-70) on lower prescribed doses; near zero in a home with no opioids. Arithmetic: death rate x share of deaths at home with another person in the home x share of those a ready kit would avert. Rates: 44,564 opioid deaths in 2025 over roughly 6 million people with opioid use disorder (recalled) = 7,400 micromorts a year; prescribed doses of 100 mg+, 50-99 mg and 1-20 mg a day carry 1.8%, 0.7% and 0.2% overdoses a year, 12% of them fatal (Dunn 2010). Share at home with someone there: 24.5% of deaths are witnessed or have someone nearby, and a further 0.755 x 0.729 x 0.29 = 16% happen alone in a room at home with family or another person elsewhere in the home, so about 30%. Share averted: 40% (20-60%), a guess.",
+          "hazard": "homeMedicalEmergency",
+          "annualMicromortsAverted": {
+            "illicitOpioidUseOrDisorder": {"lo": 200, "mid": 900, "hi": 2500, "tag": "guess", "basis": "7,400 x 0.30 x 0.40 = 890."},
+            "prescribedOpioid50mgOrMore": {"lo": 40, "mid": 150, "hi": 500, "tag": "guess", "basis": "About 1,000 micromorts a year (0.7-1.8% overdoses x 12% fatal gives 840-2,160; later, larger cohorts are lower, from memory) x 0.15 averted, taking a higher share at home but a lower share found in time."},
+            "prescribedOpioidLowerDose": {"lo": 5, "mid": 20, "hi": 70, "tag": "guess", "basis": "About 150 micromorts a year (0.2% x 12% = 240 in Dunn, shaded down) x 0.15."},
+            "noOpioidsInHome": {"lo": 0, "mid": 0.2, "hi": 2, "tag": "guess", "basis": "Accidental ingestion and visitors only."}
+          }
+        }
+      ],
+      "evidence": [
+        {"claim": "Provisional US overdose deaths in 2025: 69,973, of which 44,564 involved opioids (55,296 in 2024).", "source": "https://www.cdc.gov/nchs/pressroom/releases/20260513.html", "year": 2026, "verified": true},
+        {"claim": "Of 191,577 overdose deaths in 2022-2024 (46 states), 75.5% occurred with nobody present or nearby; 72.9% of those were in a house or apartment, and in 29% of these a family member, partner or other person was elsewhere in the home.", "source": "https://www.cidrap.umn.edu/public-health-alerts/public-health-alerts-us-drug-overdose-deaths-occurred-isolation-2022-2024", "year": 2026, "verified": true},
+        {"claim": "Among 9,940 chronic-pain patients, overdoses ran at 0.2% a year on 1-20 mg a day, 0.7% on 50-99 mg and 1.8% on 100 mg or more; 6 of 51 overdoses were fatal.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:20083827%20AND%20SRC:MED&resultType=core&format=json", "year": 2010, "verified": true},
+        {"claim": "Massachusetts communities that trained bystanders and distributed naloxone had opioid overdose death rate ratios of 0.73 (0.57-0.91) at low and 0.54 (0.39-0.76) at high enrolment against none.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:23372174%20AND%20SRC:MED&resultType=core&format=json", "year": 2013, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "There is no canonical condition for opioids in the home, so the entry carries none; it is worth nothing to most households and a great deal to a few. For a person with opioid use disorder the benefit is of the order of $10,000 a year at $12.50 a micromort, against $30. It is useless to a person who lives alone."
+    }
+  ],
+  "excluded": [
+    {"what": "Row 55, hearing-aid batteries", "reason": "Belongs with spare batteries (row 34); nothing drug-specific to add."},
+    {"what": "Row 62 split in two", "reason": "A spare rescue device and a cooler act differently and suit different people, so they are separate entries."},
+    {"what": "Veterinary ('fish') antibiotics as a cheap substitute for the antibiotic pack", "reason": "Unregulated product with no dosing guidance; not something a published list should recommend."},
+    {"what": "Dialysis preparedness (emergency renal diet, potassium binder)", "reason": "Dependence on a dialysis centre is an emergencyCare problem, not a drug stock; evidence is recorded in the need's notes for whoever owns that window."},
+    {"what": "Stockpiling controlled drugs (opioids, stimulants, benzodiazepines, methadone)", "reason": "Refill rules make a buffer of more than a few days unobtainable for most patients, so the ladder does not apply to them; their risk stays in the criticalDrug multiplier."}
+  ],
+  "blockedSources": [
+    "https://www.bmj.com/content/357/bmj.j1550: HTTP 403; the same paper (Sordo 2017) was read through the Europe PMC full-text service instead.",
+    "https://link.springer.com/article/10.1007/s11606-007-0294-1: login redirect; only the abstract of Kessler 2007 was read (through Europe PMC), so the breakdown of disrupted treatment by condition is missing.",
+    "https://pubmed.ncbi.nlm.nih.gov/: returns only a cookie notice; abstracts were read through the Europe PMC web service.",
+    "https://dash.harvard.edu/bitstream/1/37309252/1/nejmsa1803972.pdf: timed out; would have given the full Maria survey table, including the share of households needing powered respiratory equipment (9.5% from memory).",
+    "https://jasemedical.com/case: HTTP 403; price taken from a reseller listing.",
+    "https://costplusdrugs.com, https://www.walmart.com/cp/4-prescriptions/1078664, https://www.goodrx.com: refused; would have given further generic drug prices and the Walmart $4 list.",
+    "https://web.archive.org: the fetch tool cannot reach it at all.",
+    "https://ihpi.umich.edu/report/emergency-planning-among-older-adults: HTTP 403; the 82% with a 7-day supply is from a search snippet.",
+    "https://www.axios.com/2025/05/05/out-of-pocket-drug-spending-prescription: HTTP 403; would have given out-of-pocket spending per prescription.",
+    "IQVIA 'Use of Medicines in the U.S.' reports: no figure found for the share of maintenance prescriptions dispensed as 90-day supplies after 2020.",
+    "Kaufman 2002 (JAMA) full text: paywalled; weekly use of individual over-the-counter analgesics is recalled, not read.",
+    "https://www.costco.com and https://www.dripdrop.com: HTTP 429; no store-brand analgesic price was read."
+  ],
+  "openQuestions": [
+    "Baseline coverage for medication is a spread, not a point: a household is hit at a random moment in its refill cycle. Using the median (20 days) would wrongly give zero harm for every window under three weeks. The engine should integrate over the distribution given in the basis.",
+    "The medication curves are conditional on the person taking regular medication. The household profile needs a flag for that, or the engine must weight by the prevalence in the need's notes (about 38% at ages 15-59, 80% at 60-74, 90% at 75+).",
+    "Should mortality on the medication need depend on whether emergency care is also unavailable? For type 1 diabetes the answer changes the criticalDrug multiplier several-fold.",
+    "New capability proposed: oralRehydration (from otc-core-kit), to be used by the water need where its harm includes diarrhoeal disease.",
+    "Six entries (both over-the-counter kits, spare rescue medicine, drug cooler, spare glasses, naloxone) act per window-day, per event or per year rather than through unmet days, and are given as 'other' effects with extra numeric fields (hardshipUsdAvertedPerPersonPerWindowDay, micromortsAvertedPerPersonPerWindowDay, financialUsdAvertedPerEvent, hardshipUsdAvertedPerPersonPerEvent, annualMicromortsAverted, window, hazard). The engine needs a way to read them.",
+    "The aspirin and antibiotic fractions are scaled to the trauma bases in medical.json as I read it on 19 Nov 2026: 280 micromorts a year everyday and 1.2 a day with no care, for an adult aged 15-59. If those change, rescale. My own sum of deaths from bacterial infection without care (about 1.4 a day) exceeds the whole 1.2 base, so the base probably leaves out slow infections; the two files should be reconciled.",
+    "A reduce effect cannot say that it applies to mortality only. The aspirin, antibiotic and oral-rehydration effects are mortality-only; applying them to hardship would overstate them, badly so for oral rehydration on the water need.",
+    "Naloxone needs a household flag for opioids in the home, and a decision on whether an everyday-risk item for a minority belongs in the ranked list or in a sidebar.",
+    "Figures are for the United States. Western Europe dispenses in fixed packs (often 28 days in the UK, about 100 in Germany) and Buenos Aires pharmacies sell many prescription drugs without one, so baseline coverage and the ease of building a buffer differ; not researched."
+  ]
+}

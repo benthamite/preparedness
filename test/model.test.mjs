@@ -234,6 +234,35 @@ test('a fixed price is paid once, with the first level', () => {
   near(r.entries.reduce((s, e) => s + e.annualCostUsd, 0), 160 * CRF10);
 });
 
+test('ownership risks, practice, and fractions that grow with the level owned', () => {
+  const d = fixture();
+  d.hazards.fire = {
+    probability: { us: 1 }, windows: {}, leave: noLeave, warningDays: 0, lateBuy: { staple: 0, specialty: 0 },
+    exposures: [{ channel: 'fire', micromortsPerPerson: 100 }],
+    exposureScale: { dwelling: { apartment: 0.5, house: 2 } },
+  };
+  const base = { scalesWith: 'household', price: 10, lifeYears: 10, reliability: 1, lateBuyClass: 'none' };
+  // The exposure is halved in an apartment: 100 x 2 people x 0.5.
+  d.items = [{ ...base, id: 'gun', effects: [{ type: 'reduce', target: 'fire', hazards: ['all'], fraction: 0.2 }, { type: 'annualRisk', micromortsPerPersonYear: 15 }] }];
+  let r = run(d);
+  near(r.harm.unprepared.mm, 4 + 100);
+  near(r.entries[0].micromorts, 0.2 * 100 - 2 * 15);
+  near(r.harm.end.mm, 4 + 80 + 30);
+  near(run(d, { dwelling: 'house' }).entries[0].micromorts, 0.2 * 400 - 30);
+  // A fraction that depends on the level owned.
+  d.items = [{ ...base, id: 'stock', ladder: [{ label: 'a', units: 1 }, { label: 'b', units: 2 }], effects: [{ type: 'reduce', target: 'fire', hazards: ['all'], fractionByLevel: [0.1, 0.3], adherence: 0.5 }] }];
+  r = run(d);
+  near(r.entries.reduce((s, e) => s + e.micromorts, 0), 0.3 * 0.5 * 100);
+  // Practice: a half-reliable alarm becomes fully reliable with a factor of 0.
+  d.items = [
+    { ...base, id: 'alarm', reliability: 0.5, effects: [{ type: 'reduce', target: 'fire', hazards: ['all'], fraction: 0.4 }] },
+    { ...base, id: 'practice', price: 0, effects: [{ type: 'review', failureFactor: 0 }] },
+  ];
+  near(run(d, { owned: { alarm: 1 } }).harm.start.mm, 4 + 100 * (1 - 0.5 * 0.4));
+  r = run(d, { owned: { alarm: 1 } });
+  near(entry(r, 'practice').micromorts, 100 * 0.5 * 0.4);
+});
+
 test('reducers scale harm; within a group only the best counts', () => {
   const d = fixture();
   d.hazards.fire = {

@@ -1,0 +1,447 @@
+{
+  "kind": "items",
+  "group": "medical",
+  "channels": [
+    {
+      "id": "trauma",
+      "definition": "Death from injury or sudden acute illness because professional care is not reached in time. Everyday (hazard homeMedicalEmergency): deaths per person per year from emergencies that start at home and are decided before the ambulance arrives, counted as deaths after EMS-treated non-traumatic cardiac arrest at home (CARES counts arrests caused by choking, overdose, drowning and anaphylaxis in this total) plus bleeding to death from a limb injury at home. In hazards: extra deaths from acute illness and injury per day that the emergencyCare window is open.",
+      "everydayAnnualMicromortsPerPerson": {
+        "lo": 150, "mid": 280, "hi": 380, "tag": "derived",
+        "basis": "Adult 15-59. CARES 2024 national estimate 263,711 EMS-treated arrests x ~36% aged 15-59 (CARES 2023 age figure) / 196M people = 48 per 100,000; x 73% at home x 90% fatal = 315; minus ~15% overdose arrests = ~270-280. https://mycares.net/sitepages/uploads/2025/2024_flipbook/inc/html/32.html"
+      },
+      "inHazards": "Background acute illness and injury keep occurring during any event; the harm is the extra share that dies because care is late or absent. Per person per day the emergencyCare window is open, healthy adult 15-59: about 1.2 micromorts (0.4-3.0) if ambulance and hospital cannot be reached at all, about 0.2 (0.03-0.6) if they work but are delayed or overwhelmed. Use the first for nuclearNear, gridLong after the first week, the peak of pandemicSevere and households physically cut off; the second elsewhere. In-hazard age multipliers differ from the everyday ones: age60to74 x6, age75plus x18, child x0.3 (see inHazardMultipliers). Injuries caused by the event itself (earthquake, storm clean-up, violence) are the hazard researcher's exposure and add to this.",
+      "inHazardMicromortsPerPersonDay": {
+        "careAbsent": {
+          "lo": 0.4, "mid": 1.2, "hi": 3.0, "tag": "derived",
+          "basis": "About +20% on all-cause mortality (7.4 micromorts/day at 15-59): Puerto Rico after Maria +62% with a third of deaths tied to delayed or interrupted care (Kishore 2018, via step 2); bottom-up sum over cardiac arrest, heart attack, stroke, sepsis, major injury and surgical emergencies gives 0.7-3."
+        },
+        "careStrained": {
+          "lo": 0.03, "mid": 0.2, "hi": 0.6, "tag": "derived",
+          "basis": "About +3% on all-cause mortality: RCEM's 300-500 deaths a week in the UK from emergency-department delays is 0.6-1.1 micromorts/day at all ages against a baseline of ~28. https://fullfact.org/health/accident-emergency-delays-excess-deaths/"
+        }
+      },
+      "inHazardMultipliers": [
+        {"profile": "age60to74", "mortality": 6, "tag": "derived", "basis": "Ratio of all-cause death rates, about 44 against 7.4 micromorts/day, assuming the care-sensitive share is the same at every age."},
+        {"profile": "age75plus", "mortality": 18, "tag": "guess", "basis": "All-cause ratio is about 24; shaded down because more deaths at this age are not care-sensitive."},
+        {"profile": "child", "mortality": 0.3, "tag": "guess", "basis": "Low baseline mortality at 1-14, but a larger care-sensitive share; infants are far higher."},
+        {"profile": "limitedMobility", "mortality": 1.5, "tag": "guess", "basis": "Cannot self-transport when ambulances are delayed; no data found."}
+      ],
+      "multipliers": [
+        {"profile": "child", "mortality": 0.27, "tag": "derived", "basis": "CARES 2024: 1,525 infant and 1,210 child 1-12 arrests in the sample, scaled x1.92 to the nation = ~5,600 under 15 / 60M = 9.4 per 100,000; 88% at home, 92% fatal = 76 micromorts. Infants alone are ~700, ages 1-14 ~35. https://mycares.net/sitepages/uploads/2025/CARES%202024%20Non-Traumatic%20National%20Survival%20Report.pdf"},
+        {"profile": "age60to74", "mortality": 3.8, "tag": "derived", "basis": "~89,600 arrests / 56M = 160 per 100,000; 74% at home, 91% fatal = ~1,075 micromorts a year. Age split from CARES 2023 figure 2. https://mycares.net/sitepages/uploads/2024/2023_flipbook/inc/html/30.html"},
+        {"profile": "age75plus", "mortality": 6.5, "tag": "derived", "basis": "~74,800 arrests / 26M = 288 per 100,000; ~67% at home (a quarter are in nursing homes), 94% fatal = ~1,800 micromorts a year. Same sources."}
+      ]
+    }
+  ],
+  "everydayHazard": {
+    "id": "homeMedicalEmergency",
+    "definition": "A household member has a sudden life-threatening emergency at home whose outcome depends on the minutes before the ambulance arrives. Measured as an EMS-treated non-traumatic cardiac arrest at home.",
+    "annualEventsPer100000Persons": {"age15to59": 35, "age60to74": 118, "age75plus": 193, "under15": 8.2},
+    "shareFatal": {"overall": 0.911, "source": "CARES 2024: 8.9% of home arrests survive to discharge"},
+    "shareWitnessedByBystander": 0.375,
+    "notes": "For two adults under 60 the chance of an event in the home is about 0.07% a year. Overdose causes 31% of arrests at 19-34 and 17% at 35-49 (CARES 2024); a household with no opioid or sedative use should subtract that, and one with such use faces several times the average. Naloxone belongs to the drugs researcher."
+  },
+  "items": [
+    {
+      "id": "home-first-aid-kit",
+      "name": "Home first-aid kit",
+      "spec": "One consumer kit of about 300 pieces: adhesive bandages, gauze pads and rolls, tape, antiseptic wipes, a few gloves, cold pack, scissors, tweezers.",
+      "fromLonglistRows": [50],
+      "scalesWith": "household",
+      "unit": "kit",
+      "price": {
+        "usdPerUnit": {"lo": 15, "mid": 19, "hi": 45, "tag": "guess", "basis": "$18.57 is the step 2 longlist figure (NBC Select, 17 Nov 2026), which I did not reopen; search snippets show $16-37 across sellers and $45 for the Red Cross-branded version."},
+        "product": "First Aid Only 299-piece All-Purpose First Aid Kit (FAO-442)",
+        "source": "research/step2/item-longlist.md row 50; firstaidonly.com returned HTTP 429",
+        "verified": false
+      },
+      "lifeYears": {"lo": 3, "mid": 5, "hi": 8, "tag": "guess", "basis": "Adhesives, wipes and cold packs are dated 3-5 years; dry dressings last longer."},
+      "setupHours": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Buy, open, read the leaflet, choose a place."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Yearly check and restock, as the government lists advise."},
+      "upkeepUsdPerYear": {"lo": 1, "mid": 4, "hi": 10, "tag": "guess", "basis": "Replacing plasters and wipes used in ordinary life."},
+      "everydayShare": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Almost all use is ordinary cuts, burns and blisters."},
+      "volumeLitresPerUnit": 3,
+      "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Kits get raided and not restocked; contents are simple to use."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce", "target": "trauma", "hazards": ["homeMedicalEmergency"],
+          "fractionRemoved": {"lo": 0, "mid": 0.0002, "hi": 0.001, "tag": "guess", "basis": "Nothing in the kit treats cardiac arrest, choking or overdose, which are over 99% of the baseline; a pressure dressing helps with severe bleeding only a little more than a clean cloth."},
+          "adherence": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Share of owners who find and use it in the moment."},
+          "notes": "About 0.03 micromorts a year per adult. The kit earns its place through everyday use, not lives saved."
+        },
+        {
+          "type": "reduce", "target": "trauma",
+          "hazards": ["severeStorm", "winterStorm", "heatWave", "hurricane", "earthquake", "wildfire", "flood", "pandemicModerate", "pandemicSevere", "nuclearNear", "nuclearFar", "gridLong", "civilUnrest"],
+          "fractionRemoved": {"lo": 0, "mid": 0.01, "hi": 0.03, "tag": "guess", "basis": "Cleaning and covering wounds when care is days away lowers wound infection; no study measures it. Most deaths in the window are heart attacks, sepsis and strokes that a kit cannot touch."},
+          "adherence": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "As above."},
+          "notes": "Applies to the per-day emergencyCare rate in the trauma channel."
+        },
+        {
+          "type": "other",
+          "description": "Hardship: lets a household dress minor wounds, burns and sprains properly while the emergencyCare or medication window is open. Rough size: 3-7% of people need a dressing in a five-day window (twice the ordinary rate), worth perhaps $20-50 each against improvising, so $1-3 per person per event. Guess."
+        }
+      ],
+      "evidence": [
+        {"claim": "Adult cardiac arrests treated by EMS in 2024 were 83.8% presumed cardiac, 9.1% respiratory, 5.3% overdose, 0.7% exsanguination, 0.5% drowning; kit contents bear on under 1%.", "source": "https://mycares.net/sitepages/uploads/2025/2024_flipbook/inc/html/33.html", "year": 2025, "verified": true},
+        {"claim": "No evidence exists for what a disaster kit should contain or whether having one improves outcomes (Heagele 2016); Texas 2021 deaths were from cold, chronic illness, crashes, CO, fire and falls.", "source": "research/step2/prior-art.md (not reopened)", "year": 2016, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Every list recommends one and no study measures its effect. Rank it on hardship and everyday use."
+    },
+    {
+      "id": "bleeding-control-kit",
+      "name": "Bleeding-control kit",
+      "spec": "One windlass tourniquet (C-A-T), one 6-inch pressure bandage, two compressed gauze rolls, gloves and shears, kept where it can be reached in under a minute.",
+      "fromLonglistRows": [51],
+      "scalesWith": "household",
+      "unit": "kit",
+      "price": {
+        "usdPerUnit": {"lo": 45, "mid": 80, "hi": 140, "tag": "data", "basis": "LA Police Gear lists the NAR public-access kit at $79.99-138.50 across basic to advanced versions; a C-A-T alone is $34.99 at narescue.com, so a self-assembled kit is about $45-55."},
+        "product": "North American Rescue Public Access Individual Bleeding Control Kit, basic",
+        "source": "https://lapolicegear.com/north-american-rescue-public-access-individual-bleeding-control-kit.html",
+        "verified": true
+      },
+      "lifeYears": {"lo": 5, "mid": 8, "hi": 12, "tag": "guess", "basis": "NAR says an unused, sealed C-A-T has no shelf life; dressings are dated about 5 years. https://www.narescue.com/combat-application-tourniquet-c-a-t.html"},
+      "setupHours": {"lo": 0.3, "mid": 1, "hi": 2, "tag": "guess", "basis": "Watching a how-to and practising once on a limb; without that the kit is close to useless (see adherence)."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Glance at the seal and dates."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 1, "hi": 3, "tag": "guess", "basis": "Dressings replaced once in the kit's life."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0.05, "tag": "guess", "basis": "No ordinary use."},
+      "volumeLitresPerUnit": 1.5,
+      "reliability": {"lo": 0.75, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "Genuine tourniquets rarely fail; the risk is not finding the kit. Counterfeits break."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce", "target": "trauma", "hazards": ["homeMedicalEmergency"],
+          "fractionRemoved": {"lo": 0.0001, "mid": 0.0005, "hi": 0.002, "tag": "guess", "basis": "235-480 US deaths a year from limb bleeding that a prompt tourniquet might have saved = 0.7-1.4 micromorts per person; a quarter at home with someone present (guess) = 0.26; half of those saved beyond what improvised pressure achieves (guess) = 0.13, over a baseline of 280."},
+          "adherence": {"lo": 0.15, "mid": 0.3, "hi": 0.6, "tag": "derived", "basis": "PATTS trial: 16% of untrained laypeople applied a tourniquet correctly, 20% with flashcards, 88% just after hands-on training, 54.5% at 3-9 months. A typical owner sits between. Use 0.55 with firstAidSkill. https://pubmed.ncbi.nlm.nih.gov/29801156/"},
+          "notes": "About 0.04 micromorts a year per person (0.07 if trained): well under a dollar a year. Most such deaths are gunshot and stab wounds away from home. Higher for households with chainsaws, power tools, firearms or anticoagulant users; no data to size it."
+        },
+        {
+          "type": "reduce", "target": "trauma",
+          "hazards": ["earthquake", "hurricane", "severeStorm", "civilUnrest", "nuclearNear"],
+          "fractionRemoved": {"lo": 0.002, "mid": 0.015, "hi": 0.05, "tag": "guess", "basis": "In events that injure people while ambulances cannot come, limb bleeding is a larger share of deaths; share assumed at a few percent of the hazard's trauma harm."},
+          "adherence": {"lo": 0.15, "mid": 0.3, "hi": 0.6, "tag": "derived", "basis": "As above."},
+          "notes": "Apply to the hazard's injury exposure and to the per-day emergencyCare rate."
+        },
+        {
+          "type": "reduce", "target": "trauma",
+          "hazards": ["winterStorm", "heatWave", "wildfire", "flood", "pandemicModerate", "pandemicSevere", "nuclearFar", "gridLong"],
+          "fractionRemoved": {"lo": 0.0005, "mid": 0.004, "hi": 0.015, "tag": "guess", "basis": "Injury is about a sixth of the deaths that late care causes at ages 15-59 in my bottom-up sum, and limb bleeding a small part of that."},
+          "adherence": {"lo": 0.15, "mid": 0.3, "hi": 0.6, "tag": "derived", "basis": "As above."}
+        }
+      ],
+      "evidence": [
+        {"claim": "Of 288 Maryland bleeding deaths autopsied over 2002-2016, 124 (9 a year) might have been saved by a prompt tourniquet; extrapolated to about 480 a year in the US. Suicides and under-18s excluded.", "source": "https://mdsoar.org/items/d8680db7-a089-430c-a158-fb2e45776912", "year": 2018, "verified": true},
+        {"claim": "Harris County homicides: 22 of 1,521 penetrating cases (1.45%) were isolated limb injuries, all tourniquet-amenable; extrapolated to 235 US deaths in 2016.", "source": "https://pubmed.ncbi.nlm.nih.gov/31580174/", "year": 2019, "verified": true},
+        {"claim": "1,026 patients with limb vascular injury at 11 trauma centres: prehospital tourniquet in 17.6%; adjusted odds ratio for survival 5.86 (CI 1.41-24.47); crude mortality 3.9% against 5.2%, not significant.", "source": "https://pubmed.ncbi.nlm.nih.gov/29605726/", "year": 2018, "verified": true},
+        {"claim": "Correct tourniquet application by laypeople: 16% untrained, 19.6% flashcards, 23% audio kit, 88% after in-person training; 54.5% on retest at 3-9 months.", "source": "https://pubmed.ncbi.nlm.nih.gov/29801156/", "year": 2018, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "Honest reading: for an ordinary household this is poor value on expected deaths averted. Abstracts read through the Europe PMC API because PubMed blocks the fetcher."
+    },
+    {
+      "id": "home-vitals-monitors",
+      "name": "Thermometer, pulse oximeter and blood-pressure cuff",
+      "spec": "Digital thermometer, fingertip pulse oximeter and automatic upper-arm blood-pressure monitor.",
+      "fromLonglistRows": [52],
+      "scalesWith": "household",
+      "unit": "set of three",
+      "price": {
+        "usdPerUnit": {"lo": 40, "mid": 70, "hi": 120, "tag": "guess", "basis": "Search snippets: Zacurate 500DL oximeter $20-23 at Walmart; thermometer about $10 and cuff $35-60 from memory. Manufacturer pages refused to load."},
+        "product": "Zacurate 500DL oximeter, basic digital thermometer, Omron-class upper-arm monitor",
+        "source": "https://www.walmart.com/ip/55456579",
+        "verified": false
+      },
+      "lifeYears": {"lo": 4, "mid": 7, "hi": 12, "tag": "guess", "basis": "Consumer electronics with replaceable batteries."},
+      "setupHours": {"lo": 0.2, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "Buying, and learning what readings should prompt a call."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Battery check."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 2, "hi": 5, "tag": "guess", "basis": "Batteries."},
+      "everydayShare": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Most homes already own a thermometer; a cuff has real everyday value only where someone has high blood pressure."},
+      "volumeLitresPerUnit": 2,
+      "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Cheap oximeters lack validation and read less accurately on dark skin and cold fingers; flat batteries."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce", "target": "infection", "hazards": ["pandemicModerate", "pandemicSevere"],
+          "fractionRemoved": {"lo": 0, "mid": 0.005, "hi": 0.03, "tag": "guess", "basis": "A randomised trial of home oximeters in 1,217 COVID patients found no gain: days alive and out of hospital 29.4 against 29.5, deaths 5 against 3. https://pubmed.ncbi.nlm.nih.gov/35385625/"},
+          "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Share who check when ill and act on a low reading."},
+          "notes": "The median is close to zero on purpose. The upper end allows for silent hypoxia when no phone triage exists."
+        },
+        {
+          "type": "other",
+          "description": "Information for deciding whether to travel for care while services are strained (fever, oxygen saturation under 92%, very high or low blood pressure). Unmeasured; treat as hardship relief of a few dollars per illness episode, not as deaths averted."
+        }
+      ],
+      "evidence": [
+        {"claim": "Pragmatic trial, 2,097 randomised (1,217 with confirmed COVID): adding a home pulse oximeter to remote monitoring changed days alive and out of hospital by -0.1 (CI -0.4 to 0.2); 30-day deaths 0.8% against 0.5%.", "source": "https://pubmed.ncbi.nlm.nih.gov/35385625/", "year": 2022, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Do not credit the thermometer: an unprepared household has one. Pulse oximeters sold out in spring 2020 (memory, unverified), hence specialty."
+    },
+    {
+      "id": "first-aid-extras",
+      "name": "Gloves, splint and bandage extras",
+      "spec": "Box of 100 nitrile gloves, one 36-inch mouldable splint, two elastic and two triangular bandages, four instant cold packs, spare gauze rolls and tape.",
+      "fromLonglistRows": [53, 54],
+      "scalesWith": "household",
+      "unit": "bundle",
+      "price": {
+        "usdPerUnit": {"lo": 30, "mid": 50, "hi": 80, "tag": "guess", "basis": "Step 2 estimates: gloves $8-12 per 100, extras $40-70 including a dental kit that I leave out. No retailer page opened."},
+        "product": "Generic nitrile gloves, SAM-type splint, bandages, cold packs",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 3, "mid": 5, "hi": 8, "tag": "guess", "basis": "Nitrile and cold packs are dated 3-5 years."},
+      "setupHours": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Buying and storing with the kit."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Checked with the kit."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 2, "hi": 6, "tag": "guess", "basis": "Gloves used for cleaning and chores."},
+      "everydayShare": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Gloves, elastic bandages and cold packs see ordinary use; the splint does not."},
+      "volumeLitresPerUnit": 3,
+      "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Simple items; splinting well needs a little practice."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce", "target": "infection", "hazards": ["pandemicModerate", "pandemicSevere"],
+          "fractionRemoved": {"lo": 0, "mid": 0.005, "hi": 0.03, "tag": "guess", "basis": "Gloves matter for body fluids when nursing a sick person at home; for a respiratory pathogen the route is air, and hand washing does the rest. No household trial of gloves found."},
+          "adherence": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Share of care tasks done gloved and removed correctly."}
+        },
+        {
+          "type": "reduce", "target": "trauma",
+          "hazards": ["severeStorm", "winterStorm", "hurricane", "earthquake", "flood", "nuclearNear", "gridLong", "civilUnrest"],
+          "fractionRemoved": {"lo": 0, "mid": 0.002, "hi": 0.01, "tag": "guess", "basis": "Splints and slings change pain and function, almost never survival."},
+          "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "Share who use them adequately; higher with firstAidSkill."}
+        },
+        {
+          "type": "other",
+          "description": "Hardship: immobilising a sprain or fracture until care is reachable. Chance per person per window-day about 1 in 10,000 for a fracture (roughly 2% of people a year, from memory) and similar for a bad sprain, so the expected value is cents per event. Guess."
+        }
+      ],
+      "evidence": [
+        {"claim": "Recommended as kit extras by The Prepared and the German BBK list; I found no outcome study for household gloves or splints.", "source": "research/step2/item-longlist.md rows 53-54", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Merged rows 53 and 54. If the pandemic researcher also lists gloves, keep one."
+    },
+    {
+      "id": "first-aid-cpr-course",
+      "name": "First-aid and CPR course",
+      "spec": "One adult completes an instructor-led first aid, CPR and AED course with hands-on practice (bleeding control and choking included), repeated every two years.",
+      "fromLonglistRows": [110],
+      "scalesWith": "person",
+      "unit": "one adult completing the course once",
+      "price": {
+        "usdPerUnit": {"lo": 35, "mid": 115, "hi": 130, "tag": "guess", "basis": "Red Cross blended Adult and Pediatric First Aid/CPR/AED listings show $123-129 in search snippets (redcross.org returns HTTP 403); community and employer courses are cheaper or free."},
+        "product": "American Red Cross Adult and Pediatric First Aid/CPR/AED, blended learning",
+        "source": "https://www.redcross.org/take-a-class/classes/adult-and-pediatric-first-aid%2Fcpr%2Faed-bl-r.25/a65Vx000006hcgA.html",
+        "verified": false
+      },
+      "lifeYears": {"lo": 1, "mid": 2, "hi": 4, "tag": "derived", "basis": "Certificate valid 2 years (Red Cross listing, snippet). Skills fade faster: 54.5% applied a tourniquet correctly 3-9 months after training. https://pubmed.ncbi.nlm.nih.gov/29801156/"},
+      "setupHours": {"lo": 4, "mid": 5.5, "hi": 8, "tag": "derived", "basis": "2.5 h online (Red Cross listing, snippet) + about 2 h skills session (memory) + 1 h booking and travel (guess). Per adult trained."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0, "hi": 0.5, "tag": "guess", "basis": "Refreshing is modelled as retaking the course at end of life."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0.1, "mid": 0.3, "hi": 0.5, "tag": "guess", "basis": "About 29% of arrests happen outside the home (CARES 2024), where a trained person helps people the model does not count; job and childcare requirements add to this."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.65, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Average retention of usable skill across the two years between courses."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "capability", "capability": "firstAidSkill", "notes": "Raises correct use of the bleeding-control kit and extras."},
+        {
+          "type": "reduce", "target": "trauma", "hazards": ["homeMedicalEmergency"],
+          "fractionRemoved": {"lo": 0.004, "mid": 0.016, "hi": 0.04, "tag": "derived", "basis": "If a trained member were present and acted at every home emergency: 35% of home arrests witnessed x 70% where an untrained person would not have given effective CPR x 5 points of survival (2-9) / 0.89 fatal = 1.4%, plus 0.2% for choking. Hasselqvist-Ax 2015: 10.5% vs 4.0% 30-day survival, adjusted OR 2.15. https://pubmed.ncbi.nlm.nih.gov/26061835/"},
+          "adherence": {"lo": 0.25, "mid": 0.5, "hi": 0.7, "tag": "guess", "basis": "0.85 that the trained member is the one present, x 0.6: a recently trained person starts CPR in about 75% of cases against 35% untrained with dispatcher coaching, which closes 60% of the gap. Swor 2006: trained bystanders OR 6.6 for giving CPR, yet a minority did, 37.5% of them citing panic."},
+          "notes": "Benefit goes to the other members of the household, never to the trained person, so a one-person household gets nothing. Net: 0.016 x 0.5 x 0.85 = 0.7% of baseline, about 1.9 micromorts a year for each other member aged 15-59, 7 at 60-74, 12 at 75+."
+        },
+        {
+          "type": "reduce", "target": "trauma",
+          "hazards": ["severeStorm", "winterStorm", "heatWave", "hurricane", "earthquake", "wildfire", "flood", "pandemicModerate", "pandemicSevere", "nuclearNear", "nuclearFar", "gridLong", "civilUnrest"],
+          "fractionRemoved": {"lo": 0.01, "mid": 0.04, "hi": 0.1, "tag": "guess", "basis": "Lay first aid bears on injury (about a sixth of late-care deaths at 15-59) and on recognising a time-critical illness early enough to drive to care. A lay-responder and paramedic system in rural Iraq and Cambodia cut trauma deaths from 40% to 14.9% with 5.7 h to hospital. https://pubmed.ncbi.nlm.nih.gov/12813342/"},
+          "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.8, "tag": "guess", "basis": "Trained member present and acting; more time to think than in a cardiac arrest."},
+          "notes": "CPR without a defibrillator and hospital to follow saves almost no one, so the in-hazard effect is not the CPR effect."
+        }
+      ],
+      "evidence": [
+        {"claim": "30,381 witnessed arrests in Sweden: CPR before EMS in 51.1%; 30-day survival 10.5% with, 4.0% without; adjusted OR 2.15 (1.88-2.45).", "source": "https://pubmed.ncbi.nlm.nih.gov/26061835/", "year": 2015, "verified": true},
+        {"claim": "CARES 2024: survival to discharge 8.9% for home arrests, 20.8% public; 16.1% bystander-witnessed, 4.5% unwitnessed; 13.1% with bystander CPR, 7.6% without (nursing homes excluded); 37.5% of arrests bystander-witnessed.", "source": "https://mycares.net/sitepages/uploads/2025/CARES%202024%20Non-Traumatic%20National%20Survival%20Report.pdf", "year": 2025, "verified": true},
+        {"claim": "CPR was started by a bystander after 50.1% of witnessed and 35.2% of unwitnessed arrests; 41.7% overall.", "source": "https://mycares.net/sitepages/uploads/2025/2024_flipbook/inc/html/39.html", "year": 2025, "verified": true},
+        {"claim": "Meta-analysis of survival predictors: pooled survival to discharge 7.6%; bystander CPR raises survival from 3.9% to 16.1%; number needed to treat 24-36.", "source": "https://pubmed.ncbi.nlm.nih.gov/20123673/", "year": 2010, "verified": true},
+        {"claim": "684 bystander interviews: 69.6% were family; 54.1% CPR-trained; CPR before EMS in 33.6%; trained OR 6.6 (3.5-12.5); trained within 5 years OR 4.5.", "source": "https://read.qxmd.com/read/16614455/cpr-training-and-cpr-performance-do-cpr-trained-bystanders-perform-cpr", "year": 2006, "verified": true},
+        {"claim": "Training unselected laypeople in CPR and defibrillation: 2.7 quality-adjusted hours per trainee for $62, $202,400 per QALY; under $75,000 if the trainee lives with someone over 75 or with heart disease, or if training costs under $10.", "source": "https://healthpolicy.fsi.stanford.edu/node/24339", "year": 2005, "verified": true},
+        {"claim": "Bystander intervention in choking: adjusted hazard ratio for death 0.55 (0.39-0.77), 407 patients, Japan.", "source": "https://read.qxmd.com/read/38582443/", "year": 2024, "verified": false}
+      ],
+      "confidence": "derived",
+      "notes": "Cost per trained adult at $25/h is about $250 every two years. Protecting one adult under 60 that buys about 4 micromorts; protecting someone over 75 about 24. This matches Groeneveld and Owens: poor value for unselected people, good for those living with the old or the cardiac. The free video below captures much of it."
+    },
+    {
+      "id": "hands-only-cpr-video",
+      "name": "Hands-only CPR self-training",
+      "spec": "Each adult watches a free hands-only CPR and choking video of under ten minutes, practises compressions on a cushion, and repeats it once a year.",
+      "fromLonglistRows": [],
+      "scalesWith": "person",
+      "unit": "one adult, one session",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0, "hi": 40, "tag": "guess", "basis": "Videos are free; the upper end is an optional inflatable practice manikin kit, price from memory."},
+        "product": "American Heart Association Hands-Only CPR video",
+        "source": "https://cpr.heart.org/en/cpr-courses-and-kits/hands-only-cpr",
+        "verified": false
+      },
+      "lifeYears": {"lo": 0.5, "mid": 1, "hi": 2, "tag": "guess", "basis": "Brief training fades within months; retention after video training was not reported in the abstract I read."},
+      "setupHours": {"lo": 0.25, "mid": 0.5, "hi": 1, "tag": "guess", "basis": "Ten minutes of video, some practice, finding it."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0, "hi": 0.2, "tag": "guess", "basis": "Repeat is modelled as a new unit each year."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0.1, "mid": 0.3, "hi": 0.5, "tag": "guess", "basis": "Same reasoning as the course."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Retention over the year."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce", "target": "trauma", "hazards": ["homeMedicalEmergency"],
+          "fractionRemoved": {"lo": 0.004, "mid": 0.016, "hi": 0.04, "tag": "derived", "basis": "Same ceiling as the course: the gain if a prepared member were present and acted at every home emergency."},
+          "adherence": {"lo": 0.1, "mid": 0.3, "hi": 0.5, "tag": "guess", "basis": "Assumed to close 35% of the gap to always acting (the course closes 60%), x 0.85 presence. In a simulation 0.7% of video-trained adults failed to attempt CPR against 23.5% of untrained; real arrests are unmeasured. https://pubmed.ncbi.nlm.nih.gov/21386066/"},
+          "notes": "Overlaps with the course; do not add the two. Net about 0.4% of baseline, 1.1 micromorts a year for each other member aged 15-59, for half an hour."
+        }
+      ],
+      "evidence": [
+        {"claim": "336 adults randomised to no training or videos of 60 seconds, 5 minutes, or 8 minutes with practice: 23.5% of controls and 0.7% of trained did not attempt CPR; trained groups compressed deeper and at a better rate.", "source": "https://pubmed.ncbi.nlm.nih.gov/21386066/", "year": 2011, "verified": true},
+        {"claim": "Training passes $75,000 per QALY when its total cost is under $10.", "source": "https://healthpolicy.fsi.stanford.edu/node/24339", "year": 2005, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Not on the longlist. Added because cost, not efficacy, is what sinks CPR training in the one published cost-effectiveness study."
+    },
+    {
+      "id": "routine-vaccinations",
+      "name": "Routine vaccinations up to date",
+      "spec": "Per person per year: influenza every autumn; COVID-19 as recommended; tetanus booster every 10 years; from 50 pneumococcal once and shingles; RSV once at 75 or at 60 with risk conditions. Keep the record.",
+      "fromLonglistRows": [56],
+      "scalesWith": "person",
+      "unit": "one person kept up to date for one year",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0, "hi": 250, "tag": "guess", "basis": "No charge under most US insurance and Medicare (memory). Cash flu shot $21.99 at Costco to $99 at CVS (search snippets); the upper end adds a cash COVID shot, price from memory."},
+        "product": "Recommended adult vaccines at a pharmacy",
+        "source": "https://www.goodrx.com/conditions/flu-vaccination/flu-shot-cost-without-insurance",
+        "verified": false
+      },
+      "lifeYears": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "The unit is defined as one year."},
+      "setupHours": {"lo": 0.2, "mid": 0.5, "hi": 1, "tag": "guess", "basis": "Checking what is due."},
+      "upkeepHoursPerYear": {"lo": 0.5, "mid": 1, "hi": 2.5, "tag": "guess", "basis": "One or two pharmacy visits; setupHours already covers the first year's checking."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "Cost is in price."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "Set to zero so the benefit below is counted once, as modelled everyday harm averted, and not also netted out of cost."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.9, "mid": 0.97, "hi": 1, "tag": "guess", "basis": "Vaccine effectiveness is already inside the micromort figures; this covers only missed timing."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "other",
+          "description": "Annual deaths averted against skipping all of them, United States, 2024-25 conditions. Healthy adult 15-59: 8 micromorts (2-26); an average-risk adult about 21. Age 60-74: 130 (45-270). Age 75+: 680 (230-1,300). Not a hazard effect: it is everyday infection risk. Worth nothing extra to people who already do it.",
+          "annualMicromortsAverted": {
+            "adult15to59": {"lo": 2, "mid": 8, "hi": 26, "tag": "derived", "basis": "Flu: ~5,900 deaths a year at 18-59 in a typical season (30,000 total, CDC age shares) / 182M = 32 micromorts at average risk, 37 unvaccinated, x 42% effectiveness = 16; a third of that for a healthy adult. COVID adds 1-2, the rest under 1. https://www.cdc.gov/flu-burden/php/data-vis-vac/2024-2025-prevented.html"},
+            "age60to74": {"lo": 45, "mid": 130, "hi": 270, "tag": "derived", "basis": "Flu 70 (142 micromorts average risk, 185 unvaccinated, x 0.42) + COVID 40 (2024-25 deaths 30,923 at 65+, a quarter at 65-74; 30% year-average effectiveness; trend down) + pneumococcal 15 + RSV 5 (both guesses). https://www.cdc.gov/mmwr/volumes/75/wr/mm7506a2.htm"},
+            "age75plus": {"lo": 230, "mid": 680, "hi": 1300, "tag": "derived", "basis": "Flu 270 (606 micromorts average risk, 785 unvaccinated, x 0.35) + COVID 250 (892 average risk, x 0.3, x 0.8 trend) + RSV 120 + pneumococcal 40 (both guesses). Check: CDC's 12,000 flu deaths prevented in 2024-25, 81% at 65+, is 250 micromorts per vaccinated older adult in a severe season."}
+          }
+        },
+        {
+          "type": "other",
+          "description": "In hazards: tetanus cover matters for wounds in flood, earthquake and storm clean-up when care is delayed, but US tetanus runs at a few dozen cases a year (memory), so under 0.1 micromort. Being current on flu and COVID vaccines also lowers the chance of needing a hospital while the emergencyCare window is open; the everyday figures already include most of that."
+        },
+        {
+          "type": "other",
+          "description": "Hardship: fewer sick days. Flu attack rate about 8% a year x 40% effectiveness x about 4 days is 0.13 sick days averted per adult a year (memory-based guess), against a day of mild side effects for a minority."
+        }
+      ],
+      "evidence": [
+        {"claim": "2024-25 flu season: 45,000 deaths, 71% at 65+ and 21% at 50-64; vaccination prevented 12,000 deaths, 81% at 65+; coverage 31% at 18-49, 63% at 65+; effectiveness against hospitalisation 41-44% in older groups.", "source": "https://www.cdc.gov/flu-burden/php/data-vis-vac/2024-2025-prevented.html", "year": 2026, "verified": true},
+        {"claim": "COVID-19 deaths July 2024-June 2025: 34,981 on death certificates, 88.4% at 65+ and 3,781 at 18-64; burden estimate 34,000-53,000. RSV burden estimate 10,000-23,000 deaths.", "source": "https://www.cdc.gov/mmwr/volumes/75/wr/mm7506a2.htm", "year": 2026, "verified": true},
+        {"claim": "2024-25 COVID vaccine effectiveness against hospitalisation at 65+: 45% (36-53) and 46% (26-60) at 7-119 days; no estimate against critical illness or death.", "source": "https://www.cdc.gov/mmwr/volumes/74/wr/mm7406a1.htm", "year": 2025, "verified": true},
+        {"claim": "2023-24 flu season: 28,000 deaths, 68% at 65+.", "source": "https://www.cdc.gov/flu/whats-new/flu-summary-addendum-2023-2024.html", "year": 2024, "verified": false}
+      ],
+      "confidence": "derived",
+      "notes": "Assumes effectiveness against hospitalisation carries over to death, as CDC's own model does; frail people may get less. Pneumococcal and RSV numbers are from memory. Splitting 65+ deaths 25/75 between 65-74 and 75+ is my assumption. For healthy under-65s the 2025 US rules make the COVID shot a matter of individual decision; the figure is small either way. The engine needs a rule for this entry, since no channel carries everyday infection."
+    },
+    {
+      "id": "home-aed",
+      "name": "Home defibrillator (AED)",
+      "spec": "One automated external defibrillator sold for home use, kept on the main floor, battery and pads in date.",
+      "fromLonglistRows": [],
+      "scalesWith": "household",
+      "unit": "device",
+      "price": {
+        "usdPerUnit": {"lo": 1200, "mid": 1664, "hi": 2200, "tag": "data", "basis": "Philips lists the HeartStart Home with slim case at $1,664; other brands run lower and higher (search snippets)."},
+        "product": "Philips HeartStart Home AED with slim carry case",
+        "source": "https://aedshop.philips.com/us/861284-heartstarthome.html",
+        "verified": true
+      },
+      "lifeYears": {"lo": 8, "mid": 10, "hi": 12, "tag": "guess", "basis": "Eight-year warranty on this family of devices (search snippet); devices usually outlast it."},
+      "setupHours": {"lo": 0.5, "mid": 1.5, "hi": 3, "tag": "guess", "basis": "Choosing, registering, watching the training video with the household."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Monthly glance at the status light."},
+      "upkeepUsdPerYear": {"lo": 55, "mid": 96, "hi": 125, "tag": "derived", "basis": "Battery $249 (Philips page) every 4 years + adult pads $68 every 2 years (search snippets for price and intervals) = 62 + 34."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0.05, "tag": "guess", "basis": "No ordinary use."},
+      "volumeLitresPerUnit": 6,
+      "reliability": {"lo": 0.75, "mid": 0.9, "hi": 0.97, "tag": "guess", "basis": "Expired pads or battery, or the device is upstairs."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce", "target": "trauma", "hazards": ["homeMedicalEmergency"],
+          "fractionRemoved": {"lo": 0.003, "mid": 0.015, "hi": 0.04, "tag": "guess", "basis": "If used at every witnessed home arrest: 35% witnessed x ~25% shockable at home (18% of all arrests, more when witnessed; guess) x 15 points of survival over waiting for the crew's defibrillator (guess, 0-25) / 0.89 = 1.5%."},
+          "adherence": {"lo": 0.25, "mid": 0.47, "hi": 0.65, "tag": "derived", "basis": "HAT trial: the device was used in 32 of 58 witnessed home arrests (55%), in trained households; x 0.85 that a capable member is present. https://pubmed.ncbi.nlm.nih.gov/18381485/"},
+          "notes": "Net 0.015 x 0.47 x 0.9 = 0.6% of baseline: about 1.8 micromorts a year for each other member aged 15-59, 7 at 60-74, about 10 at 75+. Adds to CPR, does not replace it."
+        }
+      ],
+      "evidence": [
+        {"claim": "HAT trial: 7,001 people at intermediate risk after a heart attack randomised to home AED or CPR training alone; deaths 6.4% against 6.5% over 37 months (HR 0.97, 0.81-1.17). Of 160 sudden arrhythmic deaths 117 were at home and 58 witnessed; AED used in 32, 14 shocked, 4 survived to discharge.", "source": "https://pubmed.ncbi.nlm.nih.gov/18381485/", "year": 2008, "verified": true},
+        {"claim": "In-home AED for all 60-year-olds (0.4% a year arrest risk): $216,000 per QALY; $132,000 at 2% risk, $104,000 after heart attack.", "source": "https://pubmed.ncbi.nlm.nih.gov/15836529/", "year": 2005, "verified": true},
+        {"claim": "Training plus a home defibrillator for unselected adults: $2,489,700 per QALY.", "source": "https://healthpolicy.fsi.stanford.edu/node/24339", "year": 2005, "verified": true},
+        {"claim": "CARES 2024: 18.0% of arrests had a shockable first rhythm; survival 33.5% when bystander-witnessed and shockable; with bystander AED use outside care facilities 33.6%.", "source": "https://mycares.net/sitepages/uploads/2025/CARES%202024%20Non-Traumatic%20National%20Survival%20Report.pdf", "year": 2025, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "Honest reading: roughly $300 a year all in for 3.6 micromorts a year in a two-adult household under 60, or about $80 million per death averted; about $20 million for two people aged 60-74. The only randomised trial found no benefit in a group at far higher risk than the public. Not on the longlist; included because the assignment asks."
+    }
+  ],
+  "excluded": [
+    {"what": "Row 55, spare glasses, contact-lens supplies, hearing-aid batteries", "reason": "Assigned to another researcher."},
+    {"what": "Row 54, dental kit", "reason": "Dropped from the extras bundle: temporary filling material bears on comfort only and nobody measures it."},
+    {"what": "Row 51 second tourniquet, hemostatic gauze, chest seals", "reason": "Each adds cost and needs training; chest seals and hemostatic gauze address wounds that are rare at home. One tourniquet plus pressure bandage carries nearly all of an already small benefit."},
+    {"what": "Row 53 as a separate entry", "reason": "Merged with row 54 into first-aid-extras."},
+    {"what": "Naloxone", "reason": "A drug, so the drugs researcher's. It matters: overdose is 31% of arrests at ages 19-34."},
+    {"what": "Chewable aspirin for a suspected heart attack", "reason": "A drug; flagged in openQuestions because row 59 omits it."},
+    {"what": "Reference books on first aid (row 113)", "reason": "Not in my rows; no evidence either way."}
+  ],
+  "blockedSources": [
+    "https://pubmed.ncbi.nlm.nih.gov/: cookie wall on every abstract; I read the same abstracts through the Europe PMC REST API and cite the PubMed address",
+    "https://injuryfacts.nsc.org/home-and-community/deaths-in-the-home/deaths-in-the-home-by-age-group/: HTTP 403; choking deaths by age and the share at home",
+    "https://professional.heart.org/en/science-news/-/media/C44EB8DE5D8C4015AF53095F737377C6.ashx: HTTP 403; AHA 2026 statistics, age-specific cardiac arrest incidence",
+    "https://mycares.net/sitepages/uploads/2025/2024_flipbook/inc/html/35.html: figure values are images; share of home arrests witnessed and given bystander CPR",
+    "https://www.redcross.org/take-a-class/: HTTP 403; course price and hours",
+    "https://firstaidonly.com/products/kit-soft-consumer-299pc-arc-branded: HTTP 429; kit price",
+    "https://www.galls.com/north-american-rescue-public-access-individual-bleeding-control-kit: HTTP 403; basic kit price",
+    "https://www.rei.com/search?q=sam+splint: HTTP 403; splint price",
+    "https://omronhealthcare.com and https://zacurate.com: 404 and 429; monitor prices",
+    "https://archive.cdc.gov/www_cdc_gov/flu-burden/php/data-vis/2024-2025.html: age table is an image; flu deaths by age group",
+    "Kishore et al., NEJM 2018, and Wilde, Health Economics 2013: full texts not opened; Puerto Rico figures taken from the step 2 report"
+  ],
+  "openQuestions": [
+    "Training and the AED protect the other members of the household, not the trained person. The engine should apply those reduce effects to household size minus one, and to zero for a person living alone.",
+    "Does an emergencyCare window mean care is unreachable or merely slow? The trauma channel gives a rate for each (1.2 and 0.2 micromorts per adult-day); hazard researchers need to say which applies, or the engine needs a severity share.",
+    "The channel schema holds one set of multipliers; the everyday and in-hazard age multipliers differ (3.8 and 6.5 against 6 and 18). I put the in-hazard set in inHazardMultipliers.",
+    "routine-vaccinations has no channel to act on, so its benefit sits in an 'other' effect with numeric fields. It will top any list for people over 60 who are not already vaccinated; decide whether it belongs in a preparedness ranking or in a sidebar.",
+    "A single dollar value per micromort overstates the worth of deaths averted at 75+ relative to a QALY view. This drives the rank of the course, the AED and vaccination for older households.",
+    "Chewable aspirin (not in row 59) for a suspected heart attack costs cents and cut vascular deaths by about a fifth in ISIS-2 (memory); the drugs researcher should consider it.",
+    "The 15-59 baseline rests on my split of CARES age bands and on population counts from memory; the AHA statistical update, which I could not open, may give age-specific rates directly.",
+    "I gave no everydayAnnualUsdPerHousehold for the trauma channel: I found no usable figure for the hardship of home emergencies that first aid changes."
+  ]
+}

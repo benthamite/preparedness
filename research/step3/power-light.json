@@ -1,0 +1,1796 @@
+{
+ "kind": "items",
+ "group": "power-light",
+ "needs": [
+  {
+   "id": "light",
+   "definition": "A day inside a power window on which the household has no working electric light after sunset: its ordinary flashlights, phone torches and candles are dead, used up or cannot be found. Charged per person. Meeting it takes about 4 Wh of LED light per household-day (one or two lamps at ~1 W for 4-5 dark waking hours).",
+   "baselineCoverageDays": {
+    "lo": 0.2,
+    "mid": 1.5,
+    "hi": 6,
+    "tag": "derived",
+    "basis": "94.8% of households said they had a working flashlight and batteries (CDC BRFSS, 14 states, 2006-2010, https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6136a1.htm) and 91% of adults own a smartphone with a torch (Pew 2025, search snippet). The day count is my guess: one flashlight with part-used cells gives 5-20 h, i.e. 1-4 evenings; phone torches compete with calls."
+   },
+   "hardshipUsdPerPersonDay": {
+    "tag": "guess",
+    "basis": "Stated WTP to avoid a 24 h outage is $53.68 per household (LBNL ICE 2.0, https://eta-publications.lbl.gov/sites/default/files/2026-10/ice_2.0_nreca_final_report_28oct2026.pdf) and FEMA uses $33 per person-day; I assign 15-25% of that to light, about $10 per household-evening, divided by 2.5 persons. No study isolates lighting.",
+    "steps": [
+     {
+      "fromDay": 1,
+      "lo": 1.5,
+      "mid": 4,
+      "hi": 12
+     },
+     {
+      "fromDay": 4,
+      "lo": 2,
+      "mid": 5,
+      "hi": 15
+     }
+    ]
+   },
+   "mortalityMicromortsPerPersonDay": {
+    "tag": "guess",
+    "basis": "Data: about 3,700 unintentional fall deaths at ages 15-59 in 2023 (WISQARS: 332 at 25-34, 677 at 35-44, 1,250 at 45-54, 3,172 at 55-64, https://wisqars-viz.cdc.gov/pdfs/leading-causes-of-injury-deaths-by-age-group_2023_508.pdf) among roughly 197M people = 1.9 per 100,000 a year = 0.052 micromorts a day. Falls and fractures among over-65s rose 40% in New Jersey in the week after Sandy (https://medicalxpress.com/news/2013-11-falls-fractures-elderly-superstorm-sandy.html) in a population that mostly owned flashlights. Judgement: having no light at all adds 35% (8-100%) of daily fall risk over having battery light. 0.052 x 0.35 = 0.018.",
+    "steps": [
+     {
+      "fromDay": 1,
+      "lo": 0.004,
+      "mid": 0.018,
+      "hi": 0.05
+     }
+    ]
+   },
+   "multipliers": [
+    {
+     "profile": "age60to74",
+     "hardship": 1.2,
+     "mortality": 8,
+     "tag": "derived",
+     "basis": "Fall deaths 19.2 per 100,000 at 65-74 (NCHS Data Brief 532, 2023, https://www.cdc.gov/nchs/products/databriefs/db532.htm) and about 9 at 60-64 (half of the 3,172 deaths at 55-64, WISQARS) give 15.3 for 60-74 = 0.42 micromorts a day, eight times the 0.052 base rate. Hardship: slower dark adaptation, guess."
+    },
+    {
+     "profile": "age75plus",
+     "hardship": 1.6,
+     "mortality": 75,
+     "tag": "derived",
+     "basis": "Fall deaths 74.7 (75-84) and 339.5 (85+) per 100,000 in 2023 (https://www.cdc.gov/nchs/products/databriefs/db532.htm) = 141.5 for 75+ = 3.88 micromorts a day, 75 times the 0.052 base rate; x0.35 = 1.36 micromorts per dark day. Hardship adds non-fatal fall injury, guess."
+    },
+    {
+     "profile": "limitedMobility",
+     "hardship": 1.5,
+     "mortality": 8,
+     "tag": "guess",
+     "basis": "No rate found for this group below age 60; assumed several times the base because transfers and toilet trips in the dark are the classic fall setting."
+    },
+    {
+     "profile": "child",
+     "hardship": 1.3,
+     "mortality": 0.3,
+     "tag": "guess",
+     "basis": "Children rarely die of falls at home; fear of the dark raises hardship."
+    }
+   ],
+   "notes": "The mortality figure is the excess of no light over battery light. Outages raise fall risk even in lit homes (Irma: 13 of 129 deaths were falls from standing height in elderly people, https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm), so a light does not remove all outage fall risk. Texas 2021 falls (9 of 246) were on ice, not darkness. Candles meet the need but carry a fire side risk owned by another researcher."
+  },
+  {
+   "id": "devicePower",
+   "definition": "A day inside a power window on which the household has no charged phone and no way to charge one or to run small USB devices. Charged per person. Assumed energy: 15 Wh of rated battery capacity per person-day (about 10 Wh into the phone, two thirds of a ~15 Wh phone battery under rationed use), so about 40 Wh per household-day for 2.5 people including a few Wh for lamps and a radio.",
+   "baselineCoverageDays": {
+    "lo": 0.7,
+    "mid": 1.5,
+    "hi": 4,
+    "tag": "guess",
+    "basis": "For a household without a car: a phone lasts about a day in normal use and two in low-power mode; a laptop (50-70 Wh) holds 3-4 phone charges. Households with a car can charge indefinitely from its USB port or 12 V socket while fuel lasts; see openQuestions."
+   },
+   "hardshipUsdPerPersonDay": {
+    "tag": "guess",
+    "basis": "No direct WTP study found. Whole-outage WTP is $54 per household-day (LBNL ICE 2.0, https://eta-publications.lbl.gov/sites/default/files/2026-10/ice_2.0_nreca_final_report_28oct2026.pdf) and $43-60 a day for partial backup in a 10-day blackout (Baik et al. 2020, https://doi.org/10.1038/s41560-020-0581-1); I give phones and small devices about a third of that once they are dead, rising as coordination, work and payments suffer. Applies only while the mobile network is up.",
+    "steps": [
+     {
+      "fromDay": 1,
+      "lo": 2,
+      "mid": 8,
+      "hi": 30
+     },
+     {
+      "fromDay": 3,
+      "lo": 3,
+      "mid": 12,
+      "hi": 45
+     }
+    ]
+   },
+   "mortalityMicromortsPerPersonDay": {
+    "tag": "guess",
+    "basis": "Cost of being unable to phone for an ambulance. EMS-treated cardiac arrest is about 0.1% of people a year with ~10% survival (recalled AHA figures), worth ~0.3 micromorts a day on average and ~0.06 for a healthy adult under 60; other time-critical emergencies roughly triple that to 0.2. A dead phone loses perhaps 15% (3-40%) of the benefit, because neighbours, landlines and cars remain: 0.2 x 0.15 = 0.03.",
+    "steps": [
+     {
+      "fromDay": 1,
+      "lo": 0.004,
+      "mid": 0.03,
+      "hi": 0.15
+     }
+    ]
+   },
+   "multipliers": [
+    {
+     "profile": "age60to74",
+     "hardship": 0.9,
+     "mortality": 4,
+     "tag": "guess",
+     "basis": "Emergency incidence rises with age."
+    },
+    {
+     "profile": "age75plus",
+     "hardship": 0.8,
+     "mortality": 15,
+     "tag": "guess",
+     "basis": "Cardiac arrest and other emergencies are roughly 10-20 times more frequent than in adults under 60; EMS benefit 3-4 micromorts a day x 15%."
+    },
+    {
+     "profile": "powerDependent",
+     "hardship": 1.5,
+     "mortality": 20,
+     "tag": "guess",
+     "basis": "Must be able to call for help or resupply when a device fails; 15% of Texans surveyed in 2021 said an outage harmed a relative who depends on powered medical equipment (https://www.uh.edu/hobby/winter2021/storm.pdf)."
+    },
+    {
+     "profile": "criticalDrug",
+     "hardship": 1.2,
+     "mortality": 3,
+     "tag": "guess",
+     "basis": "Needs to reach a pharmacy or prescriber."
+    },
+    {
+     "profile": "limitedMobility",
+     "hardship": 1.3,
+     "mortality": 5,
+     "tag": "guess",
+     "basis": "Cannot easily walk to a neighbour or drive for help."
+    },
+    {
+     "profile": "child",
+     "hardship": 0.4,
+     "mortality": 0.5,
+     "tag": "guess",
+     "basis": "Children depend on adults' phones."
+    }
+   ],
+   "notes": "Overlaps with the information need (radio), owned by another researcher: do not also count news access here. If the comms window is active the phone is useless and this need should not be charged."
+  },
+  {
+   "id": "refrigeration",
+   "definition": "A one-off loss, not a daily one. An unmet day is a day on which fridge or freezer contents pass their safe holding time and are thrown out or eaten at risk. Charged per person (household loss divided by 2.5). Day 1 is the fridge, day 2 the freezer; later days carry only the inconvenience of having no cold storage. Running a fridge-freezer takes about 1,300 Wh a day and a start-up surge of 600-1,200 W.",
+   "baselineCoverageDays": {
+    "lo": 0.17,
+    "mid": 0.4,
+    "hi": 0.8,
+    "tag": "derived",
+    "basis": "Official safe time is 4 h for a closed fridge, 48 h for a full freezer and 24 h for a half-full one (CDC, https://www.cdc.gov/food-safety/foods/keep-food-safe-after-emergency.html). Real losses start later: 4.9M US households reported spoiled food in 2023 (AHS, https://www.census.gov/library/stories/2024/10/power-outages.html), about the 4.6M (3.5% of 131M) that NREL data imply had an outage over 24 h (https://www.nrel.gov/docs/fy23osti/83092.pdf), though 23.6M had one of 6 h or more. So median practical coverage is about 10 h."
+   },
+   "hardshipUsdPerPersonDay": {
+    "tag": "derived",
+    "basis": "Household loss: fridge $45 (15-130), freezer $110 (30-350), total about $155; divided by 2.5. Anchors: Con Edison pays up to $280 on an itemised list and $655 with proof (https://www.coned.com/en/services-and-outages/claim-form/residential-spoilage-claim-form); marketing surveys put the loss at $117-200 an outage (search snippets, unverified); only 31% discard fridge food and 37% thawed frozen food (RTI 2011, https://rti.org/news/most-americans-are-not-prepared-ensure-food-safety-during-power-outages), which is why the expected fridge loss is below the value of the contents. Day 3 onward: $5 per household-day for shopping daily and eating shelf food, guess.",
+    "steps": [
+     {
+      "fromDay": 1,
+      "lo": 6,
+      "mid": 18,
+      "hi": 52
+     },
+     {
+      "fromDay": 2,
+      "lo": 12,
+      "mid": 44,
+      "hi": 140
+     },
+     {
+      "fromDay": 3,
+      "lo": 0.5,
+      "mid": 2,
+      "hi": 6
+     }
+    ]
+   },
+   "mortalityMicromortsPerPersonDay": {
+    "tag": "guess",
+    "basis": "Foodborne illness kills about 3,000 Americans a year (recalled CDC estimate) = 0.025 micromorts per person-day, mostly the old and immunocompromised; perhaps 0.005 for a healthy adult. Diarrhoeal illness rose after the 2003 New York blackout and was tied to meat (OR 2.7) and seafood (OR 4.8) eaten afterwards (Marx et al. 2006, search snippet). I assume risk triples on the days spoiled food is still being eaten.",
+    "steps": [
+     {
+      "fromDay": 1,
+      "lo": 0.001,
+      "mid": 0.01,
+      "hi": 0.05
+     },
+     {
+      "fromDay": 4,
+      "lo": 0,
+      "mid": 0.002,
+      "hi": 0.01
+     }
+    ]
+   },
+   "multipliers": [
+    {
+     "profile": "age60to74",
+     "mortality": 3,
+     "tag": "guess",
+     "basis": "Higher case fatality from foodborne infection."
+    },
+    {
+     "profile": "age75plus",
+     "mortality": 10,
+     "tag": "guess",
+     "basis": "Foodborne deaths concentrate in the oldest."
+    },
+    {
+     "profile": "child",
+     "mortality": 2,
+     "tag": "guess",
+     "basis": "Young children dehydrate faster."
+    },
+    {
+     "profile": "criticalDrug",
+     "hardship": 1.3,
+     "mortality": 1.5,
+     "tag": "derived",
+     "basis": "Refrigerated drugs. 705,000 households, 2.9% of those holding refrigerated medicine, reported spoiled medicine in 2023 against 14% of outage households reporting spoiled food (AHS, https://www.census.gov/library/stories/2024/10/power-outages.html). Insulin, opened or not, keeps working for up to 28 days at 59-86F (FDA, https://www.fda.gov/drugs/emergency-preparedness-drugs/information-regarding-insulin-storage-and-switching-between-products-emergency), so short outages cost money and worry, not health; multipliers are a guess."
+    }
+   ],
+   "notes": "Insulin and similar drugs: nothing happens in an outage under four weeks unless the home is hotter than 86F (30C); above that potency falls gradually and FDA says keep using it until replaced. A Cochrane review (2023, https://pubmed.ncbi.nlm.nih.gov/37930742/, abstract snippet only) found unopened human insulin holds up to six months at 25C and two months at 37C. Biologics and GLP-1 pens have shorter room-temperature limits (often 14 days; recalled, unverified) and cost far more to replace. In a winter outage the need mostly disappears because food can go outdoors (15% did so, RTI)."
+  },
+  {
+   "id": "medicalPower",
+   "definition": "A person-day without a powered medical device, for a person who depends on one, after the device's own battery and any backup cylinders have run out. The base curve is for an IMPORTANT but not life-supporting device (CPAP or BiPAP for sleep apnoea, nebuliser, feeding pump, powered wheelchair). It is zero for people with no device and must not be applied to them. The powerDependent multiplier converts it to a LIFE-SUPPORTING device (oxygen concentrator, which is over 99% of that group; ventilator; home dialysis). Assumed energy: CPAP 90 Wh a night without humidifier and 220-350 Wh with; life-supporting 1,500 Wh a day as a blend (portable concentrator or ventilator about 500-1,000; stationary 5 L concentrator about 7,000).",
+   "baselineCoverageDays": {
+    "lo": 0,
+    "mid": 0.3,
+    "hi": 1,
+    "tag": "derived",
+    "basis": "Portable concentrator batteries last 2-4 h and up to 12 h with external packs at the lowest setting (Molinari et al. 2017, https://stacks.cdc.gov/view/cdc/41187); an E cylinder holds about 680 L, 5.7 h at 2 L/min (recalled). In the 2003 blackout 23 of 255 patients at one New York emergency department within 24 h came for device failure (Greenwald 2004, search snippet). CPAP has no backup, so its coverage is 0."
+   },
+   "hardshipUsdPerPersonDay": {
+    "tag": "guess",
+    "basis": "CPAP-class user: a night of broken sleep, sleepiness and headache, worsening as sleep debt builds. Lower bound is what users already pay for the therapy, a few dollars a night. No WTP study found.",
+    "steps": [
+     {
+      "fromDay": 1,
+      "lo": 5,
+      "mid": 20,
+      "hi": 60
+     },
+     {
+      "fromDay": 4,
+      "lo": 8,
+      "mid": 30,
+      "hi": 90
+     }
+    ]
+   },
+   "mortalityMicromortsPerPersonDay": {
+    "tag": "guess",
+    "basis": "CPAP-class user. Upper bound from observational data: untreated severe sleep apnoea had 0.7 more fatal cardiovascular events per 100 person-years than CPAP-treated (Marin 2005, recalled) = 19 micromorts a day; randomised trials found no mortality benefit. Drowsy driving adds under 1. Chosen so that base x 100 reproduces the life-supporting estimate, which is the number with evidence behind it.",
+    "steps": [
+     {
+      "fromDay": 1,
+      "lo": 0.3,
+      "mid": 2,
+      "hi": 15
+     },
+     {
+      "fromDay": 3,
+      "lo": 0.5,
+      "mid": 3,
+      "hi": 20
+     }
+    ]
+   },
+   "multipliers": [
+    {
+     "profile": "powerDependent",
+     "hardship": 15,
+     "mortality": 100,
+     "tag": "derived",
+     "basis": "Life-supporting device: 200 micromorts a day (30-1,500) on days 1-2 and 300 (50-2,000) from day 3; hardship $300 a day. (a) NOTT: 12-month mortality 20.6% on nocturnal-only oxygen against 11.9% on continuous (https://www.wikijournalclub.org/wiki/NOTT) = 8.7 points a year = 238 micromorts a day for patients with severe resting hypoxaemia. (b) Texas 2021: 25 deaths from exacerbated illness, 8 respiratory and 6 renal (https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf), say 8-15 from loss of device power, among roughly 200,000 device users of whom 69% lost power for a mean 42 h (https://www.uh.edu/hobby/winter2021/storm.pdf) = 33-62 micromorts per outage day on the official count, about three times that on excess-death counts, and with many users relocating. (c) Irma: 3 oxygen-dependent deaths (https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm), an order of magnitude lower, after relocation and resupply. Hardship x15 ($300 a day) is a guess for breathlessness, fear and confinement; no WTP data found."
+    }
+   ],
+   "notes": "Do not stack age multipliers: the anchors already reflect the age of real device users. Ventilator-dependent people (under 1% of the group, Molinari) face death within hours once the internal battery (typically 4-8 h, recalled) is gone; their risk per unmet day is plausibly 10,000-500,000 micromorts and the group average must not be read as applying to them. Home haemodialysis and cycler peritoneal dialysis tolerate a day or two; peritoneal patients can switch to manual exchanges. About 14.5M US households (11%) have a medical device that needs electricity (AHS 2023, https://www.census.gov/library/stories/2024/10/power-outages.html); roughly 685,000 people were on a ventilator or concentrator at home in 2012 (Molinari) and about 3 million Medicare beneficiaries are on the wider HHS emPOWER list (search snippet)."
+  }
+ ],
+ "channels": [],
+ "items": [
+  {
+   "id": "flashlight",
+   "name": "LED flashlight",
+   "spec": "One compact LED flashlight on AA or AAA cells, 100+ lumens with a low mode, cells installed; kept in a fixed place.",
+   "fromLonglistRows": [
+    30
+   ],
+   "scalesWith": "household",
+   "unit": "flashlight with cells",
+   "price": {
+    "usdPerUnit": {
+     "lo": 8,
+     "mid": 15,
+     "hi": 30,
+     "tag": "data",
+     "basis": "Coast G24 LED flashlight $14.99 read on https://www.webstaurantstore.com/search/led-flashlight.html. Step 2 found $14.99 for a GearLight two-pack and $29.95 for a ThruNite Archer 2A."
+    },
+    "product": "Coast G24 LED flashlight",
+    "source": "https://www.webstaurantstore.com/search/led-flashlight.html",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 5,
+    "mid": 10,
+    "hi": 20,
+    "tag": "guess",
+    "basis": "LEDs outlast the body; the usual end is cell leakage or loss."
+   },
+   "setupHours": {
+    "lo": 0.1,
+    "mid": 0.3,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "Buy, load cells, pick a place."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0,
+    "mid": 0.1,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "Yearly check."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 1,
+    "hi": 3,
+    "tag": "guess",
+    "basis": "Replacement cells."
+   },
+   "everydayShare": {
+    "lo": 0.2,
+    "mid": 0.5,
+    "hi": 0.8,
+    "tag": "guess",
+    "basis": "Used around the home and car."
+   },
+   "volumeLitresPerUnit": 0.3,
+   "reliability": {
+    "lo": 0.65,
+    "mid": 0.85,
+    "hi": 0.95,
+    "tag": "guess",
+    "basis": "Dead or leaked cells and misplacement are common; no data found."
+   },
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "capability",
+     "capability": "light",
+     "notes": "Meets the light need for the household while cells last."
+    },
+    {
+     "type": "supply",
+     "need": "light",
+     "amountPerUnit": 5,
+     "amountUnit": "Wh (two AA cells, about one household-day at 4 Wh)",
+     "notes": "Extend with spare-batteries."
+    },
+    {
+     "type": "other",
+     "description": "94.8% of households already report a working flashlight, so for most this is a second light or a replacement; the marginal value is the baseline shortfall, not the whole need."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "94.8% of households in 14 states had a working flashlight and batteries",
+     "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6136a1.htm",
+     "year": 2012,
+     "verified": true
+    },
+    {
+     "claim": "Falls and fractures among over-65s rose 40% in New Jersey in the week after Sandy; authors blame outages and darkness",
+     "source": "https://medicalxpress.com/news/2013-11-falls-fractures-elderly-superstorm-sandy.html",
+     "year": 2013,
+     "verified": true
+    }
+   ],
+   "confidence": "guess",
+   "notes": "No outcome study of flashlights exists. Value rests on the baseline-coverage guess for light."
+  },
+  {
+   "id": "headlamp",
+   "name": "Headlamp",
+   "spec": "One LED headlamp per person, AAA or USB-rechargeable, with a low mode.",
+   "fromLonglistRows": [
+    31
+   ],
+   "scalesWith": "person",
+   "unit": "headlamp",
+   "price": {
+    "usdPerUnit": {
+     "lo": 12,
+     "mid": 23,
+     "hi": 60,
+     "tag": "data",
+     "basis": "Energizer Vision Ultra HD 400-lumen rechargeable headlamp $22.99 read on https://www.webstaurantstore.com/search/headlamp.html. Step 2: Black Diamond Spot 400 $59.95."
+    },
+    "product": "Energizer Vision Ultra HD 400 lm rechargeable headlamp",
+    "source": "https://www.webstaurantstore.com/search/headlamp.html",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 3,
+    "mid": 7,
+    "hi": 12,
+    "tag": "guess",
+    "basis": "Strap and built-in cell age."
+   },
+   "setupHours": {
+    "lo": 0.1,
+    "mid": 0.2,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Buy and charge."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0,
+    "mid": 0.1,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "Top up twice a year."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 0.5,
+    "hi": 2,
+    "tag": "guess",
+    "basis": "Cells or electricity."
+   },
+   "everydayShare": {
+    "lo": 0.1,
+    "mid": 0.4,
+    "hi": 0.7,
+    "tag": "guess",
+    "basis": "Repairs, camping, walking at night."
+   },
+   "volumeLitresPerUnit": 0.2,
+   "reliability": {
+    "lo": 0.55,
+    "mid": 0.8,
+    "hi": 0.93,
+    "tag": "guess",
+    "basis": "Rechargeable models self-discharge in a drawer; AAA models share the leak problem."
+   },
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "capability",
+     "capability": "light",
+     "notes": "Hands-free, so better than a flashlight for stairs, cooking and caring for others."
+    },
+    {
+     "type": "supply",
+     "need": "light",
+     "amountPerUnit": 4,
+     "amountUnit": "Wh (built-in cell or three AAA)",
+     "notes": "Roughly one household-day, or several person-evenings on low."
+    },
+    {
+     "type": "other",
+     "description": "As a second light per person it removes the residual hardship of sharing one lamp, which I put at 20-30% of the light curve; a met/unmet engine will not see this."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "Fall death rates per 100,000 in 2023: 19.2 at 65-74, 74.7 at 75-84, 339.5 at 85+",
+     "source": "https://www.cdc.gov/nchs/products/databriefs/db532.htm",
+     "year": 2025,
+     "verified": true
+    },
+    {
+     "claim": "Unintentional fall deaths in 2023: 47,026 at all ages, 41,400 at 65+",
+     "source": "https://wisqars-viz.cdc.gov/pdfs/leading-causes-of-injury-deaths-by-age-group_2023_508.pdf",
+     "year": 2024,
+     "verified": true
+    }
+   ],
+   "confidence": "guess",
+   "notes": "Most valuable for people aged 75+, where the fall term dominates."
+  },
+  {
+   "id": "lantern",
+   "name": "LED lantern",
+   "spec": "One LED area lantern, AA/D-cell or USB-rechargeable, 60-300 lumens.",
+   "fromLonglistRows": [
+    32
+   ],
+   "scalesWith": "household",
+   "unit": "lantern",
+   "price": {
+    "usdPerUnit": {
+     "lo": 12,
+     "mid": 30,
+     "hi": 45,
+     "tag": "guess",
+     "basis": "Goal Zero Crush Light $29.95 as listed by NBC Select (step 2); goalzero.com refused the fetch. Generic cell lanterns sell for $12-25 (recalled)."
+    },
+    "product": "Goal Zero Crush Light",
+    "source": "https://www.goalzero.com/products/crush-light",
+    "verified": false
+   },
+   "lifeYears": {
+    "lo": 4,
+    "mid": 8,
+    "hi": 15,
+    "tag": "guess",
+    "basis": "Built-in cell ages."
+   },
+   "setupHours": {
+    "lo": 0.1,
+    "mid": 0.2,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Buy and charge."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0,
+    "mid": 0.1,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "Top up twice a year."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 0.5,
+    "hi": 2,
+    "tag": "guess",
+    "basis": "Cells or electricity."
+   },
+   "everydayShare": {
+    "lo": 0.05,
+    "mid": 0.25,
+    "hi": 0.6,
+    "tag": "guess",
+    "basis": "Camping and garden use."
+   },
+   "volumeLitresPerUnit": 1.0,
+   "reliability": {
+    "lo": 0.55,
+    "mid": 0.8,
+    "hi": 0.93,
+    "tag": "guess",
+    "basis": "Same failure modes as other battery lights."
+   },
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "capability",
+     "capability": "light",
+     "notes": "Lights a room, so one unit serves the whole household for meals and reading."
+    },
+    {
+     "type": "supply",
+     "need": "light",
+     "amountPerUnit": 8,
+     "amountUnit": "Wh (2 for a small solar model, up to 45 for three D cells)",
+     "notes": "Two household-days at 4 Wh."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "Stated WTP to avoid a 24 h outage is $53.68 per household; light is one part of it (read on the source by the step 2 researcher; not re-fetched)",
+     "source": "https://eta-publications.lbl.gov/sites/default/files/2026-10/ice_2.0_nreca_final_report_28oct2026.pdf",
+     "year": 2026,
+     "verified": true
+    }
+   ],
+   "confidence": "guess",
+   "notes": "A substitute for the flashlight in the engine; the difference is comfort."
+  },
+  {
+   "id": "candles",
+   "name": "Candles",
+   "spec": "100 unscented tealights (4 h each) burned in jars or holders, with matches or a lighter.",
+   "fromLonglistRows": [
+    33
+   ],
+   "scalesWith": "household",
+   "unit": "pack of 100 tealights",
+   "price": {
+    "usdPerUnit": {
+     "lo": 5,
+     "mid": 7,
+     "hi": 20,
+     "tag": "data",
+     "basis": "IKEA GLIMMA 100 tealights $6.99, 4 h each, read on https://www.ikea.com/us/en/p/glimma-unscented-tealights-50097995/. High end adds holders and matches."
+    },
+    "product": "IKEA GLIMMA unscented tealights, 100-pack",
+    "source": "https://www.ikea.com/us/en/p/glimma-unscented-tealights-50097995/",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 10,
+    "mid": 20,
+    "hi": 40,
+    "tag": "guess",
+    "basis": "Wax does not expire."
+   },
+   "setupHours": {
+    "lo": 0.1,
+    "mid": 0.2,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Buy; find holders."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0.1,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "everydayShare": {
+    "lo": 0.2,
+    "mid": 0.5,
+    "hi": 0.8,
+    "tag": "guess",
+    "basis": "Many households burn them anyway."
+   },
+   "volumeLitresPerUnit": 2.0,
+   "reliability": {
+    "lo": 0.75,
+    "mid": 0.9,
+    "hi": 0.98,
+    "tag": "guess",
+    "basis": "Needs a lighter or matches at hand."
+   },
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "capability",
+     "capability": "light",
+     "notes": "Open-flame light. The fire side risk is owned by the combustion researcher and is not parameterised here."
+    },
+    {
+     "type": "supply",
+     "need": "light",
+     "amountPerUnit": 80,
+     "amountUnit": "Wh-equivalent (400 burn-hours; 4 tealights at once for 5 h = 20 household-evenings at 4 Wh)",
+     "notes": "A tealight gives roughly 10 lumens (recalled), far less than an LED; poor for stairs."
+    },
+    {
+     "type": "other",
+     "description": "UK guidance says torches are safer; the paraffin lamp in the Swedish list is folded in here and not recommended."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "GLIMMA tealights: 100 for $6.99, 4 h burn time each",
+     "source": "https://www.ikea.com/us/en/p/glimma-unscented-tealights-50097995/",
+     "year": 2026,
+     "verified": true
+    }
+   ],
+   "confidence": "guess",
+   "notes": "Cheapest light per hour, weakest per lumen, and the only one with a side risk. Do not credit fall reduction to candles: they are not carried."
+  },
+  {
+   "id": "spare-batteries",
+   "name": "Spare alkaline batteries",
+   "spec": "Sealed 24-pack of AA alkaline cells (or the size the household's lights and radio take), stored cool.",
+   "fromLonglistRows": [
+    34
+   ],
+   "scalesWith": "household",
+   "unit": "24-pack of AA cells",
+   "ladder": [
+    {
+     "label": "24 cells",
+     "units": 1
+    },
+    {
+     "label": "48 cells",
+     "units": 2
+    },
+    {
+     "label": "96 cells",
+     "units": 4
+    }
+   ],
+   "price": {
+    "usdPerUnit": {
+     "lo": 9,
+     "mid": 12,
+     "hi": 20,
+     "tag": "data",
+     "basis": "Rayovac Ultra Pro 24 AA $10.49 and Energizer MAX 24 AA $19.99 read on https://www.webstaurantstore.com/search/aa-alkaline-batteries.html; step 2 found $8.49 for 12."
+    },
+    "product": "Rayovac Ultra Pro AA, 24-pack",
+    "source": "https://www.webstaurantstore.com/search/aa-alkaline-batteries.html",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 7,
+    "mid": 10,
+    "hi": 12,
+    "tag": "guess",
+    "basis": "Makers claim 10-year shelf life (recalled)."
+   },
+   "setupHours": {
+    "lo": 0.05,
+    "mid": 0.1,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "Add to a shopping trip."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0,
+    "mid": 0.05,
+    "hi": 0.2,
+    "tag": "guess",
+    "basis": "Rotate into household use."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "None if rotated."
+   },
+   "everydayShare": {
+    "lo": 0.4,
+    "mid": 0.7,
+    "hi": 0.9,
+    "tag": "guess",
+    "basis": "Rotated stock is used in remotes and toys."
+   },
+   "volumeLitresPerUnit": 0.25,
+   "reliability": {
+    "lo": 0.85,
+    "mid": 0.95,
+    "hi": 0.99,
+    "tag": "guess",
+    "basis": "Sealed cells rarely fail; the risk is that the household has raided the pack."
+   },
+   "lateBuyClass": "staple",
+   "requires": [
+    "light"
+   ],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "supply",
+     "need": "light",
+     "amountPerUnit": 60,
+     "amountUnit": "Wh (24 cells at about 2.5 Wh)",
+     "notes": "About 15 household-days of light at 4 Wh; the same cells run a radio (information need, another researcher)."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "94.8% of households report a working flashlight and batteries, so spare cells extend an existing capability",
+     "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6136a1.htm",
+     "year": 2012,
+     "verified": true
+    }
+   ],
+   "confidence": "derived",
+   "notes": "At about $0.20 per stored Wh with a ten-year shelf life, primary cells beat rechargeable storage for rare use. Hearing-aid cells belong with the medical items. Rechargeable AAs and a charger are an everyday purchase and add nothing in an outage."
+  },
+  {
+   "id": "power-bank",
+   "name": "USB power bank",
+   "spec": "Lithium-ion USB power bank kept charged, with cables for every phone in the home. Ladder in rated watt-hours: 10,000 mAh is 37 Wh.",
+   "fromLonglistRows": [
+    35
+   ],
+   "scalesWith": "household",
+   "unit": "Wh of rated capacity",
+   "ladder": [
+    {
+     "label": "37 Wh (10,000 mAh)",
+     "units": 37
+    },
+    {
+     "label": "74 Wh (20,000 mAh)",
+     "units": 74
+    },
+    {
+     "label": "148 Wh (two 20,000 mAh)",
+     "units": 148
+    }
+   ],
+   "price": {
+    "usdPerUnit": {
+     "lo": 0.45,
+     "mid": 0.85,
+     "hi": 1.15,
+     "tag": "derived",
+     "basis": "IKEA VARMFRONT 10,400 mAh / 37.44 Wh at $39.99 = $1.07/Wh (https://www.ikea.com/us/en/p/varmfront-portable-charger-dark-blue-00559615/); Anker Laptop Power Bank 25K at $91.19 = about $1.00/Wh (https://www.anker.com/collections/power-banks); Anker Zolo 20K at $54.79 = $0.76/Wh (NBC Select via step 2). Generic brands are near $0.50/Wh (recalled)."
+    },
+    "product": "IKEA VARMFRONT 10,400 mAh (37.44 Wh)",
+    "source": "https://www.ikea.com/us/en/p/varmfront-portable-charger-dark-blue-00559615/",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 3,
+    "mid": 5,
+    "hi": 8,
+    "tag": "guess",
+    "basis": "Lithium-ion calendar ageing."
+   },
+   "setupHours": {
+    "lo": 0.1,
+    "mid": 0.3,
+    "hi": 0.7,
+    "tag": "guess",
+    "basis": "Buy, charge, add cables."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0.05,
+    "mid": 0.2,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Top up every 3-6 months."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "Negligible electricity."
+   },
+   "everydayShare": {
+    "lo": 0.2,
+    "mid": 0.5,
+    "hi": 0.8,
+    "tag": "guess",
+    "basis": "Travel and long days out."
+   },
+   "volumeLitresPerUnit": 0.004,
+   "reliability": {
+    "lo": 0.5,
+    "mid": 0.75,
+    "hi": 0.9,
+    "tag": "guess",
+    "basis": "Everyday use leaves it part-empty; a forgotten one self-discharges. No data found."
+   },
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "capability",
+     "capability": "chargePhone",
+     "notes": "Also runs USB lamps and recharges headlamps and lanterns."
+    },
+    {
+     "type": "supply",
+     "need": "devicePower",
+     "amountPerUnit": 1,
+     "amountUnit": "Wh rated (the need is defined in rated Wh: 15 per person-day; about 70% reaches the phone)",
+     "notes": "37 Wh is about one household-day for 2.5 people; 148 Wh about four."
+    },
+    {
+     "type": "other",
+     "description": "Households with a car already have unlimited phone charging; for them the bank buys convenience, about $2-3 a day of avoided idling time and fuel (guess), not the whole devicePower harm."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "VARMFRONT power bank: 10,400 mAh, 37.44 Wh, $39.99",
+     "source": "https://www.ikea.com/us/en/p/varmfront-portable-charger-dark-blue-00559615/",
+     "year": 2026,
+     "verified": true
+    },
+    {
+     "claim": "91% of US adults own a smartphone",
+     "source": "https://www.pewresearch.org/internet/fact-sheet/mobile/",
+     "year": 2025,
+     "verified": false
+    }
+   ],
+   "confidence": "guess",
+   "notes": "Bought late it must also be charged before the power fails."
+  },
+  {
+   "id": "solar-panel",
+   "name": "Folding solar charger",
+   "spec": "Folding USB solar panel, 40 W nominal, used outdoors or on a sunny balcony with a power bank as buffer.",
+   "fromLonglistRows": [
+    36
+   ],
+   "scalesWith": "household",
+   "unit": "panel",
+   "price": {
+    "usdPerUnit": {
+     "lo": 45,
+     "mid": 65,
+     "hi": 130,
+     "tag": "guess",
+     "basis": "FlexSolar 40 W $64, OutdoorGearLab list price via step 2; flexsolar.com returned an empty page."
+    },
+    "product": "FlexSolar 40 W folding panel",
+    "source": "https://www.flexsolar.com/",
+    "verified": false
+   },
+   "lifeYears": {
+    "lo": 4,
+    "mid": 8,
+    "hi": 15,
+    "tag": "guess",
+    "basis": "Fabric and connectors wear before the cells."
+   },
+   "setupHours": {
+    "lo": 0.3,
+    "mid": 0.7,
+    "hi": 2,
+    "tag": "guess",
+    "basis": "Buy and try it once in the sun."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0,
+    "mid": 0.1,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "None beyond a yearly test."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "everydayShare": {
+    "lo": 0,
+    "mid": 0.1,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "Camping only."
+   },
+   "volumeLitresPerUnit": 2.0,
+   "reliability": {
+    "lo": 0.4,
+    "mid": 0.7,
+    "hi": 0.9,
+    "tag": "guess",
+    "basis": "Weather, winter sun, and flats with no outdoor spot; output through glass is far lower."
+   },
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "capability",
+     "capability": "chargePhone",
+     "notes": "Daylight only; pair with power-bank."
+    },
+    {
+     "type": "supply",
+     "need": "devicePower",
+     "amountPerUnit": 90,
+     "amountUnit": "Wh per day, renewing (40 W x 4 peak-sun hours x 0.55 real-world factor; about 30 in overcast winter)",
+     "notes": "Covers phones and lamps for a household (about 44 Wh a day) indefinitely, which is what matters in multi-week outages once any battery is empty."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "Households in Puerto Rico averaged 84 days without electricity after Maria, far beyond any stored battery (read on the source by the step 2 researcher; not re-fetched)",
+     "source": "https://fxb.harvard.edu/2018/05/29/study-estimates-prolonged-increase-in-puerto-rican-death-rate-after-hurricane-maria",
+     "year": 2018,
+     "verified": true
+    }
+   ],
+   "confidence": "guess",
+   "notes": "The daily yield is my arithmetic, not a measurement. Value sits almost entirely in gridLong and the hurricane tail."
+  },
+  {
+   "id": "power-station",
+   "name": "Portable power station",
+   "spec": "Lithium iron phosphate power station with AC outlets, kept charged. Ladder in rated watt-hours. Units of 256 Wh give 300 W and cannot start most fridges; 1 kWh units give 1,500 W or more.",
+   "fromLonglistRows": [
+    37
+   ],
+   "scalesWith": "household",
+   "unit": "Wh of rated capacity",
+   "ladder": [
+    {
+     "label": "256 Wh",
+     "units": 256
+    },
+    {
+     "label": "1,024 Wh",
+     "units": 1024
+    },
+    {
+     "label": "2,048 Wh",
+     "units": 2048
+    }
+   ],
+   "price": {
+    "usdPerUnit": {
+     "lo": 0.4,
+     "mid": 0.65,
+     "hi": 0.95,
+     "tag": "derived",
+     "basis": "EcoFlow River 2, 256 Wh, $239 = $0.93/Wh read on https://www.campingworld.com/ecoflow-river-2-portable-power-station-140737.html; Anker Solix C1000 Gen 2, 1,024 Wh, $799 list = $0.78/Wh (OutdoorGearLab via step 2). 1 kWh units are often discounted to $430-500 (recalled), hence the lower median."
+    },
+    "product": "EcoFlow River 2 (256 Wh, 300 W, LFP)",
+    "source": "https://www.campingworld.com/ecoflow-river-2-portable-power-station-140737.html",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 6,
+    "mid": 10,
+    "hi": 15,
+    "tag": "guess",
+    "basis": "Seller states 80% capacity after 3,000 cycles (https://www.campingworld.com/ecoflow-river-2-portable-power-station-140737.html); calendar ageing will bind first."
+   },
+   "setupHours": {
+    "lo": 0.5,
+    "mid": 1,
+    "hi": 3,
+    "tag": "guess",
+    "basis": "Choose a size, charge, test the fridge or device on it."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0.1,
+    "mid": 0.3,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "Recharge every 3-6 months."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 2,
+    "tag": "guess",
+    "basis": "Negligible electricity."
+   },
+   "everydayShare": {
+    "lo": 0,
+    "mid": 0.15,
+    "hi": 0.4,
+    "tag": "guess",
+    "basis": "Camping and tools for some owners."
+   },
+   "volumeLitresPerUnit": 0.015,
+   "reliability": {
+    "lo": 0.75,
+    "mid": 0.9,
+    "hi": 0.97,
+    "tag": "guess",
+    "basis": "Low self-discharge; main risk is that it was left empty."
+   },
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "capability",
+     "capability": "mainsPower",
+     "notes": "300 W at 256 Wh; 1,500-2,400 W at 1-2 kWh. Too little energy for space heating or air conditioning: 1 kWh runs a 1,500 W heater for 35 minutes."
+    },
+    {
+     "type": "capability",
+     "capability": "chargePhone",
+     "notes": "USB outlets."
+    },
+    {
+     "type": "supply",
+     "need": "devicePower",
+     "amountPerUnit": 1,
+     "amountUnit": "Wh rated (the need is in rated Wh, 40 per household-day)",
+     "notes": "One stock shared across needs; do not add."
+    },
+    {
+     "type": "supply",
+     "need": "medicalPower",
+     "amountPerUnit": 0.85,
+     "amountUnit": "Wh usable from AC",
+     "notes": "Same stock. 1 kWh = about 9 CPAP nights without humidifier, 1.5 days of a portable concentrator, under 3 h of a stationary one."
+    },
+    {
+     "type": "supply",
+     "need": "refrigeration",
+     "amountPerUnit": 0.85,
+     "amountUnit": "Wh usable from AC",
+     "notes": "Same stock. 1 kWh = about 16 h of a fridge-freezer at 1,300 Wh a day; needs 600 W or more to start it."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "River 2: 256 Wh, 300 W AC, LFP, 80% capacity after 3,000 cycles, $239",
+     "source": "https://www.campingworld.com/ecoflow-river-2-portable-power-station-140737.html",
+     "year": 2026,
+     "verified": true
+    },
+    {
+     "claim": "ResMed AirSense 10 at 10 cmH2O draws 0.93 A at 12 V without humidifier (89 Wh per 8 h) and 2.30-3.66 A with it",
+     "source": "https://cdn.shopify.com/s/files/1/2790/7304/files/ResMed_Battery_Guide_Converter.pdf",
+     "year": 2018,
+     "verified": true
+    }
+   ],
+   "confidence": "derived",
+   "notes": "Per stored Wh it costs three to four times what alkaline cells do and holds two orders of magnitude less than a generator with fuel; its case is indoor, silent, fume-free use in flats and for medical devices."
+  },
+  {
+   "id": "generator-fuel",
+   "name": "Portable generator with fuel",
+   "spec": "Inverter generator of about 1,850 running watts with CO shut-off, two 5-gallon cans holding 10 gallons of stabilised petrol, and a 12-gauge outdoor extension lead. Run outdoors, 20 ft from the house.",
+   "fromLonglistRows": [
+    38
+   ],
+   "scalesWith": "household",
+   "unit": "generator, fuel and lead",
+   "price": {
+    "usdPerUnit": {
+     "lo": 480,
+     "mid": 650,
+     "hi": 1400,
+     "tag": "derived",
+     "basis": "Champion 2500-watt dual-fuel inverter generator $399 on sale, $649.99 regular, read on https://www.campingworld.com/champion-2500-watt-portable-dual-fuel-inverter-generator-123244.html. Add about $130 for cans, 10 gal of fuel, stabiliser and lead (my estimate). High end is a Honda-class unit."
+    },
+    "product": "Champion 2500-watt dual-fuel inverter generator",
+    "source": "https://www.campingworld.com/champion-2500-watt-portable-dual-fuel-inverter-generator-123244.html",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 8,
+    "mid": 15,
+    "hi": 25,
+    "tag": "guess",
+    "basis": "Low hours; carburettor neglect ends most of them."
+   },
+   "setupHours": {
+    "lo": 2,
+    "mid": 4,
+    "hi": 10,
+    "tag": "guess",
+    "basis": "Choose, assemble, first run, learn safe siting."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 1,
+    "mid": 3,
+    "hi": 6,
+    "tag": "guess",
+    "basis": "Test runs, fuel rotation every 6-12 months, oil."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 10,
+    "mid": 30,
+    "hi": 60,
+    "tag": "guess",
+    "basis": "Stabiliser, oil, test fuel; rotated petrol goes into the car."
+   },
+   "everydayShare": {
+    "lo": 0,
+    "mid": 0.05,
+    "hi": 0.2,
+    "tag": "guess",
+    "basis": "Occasional tool or camping use."
+   },
+   "volumeLitresPerUnit": 100,
+   "reliability": {
+    "lo": 0.55,
+    "mid": 0.8,
+    "hi": 0.93,
+    "tag": "guess",
+    "basis": "Stale fuel and gummed carburettors are the known failure; no failure-to-start data found."
+   },
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": [
+    "house"
+   ],
+   "effects": [
+    {
+     "type": "capability",
+     "capability": "mainsPower",
+     "notes": "1,850 W continuous: fridge, furnace blower, a window air conditioner or one space heater, sump pump, stationary oxygen concentrator."
+    },
+    {
+     "type": "capability",
+     "capability": "chargePhone",
+     "notes": "Via any charger."
+    },
+    {
+     "type": "supply",
+     "need": "refrigeration",
+     "amountPerUnit": 35000,
+     "amountUnit": "Wh usable from 10 gal at light load (one shared stock)",
+     "notes": "Seller states 11.5 h at 25% load on 1.05 gal, about 5 kWh per gallon; lighter loads waste more. 10 gal is 4-5 days of continuous running or about two weeks at 8 h a day."
+    },
+    {
+     "type": "supply",
+     "need": "medicalPower",
+     "amountPerUnit": 35000,
+     "amountUnit": "Wh usable from 10 gal (same stock)",
+     "notes": "The only item here that carries a stationary concentrator (about 7 kWh a day) for days."
+    },
+    {
+     "type": "supply",
+     "need": "devicePower",
+     "amountPerUnit": 35000,
+     "amountUnit": "Wh usable from 10 gal (same stock)",
+     "notes": "Far more than phones need."
+    },
+    {
+     "type": "other",
+     "description": "Carbon-monoxide side risk while running, mitigated by coAlarm, is owned by the combustion researcher and is not parameterised here. CPSC counts about 70 generator CO deaths a year."
+    },
+    {
+     "type": "other",
+     "description": "Through mainsPower it can serve the warmth and cooling needs (furnace blower, window unit); those researchers own the effect sizes."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "Champion 2500 W dual fuel: 1,850 running watts, 11.5 h at 25% load on 1.05 gal, $399 sale / $649.99",
+     "source": "https://www.campingworld.com/champion-2500-watt-portable-dual-fuel-inverter-generator-123244.html",
+     "year": 2026,
+     "verified": true
+    },
+    {
+     "claim": "770 generator CO deaths 2011-2021; alarm known present in 17% (read on the source by the step 2 researcher; not re-fetched)",
+     "source": "https://www.cpsc.gov/s3fs-public/Fatal-Incidents-Associated-with-Non-Fire-Carbon-Monoxide-Poisioning-from-Engine-Driven-Generators-and-Other-Engine-Driven-Tools-2011-2021.pdf",
+     "year": 2022,
+     "verified": true
+    }
+   ],
+   "confidence": "derived",
+   "notes": "Propane (a 20 lb cylinder gives 34 h at 25% load per the seller) stores indefinitely and removes the stale-fuel failure. Fuel resupply during a regional event is not assured."
+  },
+  {
+   "id": "car-charging-kit",
+   "name": "Car as a charger",
+   "spec": "12 V USB car charger and a 150 W plug-in inverter kept in the car, plus the habit of refuelling at half a tank.",
+   "fromLonglistRows": [
+    35,
+    40
+   ],
+   "scalesWith": "household",
+   "unit": "charger, inverter and habit",
+   "price": {
+    "usdPerUnit": {
+     "lo": 15,
+     "mid": 40,
+     "hi": 80,
+     "tag": "guess",
+     "basis": "USB car charger about $12 and a 150-300 W plug-in inverter about $30 (recalled; no retailer page loaded)."
+    },
+    "product": "Generic 12 V USB charger and 150 W inverter",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {
+    "lo": 5,
+    "mid": 10,
+    "hi": 15,
+    "tag": "guess",
+    "basis": "Simple electronics."
+   },
+   "setupHours": {
+    "lo": 0.1,
+    "mid": 0.3,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "Buy and test once."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0,
+    "mid": 0.5,
+    "hi": 2,
+    "tag": "guess",
+    "basis": "Extra refuelling stops from the half-tank habit."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 2,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "everydayShare": {
+    "lo": 0.2,
+    "mid": 0.5,
+    "hi": 0.8,
+    "tag": "guess",
+    "basis": "The USB charger is used daily; the inverter rarely."
+   },
+   "volumeLitresPerUnit": 1.0,
+   "reliability": {
+    "lo": 0.75,
+    "mid": 0.9,
+    "hi": 0.97,
+    "tag": "guess",
+    "basis": "Needs the car at home with fuel and a healthy starter battery."
+   },
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": [
+    "car"
+   ],
+   "effects": [
+    {
+     "type": "capability",
+     "capability": "chargePhone",
+     "notes": "Most cars built since about 2015 have USB ports, so most car households have this at baseline; the kit only guarantees it."
+    },
+    {
+     "type": "capability",
+     "capability": "mainsPower",
+     "notes": "150 W at most through the socket: laptop, router, CPAP without humidifier, portable-concentrator charger. Not a fridge."
+    },
+    {
+     "type": "supply",
+     "need": "devicePower",
+     "amountPerUnit": 3000,
+     "amountUnit": "Wh per half tank (about 25 L) while idling at up to 150 W; about 300 Wh engine-off from the starter battery",
+     "notes": "Idling burns roughly 0.2-0.5 gal an hour (recalled). Half an hour a day covers a household's phones."
+    },
+    {
+     "type": "supply",
+     "need": "medicalPower",
+     "amountPerUnit": 3000,
+     "amountUnit": "Wh per half tank (same stock)",
+     "notes": "Low-draw devices only."
+    },
+    {
+     "type": "other",
+     "description": "Idling in an attached garage is a carbon-monoxide risk; owned by the combustion researcher."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "ResMed states its devices can run from a 12 V battery through a DC converter; AirSense 10 needs 89 Wh per 8 h at 10 cmH2O without humidifier",
+     "source": "https://cdn.shopify.com/s/files/1/2790/7304/files/ResMed_Battery_Guide_Converter.pdf",
+     "year": 2018,
+     "verified": true
+    }
+   ],
+   "confidence": "guess",
+   "notes": "The half-tank habit also serves evacuation, owned by another researcher. An electric car with vehicle-to-load is a 40-80 kWh power station and makes this entry and power-station redundant."
+  },
+  {
+   "id": "medical-backup-battery",
+   "name": "Medical-device backup battery",
+   "spec": "A 1 kWh lithium iron phosphate power station dedicated to the device, left plugged in beside it in pass-through mode, with the device's DC lead where one exists, and a timed test of real run-time.",
+   "fromLonglistRows": [
+    39
+   ],
+   "scalesWith": "fixed",
+   "unit": "kWh of rated capacity, per device-dependent person",
+   "ladder": [
+    {
+     "label": "1 kWh",
+     "units": 1
+    },
+    {
+     "label": "2 kWh",
+     "units": 2
+    },
+    {
+     "label": "4 kWh",
+     "units": 4
+    }
+   ],
+   "price": {
+    "usdPerUnit": {
+     "lo": 420,
+     "mid": 650,
+     "hi": 950,
+     "tag": "derived",
+     "basis": "Same hardware as power-station at $0.42-0.95 per Wh: Anker Solix C1000 Gen 2, 1,024 Wh, $799 list (OutdoorGearLab via step 2); EcoFlow River 2 at $0.93/Wh read on https://www.campingworld.com/ecoflow-river-2-portable-power-station-140737.html. Proprietary concentrator batteries cost several times more per Wh (recalled)."
+    },
+    "product": "Anker Solix C1000 Gen 2 (1,024 Wh) or equivalent",
+    "source": "https://www.ankersolix.com/",
+    "verified": false
+   },
+   "lifeYears": {
+    "lo": 6,
+    "mid": 10,
+    "hi": 15,
+    "tag": "guess",
+    "basis": "As power-station."
+   },
+   "setupHours": {
+    "lo": 1,
+    "mid": 2,
+    "hi": 5,
+    "tag": "guess",
+    "basis": "Size it to the device, set up pass-through, time a real run."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0.2,
+    "mid": 0.5,
+    "hi": 1.5,
+    "tag": "guess",
+    "basis": "Twice-yearly run-time test."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 2,
+    "hi": 5,
+    "tag": "guess",
+    "basis": "Standby losses."
+   },
+   "everydayShare": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0.1,
+    "tag": "guess",
+    "basis": "Dedicated."
+   },
+   "volumeLitresPerUnit": 15,
+   "reliability": {
+    "lo": 0.8,
+    "mid": 0.92,
+    "hi": 0.98,
+    "tag": "guess",
+    "basis": "Always on charge and next to the device."
+   },
+   "lateBuyClass": "specialty",
+   "requires": [],
+   "conditions": [
+    "powerDependent"
+   ],
+   "effects": [
+    {
+     "type": "supply",
+     "need": "medicalPower",
+     "amountPerUnit": 850,
+     "amountUnit": "Wh usable per rated kWh",
+     "notes": "At the blended 1,500 Wh a day this is 0.57 day per kWh: 1.4 days for the roughly 35% of users who can run a portable concentrator or ventilator (about 600 Wh a day), 0.12 day for the 65% on a stationary concentrator (about 7,200 Wh a day). The split is my guess."
+    },
+    {
+     "type": "capability",
+     "capability": "mainsPower",
+     "notes": "1,500 W or more."
+    },
+    {
+     "type": "other",
+     "description": "For a CPAP user, who is not a model profile, 256 Wh ($239) gives two nights without humidifier."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "12-month mortality 20.6% on nocturnal-only oxygen against 11.9% on continuous oxygen",
+     "source": "https://www.wikijournalclub.org/wiki/NOTT",
+     "year": 1980,
+     "verified": true
+    },
+    {
+     "claim": "25 Texas deaths from exacerbated illness, including loss of power to life-sustaining equipment and disrupted oxygen and dialysis",
+     "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf",
+     "year": 2021,
+     "verified": true
+    },
+    {
+     "claim": "3 oxygen-dependent deaths among 129 Irma deaths",
+     "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
+     "year": 2018,
+     "verified": true
+    },
+    {
+     "claim": "More than 99% of the at-home electricity-dependent are on oxygen concentrators; battery life 2-4 h, up to 12 h with external packs",
+     "source": "https://stacks.cdc.gov/view/cdc/41187",
+     "year": 2017,
+     "verified": true
+    }
+   ],
+   "confidence": "derived",
+   "notes": "For someone on a stationary concentrator a battery buys hours, not days; the generator or the backup-cylinder plan does the work. Do not let the engine count this and power-station as separate stocks beyond their combined Wh."
+  },
+  {
+   "id": "medical-power-plan",
+   "name": "Medical power plan",
+   "spec": "For a person on home oxygen, a ventilator or home dialysis: ask the equipment supplier for backup cylinders and a conserver, enrol in the utility's medical-baseline scheme and the local special-needs registry, and write down where to go and when to leave.",
+   "fromLonglistRows": [
+    39
+   ],
+   "scalesWith": "fixed",
+   "unit": "plan, per device-dependent person",
+   "price": {
+    "usdPerUnit": {
+     "lo": 0,
+     "mid": 10,
+     "hi": 100,
+     "tag": "guess",
+     "basis": "Suppliers usually lend backup cylinders under the existing rental (recalled; no fee schedule found); registration is free."
+    },
+    "product": "Backup E cylinders from the oxygen supplier; utility medical-baseline enrolment",
+    "source": "",
+    "verified": false
+   },
+   "lifeYears": {
+    "lo": 1,
+    "mid": 3,
+    "hi": 5,
+    "tag": "guess",
+    "basis": "Until the prescription, supplier or address changes."
+   },
+   "setupHours": {
+    "lo": 1,
+    "mid": 3,
+    "hi": 6,
+    "tag": "guess",
+    "basis": "Calls, forms, writing the plan."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0.3,
+    "mid": 1,
+    "hi": 2,
+    "tag": "guess",
+    "basis": "Check cylinder contents; renew enrolment."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 20,
+    "tag": "guess",
+    "basis": "None in most cases."
+   },
+   "everydayShare": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0.1,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "volumeLitresPerUnit": 15,
+   "reliability": {
+    "lo": 0.6,
+    "mid": 0.8,
+    "hi": 0.95,
+    "tag": "guess",
+    "basis": "Cylinders may be part-empty; registries do not guarantee priority restoration."
+   },
+   "lateBuyClass": "none",
+   "requires": [],
+   "conditions": [
+    "powerDependent"
+   ],
+   "effects": [
+    {
+     "type": "supply",
+     "need": "medicalPower",
+     "amountPerUnit": 750,
+     "amountUnit": "Wh-equivalent (about half a day of oxygen at the blended 1,500 Wh a day; two E cylinders give 11 h at 2 L/min continuous, several times that with a conserver)",
+     "notes": "Oxygen users only; does nothing for ventilators or dialysis."
+    },
+    {
+     "type": "reduce",
+     "target": "medicalPower",
+     "hazards": [
+      "localOutage",
+      "severeStorm",
+      "winterStorm",
+      "heatWave",
+      "hurricane",
+      "earthquake",
+      "wildfire",
+      "flood",
+      "gridLong"
+     ],
+     "fractionRemoved": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Leaving early for a powered place, before the backup runs out, removes the unmet days that follow; the share is my judgement."
+     },
+     "adherence": {
+      "lo": 0.2,
+      "mid": 0.5,
+      "hi": 0.8,
+      "tag": "guess",
+      "basis": "People delay leaving; 18% of Texans left home in 2021 (https://www.uh.edu/hobby/winter2021/storm.pdf)."
+     },
+     "notes": "Acts through relocation; the engine should not also credit the same days to the leave option."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "Insurance claims identified electricity-dependent people with 93% accuracy but fewer than 2.5% were on the local special-needs registry",
+     "source": "https://stacks.cdc.gov/view/cdc/41187",
+     "year": 2017,
+     "verified": true
+    },
+    {
+     "claim": "In the 2003 blackout 23 of 255 patients at one emergency department in 24 h came for device failure, 19 of them oxygen equipment; 13 were admitted",
+     "source": "https://pubmed.ncbi.nlm.nih.gov/15231473/",
+     "year": 2004,
+     "verified": false
+    }
+   ],
+   "confidence": "guess",
+   "notes": "Added candidate. Almost free, so it should rank above every battery for oxygen users, but its effect sizes are judgement."
+  },
+  {
+   "id": "fridge-kit",
+   "name": "Frozen water bottles and fridge thermometers",
+   "spec": "Two appliance thermometers (fridge and freezer) and 4-6 one-litre bottles of water kept frozen in spare freezer space; in an outage move some to the fridge and keep doors shut.",
+   "fromLonglistRows": [
+    15
+   ],
+   "scalesWith": "household",
+   "unit": "kit",
+   "price": {
+    "usdPerUnit": {
+     "lo": 3,
+     "mid": 7.5,
+     "hi": 15,
+     "tag": "data",
+     "basis": "Taylor 5924 dial fridge/freezer thermometer $3.69 each, read on https://www.webstaurantstore.com/search/refrigerator-freezer-thermometer.html; two = $7.38. Bottles are reused."
+    },
+    "product": "Two Taylor 5924 refrigerator/freezer thermometers",
+    "source": "https://www.webstaurantstore.com/search/refrigerator-freezer-thermometer.html",
+    "verified": true
+   },
+   "lifeYears": {
+    "lo": 5,
+    "mid": 10,
+    "hi": 20,
+    "tag": "guess",
+    "basis": "Dial thermometers last."
+   },
+   "setupHours": {
+    "lo": 0.1,
+    "mid": 0.3,
+    "hi": 0.7,
+    "tag": "guess",
+    "basis": "Fill and freeze bottles; place thermometers."
+   },
+   "upkeepHoursPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0.2,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "upkeepUsdPerYear": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 1,
+    "tag": "guess",
+    "basis": "None."
+   },
+   "everydayShare": {
+    "lo": 0.05,
+    "mid": 0.2,
+    "hi": 0.5,
+    "tag": "guess",
+    "basis": "Thermometers catch a warm fridge in normal times."
+   },
+   "volumeLitresPerUnit": 0,
+   "reliability": {
+    "lo": 0.6,
+    "mid": 0.8,
+    "hi": 0.95,
+    "tag": "guess",
+    "basis": "Bottles get evicted when the freezer fills."
+   },
+   "lateBuyClass": "staple",
+   "requires": [],
+   "conditions": [],
+   "effects": [
+    {
+     "type": "supply",
+     "need": "refrigeration",
+     "amountPerUnit": 0.5,
+     "amountUnit": "day of safe cold-holding",
+     "notes": "5 kg of ice absorbs 464 Wh of heat (334 kJ/kg); a closed fridge compartment gains roughly 30 W (my estimate from 1.2 kWh a day of consumption), so about 15 h. CDC: a full freezer holds 48 h against 24 h half-full."
+    },
+    {
+     "type": "other",
+     "description": "The thermometer shows whether food stayed at or below 40F, so safe food is kept and unsafe food discarded; 65% of people judge by smell (RTI 2011). Not separately quantified."
+    }
+   ],
+   "evidence": [
+    {
+     "claim": "Fridge safe 4 h, full freezer 48 h, half-full 24 h; frozen containers of water help keep food at or below 40F",
+     "source": "https://www.cdc.gov/food-safety/foods/keep-food-safe-after-emergency.html",
+     "year": 2024,
+     "verified": true
+    },
+    {
+     "claim": "Only about a third knew to discard refrigerated perishables after 4 h; 65% smelled food to judge safety",
+     "source": "https://rti.org/news/most-americans-are-not-prepared-ensure-food-safety-during-power-outages",
+     "year": 2011,
+     "verified": true
+    },
+    {
+     "claim": "4.9M households reported spoiled food from outages in 2023",
+     "source": "https://www.census.gov/library/stories/2024/10/power-outages.html",
+     "year": 2024,
+     "verified": true
+    }
+   ],
+   "confidence": "derived",
+   "notes": "Helps only in outages of roughly 10 h to 2 days; beyond that everything is lost regardless. A cooler and bought ice do the same job late."
+  }
+ ],
+ "excluded": [
+  {
+   "what": "Row 33, paraffin lamp and oil",
+   "reason": "Flame light with stored liquid fuel; dominated by LED lights and folded into the candles note."
+  },
+  {
+   "what": "Row 34, rechargeable AA cells and charger",
+   "reason": "Cannot be recharged in an outage without another power item; an everyday purchase."
+  },
+  {
+   "what": "Row 34, hearing-aid batteries",
+   "reason": "Belongs with spare glasses and hearing aids (row 55), another researcher."
+  },
+  {
+   "what": "Row 39, surge protector",
+   "reason": "Protects equipment when power returns; no effect on any need or channel in the model."
+  },
+  {
+   "what": "Proprietary concentrator or CPAP battery packs",
+   "reason": "Several times the price per Wh of a generic LFP power station for the same job; covered by medical-backup-battery."
+  },
+  {
+   "what": "Whole-house standby generator or home battery",
+   "reason": "Thousands of dollars and owned by row 122 (grid independence)."
+  },
+  {
+   "what": "Crank-only lights and chargers",
+   "reason": "The Prepared rates them overrated; minutes of cranking per minute of phone use."
+  },
+  {
+   "what": "Cooler and ice for the fridge contents",
+   "reason": "Works, but is bought after the event starts; noted under fridge-kit."
+  },
+  {
+   "what": "Side risks of candles, generator and idling car",
+   "reason": "Owned by the combustion researcher; named in effects, not parameterised."
+  }
+ ],
+ "blockedSources": [
+  "https://pubmed.ncbi.nlm.nih.gov/15640685/ : Prezant 2005 abstract (cookie wall); respiratory-device ED visits in the 2003 blackout (65 visits, 37 admissions at one hospital, from a search snippet)",
+  "https://pubmed.ncbi.nlm.nih.gov/15231473/ : Greenwald 2004, not opened; figures are from a search snippet",
+  "https://dash.harvard.edu/bitstream/1/37309252/1/nejmsa1803972.pdf : Kishore 2018 full text (HTTP 429); share of Puerto Rico households unable to use respiratory equipment (9.5% in a snippet)",
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC9851928 : Texas 2021 outages linked to Medicare device users (captcha; Europe PMC returned 500); would give the Texas denominator I had to guess at 200,000",
+  "https://pmc.ncbi.nlm.nih.gov/articles/PMC10505355/table/TAB10 : MRC oxygen trial table (captcha); 19/42 against 30/45 dead at five years is from a snippet",
+  "https://www.ldh.la.gov/news/6308 : Louisiana list of Hurricane Ida deaths by cause (403); oxygen-related deaths after a multi-week outage",
+  "https://www.foodsafety.gov/food-safety-charts/food-safety-during-power-outage and https://www.fsis.usda.gov/ : USDA outage food-safety times (403); read the same figures on CDC",
+  "https://document.resmed.com/documents/products/machine/air10-lumis-series/Power+consumption+Air10+devices.pdf : ResMed AC power figures (403); used ResMed's battery guide instead",
+  "https://www.vitalitymedical.com/blog/home-oxygen-concentrator-electricity-usage.html and inogen.com : concentrator wattages (403, redirect); 275-350 W for stationary units is from snippets",
+  "https://doi.org/10.1371/journal.pmed.1004923 : McBrien et al. 2026, outages and Medicare hospitalisation (rate ratios 1.02-1.03 from a snippet); not opened",
+  "goalzero.com, jackery.com, us.ecoflow.com, blackdiamondequipment.com, wenproducts.com (429), harborfreight.com, rei.com (403), farmandfleet.com (captcha), flexsolar.com (empty), ankersolix.com (no prices rendered): retail prices for lantern, solar panel, 1 kWh power station, inverter"
+ ],
+ "openQuestions": [
+  "medicalPower: the schema asks for a curve for a healthy adult, who has no device. I set the base curve for an important-device user (CPAP class) and the powerDependent multiplier for life support. The engine must apply the need only to people flagged as device users. There is no flag for the 11% of households with a non-life-supporting device; suggest a profile and condition medicalDevice.",
+  "Households with a car have chargePhone at baseline. Either give devicePower a baseline of weeks when condition car holds, or charge car households only an inconvenience cost of about $2-3 a day.",
+  "Watt-hour stocks are shared across devicePower, light, refrigeration and medicalPower. The engine needs a priority order (medical, then phones and light, then fridge) and must not add the same Wh to several needs.",
+  "mainsPower needs a wattage: 150 W (car inverter), 300 W (small power station), 1,500 W or more (1 kWh station, generator). Only the last starts a fridge, and only the generator has the energy for heating or cooling.",
+  "A met/unmet light need gives all the value to the first lamp. Suggest: the first light capability removes 70-80% of light hardship and one light per two people removes the rest.",
+  "devicePower should be charged only when the comms window is not active, and refrigeration should be waived in cold events (coldShare) because food can go outside.",
+  "Ventilator-dependent people are under 1% of powerDependent but carry risks 100 to 1,000 times the group mean; the published list should say the life-support figures describe oxygen users.",
+  "Acute risk of a few days without supplemental oxygen is inferred from year-long trials and three event counts; no cohort study of device users in outages was found. This is the number most worth better evidence."
+ ]
+}

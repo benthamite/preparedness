@@ -1,0 +1,1634 @@
+{
+ "kind": "hazards",
+ "group": "hazards-regional",
+ "hazards": [
+  {
+   "id": "hurricane",
+   "definition": "A tropical storm or hurricane brings sustained tropical-storm-force wind (39 mph or more), storm surge or flooding rain to the home's area, so that the household loses power for six hours or more, is put under an evacuation order, or has its home damaged or cut off. Calibrated on the Gulf and Atlantic mainland; Puerto Rico and other islands have a far longer tail (Maria) and are not covered.",
+   "exposedDefinition": "Home in a Gulf or Atlantic coastal county, or within about 50 miles of that coast, from Texas to Maine. About 60 million people (my recollection of Census coastline-county totals, not checked).",
+   "annualProbability": [
+    {
+     "location": "us",
+     "outlook": "all",
+     "lo": 0.02,
+     "mid": 0.06,
+     "hi": 0.15,
+     "tag": "derived",
+     "basis": "Exposed = home in a Gulf or Atlantic coastal county. NOAA: a hurricane passes within 50 nautical miles every 5-7 years in south Florida, coastal North Carolina and southeast Louisiana and every 30-50 years in New England (https://www.noaa.gov/stories/what-are-chances-hurricane-will-hit-my-home). I take about 9%/yr for the Gulf and Southeast and 2.5%/yr for the mid-Atlantic and Northeast, half the exposed population each: 5.75%, rounded to 6%. Check: Pulse counts 0.84M-1.9M adults displaced by hurricanes a year, 1.5-3% of exposed adults, which needs an event rate of this size if a quarter to a third of events displace."
+    }
+   ],
+   "tickBox": "hurricane",
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.55,
+      "mid": 0.75,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Share of households inside the tropical-storm-force wind field that lose power for six hours or more; Irma cut power to about two thirds of Florida customers (recalled, not checked)."
+     },
+     "days": {
+      "p50": 1.5,
+      "p90": 6,
+      "p99": 16
+     },
+     "tag": "derived",
+     "basis": "NREL/PNNL 2022 as read in step 2 base-rates (https://www.nrel.gov/docs/fy23osti/83092.pdf): of hurricane major-event outages 52% exceed 1 day, 33% exceed 3 days and 2.5% exceed 7 days, a mean of about 2.2 days. My own tally of Florida storms in 2016-2025 (customer counts recalled from utility and press reports) gives about 2.8 days per affected customer. The engine's curve through 1.5 / 6 / 16 has a mean of 2.6 days; the 99th percentile sits above NREL's roughly 9 days because Ida, Laura, Michael and Helene left core areas dark for two to four weeks."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.04,
+      "mid": 0.12,
+      "hi": 0.3,
+      "tag": "guess",
+      "basis": "Tap water absent or under a boil notice. Large systems usually hold (Houston in Harvey) but smaller ones fail: Beaumont in Harvey, Lee County in Ian, Jefferson Parish in Ida, Asheville in Helene. No denominator found."
+     },
+     "days": {
+      "p50": 3,
+      "p90": 12,
+      "p99": 50
+     },
+     "shareTreatable": {
+      "lo": 0.4,
+      "mid": 0.7,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Most such days are boil-water notices with the tap still running; the rest are dry taps, though rainwater and floodwater can then be treated."
+     },
+     "tag": "guess",
+     "basis": "Boil notices and pressure loss mostly clear in days; Beaumont about 10 days, Asheville about 53 days without potable water (both recalled, not checked). Pulse: 31% of displaced adults reported some or a lot of drinking-water shortage in the first month (https://andrewrumbach.substack.com/p/unpacking-the-us-census-data-on-natural-a97), which is before relief is netted out."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.25,
+      "mid": 0.5,
+      "hi": 0.75,
+      "tag": "guess",
+      "basis": "Shops shut and roads closed around landfall for most households in the wind field."
+     },
+     "days": {
+      "p50": 1.5,
+      "p90": 4,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "Shops reopen on generators and relief points open within two to four days in typical storms. Pulse: 36% of displaced adults had some or a lot of food shortage in the first month (https://andrewrumbach.substack.com/p/unpacking-the-us-census-data-on-natural-a97); eight days after Andrew 27% of households relied on relief food (step 2 prior-art), so relief was reaching them."
+    },
+    "gas": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.03,
+      "hi": 0.08,
+      "tag": "guess",
+      "basis": "Piped gas survives wind; it is shut off where surge or flood reaches the mains (New Jersey barrier islands after Sandy, recalled)."
+     },
+     "days": {
+      "p50": 5,
+      "p90": 20,
+      "p99": 60
+     },
+     "tag": "guess",
+     "basis": "Flooded mains must be purged and each appliance relit; weeks, not days."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.25,
+      "mid": 0.5,
+      "hi": 0.75,
+      "tag": "guess",
+      "basis": "Pharmacies close with the shops and stay shut while power is out; emergency-refill rules help only before landfall."
+     },
+     "days": {
+      "p50": 2,
+      "p90": 6,
+      "p99": 21
+     },
+     "tag": "guess",
+     "basis": "Chain pharmacies reopen on generators within days; in destroyed cores (Mexico Beach, Fort Myers Beach) it takes weeks. No national series found."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.3,
+      "mid": 0.6,
+      "hi": 0.85,
+      "tag": "guess",
+      "basis": "Ambulance crews are held back once sustained winds pass about 45 mph, and flooded roads block access afterwards."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2,
+      "p99": 7
+     },
+     "tag": "guess",
+     "basis": "Half a day of suspended response is routine; 12% of Ian deaths were attributed to delayed or unreachable medical care (press reports of medical-examiner data, unverified). Days where surge or flood isolates an area."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "Card terminals and ATMs fail with power and telecoms while some shops trade for cash."
+     },
+     "days": {
+      "p50": 1.5,
+      "p90": 5,
+      "p99": 14
+     },
+     "tag": "guess",
+     "basis": "Tracks the power window in the areas where shops reopen before the grid does."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.12,
+      "mid": 0.3,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "Both mobile and home internet out. FCC outage reports showed well over half of cell sites down in the worst counties of Michael, Ian and Helene but under 10% in Houston during Harvey (recalled, not checked)."
+     },
+     "days": {
+      "p50": 1.5,
+      "p90": 6,
+      "p99": 21
+     },
+     "tag": "guess",
+     "basis": "Most sites return within a week; mountain and barrier-island areas took two to three weeks."
+    },
+    "sanitation": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.08,
+      "hi": 0.2,
+      "tag": "guess",
+      "basis": "Sewer lift stations fail without power or the home floods; Pulse: about 14% of displaced adults reported a lot of unsanitary conditions (https://andrewrumbach.substack.com/p/unpacking-the-us-census-data-on-natural-a97)."
+     },
+     "days": {
+      "p50": 2,
+      "p90": 8,
+      "p99": 40
+     },
+     "tag": "guess",
+     "basis": "Follows the water and power windows; weeks where the sewer system itself is damaged."
+    },
+    "displacement": {
+     "pOccur": {
+      "lo": 0.15,
+      "mid": 0.3,
+      "hi": 0.45,
+      "tag": "derived",
+      "basis": "Pulse: hurricanes displaced 1.9M adults in 2022 and over 0.84M in 2023 (https://andrewrumbach.substack.com/p/unpacking-the-us-census-data-on-natural ; https://weather.com/news/weather/news/2024-02-22-disasters-displaced-millions-in-2023). Against 47M-62M exposed adults that is 1.4%-4% a year, about 2% in a middling year; 2% / 6% = 0.33, shaded to 0.3 because some of those moves were voluntary and the engine handles them as leaving."
+     },
+     "days": {
+      "p50": 7,
+      "p90": 90,
+      "p99": 540
+     },
+     "tag": "derived",
+     "basis": "Census Household Pulse, Dec 2022-Oct 2023 (https://pmc.ncbi.nlm.nih.gov/articles/PMC12374215): of 2.43M displaced adults, 43% were away under a week, 25% a week to a month, 11% one to six months, 7% over six months and 14% never returned. Counting never-returned as resettled within six months gives roughly 9 / 140 / 600 days. I shorten that to 7 / 90 / 540 for hurricanes because most hurricane displacement is an ordered evacuation of two to six days that Pulse under-counts, and because Pulse's long tail (24% out over six months or never back in 2022) is several times the number of homes destroyed. Engine mean: 38 days."
+    }
+   },
+   "coldShare": {
+    "lo": 0,
+    "mid": 0.02,
+    "hi": 0.06,
+    "tag": "guess",
+    "basis": "Season is June to November; only late storms in the Northeast (Sandy, 29 October) are followed by cold."
+   },
+   "hotShare": {
+    "lo": 0.35,
+    "mid": 0.6,
+    "hi": 0.8,
+    "tag": "guess",
+    "basis": "Peak season is August to October on the Gulf and Southeast coasts, where outages mean no air conditioning in heat: 17 of 129 Irma deaths were heat-related (https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm, via step 2)."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.7,
+     "mid": 0.85,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "Days of warning and open roads before landfall; the remainder lack a car, money, mobility or somewhere to go. Phone data put Irma evacuation at 58% inside mandatory zones (search snippet, unverified), so most who stay choose to."
+    },
+    "earliestDay": {
+     "lo": 0,
+     "mid": 0,
+     "hi": 2,
+     "tag": "guess",
+     "basis": "Leaving is possible before the event starts; for those who wait, roads are blocked for one to three days afterwards."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 80,
+     "mid": 250,
+     "hi": 700,
+     "tag": "derived",
+     "basis": "Fuel for a 300-600 mile round trip plus lost time. Gellman et al. (https://jacobgellman.github.io/files/gellman_et_al_2024-cost_hurricane_evacuations.pdf) estimate a welfare cost of $343 per person evacuating under a mandatory order at Category 4-5 winds and $117 at Category 3, excluding lodging; fixed $250 plus my per-day figure gives about $560 for 2.5 people over 3.5 days, inside that range."
+    },
+    "usdPerPersonDay": {
+     "lo": 10,
+     "mid": 35,
+     "hi": 90,
+     "tag": "derived",
+     "basis": "Whitehead et al. 2000, quoted in Gellman et al.: 16% of evacuees used a hotel, 6% a shelter, 70% friends or family. 0.25 x $85 (a $150 room shared by 2.5 people plus $25 of meals out) + 0.75 x $15 = $32."
+    }
+   },
+   "warningDays": {
+    "lo": 1,
+    "mid": 3,
+    "hi": 5,
+    "tag": "guess",
+    "basis": "Hurricane watches are issued 48 hours and warnings 36 hours before tropical-storm-force winds, and track forecasts run five days; orders often come only a day ahead (Lee County before Ian). Recalled NHC practice; nhc.noaa.gov refused the fetch."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.4,
+     "mid": 0.7,
+     "hi": 0.9,
+     "tag": "guess",
+     "basis": "Shops stay open and restock for two to three days but bottled water, bread, batteries and fuel run out in waves: GasBuddy reported 36-43% of Miami-area stations and 41-58% of Gainesville stations without fuel two to three days before Irma (search snippets of https://www.npr.org/2017/09/08/549536604/as-hurricane-irma-nears-gasoline-is-in-short-supply-for-floridians, page timed out)."
+    },
+    "specialty": {
+     "lo": 0.08,
+     "mid": 0.25,
+     "hi": 0.5,
+     "tag": "guess",
+     "basis": "Generators, power stations, propane, fuel cans and plywood are gone within the first day of a watch in the forecast cone. No data found."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "trauma",
+     "description": "Death or injury caused directly by the storm (drowning in surge or flood, falling trees, wind-borne debris) and by the clean-up (falls, chainsaws, electrocution, crashes), for a healthy adult who stays at home. Deaths from heat, carbon monoxide, lost medical care and powered devices are left to the windows and the co channel. The figure is the mean over events; the median event kills almost no one and the risk sits in surge and flood zones.",
+     "micromortsPerPerson": {
+      "lo": 3,
+      "mid": 10,
+      "hi": 40,
+      "tag": "derived",
+      "basis": "Mainland storms 2000-2024 killed roughly 3,000 people, directly and indirectly (my sum of recalled NHC and CDC counts, about 1,400 of them Katrina; Gellman et al. list 369 for 2019-2023, https://jacobgellman.github.io/files/gellman_et_al_2024-cost_hurricane_evacuations.pdf): 120 a year over 60-80M exposed is 1.5-2 micromorts a year, or about 30 per event at 6%/yr. Half is direct, plus a fifth for clean-up and crashes: about 20; times 0.5-0.6 for ages 15-59, since nearly 60% of Katrina dead were over 65 (https://pubmed.ncbi.nlm.nih.gov/19187485/) though only 29% of Harvey dead were (https://nhess.copernicus.org/articles/18/1073/2018/): about 10."
+     },
+     "hardshipUsdPerPerson": {
+      "lo": 10,
+      "mid": 60,
+      "hi": 300,
+      "tag": "guess",
+      "basis": "About 1.5% of people hurt badly enough to need care, at $4,000 of treatment cost, lost time and pain each. No source; post-storm household surveys commonly report a few percent of households with an injury."
+     },
+     "micromortsPerPersonEvacuateLate": {
+      "lo": 3,
+      "mid": 8,
+      "hi": 30,
+      "tag": "derived",
+      "basis": "Ordinary driving risk for a 400-500 mile round trip is 4-6 micromorts at about 1.2 deaths per 100 million vehicle-miles. The Rita evacuation killed 107 of 3.7M evacuees, 29 micromorts each, mostly from heat in gridlock and one bus fire (Baker 2017, https://doi.org/10.1017/dmp.2017.27, search snippet). Leaving late does not remove the direct risk if the road floods."
+     },
+     "micromortsPerPersonSurgeZoneStayer": {
+      "lo": 30,
+      "mid": 200,
+      "hi": 10000,
+      "tag": "derived",
+      "basis": "Sandy: 18 drownings at home in New York Evacuation Zone A (https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm) among roughly 250,000 who stayed (my recollection: 375,000 residents, most of whom stayed) is about 70. Ian: 41 surge deaths (NHC report via press) among perhaps 200,000 who stayed in the two lowest zones (my guess) is about 200. Katrina: about 1% of the flooded population died (https://pubmed.ncbi.nlm.nih.gov/19187485/)."
+     },
+     "multipliers": [
+      {
+       "profile": "age60to74",
+       "mortality": 4,
+       "tag": "derived",
+       "basis": "Nearly 60% of Katrina dead were over 65 (https://pubmed.ncbi.nlm.nih.gov/19187485/) and Sandy's median age at death was 65 (https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm), against 29% over 65 in Harvey (https://nhess.copernicus.org/articles/18/1073/2018/); relative to adults under 60 that is 3-10 times for all over-60s."
+      },
+      {
+       "profile": "age75plus",
+       "mortality": 12,
+       "tag": "derived",
+       "basis": "49% of Katrina deaths in Louisiana were aged 75 or more (https://pubmed.ncbi.nlm.nih.gov/18756175/), about 6% of the population: 8 times the average rate, 16 times the under-60 rate; shaded down for flood-type storms such as Harvey."
+      },
+      {
+       "profile": "child",
+       "mortality": 0.7,
+       "tag": "derived",
+       "basis": "Harvey: 9% of deaths were under 18 (https://nhess.copernicus.org/articles/18/1073/2018/) against about a quarter of the population."
+      },
+      {
+       "profile": "limitedMobility",
+       "mortality": 3,
+       "tag": "guess",
+       "basis": "Many Katrina and Ian victims could not climb to an attic or roof or leave unaided; no rate found."
+      }
+     ]
+    },
+    {
+     "channel": "financialLoss",
+     "description": "Property loss that insurance does not pay, for a renter in an apartment: contents ruined by flood, surge or a failed roof, a flooded car without comprehensive cover, and deductibles. Evacuation costs and spoiled food are counted elsewhere. Mean over events; the median event costs nothing.",
+     "financialUsdPerHousehold": {
+      "lo": 100,
+      "mid": 600,
+      "hi": 3000,
+      "tag": "guess",
+      "basis": "Bottom-up: 4.5% of apartments with serious contents damage x $8,000 x 75% uninsured (49% of renters hold a policy, FinHealth 2023 via search snippet, https://finhealthnetwork.org/research/climate-disaster-and-renters-insurance-whos-protected/, and no renters policy covers flood) = $270, plus a flooded car without comprehensive cover, about $80, plus small losses of $100-150: about $500. Top-down from uninsured residential flood loss in Harvey and Ian (recalled industry estimates) gives nearer $1,000 for renters as a whole. I take $600."
+     },
+     "ownerHouseFinancialUsdPerHousehold": {
+      "lo": 1500,
+      "mid": 6000,
+      "hi": 20000,
+      "tag": "guess",
+      "basis": "Owner of a house: a hurricane deductible of 2-5% of the dwelling limit on wind damage, and flood damage uninsured for most owners outside the mapped floodplain. Uninsured residential loss of very roughly $8-12 billion a year over 25-30M exposed households is $300-450 a year, or $5,000-7,500 per event, nearly all of it borne by owners."
+     }
+    }
+   ],
+   "dwellingNotes": "Apartments above the ground floor are safe from surge and freshwater flooding, which caused about three quarters of direct deaths in 1963-2012 (49% and 27%; Rappaport 2014, search snippets only), but high floors lose water and lifts with the power and may be ordered out with the rest of the zone. Ground-floor units, single-storey houses and above all mobile homes carry the direct risk; mobile homes are ordered out in every hurricane. Owners of houses carry the repair bill and the wind deductible; renters lose contents and often the tenancy, which is one reason Pulse shows so many never returning.",
+   "evidence": [
+    {
+     "claim": "A hurricane passes within 50 nautical miles every 5-7 years in coastal North Carolina, south Florida and southeast Louisiana, and every 30-50 years in coastal New England.",
+     "source": "https://www.noaa.gov/stories/what-are-chances-hurricane-will-hit-my-home",
+     "year": 2018,
+     "verified": true
+    },
+    {
+     "claim": "Hurricanes displaced 1.9M adults in 2022 (fire 669,000; flood 665,000; other 685,000; total 3.33M); under a week 39%, over six months or never returned 24%.",
+     "source": "https://andrewrumbach.substack.com/p/unpacking-the-us-census-data-on-natural",
+     "year": 2023,
+     "verified": true
+    },
+    {
+     "claim": "In 2023 nearly 2.5M were displaced: more than 840,000 by hurricanes and 670,000 by floods.",
+     "source": "https://weather.com/news/weather/news/2024-02-22-disasters-displaced-millions-in-2023",
+     "year": 2024,
+     "verified": true
+    },
+    {
+     "claim": "Displacement duration split: 1,055,617 under a week; 603,114 a week to a month; 257,628 one to six months; 176,121 over six months; 337,428 never returned (2,429,909 displaced adults, 1.3%).",
+     "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12374215",
+     "year": 2025,
+     "verified": true
+    },
+    {
+     "claim": "Among displaced adults, 36% had some or a lot of food shortage and 31% some or a lot of drinking-water shortage in the first month; about 44% had moderate or a lot of property damage.",
+     "source": "https://andrewrumbach.substack.com/p/unpacking-the-us-census-data-on-natural-a97",
+     "year": 2023,
+     "verified": true
+    },
+    {
+     "claim": "Hurricane major-event outages: 52% longer than 1 day, 33% longer than 3 days, 2.5% longer than 7 days.",
+     "source": "https://www.nrel.gov/docs/fy23osti/83092.pdf",
+     "year": 2022,
+     "verified": false
+    },
+    {
+     "claim": "Welfare cost of evacuating about $343 per person under a mandatory order at Category 4-5 winds and $117 at Category 3; 17 storms in 2019-2023 killed 369 (median storm 5).",
+     "source": "https://jacobgellman.github.io/files/gellman_et_al_2024-cost_hurricane_evacuations.pdf",
+     "year": 2026,
+     "verified": true
+    },
+    {
+     "claim": "Hurricane Bonnie 1998: 16% of evacuees stayed in a hotel or motel, 6% in a shelter, 70% with friends or family.",
+     "source": "https://jacobgellman.github.io/files/gellman_et_al_2024-cost_hurricane_evacuations.pdf",
+     "year": 2000,
+     "verified": true
+    },
+    {
+     "claim": "Sandy: 117 deaths tracked, 67 direct; 40 drownings, 21 of them at home, 18 of the 20 New York home drownings in Evacuation Zone A; median age 65.",
+     "source": "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm",
+     "year": 2013,
+     "verified": true
+    },
+    {
+     "claim": "Harvey: 70 deaths, 81% drowning, at least 21 in or around vehicles, about 11% in buildings; 29% over 65, 9% under 18; 80% outside the 100-year floodplain; mortality below 0.1% of those directly affected.",
+     "source": "https://nhess.copernicus.org/articles/18/1073/2018/",
+     "year": 2018,
+     "verified": true
+    },
+    {
+     "claim": "Katrina: overall mortality among the exposed population about 1%; nearly 60% of fatalities over 65; two thirds from direct flood impact.",
+     "source": "https://pubmed.ncbi.nlm.nih.gov/19187485/",
+     "year": 2009,
+     "verified": true
+    },
+    {
+     "claim": "Katrina: 971 deaths in Louisiana plus 15 among evacuees; 49% aged 75 or older.",
+     "source": "https://pubmed.ncbi.nlm.nih.gov/18756175/",
+     "year": 2008,
+     "verified": true
+    },
+    {
+     "claim": "Irma: 129 deaths, only 11 direct; 17 heat-related; 16 carbon monoxide; 15 preparation or repair injuries.",
+     "source": "https://www.cdc.gov/mmwr/volumes/67/wr/mm6730a5.htm",
+     "year": 2018,
+     "verified": false
+    },
+    {
+     "claim": "Ian: 156 deaths, 66 direct, 41 from storm surge.",
+     "source": "https://www.nhc.noaa.gov/data/tcr/AL092022_Ian.pdf",
+     "year": 2023,
+     "verified": false
+    },
+    {
+     "claim": "Helene: at least 249 deaths, at least 175 direct.",
+     "source": "https://www.nhc.noaa.gov/data/tcr/AL092024_Helene.pdf",
+     "year": 2025,
+     "verified": false
+    },
+    {
+     "claim": "Rita evacuation: about 107 deaths among nearly 3.7M evacuees, 23 in one bus fire.",
+     "source": "https://doi.org/10.1017/dmp.2017.27",
+     "year": 2017,
+     "verified": false
+    },
+    {
+     "claim": "Before Irma, 36-43% of Miami-Fort Lauderdale stations and 41-58% of Gainesville stations had no fuel (GasBuddy).",
+     "source": "https://www.npr.org/2017/09/08/549536604/as-hurricane-irma-nears-gasoline-is-in-short-supply-for-floridians",
+     "year": 2017,
+     "verified": false
+    },
+    {
+     "claim": "Direct deaths from Atlantic tropical cyclones in the United States, 1963-2012: storm surge 49%, rain flooding 27%, wind 8%, tornadoes 3%.",
+     "source": "https://doi.org/10.1175/BAMS-D-12-00074.1",
+     "year": 2014,
+     "verified": false
+    }
+   ],
+   "notes": "The event is defined broadly, so most events are a day or two of outage with no harm; the mean harm comes from the worst tenth. A narrower definition (hurricane-force wind or an evacuation order) would have about a third of the probability and three times the conditional harm. Households that also tick flood should not count surge twice: flood below excludes tropical cyclones. Displacement here means ordered out or uninhabitable; voluntary early departure is the leave option. Trauma for a stayer depends almost wholly on being in a surge or flood zone (see micromortsPerPersonSurgeZoneStayer), which the tick-box cannot see."
+  },
+  {
+   "id": "earthquake",
+   "definition": "Ground shaking of Modified Mercalli intensity VII or more at the home (peak acceleration above roughly 0.2 g): strong enough to damage ordinary buildings, break pipes and cut power. Shaking that is only felt does not count.",
+   "exposedDefinition": "Home in the areas the USGS rates as having high potential for damaging shaking: about 28 million people who can expect 0.1 g about once in 72 years. In practice coastal and southern California, western Nevada, the Puget Sound lowland, and parts of Alaska and Hawaii.",
+   "annualProbability": [
+    {
+     "location": "us",
+     "outlook": "all",
+     "lo": 0.003,
+     "mid": 0.01,
+     "hi": 0.02,
+     "tag": "derived",
+     "basis": "Exposed = the 28 million people in the USGS high-potential tier, who meet 0.1 g (intensity VI) about once in 72 years, 1.4%/yr, as a floor (Jaiswal et al. 2015: tier sizes read at https://www.usgs.gov/news/nearly-half-americans-exposed-potentially-damaging-earthquakes, the 0.1 g and 1-in-72 figures from a search snippet of https://pubs.usgs.gov/publication/70155520). Intensity VII needs about twice the acceleration, two to three times rarer at a given site, but the Los Angeles and Bay Area cores lie well above the floor. History: about 8M person-exposures to VII+ in 1971-2025 among about 20M high-hazard Californians is 0.7%/yr in a quiet half-century (my count). For the 57M in the moderate tier (Salt Lake City, Memphis, Charleston, Portland) use 0.1-0.3%."
+    }
+   ],
+   "tickBox": "earthquake",
+   "windows": {
+    "power": {
+     "pOccur": {
+      "lo": 0.6,
+      "mid": 0.85,
+      "hi": 0.97,
+      "tag": "derived",
+      "basis": "Northridge blacked out all 1.4M LADWP customers and about 1M Edison customers, the whole intensity-VII zone (https://www.nbclosangeles.com/news/local/timeline-the-northridge-earthquake/1977528/ for LADWP; the Edison count is recalled). Smaller quakes (Napa, Anchorage) cut power to a minority."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 3,
+      "p99": 14
+     },
+     "tag": "derived",
+     "basis": "Northridge: nearly half of LADWP customers restored by noon on day 1, Edison down to 150,000 that afternoon, all but 7,500 in Los Angeles by day 4 (https://www.nbclosangeles.com/news/local/timeline-the-northridge-earthquake/1977528/). Christchurch still had about 150 homes dark after a month (https://www.rnz.co.nz/news/canterbury-earthquake/71075/restoring-last-of-services-after-quake-%27most-difficult%27). Tail for a Hayward or San Andreas rupture."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.08,
+      "mid": 0.25,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "Dry taps plus boil-water notices. Northridge: about 36,000 LADWP customers dry on day 4 and 10,000 households on day 6 (https://www.nbclosangeles.com/news/local/timeline-the-northridge-earthquake/1977528/), a few percent of the shaken area, with boil notices far wider. Christchurch lost water in most of the city."
+     },
+     "days": {
+      "p50": 4,
+      "p90": 20,
+      "p99": 90
+     },
+     "shareTreatable": {
+      "lo": 0.25,
+      "mid": 0.5,
+      "hi": 0.75,
+      "tag": "guess",
+      "basis": "Half the days are boil notices with water still flowing; the rest are broken mains, when only tankers, pools and water heaters are left."
+     },
+     "tag": "derived",
+     "basis": "Northridge taps were back in one to two weeks. Christchurch reached 95% of residents after one month with the boil notice still in force (https://www.rnz.co.nz/news/canterbury-earthquake/71075/restoring-last-of-services-after-quake-%27most-difficult%27). The USGS HayWired scenario gives East Bay residents six weeks to six months (press reports of https://pubs.usgs.gov/fs/2021/3054/fs20213054.pdf, unverified)."
+    },
+    "gas": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.1,
+      "hi": 0.25,
+      "tag": "guess",
+      "basis": "Northridge: on day 6 service had been restored to 40,000 homes with at least as many still out (https://www.nbclosangeles.com/news/local/timeline-the-northridge-earthquake/1977528/), so 80,000 or more of about a million households in the shaken area. Most were customers shutting their own valve."
+     },
+     "days": {
+      "p50": 5,
+      "p90": 14,
+      "p99": 45
+     },
+     "tag": "guess",
+     "basis": "Each appliance must be relit by the utility: one to two weeks after Northridge. Sendai's city gas took about five weeks in 2011 (recalled)."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.15,
+      "mid": 0.35,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Shops close for clean-up, inspection and lack of power; damaged bridges and overpasses cut some districts off."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "Shops outside the damage zone are an hour away once roads are checked, and relief arrives within about three days in a rich country."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.15,
+      "mid": 0.35,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Pharmacies close with other shops; there was no chance to refill beforehand."
+     },
+     "days": {
+      "p50": 1.5,
+      "p90": 5,
+      "p99": 21
+     },
+     "tag": "guess",
+     "basis": "No data found; set a little longer than food because fewer outlets carry a given drug."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.3,
+      "mid": 0.6,
+      "hi": 0.85,
+      "tag": "guess",
+      "basis": "Emergency lines and hospitals are swamped at once; Northridge treated and released 2,300 people and admitted over 500 in the first day (https://www.nbclosangeles.com/news/local/timeline-the-northridge-earthquake/1977528/) and several hospitals were evacuated."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 3,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "The surge passes within a day or two unless hospitals are themselves out of action."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.1,
+      "mid": 0.3,
+      "hi": 0.55,
+      "tag": "guess",
+      "basis": "Follows power and telecoms where shops reopen first."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "Follows the power window."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.15,
+      "mid": 0.35,
+      "hi": 0.6,
+      "tag": "guess",
+      "basis": "Networks congest immediately, and cell sites on four to eight hours of battery fail where power stays off."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 3,
+      "p99": 14
+     },
+     "tag": "guess",
+     "basis": "Follows the power window; text messages usually get through sooner than calls."
+    },
+    "sanitation": {
+     "pOccur": {
+      "lo": 0.02,
+      "mid": 0.08,
+      "hi": 0.25,
+      "tag": "guess",
+      "basis": "Needs both water and intact sewers. Rare at intensity VII, common where the ground liquefies."
+     },
+     "days": {
+      "p50": 5,
+      "p90": 30,
+      "p99": 180
+     },
+     "tag": "derived",
+     "basis": "Christchurch: a month after the February 2011 quake about a quarter of households still had no working toilet (https://www.rnz.co.nz/news/canterbury-earthquake/71075/restoring-last-of-services-after-quake-%27most-difficult%27); the eastern suburbs used chemical toilets for many months (recalled)."
+    },
+    "displacement": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.04,
+      "hi": 0.12,
+      "tag": "guess",
+      "basis": "Northridge left about 20,000 homeless (USGS, search snippet) of roughly 3M people at intensity VII+, under 1%, plus tenants of several thousand red- and yellow-tagged buildings. HayWired projects 77,000-152,000 displaced households in a region of about 2.6M (press reports, unverified). Christchurch lost roughly a tenth of its housing."
+     },
+     "days": {
+      "p50": 30,
+      "p90": 240,
+      "p99": 900
+     },
+     "tag": "guess",
+     "basis": "Earthquake displacement is by damage, not by order, so the short evacuations that dominate the Pulse split (https://pmc.ncbi.nlm.nih.gov/articles/PMC12374215) are missing: only its longer classes apply. Repair or rebuilding takes months to years. Engine mean: 89 days."
+    }
+   },
+   "coldShare": {
+    "lo": 0.1,
+    "mid": 0.2,
+    "hi": 0.33,
+    "tag": "guess",
+    "basis": "Earthquakes ignore the season, so this is the share of the year with dangerous cold where winters are cold (Seattle, Anchorage, Reno, Salt Lake City)."
+   },
+   "hotShare": {
+    "lo": 0.08,
+    "mid": 0.17,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "Share of the year with dangerous heat in hot-summer places (inland southern California, the Central Valley)."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.35,
+     "mid": 0.6,
+     "hi": 0.85,
+     "tag": "guess",
+     "basis": "Bridges and overpasses close, fuel pumps lack power and a great earthquake damages everything within driving range; after an ordinary damaging quake the unaffected area is an hour away."
+    },
+    "earliestDay": {
+     "lo": 0.5,
+     "mid": 1,
+     "hi": 3,
+     "tag": "guess",
+     "basis": "Roads have to be inspected and cleared first."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 60,
+     "mid": 200,
+     "hi": 600,
+     "tag": "guess",
+     "basis": "Fuel and a lost day or two for a 100-300 mile round trip."
+    },
+    "usdPerPersonDay": {
+     "lo": 10,
+     "mid": 40,
+     "hi": 100,
+     "tag": "guess",
+     "basis": "Same lodging mix as for hurricanes (https://jacobgellman.github.io/files/gellman_et_al_2024-cost_hurricane_evacuations.pdf) but with hotels nearby full."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 0,
+    "hi": 0,
+    "tag": "derived",
+    "basis": "No warning: earthquakes cannot be forecast in the short term, and ShakeAlert gives seconds at best."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0,
+     "mid": 0,
+     "hi": 0,
+     "tag": "derived",
+     "basis": "Follows from zero warning: nothing can be bought before an event that is not foreseen."
+    },
+    "specialty": {
+     "lo": 0,
+     "mid": 0,
+     "hi": 0,
+     "tag": "derived",
+     "basis": "Follows from zero warning: nothing can be bought before an event that is not foreseen."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "trauma",
+     "description": "Death or injury from the shaking itself: collapsing buildings and chimneys, falling furniture and glass, falls while moving during the shaking, and fires that follow. There is no evacuating, early or late; the nearest equivalent is running outside during the shaking, which raises the risk. Mean over events: a typical intensity-VII event kills about 5 per million exposed, a direct hit on a city hundreds.",
+     "micromortsPerPerson": {
+      "lo": 5,
+      "mid": 25,
+      "hi": 120,
+      "tag": "derived",
+      "basis": "Northridge: 33 injury deaths in Los Angeles County (https://pubmed.ncbi.nlm.nih.gov/9698136/), 57 in all (https://www.nbclosangeles.com/news/local/timeline-the-northridge-earthquake/1977528/), over roughly 3M people at intensity VII+: 11-19 micromorts. My recalled comparisons: Loma Prieta 63 deaths over about 1.5M (40, mostly one viaduct), Whittier Narrows 8, Napa 7, Anchorage 2018 0, Christchurch 185 over 370,000 (500). Scenarios: HayWired 800 deaths over 3-4M (200-270). Weighting ordinary events at about 10 and one in ten at 200 gives about 30 at all ages, a little less for adults under 60."
+     },
+     "hardshipUsdPerPerson": {
+      "lo": 10,
+      "mid": 40,
+      "hi": 200,
+      "tag": "guess",
+      "basis": "Northridge: 138 hospital admissions (https://pubmed.ncbi.nlm.nih.gov/9698136/) and 7,000-9,000 treated injuries (USGS and press, search snippets) over about 3M is 0.3% needing care, at about $8,000 each, $25; plus minor injuries to several percent at $200 each."
+     },
+     "injuriesTreatedPer1000Persons": {
+      "lo": 0.5,
+      "mid": 3,
+      "hi": 15,
+      "tag": "derived",
+      "basis": "Northridge 7,000-9,000 treated injuries over about 3M exposed."
+     },
+     "multipliers": [
+      {
+       "profile": "age60to74",
+       "mortality": 1.5,
+       "tag": "guess",
+       "basis": "Peek-Asa et al.: injury rates rose significantly with age (https://pubmed.ncbi.nlm.nih.gov/9698136/); the size of the gradient was not read."
+      },
+      {
+       "profile": "age75plus",
+       "mortality": 3,
+       "tag": "guess",
+       "basis": "Same source; falls and inability to take cover."
+      },
+      {
+       "profile": "child",
+       "mortality": 0.7,
+       "tag": "guess",
+       "basis": "No data read; collapse deaths depend on the building, not the person."
+      },
+      {
+       "profile": "limitedMobility",
+       "mortality": 2,
+       "tag": "guess",
+       "basis": "Cannot drop and take cover or leave a damaged building."
+      }
+     ]
+    },
+    {
+     "channel": "financialLoss",
+     "description": "Uninsured property loss for a renter in an apartment: broken and fallen contents, since standard renters policies exclude earthquakes. Mean over events.",
+     "financialUsdPerHousehold": {
+      "lo": 300,
+      "mid": 1500,
+      "hi": 6000,
+      "tag": "guess",
+      "basis": "Contents worth about $25,000 with damage of roughly 2-5% at intensity VII, 5-15% at VIII and more at IX (my reading of loss-model damage ratios, not checked): about 6% on average, $1,500. About 5% of insured California renters, themselves a third to a half of renters, held earthquake cover in 2016 (CEA blog, search snippet, https://portal.earthquakeauthority.com/blog/2018/helping-protect-bay-area-renters), so essentially all of it is uninsured."
+     },
+     "ownerHouseFinancialUsdPerHousehold": {
+      "lo": 5000,
+      "mid": 25000,
+      "hi": 80000,
+      "tag": "guess",
+      "basis": "Owner of a wood-frame house: structural and contents damage of roughly 3-10% of a $400,000 rebuild cost at intensity VII-VIII, and far more for unbolted, soft-storey or masonry houses. Only 10-13% of California homes carry earthquake insurance (search snippets) and those policies have deductibles of 5-25% of the dwelling limit, so nearly all of an ordinary loss falls on the owner."
+     }
+    }
+   ],
+   "dwellingNotes": "Risk follows the building more than the person. About fifteen of the 57 Northridge dead were in one soft-storey apartment block (15 by day 2 in https://www.nbclosangeles.com/news/local/timeline-the-northridge-earthquake/1977528/); unreinforced masonry and older concrete frames are worse still, modern wood-frame houses and post-1980 towers much better. High floors sway more, so contents losses rise, and lifts stop: HayWired expects 22,000 people stuck in lifts (press reports). Houses have their own shut-off valves and water heaters to strap; apartment tenants depend on the landlord for both, and a red-tagged block displaces every household in it.",
+   "evidence": [
+    {
+     "claim": "USGS: about 143M people in the 48 states live where damaging shaking is possible, 57M where it is moderately likely and 28M where the potential is high.",
+     "source": "https://www.usgs.gov/news/nearly-half-americans-exposed-potentially-damaging-earthquakes",
+     "year": 2015,
+     "verified": true
+    },
+    {
+     "claim": "Jaiswal et al.: at least 28M may experience 0.1 g about once in 72 years, 57M once in 475 years, 143M once in 2,475 years.",
+     "source": "https://pubs.usgs.gov/publication/70155520",
+     "year": 2015,
+     "verified": false
+    },
+    {
+     "claim": "Northridge: 171 fatal or hospitalised injuries in Los Angeles County, 33 of them fatal; most deaths from building collapse, most admissions from falls or being struck; rates rose with age.",
+     "source": "https://pubmed.ncbi.nlm.nih.gov/9698136/",
+     "year": 1998,
+     "verified": true
+    },
+    {
+     "claim": "Northridge timeline: 57 killed; nearly half of 1.4M LADWP customers had power back by noon on day 1 and all but 7,500 by day 4; about 36,000 LADWP customers without water on day 4 and 10,000 households on day 6; on day 6 gas restored to 40,000 homes with at least as many still without; over 500 hospitalised and 2,300 treated and released in the first day.",
+     "source": "https://www.nbclosangeles.com/news/local/timeline-the-northridge-earthquake/1977528/",
+     "year": 1994,
+     "verified": true
+    },
+    {
+     "claim": "Christchurch, one month after the February 2011 earthquake: water restored to 95% of residents, about a quarter of households without a working toilet, about 150 homes still without electricity.",
+     "source": "https://www.rnz.co.nz/news/canterbury-earthquake/71075/restoring-last-of-services-after-quake-%27most-difficult%27",
+     "year": 2011,
+     "verified": true
+    },
+    {
+     "claim": "HayWired scenario (magnitude 7.0 on the Hayward Fault): 800 deaths, 18,000 injuries, 77,000-152,000 households displaced, East Bay water out for six weeks to six months.",
+     "source": "https://pubs.usgs.gov/fs/2021/3054/fs20213054.pdf",
+     "year": 2021,
+     "verified": false
+    },
+    {
+     "claim": "About 5% of California renters with residential insurance also had earthquake cover in 2016; only about a third of renters carried residential insurance.",
+     "source": "https://portal.earthquakeauthority.com/blog/2018/helping-protect-bay-area-renters",
+     "year": 2018,
+     "verified": false
+    }
+   ],
+   "notes": "Probabilities differ tenfold within the exposed tier; a ZIP-level value from the USGS hazard model would be far better than one tick-box. The largest harms sit in rare great earthquakes (southern San Andreas, Hayward, Cascadia), for which the 99th-percentile windows here are if anything short: Oregon's own plan expects water out for a month to a year in the Willamette Valley (recalled). Tsunami after a Cascadia rupture is not modelled. Fire following earthquake is folded into trauma and financial loss."
+  },
+  {
+   "id": "wildfire",
+   "definition": "A wildfire puts the home under an evacuation order or warning, or brings at least three days of heavy smoke there (daily wildfire PM2.5 above about 55 micrograms per cubic metre, an air-quality index of 151 or more). About nine events in ten are smoke alone; the evacuation cases are the worst tenth.",
+   "exposedDefinition": "Home in the wildland-urban interface or a mapped high fire-hazard zone of a western state (California alone had 11.2M people in the interface in 2010, search snippet). The far larger population that only ever gets smoke is discussed in notes.",
+   "annualProbability": [
+    {
+     "location": "us",
+     "outlook": "all",
+     "lo": 0.05,
+     "mid": 0.13,
+     "hi": 0.3,
+     "tag": "derived",
+     "basis": "Exposed = home in the western wildland-urban interface. Smoke: over 8M people a year had at least one day above 100 micrograms of smoke PM2.5 in 2016-2020, up 27-fold in a decade (https://phys.org/news/2022-09-wildfire-unraveling-decades-air-quality.html); that is about 10% of the 78M people in the Census West region (recalled), and I take 12% for interface homes, which lie nearer the fires. Evacuation: 1.1M Californians were ordered out in 2017-2019 (https://escholarship.org/uc/item/5w85z07g); my tally for 2017-2025 is about 250,000 a year in California and 50,000 elsewhere, over some 22M interface residents: 1.3%/yr (0.4-3%). Sum 13%."
+    }
+   ],
+   "tickBox": "wildfire",
+   "frequencySplit": {
+    "evacuationPerYear": {
+     "lo": 0.004,
+     "mid": 0.013,
+     "hi": 0.03,
+     "tag": "derived",
+     "basis": "300,000 people a year ordered out over about 22M western interface residents; 3.3% a year in California in 2017-2019 (https://escholarship.org/uc/item/5w85z07g)."
+    },
+    "heavySmokeOnlyPerYear": {
+     "lo": 0.04,
+     "mid": 0.12,
+     "hi": 0.28,
+     "tag": "derived",
+     "basis": "See annualProbability; roughly nine times as frequent as evacuation for an interface home, and the only form the hazard takes for tens of millions outside the interface."
+    }
+   },
+   "windows": {
+    "displacement": {
+     "pOccur": {
+      "lo": 0.04,
+      "mid": 0.1,
+      "hi": 0.2,
+      "tag": "derived",
+      "basis": "Evacuation rate 1.3%/yr divided by event rate 13%/yr. Compliance is high: 3-13% of those ordered out stayed (https://escholarship.org/uc/item/5w85z07g)."
+     },
+     "days": {
+      "p50": 4,
+      "p90": 16,
+      "p99": 500
+     },
+     "tag": "derived",
+     "basis": "Wong et al. surveys: most evacuees were away one to eight days and 3-32% came back two weeks or more after the fire began (https://escholarship.org/uc/item/5w85z07g). The 11 fires destroyed over 30,000 structures for 1.1M ordered out, so roughly one evacuated household in twenty lost its home and was out for a year or more. That is shorter in the middle and longer in the tail than the Pulse split (https://pmc.ncbi.nlm.nih.gov/articles/PMC12374215), whose fire category is mostly house fires. Engine mean: 21 days."
+    },
+    "power": {
+     "pOccur": {
+      "lo": 0.08,
+      "mid": 0.2,
+      "hi": 0.4,
+      "tag": "guess",
+      "basis": "Precautionary shut-offs in fire weather and burnt lines. California's October 2019 shut-offs reached over 2M people (recalled)."
+     },
+     "days": {
+      "p50": 1.5,
+      "p90": 4,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "Shut-offs last one to five days, until wind drops and lines are inspected."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.03,
+      "hi": 0.08,
+      "tag": "guess",
+      "basis": "Systems that lose pressure in a burn-over draw in combustion products: Santa Rosa, Paradise, Lahaina, Altadena and Pacific Palisades all had do-not-drink orders (recalled)."
+     },
+     "days": {
+      "p50": 7,
+      "p90": 45,
+      "p99": 365
+     },
+     "shareTreatable": {
+      "lo": 0.05,
+      "mid": 0.2,
+      "hi": 0.5,
+      "tag": "guess",
+      "basis": "The contaminants are benzene and other volatile organics, which boiling and ordinary filters do not remove."
+     },
+     "tag": "guess",
+     "basis": "Weeks for neighbourhoods at the edge of a burn, a year or more inside it."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.04,
+      "hi": 0.12,
+      "tag": "guess",
+      "basis": "Shops stay open through smoke; they close in shut-off areas and behind road blocks."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 7
+     },
+     "tag": "guess",
+     "basis": "Short and local."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.02,
+      "mid": 0.05,
+      "hi": 0.15,
+      "tag": "guess",
+      "basis": "As food, plus prescriptions left behind in a rushed evacuation, which the displacement need should carry."
+     },
+     "days": {
+      "p50": 1.5,
+      "p90": 4,
+      "p99": 10
+     },
+     "tag": "guess",
+     "basis": "Short and local."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.08,
+      "hi": 0.2,
+      "tag": "guess",
+      "basis": "Crews are committed to the fire and roads are closed in the threatened zone."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2,
+      "p99": 5
+     },
+     "tag": "guess",
+     "basis": "Lasts while the fire front is active nearby."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.1,
+      "hi": 0.25,
+      "tag": "guess",
+      "basis": "Cash-only trading during power shut-offs."
+     },
+     "days": {
+      "p50": 1.5,
+      "p90": 4,
+      "p99": 8
+     },
+     "tag": "guess",
+     "basis": "Follows the power window."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.03,
+      "mid": 0.08,
+      "hi": 0.2,
+      "tag": "guess",
+      "basis": "Burnt lines and towers, and cell sites running out of battery in shut-offs."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 4,
+      "p99": 21
+     },
+     "tag": "guess",
+     "basis": "Follows the power window; weeks where towers burn."
+    }
+   },
+   "coldShare": {
+    "lo": 0,
+    "mid": 0.03,
+    "hi": 0.1,
+    "tag": "guess",
+    "basis": "Fire season is summer and autumn; winter wind-driven fires (Marshall, December 2021; Los Angeles, January 2025) are the exception."
+   },
+   "hotShare": {
+    "lo": 0.3,
+    "mid": 0.5,
+    "hi": 0.7,
+    "tag": "guess",
+    "basis": "Smoke and shut-offs coincide with heat waves, and smoke forces windows shut."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.6,
+     "mid": 0.8,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "Roads are open in a smoke episode, but clean air may be hundreds of miles away and work and school continue."
+    },
+    "earliestDay": {
+     "lo": 0,
+     "mid": 0,
+     "hi": 0.5,
+     "tag": "guess",
+     "basis": "A household can leave as soon as smoke arrives."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 80,
+     "mid": 250,
+     "hi": 700,
+     "tag": "guess",
+     "basis": "Fuel and time for a few hundred miles; a smoke plume is regional."
+    },
+    "usdPerPersonDay": {
+     "lo": 10,
+     "mid": 40,
+     "hi": 100,
+     "tag": "derived",
+     "basis": "Wong et al.: 49-70% of evacuees stayed with family or friends, 13-23% in a hotel, 2-5% in a public shelter (https://escholarship.org/uc/item/5w85z07g). Same arithmetic as for hurricanes."
+    }
+   },
+   "warningDays": {
+    "lo": 0,
+    "mid": 1,
+    "hi": 3,
+    "tag": "guess",
+    "basis": "Smoke is forecast a day or two ahead and then lasts days, so there is time to shop. The evacuation tail is different: Carr Fire residents had between 30 minutes and 12 hours (https://escholarship.org/uc/item/5w85z07g), and in Paradise and Lahaina many had none."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.75,
+     "mid": 0.9,
+     "hi": 0.98,
+     "tag": "guess",
+     "basis": "Shops stay open in a smoke episode. In an evacuation there is no time, but little that could be bought then would help."
+    },
+    "specialty": {
+     "lo": 0.15,
+     "mid": 0.35,
+     "hi": 0.6,
+     "tag": "guess",
+     "basis": "Respirators and air purifiers sold out across the Bay Area within a day or two in November 2018 and across the West in September 2020 (recalled press reports); delivery takes days."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "smoke",
+     "description": "Breathing wildfire smoke at home with no filtration or mask: a typical event is about five days (three to fourteen) at about 75 micrograms per cubic metre of smoke PM2.5, the same whether or not an evacuation follows. Applies to every event of this hazard.",
+     "micromortsPerPerson": {
+      "lo": 0.5,
+      "mid": 3,
+      "hi": 20,
+      "tag": "derived",
+      "basis": "5 days x 75 = 375 microgram-days. Chen et al. 2021 give +1.9% all-cause deaths per 10 micrograms of wildfire PM2.5 over three days, and another pooled estimate gives 1.5% (search snippets, https://doi.org/10.1016/S2542-5196(21)00200-X): 56-71% of one day's mortality. For a healthy adult at 7.4 micromorts a day, halved because acute deaths fall on the old and sick and cut by 0.7 for flattening at high concentrations: 1.5-1.9. Raised to 3 because long-term response functions applied to the same dose give about 19."
+     },
+     "hardshipUsdPerPerson": {
+      "lo": 20,
+      "mid": 120,
+      "hi": 500,
+      "tag": "derived",
+      "basis": "Richardson et al. 2012: willingness to pay $84 per person to avoid a day of smoke symptoms, against $9.50 of medical cost per exposed person per day (search snippet, https://pubs.usgs.gov/publication/70032380). 5 days x one person in three symptomatic x $84 = $140; cost of illness alone, $48."
+     },
+     "multipliers": [
+      {
+       "profile": "age60to74",
+       "mortality": 12,
+       "tag": "derived",
+       "basis": "All-cause death rate about 6 times that of ages 15-59 (44 against 7.4 micromorts a day, as in the medical file), times 2 because the full relative risk applies and I halved it for healthy adults."
+      },
+      {
+       "profile": "age75plus",
+       "mortality": 40,
+       "tag": "derived",
+       "basis": "All-cause rate about 24 times, times 2, shaded down a little."
+      },
+      {
+       "profile": "child",
+       "mortality": 0.2,
+       "hardship": 1.5,
+       "tag": "guess",
+       "basis": "Very low baseline mortality; more asthma visits per unit of smoke."
+      },
+      {
+       "profile": "powerDependent",
+       "mortality": 4,
+       "tag": "guess",
+       "basis": "Stands in for severe lung or heart disease, as in people on home oxygen; applied on top of age."
+      }
+     ]
+    },
+    {
+     "channel": "trauma",
+     "description": "Death or injury from the fire itself, almost always while failing to get out in time: at home, on foot or in a car on a blocked road. Averaged over all events of this hazard, nine tenths of which are smoke alone and carry none. The figure assumes the household behaves as most do and leaves when told; see the extra fields for those who stay or leave late.",
+     "micromortsPerPerson": {
+      "lo": 0.5,
+      "mid": 4,
+      "hi": 15,
+      "tag": "derived",
+      "basis": "The 11 largest California evacuations of 2017-2019 killed 144 of 1.1M ordered out, 130 micromorts each (fatalities row and evacuee totals in https://escholarship.org/uc/item/5w85z07g); my tally for 2017-2025 nationally is about 330 deaths over 2.8M, 120 each. Adults under 60 run about 0.3 of the average (72 of 84 identified Camp Fire dead were 60 or older, AARP via search snippet): 40 per evacuation event, times the 0.1 share of events with an evacuation."
+     },
+     "hardshipUsdPerPerson": {
+      "lo": 1,
+      "mid": 5,
+      "hi": 30,
+      "tag": "guess",
+      "basis": "Burns, crashes and falls in the one event in ten with an evacuation; no data read."
+     },
+     "micromortsPerPersonGivenEvacuationOrder": {
+      "lo": 8,
+      "mid": 40,
+      "hi": 150,
+      "tag": "derived",
+      "basis": "Healthy adult, typical behaviour: 120-130 at all ages x 0.3."
+     },
+     "micromortsPerPersonStayOrLeaveLate": {
+      "lo": 80,
+      "mid": 400,
+      "hi": 3000,
+      "tag": "derived",
+      "basis": "Given an evacuation order. Nearly all deaths are among the 3-13% who do not leave (https://escholarship.org/uc/item/5w85z07g) and those caught leaving late: 130 / about 0.1 = 1,300 at all ages, x 0.3 for a healthy adult. Lahaina: 102 deaths in a town of about 12,700 with almost no warning is 8,000 at all ages."
+     },
+     "multipliers": [
+      {
+       "profile": "age60to74",
+       "mortality": 6,
+       "tag": "derived",
+       "basis": "Camp Fire: 72 of 84 identified dead aged 60 or more where about 35% of residents were; Lahaina: over two thirds aged 60 or more (press, search snippets). Over-60s die at 7-11 times the rate of under-60s."
+      },
+      {
+       "profile": "age75plus",
+       "mortality": 15,
+       "tag": "guess",
+       "basis": "Steeper again at the oldest ages; exact ages not read."
+      },
+      {
+       "profile": "child",
+       "mortality": 0.5,
+       "tag": "guess",
+       "basis": "Children leave with adults; few among the dead."
+      },
+      {
+       "profile": "limitedMobility",
+       "mortality": 5,
+       "tag": "guess",
+       "basis": "Many victims could not drive or walk out unaided."
+      }
+     ]
+    },
+    {
+     "channel": "financialLoss",
+     "description": "Uninsured property loss for a renter in an apartment, averaged over all events: contents lost when the building burns, for the half of renters with no policy, and smoke damage. Renters policies do cover wildfire.",
+     "financialUsdPerHousehold": {
+      "lo": 10,
+      "mid": 50,
+      "hi": 250,
+      "tag": "derived",
+      "basis": "Given an evacuation order about 3% of apartments burn (4.7% of all evacuated homes: over 30,000 structures, perhaps 20,000 of them homes, for 1.1M people or 420,000 households, https://escholarship.org/uc/item/5w85z07g; apartments less often than houses). 3% x $25,000 of contents x 51% uninsured (FinHealth via search snippet, https://finhealthnetwork.org/research/climate-disaster-and-renters-insurance-whos-protected/) = $380, plus about $70 of deductibles and smoke cleaning: $450; times 0.1."
+     },
+     "ownerHouseFinancialUsdPerHousehold": {
+      "lo": 100,
+      "mid": 600,
+      "hi": 2500,
+      "tag": "guess",
+      "basis": "Owner of a house: 4.7% chance of losing it given an order, times an expected uninsured gap of about $120,000 (a tenth uninsured at $500,000, two thirds of the rest under-insured by about $100,000, as survivor surveys after Camp and Marshall reported; recalled): about $5,700 per evacuation, $570 per event."
+     },
+     "financialUsdPerHouseholdGivenEvacuationOrder": {
+      "lo": 100,
+      "mid": 450,
+      "hi": 2500,
+      "tag": "derived",
+      "basis": "Renter in an apartment; the per-event figure divided by the 0.1 evacuation share."
+     }
+    }
+   ],
+   "dwellingNotes": "The fire risk belongs to houses at the wildland edge and to mobile-home parks; an apartment in a town centre mostly faces smoke and an order to leave. Old and leaky buildings let in more smoke: indoor levels run from under a third to nearly all of outdoor. Renters can leave more easily but cannot harden or clear around the building. Dead-end canyon and ridge roads decide who gets out.",
+   "evidence": [
+    {
+     "claim": "California, 11 largest wildfire evacuations of 2017-2019: approximately 1.1M people ordered out, over 30,000 structures destroyed; fatalities 44, 2, 8, 1, 85, 3 and 1.",
+     "source": "https://escholarship.org/uc/item/5w85z07g",
+     "year": 2020,
+     "verified": true
+    },
+    {
+     "claim": "Surveys of three fires: 3-13% ignored a mandatory order; 49-70% sheltered with family or friends, 13-23% in a hotel, 2-5% in a public shelter; 3-32% returned two weeks or more after the outbreak; Carr Fire orders arrived 30 minutes to 12 hours ahead.",
+     "source": "https://escholarship.org/uc/item/5w85z07g",
+     "year": 2020,
+     "verified": true
+    },
+    {
+     "claim": "People with at least one day a year above 100 micrograms per cubic metre of smoke PM2.5 rose from under half a million to over 8 million in a decade, 27-fold; over 1.5M now routinely see days above 200 (Childs et al. 2022, 2006-2020).",
+     "source": "https://phys.org/news/2022-09-wildfire-unraveling-decades-air-quality.html",
+     "year": 2022,
+     "verified": true
+    },
+    {
+     "claim": "Wildfires have destroyed more than 130,600 structures in the United States since 2005 (to end 2025), about 6,200 a year.",
+     "source": "https://headwaterseconomics.org/natural-hazards/structures-destroyed-by-wildfire/",
+     "year": 2026,
+     "verified": true
+    },
+    {
+     "claim": "All-cause mortality rises 1.9% (1.6-2.2%) per 10 micrograms per cubic metre of wildfire PM2.5, three-day average, across 749 cities.",
+     "source": "https://doi.org/10.1016/S2542-5196(21)00200-X",
+     "year": 2021,
+     "verified": false
+    },
+    {
+     "claim": "Willingness to pay to avoid one day of wildfire-smoke symptoms $84.42 per person; cost of illness $9.50 per exposed person per day (Station Fire, Los Angeles, 2009).",
+     "source": "https://pubs.usgs.gov/publication/70032380",
+     "year": 2012,
+     "verified": false
+    },
+    {
+     "claim": "Pulse 2022: 669,000 adults said a fire displaced them, in a year with few wildfire evacuations, so the category is mostly house fires.",
+     "source": "https://andrewrumbach.substack.com/p/unpacking-the-us-census-data-on-natural",
+     "year": 2023,
+     "verified": true
+    }
+   ],
+   "notes": "Heavy smoke without evacuation is about nine times as frequent as evacuation for an interface household (12%/yr against 1.3%/yr) and is the whole hazard for the much larger population outside the interface: most of the West, and in 2023 the Midwest and Northeast. Those households cannot tick this box as defined; see openQuestions. To convert to a narrow evacuation-only hazard, use 1.3%/yr, set displacement pOccur to 1, multiply the other pOccur values and the trauma and financial figures by 10 (the extra fields give them directly) and keep smoke as its own exposure at 12%/yr. Trauma is dominated by a few fast fires (Tubbs, Camp, Lahaina, Eaton); the median evacuation kills no one. Official counts understate smoke-period deaths."
+  },
+  {
+   "id": "flood",
+   "definition": "Floodwater from rain, a river, a failed drain or dam, or the tide, other than in a named tropical cyclone (those are under hurricane), enters the home's building or cuts off its street, so that the household is flooded, ordered out or marooned.",
+   "exposedDefinition": "Home in a FEMA Special Flood Hazard Area (the mapped 1%-a-year floodplain, about 8.7M properties) or rated at substantial risk by First Street (14.6M properties, 10.3%).",
+   "annualProbability": [
+    {
+     "location": "us",
+     "outlook": "all",
+     "lo": 0.01,
+     "mid": 0.025,
+     "hi": 0.06,
+     "tag": "derived",
+     "basis": "Exposed = home in a FEMA Special Flood Hazard Area or one of First Street's 14.6M substantial-risk properties (https://www.preventionweb.net/publications/view/72504, search snippet): by definition at least 1%/yr of water reaching the building, more for lots well inside the line. NFIP paid 101,494 claims in 2024 on about 4.7M policies, 2.2%, and 13,000-112,000 a year in 2014-2017 (FEMA brochure and ValuePenguin, search snippets): about 1.2% a year. Events that close the street or bring an order without wetting the building roughly double it. Check: Pulse has 665,000-670,000 adults displaced by floods in each of 2022 and 2023 (https://andrewrumbach.substack.com/p/unpacking-the-us-census-data-on-natural); if half live in mapped-risk homes that is 1.2-1.4% of their 24M adults, or half the events."
+    }
+   ],
+   "tickBox": "flood",
+   "windows": {
+    "displacement": {
+     "pOccur": {
+      "lo": 0.3,
+      "mid": 0.5,
+      "hi": 0.7,
+      "tag": "derived",
+      "basis": "Home flooded (about 1.2%/yr) or ordered out, over the 2.5%/yr event rate; Pulse flood displacement gives the same 1.2-1.4%/yr."
+     },
+     "days": {
+      "p50": 8,
+      "p90": 120,
+      "p99": 600
+     },
+     "tag": "derived",
+     "basis": "Census Household Pulse, Dec 2022-Oct 2023 (https://pmc.ncbi.nlm.nih.gov/articles/PMC12374215): of 2.43M displaced adults, 43% were away under a week, 25% a week to a month, 11% one to six months, 7% over six months and 14% never returned. Floods are the case the split fits best, since a wetted house needs drying, stripping and rebuilding: I use it nearly as it stands, counting never-returned as resettled within six months (9 / 140 / 600) and trimming slightly for short precautionary evacuations. Engine mean: 45 days."
+    },
+    "power": {
+     "pOccur": {
+      "lo": 0.25,
+      "mid": 0.5,
+      "hi": 0.75,
+      "tag": "guess",
+      "basis": "Utilities cut supply to flooded streets and the storm that brings the flood brings outages."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 5,
+      "p99": 21
+     },
+     "tag": "guess",
+     "basis": "A wetted panel or meter must be inspected or replaced before reconnection, by which time the household is usually displaced."
+    },
+    "water": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.15,
+      "hi": 0.35,
+      "tag": "guess",
+      "basis": "Flooded treatment works and private wells: Des Moines 1993, Jackson 2022, eastern Kentucky 2022 (recalled). Wells in a floodplain are contaminated in most floods."
+     },
+     "days": {
+      "p50": 4,
+      "p90": 14,
+      "p99": 50
+     },
+     "shareTreatable": {
+      "lo": 0.4,
+      "mid": 0.7,
+      "hi": 0.9,
+      "tag": "guess",
+      "basis": "Mostly boil notices and contaminated wells; floodwater itself carries sewage and fuel and is a poor source."
+     },
+     "tag": "guess",
+     "basis": "Boil notices average about five days (step 2); Des Moines went 12 days without tap water in 1993 and Jackson seven weeks under a boil notice in 2022 (recalled)."
+    },
+    "food": {
+     "pOccur": {
+      "lo": 0.12,
+      "mid": 0.3,
+      "hi": 0.55,
+      "tag": "guess",
+      "basis": "Marooned by water over the roads; shops on higher ground are otherwise open."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 8
+     },
+     "tag": "guess",
+     "basis": "Floods are narrow: help and shops are usually a few miles away once the water falls or boats arrive."
+    },
+    "gas": {
+     "pOccur": {
+      "lo": 0.01,
+      "mid": 0.05,
+      "hi": 0.15,
+      "tag": "guess",
+      "basis": "Utilities shut off flooded streets."
+     },
+     "days": {
+      "p50": 3,
+      "p90": 10,
+      "p99": 30
+     },
+     "tag": "guess",
+     "basis": "Appliances must be checked and relit after the water goes."
+    },
+    "medication": {
+     "pOccur": {
+      "lo": 0.12,
+      "mid": 0.3,
+      "hi": 0.55,
+      "tag": "guess",
+      "basis": "As food; short warning leaves little time to refill."
+     },
+     "days": {
+      "p50": 1.5,
+      "p90": 4,
+      "p99": 14
+     },
+     "tag": "guess",
+     "basis": "As food, with fewer outlets."
+    },
+    "emergencyCare": {
+     "pOccur": {
+      "lo": 0.25,
+      "mid": 0.5,
+      "hi": 0.75,
+      "tag": "guess",
+      "basis": "Ambulances cannot cross flooded roads; rescue is by boat or helicopter. Four Harvey deaths were for lack of medical treatment (https://nhess.copernicus.org/articles/18/1073/2018/)."
+     },
+     "days": {
+      "p50": 0.5,
+      "p90": 2,
+      "p99": 6
+     },
+     "tag": "guess",
+     "basis": "Until the water falls."
+    },
+    "payments": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.15,
+      "hi": 0.35,
+      "tag": "guess",
+      "basis": "Follows local power and telecoms."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 3,
+      "p99": 8
+     },
+     "tag": "guess",
+     "basis": "Follows the power window."
+    },
+    "comms": {
+     "pOccur": {
+      "lo": 0.05,
+      "mid": 0.15,
+      "hi": 0.35,
+      "tag": "guess",
+      "basis": "Street cabinets and exchanges flood; mobile coverage usually survives outside mountain valleys."
+     },
+     "days": {
+      "p50": 1,
+      "p90": 4,
+      "p99": 14
+     },
+     "tag": "guess",
+     "basis": "Days, or weeks where lines along a valley road are washed out."
+    },
+    "sanitation": {
+     "pOccur": {
+      "lo": 0.08,
+      "mid": 0.2,
+      "hi": 0.4,
+      "tag": "guess",
+      "basis": "Sewers back up and septic fields saturate in most floods that reach the building."
+     },
+     "days": {
+      "p50": 2,
+      "p90": 8,
+      "p99": 30
+     },
+     "tag": "guess",
+     "basis": "Until the water falls and drains are cleared; longer for septic systems."
+    }
+   },
+   "coldShare": {
+    "lo": 0.05,
+    "mid": 0.15,
+    "hi": 0.3,
+    "tag": "guess",
+    "basis": "Floods come in every season; snowmelt, ice-jam and late-winter rain floods are the cold ones."
+   },
+   "hotShare": {
+    "lo": 0.1,
+    "mid": 0.25,
+    "hi": 0.45,
+    "tag": "guess",
+    "basis": "Summer flash floods, as in eastern Kentucky in July 2022, are followed by heat."
+   },
+   "leave": {
+    "feasible": {
+     "lo": 0.5,
+     "mid": 0.75,
+     "hi": 0.9,
+     "tag": "guess",
+     "basis": "Easy with a day's warning on a river; often impossible in a flash flood, when leaving is also the most dangerous thing to do."
+    },
+    "earliestDay": {
+     "lo": 0,
+     "mid": 0,
+     "hi": 1,
+     "tag": "guess",
+     "basis": "Before the water arrives if warned; otherwise when roads reopen."
+    },
+    "fixedUsdPerHousehold": {
+     "lo": 40,
+     "mid": 150,
+     "hi": 400,
+     "tag": "guess",
+     "basis": "High ground is usually a short drive away."
+    },
+    "usdPerPersonDay": {
+     "lo": 8,
+     "mid": 30,
+     "hi": 80,
+     "tag": "guess",
+     "basis": "Friends, family and shelters are close by; same lodging mix as other hazards."
+    }
+   },
+   "warningDays": {
+    "lo": 0.03,
+    "mid": 0.75,
+    "hi": 3,
+    "tag": "guess",
+    "basis": "A flood watch usually precedes river and coastal flooding by half a day to several days; flash-flood warnings give about an hour. The mix is my judgment, and it sits near the engine's half-day threshold for late buying."
+   },
+   "lateBuy": {
+    "staple": {
+     "lo": 0.5,
+     "mid": 0.8,
+     "hi": 0.95,
+     "tag": "guess",
+     "basis": "No regional run on shops as before a hurricane, but less time."
+    },
+    "specialty": {
+     "lo": 0.2,
+     "mid": 0.5,
+     "hi": 0.8,
+     "tag": "guess",
+     "basis": "Pumps, sandbags and generators sell out locally."
+    }
+   },
+   "exposures": [
+    {
+     "channel": "trauma",
+     "description": "Drowning or injury for a healthy adult who stays at the home through the flood: inside the building, or wading near it, plus clean-up injuries. Driving or walking out through moving water is far more dangerous than staying in a sound building above the water; see the extra field.",
+     "micromortsPerPerson": {
+      "lo": 2,
+      "mid": 8,
+      "hi": 30,
+      "tag": "derived",
+      "basis": "National Weather Service: 94 flood deaths a year over 30 years, 118 over the last ten (https://www.weather.gov/media/hazstat/81year_2025.pdf). Of 1,075 flash-flood deaths in 1996-2014, 61% were in vehicles, 20.5% outdoors, 5.7% in permanent buildings and 2.7% in mobile homes (https://repository.library.noaa.gov/view/noaa/32322/noaa_32322_DS1.pdf). So 8-10 deaths a year at home, over perhaps 700,000 people a year in flooded homes (NFIP claims times three for the uninsured): about 13 per flooded resident, 6.5 per event since half of events wet the building; halved for adults under 60. Plus a third of the 20-24 outdoor deaths, taken as residents wading near home: about 5. Total about 8."
+     },
+     "hardshipUsdPerPerson": {
+      "lo": 10,
+      "mid": 50,
+      "hi": 200,
+      "tag": "guess",
+      "basis": "Clean-up cuts, falls, infections and mould illness in about 1% of people at about $5,000 each; no source."
+     },
+     "micromortsPerPersonEvacuateLate": {
+      "lo": 5,
+      "mid": 30,
+      "hi": 100,
+      "tag": "derived",
+      "basis": "About 60-70 vehicle deaths a year (61% of 94-118). If 10-15% fall on members of flooded or cut-off households, that is about 9 per event averaged over everyone, and several times that for those who do drive out through water. Harvey: at least 21 of 70 deaths were in or around vehicles and about 8 in buildings (https://nhess.copernicus.org/articles/18/1073/2018/)."
+     },
+     "multipliers": [
+      {
+       "profile": "age60to74",
+       "mortality": 1.5,
+       "tag": "guess",
+       "basis": "Harvey: 29% of deaths were over 65 (https://nhess.copernicus.org/articles/18/1073/2018/) against about 11% of residents; indoor drownings skew older, vehicle deaths do not."
+      },
+      {
+       "profile": "age75plus",
+       "mortality": 3,
+       "tag": "guess",
+       "basis": "Same source; Sandy drownings at home had a median age of 62 (https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6220a1.htm)."
+      },
+      {
+       "profile": "child",
+       "mortality": 0.6,
+       "tag": "derived",
+       "basis": "Harvey: 9% of deaths under 18 against about a quarter of the population, relative to adults at about 0.9 of the average."
+      },
+      {
+       "profile": "limitedMobility",
+       "mortality": 2.5,
+       "tag": "guess",
+       "basis": "Cannot climb above the water unaided."
+      }
+     ]
+    },
+    {
+     "channel": "financialLoss",
+     "description": "Uninsured property loss for a renter in an apartment: contents of a ground-floor or basement unit and a flooded car without comprehensive cover. Renters policies exclude flood and few renters buy NFIP contents cover. Mean over events.",
+     "financialUsdPerHousehold": {
+      "lo": 500,
+      "mid": 2300,
+      "hi": 7000,
+      "tag": "guess",
+      "basis": "Half of events wet the building and about 40% of apartments are at or below ground: 20% x $11,000 (roughly 45% of $25,000 of contents) x 0.85 after federal assistance = $1,870, plus a 20% chance the car floods x 22% without comprehensive cover x $10,000 = $440. The shares are my guesses."
+     },
+     "ownerHouseFinancialUsdPerHousehold": {
+      "lo": 4000,
+      "mid": 16000,
+      "hi": 45000,
+      "tag": "derived",
+      "basis": "Owner of a house: 50% chance the building floods x a loss of about $55,000 (NFIP mean claim $63,691 and median $20,272 in 2020-2024, FEMA brochure via search snippet, https://agents.floodsmart.gov/sites/default/files/media/document/2025-08/fema_nfip_media-toolkit-brochure_07-2025.pdf) x about 60% uninsured (roughly half of homes inside the mapped floodplain and few outside it carry flood cover; recalled) = $16,500, less a few thousand dollars of federal assistance, plus deductibles for the insured."
+     }
+    }
+   ],
+   "dwellingNotes": "An upper-floor apartment in a sound building is the safest place to be in a flood and loses nothing but access, power and often water; the ground floor, basements and above all mobile homes take the deaths and the losses. Basement flats are a special case: most of the New York deaths in the remnants of Ida in 2021 were in them (recalled). Owners of houses carry repair costs that dwarf anything on the kit list, which is why insurance, not supplies, is the main answer here.",
+   "evidence": [
+    {
+     "claim": "Flood deaths in the United States: 30-year average 94 a year, 10-year average 118 (to 2025).",
+     "source": "https://www.weather.gov/media/hazstat/81year_2025.pdf",
+     "year": 2026,
+     "verified": true
+    },
+    {
+     "claim": "Flash-flood deaths 1996-2014 (1,075): vehicles 60.8%, outdoors 20.5%, campsites 6.7%, permanent buildings 5.7%, mobile homes 2.7%, other 3.6%.",
+     "source": "https://repository.library.noaa.gov/view/noaa/32322/noaa_32322_DS1.pdf",
+     "year": 2017,
+     "verified": true
+    },
+    {
+     "claim": "Harvey: 70 deaths; at least 21 drownings in or around vehicles, about 8 in buildings; 80% outside the 100-year floodplain; more than 100,000 people directly affected.",
+     "source": "https://nhess.copernicus.org/articles/18/1073/2018/",
+     "year": 2018,
+     "verified": true
+    },
+    {
+     "claim": "Floods displaced 665,000 adults in 2022 and 670,000 people in 2023.",
+     "source": "https://andrewrumbach.substack.com/p/unpacking-the-us-census-data-on-natural",
+     "year": 2023,
+     "verified": true
+    },
+    {
+     "claim": "First Street: 14.6M properties (10.3%) at substantial flood risk, against 8.7M in FEMA Special Flood Hazard Areas.",
+     "source": "https://www.preventionweb.net/publications/view/72504",
+     "year": 2020,
+     "verified": false
+    },
+    {
+     "claim": "NFIP paid 101,494 claims worth $7.96 billion in 2024; mean claim $63,691 and median $20,272 over 2020-2024.",
+     "source": "https://agents.floodsmart.gov/sites/default/files/media/document/2025-08/fema_nfip_media-toolkit-brochure_07-2025.pdf",
+     "year": 2025,
+     "verified": false
+    },
+    {
+     "claim": "NFIP paid claims: 12,948 in 2014, 25,997 in 2015, 70,250 in 2016, 112,385 in 2017.",
+     "source": "https://www.valuepenguin.com/flood-insurance-policies-study",
+     "year": 2024,
+     "verified": false
+    },
+    {
+     "claim": "Pulse duration split for all disaster displacement (used nearly as it stands for floods).",
+     "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12374215",
+     "year": 2025,
+     "verified": true
+    }
+   ],
+   "notes": "Excludes flooding in named tropical cyclones so that a household ticking both boxes is not charged twice; a household inland should treat this as the whole of its flood risk, and one on the coast should read hurricane for surge. First Street and FEMA define the exposed set by a 1%/yr chance of water reaching the property, so the probability has a firm floor and an uncertain mean. The deaths are mostly not in homes: staying put above the water is safer than leaving late, the opposite of wildfire."
+  }
+ ],
+ "blockedSources": [
+  "https://www.nhc.noaa.gov/climo/ : return-period maps by coastal location (403); used the NOAA story that summarises them.",
+  "https://www.nhc.noaa.gov/data/tcr/AL092022_Ian.pdf and AL092024_Helene.pdf : official death counts by cause and county, evacuation timing (403); counts taken from press summaries.",
+  "https://www.nhc.noaa.gov/data/indirect_deaths.php : Rappaport and Blanchard on indirect hurricane deaths by cause (403).",
+  "https://journals.ametsoc.org Rappaport 2014 (via slosh.nws.noaa.gov copy): total and cause split of direct hurricane deaths 1963-2012; the download was an HTML wrapper with no text.",
+  "https://www.preventionweb.net (403): Urban Institute summary of Pulse displacement, and the 1963-2024 tropical-cyclone fatality database.",
+  "https://ldh.la.gov/assets/oph/Center-PHCH/Center-CH/stepi/specialstudies/DisasterMedPHPrep2008No1KatrinaDeaths.pdf : Katrina deaths by age band (403); abstract read through Europe PMC instead.",
+  "https://pubmed.ncbi.nlm.nih.gov : cookie wall; the three abstracts were read through the Europe PMC API.",
+  "https://www.cira.colostate.edu/science-stories/what-is-responsible-for-most-inland-flood-fatalities/ : flood deaths by circumstance (403); Terti et al. read instead.",
+  "https://news.stanford.edu and https://web.stanford.edu/~mburke/papers/ChildsEtAl2022_smoke.pdf : smoke exposure counts, including 2020 alone (403 and certificate error); phys.org copy of the press release read instead.",
+  "https://pubs.usgs.gov/fs/2021/3054/fs20213054.pdf : HayWired casualties, displacement and lifeline outages (403); press figures used, unverified.",
+  "https://agents.floodsmart.gov/sites/default/files/media/document/2025-08/fema_nfip_media-toolkit-brochure_07-2025.pdf : NFIP claim counts and mean claim (403); search-snippet figures used.",
+  "https://www.npr.org/2017/09/08/549536604/as-hurricane-irma-nears-gasoline-is-in-short-supply-for-floridians : fuel stock-outs before Irma (timeout).",
+  "Census Household Pulse public tables by disaster type and duration: not located; type counts come from Rumbach and weather.com, durations from the PMC paper, and no duration split by hazard was found.",
+  "FCC disaster reports on cell-site outages, Healthcare Ready pharmacy status maps, and community assessments after hurricanes (share of households without water, food or a toilet by day): not searched for lack of time; the comms, medication, water and sanitation windows are guesses."
+ ],
+ "openQuestions": [
+  "Wildfire is defined broadly (heavy smoke or evacuation) so that one probability covers both. Should heavy smoke be its own hazard, say wildfireSmoke, open to households that do not live at the wildland edge? Smoke reaches several times more people than the tick-box as defined.",
+  "Exposures are applied whether or not the household leaves. For hurricane and flood the trauma figure is for a stayer; for wildfire it assumes typical behaviour. Extra fields (micromortsPerPersonEvacuateLate, micromortsPerPersonStayOrLeaveLate, micromortsPerPersonSurgeZoneStayer, micromortsPerPersonGivenEvacuationOrder, ownerHouseFinancialUsdPerHousehold) carry the other cases; the engine does not read them yet.",
+  "An evacuation plan, alert sign-up or go-bag acts by moving a wildfire household from late to prompt departure and a surge-zone household from staying to leaving. That needs a rule tying the leave decision to the trauma exposure, which the engine lacks.",
+  "Displacement windows have means of 21-89 days, driven by the tail. The harm then depends on how fast the displacement need's hardship per day falls with duration, and on whether an insured owner or a renter is in question. Pulse's never-returned 14% is treated here as resettled within six months.",
+  "Flood excludes tropical cyclones to avoid double counting with hurricane. If the interface lets a coastal household tick flood without hurricane, surge is lost.",
+  "Earthquake and hurricane probabilities vary about tenfold within the ticked population. A sub-choice (for example Gulf and Southeast against Northeast; California and Puget Sound against the moderate tier) would remove most of that spread.",
+  "financialLoss is given for a renter in an apartment as asked; the owner-of-house figures are 7-17 times larger and would make insurance and structural measures dominate. Does the engine switch on dwelling and tenure?",
+  "Puerto Rico, the Virgin Islands, Hawaii and Alaska are not covered by the hurricane calibration; after Maria households averaged 84 days without electricity (step 2)."
+ ]
+}

@@ -1,0 +1,431 @@
+{
+  "kind": "items",
+  "group": "comms",
+  "needs": [
+    {
+      "id": "information",
+      "definition": "A day inside a comms window (no mobile or internet service) on which a household with no battery radio and no dedicated satellite device has no dependable news or official instructions and cannot contact anyone beyond walking distance. The curves give the average harm of such a day after realistic improvisation: listening in the car or at a neighbour's, word of mouth, and the phone's own satellite texting where the phone has it.",
+      "baselineCoverageDays": {
+        "lo": 0, "mid": 0, "hi": 0.3, "tag": "derived",
+        "basis": "Nothing ordinary in a home replaces the network, so cover is zero once service is gone. Cell-site backup (Verizon: up to 8 h of battery at every macro site, 24-72 h where a generator is fitted; https://www.lightreading.com/security/what-atandt-verizon-and-t-mobile-are-doing-to-harden-their-networks/d/d-id/769216) belongs in the window length; 0.3 day is the allowance to use if a hazard file starts the comms window when grid power fails."
+      },
+      "hardshipUsdPerPersonDay": {
+        "tag": "derived",
+        "basis": "Texas, Feb 2021: of those who lost cell service 43% called it very or extremely serious, against 68% for losing power (https://www.uh.edu/hobby/winter2021/storm.pdf); 0.65 x the residential power-outage value of $21-33 per person-day (ICE 2.0 $53.68 per household-day; FEMA $33.04) gives $14-21 (both power values from step 2). The low end leans toward FEMA's residential value of $0.67 for communications loss, which is the price of service, not a willingness to pay (https://fema.gov/sites/default/files/documents/fema_standard-economic-values-methodology-report_2023.pdf); the fall after a week is a guess.",
+        "steps": [
+          {"fromDay": 1, "lo": 4, "mid": 15, "hi": 45},
+          {"fromDay": 8, "lo": 3, "mid": 12, "hi": 40}
+        ]
+      },
+      "mortalityMicromortsPerPersonDay": {
+        "tag": "guess",
+        "basis": "Bottom-up: time-critical emergencies run at very roughly 5-10 per million healthy adults per day and being unable to phone for help costs perhaps 1-3 percentage points of survival (recalled figures, not fetched), giving 0.05-0.3. Upper bound from Puerto Rico after Maria: a third of excess deaths were from delayed care and 9% of households could not reach 911 over an average 41 days without cell service (https://www.wunderground.com/cat6/excess-deaths-and-toll-puerto-rico-hurricane-maria), which works out at about 0.6-0.9 per healthy adult-day.",
+        "steps": [
+          {"fromDay": 1, "lo": 0.01, "mid": 0.1, "hi": 0.6}
+        ]
+      },
+      "multipliers": [
+        {"profile": "child", "hardship": 0.5, "mortality": 0.5, "tag": "guess", "basis": "Young children feel the loss of news and contact less and have fewer time-critical emergencies. No source found."},
+        {"profile": "age60to74", "hardship": 1, "mortality": 4, "tag": "guess", "basis": "Cardiac arrest, stroke and serious falls rise steeply with age; the factor is recalled from incidence-by-age tables that I did not fetch."},
+        {"profile": "age75plus", "hardship": 1.2, "mortality": 12, "tag": "guess", "basis": "Same incidence gradient, recalled not fetched. Consistent in direction with the Camp Fire, where the median victim was 72 (https://nvlpubs.nist.gov/nistpubs/TechnicalNotes/NIST.TN.2252.pdf)."},
+        {"profile": "limitedMobility", "hardship": 1.5, "mortality": 3, "tag": "guess", "basis": "Cannot walk or drive to fetch news or help in person. At least 42% of Camp Fire victims had a mobility or medical limitation (https://nvlpubs.nist.gov/nistpubs/TechnicalNotes/NIST.TN.2252.pdf)."},
+        {"profile": "powerDependent", "hardship": 1.3, "mortality": 3, "tag": "guess", "basis": "A failing device needs outside help quickly, and the household cannot ask for it. No source found."},
+        {"profile": "criticalDrug", "hardship": 1.2, "mortality": 1.5, "tag": "guess", "basis": "Needs to find an open pharmacy or prescriber and cannot phone around. No source found."}
+      ],
+      "notes": "How the $15 is built (all shares are guesses). A household with no improvisation at all loses about $25 per person-day: news and instructions $11.25 (45%), contact with family and the ability to summon help $10.50 (42%), ordinary use such as navigation and entertainment $3.25 (13%). Improvised news: 92% of US households have a vehicle and its radio recovers about 65% of the news value; the rest get about 25% from neighbours, so 0.92 x 0.65 + 0.08 x 0.25 = 0.62 is recovered. Improvised contact: about 60% of US households have a phone that can text by satellite, 70% would find the feature unprompted, and it does about 70% of the job, so 0.29 is recovered. 25 - 0.62 x 11.25 - 0.29 x 10.5 = $15. A household with no car starts near $19, and one with no satellite-capable phone near $18. In Western Europe and Buenos Aires fewer households own cars and phone satellite texting is rarer or absent (unverified), so the US curve understates harm there by perhaps a fifth. Mortality here is mostly the inability to call for help; it should not be added to the emergencyCare window on days when both apply."
+    }
+  ],
+  "items": [
+    {
+      "id": "battery-radio",
+      "name": "Battery or crank radio",
+      "spec": "One portable AM/FM receiver with the NOAA weather band (FM and DAB+ in Europe) that runs on replaceable AA or AAA cells, or on a rechargeable cell with a hand crank. Spare cells stored beside it, not in it; local news frequencies written on the case. Crank models of the FosPower A1 or Midland ER310 class add a small torch and a 2,000-2,600 mAh USB output.",
+      "fromLonglistRows": [41],
+      "scalesWith": "household",
+      "unit": "radio",
+      "price": {
+        "usdPerUnit": {"lo": 15, "mid": 30, "hi": 100, "tag": "data", "basis": "GearJunkie's guide, updated 10 Nov 2026, lists a RadioShack two-D-cell multi-band radio at $30, the Kaito KA500 at $60 and the Midland ER310PRO at $100 (https://gearjunkie.com/technology/best-emergency-radio); step 2 found the FosPower A1 at $28.46. The $15 low end, for a plain AM/FM pocket set, is my estimate."},
+        "product": "RadioShack portable multi-band radio, or FosPower A1 crank radio",
+        "source": "https://gearjunkie.com/technology/best-emergency-radio",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 15, "tag": "guess", "basis": "Simple receivers last decades; the rechargeable cell in a crank model fades in 5-8 years. No source."},
+      "setupHours": {"lo": 0.25, "mid": 0.5, "hi": 1, "tag": "guess", "basis": "Choose, buy, find the local news stations, write down the frequencies and test."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "One test a year and a recharge or a check of the spare cells."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 1.5, "hi": 4, "tag": "guess", "basis": "A set of alkaline cells every five years or so; nothing for a crank model."},
+      "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.4, "tag": "guess", "basis": "A few owners use it in the garden or when camping; most leave it in a drawer."},
+      "volumeLitresPerUnit": 1,
+      "reliability": {"lo": 0.65, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Losses are flat or leaked cells, not finding it, and not knowing which station to tune. In a 2007 Australian storm 42% of households had a battery radio with working batteries and 44% of those who lost power used one (https://pmc.ncbi.nlm.nih.gov/articles/PMC2443139/)."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "capability", "capability": "radio", "notes": "One-way reception of broadcast news and official instructions without grid, mobile or internet."},
+        {"type": "reduce", "target": "information", "hazards": ["all"],
+         "fractionRemoved": {"lo": 0.07, "mid": 0.2, "hi": 0.4, "tag": "derived", "basis": "A radio at hand lifts the share of news value recovered from 0.62 (car radio, neighbours) to about 0.9, the chance a useful station is on air: 0.28 x $11.25 = $3.2 of the $15 baseline day. Broadcast outlasts mobile in every event I checked, e.g. Puerto Rico on day 28 had 60% of AM stations on air against 29% of cell sites (https://docs.fcc.gov/public/attachments/DOC-347308A1.txt)."},
+         "adherence": {"lo": 0.75, "mid": 0.9, "hi": 1, "tag": "guess", "basis": "An owner with no other news will switch it on; some will not think to. In the Australian survey about as many households that lost power used a battery radio (44%) as owned a working one (42%) (https://pmc.ncbi.nlm.nih.gov/articles/PMC2443139/)."},
+         "notes": "Acts on the news share only: it does not let the household contact anyone or call for help, so apply it to hardship and to at most a fifth of the mortality. By household: about 0.19 with a car, about 0.38 without."},
+        {"type": "reduce", "target": "fallout", "hazards": ["nuclearNear"],
+         "fractionRemoved": {"lo": 0.005, "mid": 0.05, "hi": 0.2, "tag": "guess", "basis": "A radio is the likely way to hear 'get inside, stay inside' and, later, when and which way to leave; FEMA hardens 77 stations reaching over 90% of the US population for this purpose (https://www.fema.gov/press-release/20220628/fema-and-audacys-wwl-radio-unveil-new-emergency-broadcast-studio). The size of the effect is my guess, net of a car radio, and the fallout channel belongs to another researcher."},
+         "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "The household must think of the radio, find a station that is broadcasting, and act on what it hears."},
+         "notes": "Do not add this to any radio-dependent rule the nuclear file already has."},
+        {"type": "supply", "need": "devicePower", "amountPerUnit": 7, "amountUnit": "Wh rated", "notes": "Crank models only: a 2,000 mAh cell is 7.4 Wh rated, the unit the power-light file uses for this need (15 per person-day); about 5 Wh reaches a phone, a third of a charge. Cranking does not refill it in practice: the Sangean MMR-88 gives about 5 minutes of listening per minute of cranking (https://gearjunkie.com/technology/best-emergency-radio)."},
+        {"type": "other", "description": "Crank models include a weak single-LED torch; I have not claimed the light capability for it. While networks are up but power is out, listening on the radio also spares the phone battery."}
+      ],
+      "evidence": [
+        {"claim": "Puerto Rico, two to three days after Maria: 95.6% of cell sites out; 14 AM and 8 FM stations informally reported on air out of roughly 185.", "source": "https://docs.fcc.gov/public/attachments/DOC-346860A1.txt", "year": 2017, "verified": true},
+        {"claim": "Puerto Rico, day 28: 71.2% of cell sites out; 44 of 73 AM and 36 of 58 FM stations confirmed operational.", "source": "https://docs.fcc.gov/public/attachments/DOC-347308A1.txt", "year": 2017, "verified": true},
+        {"claim": "Western North Carolina, five days after Helene: 48.7% of cell sites out (707 of 1,452); 3 FM and 1 AM stations reported out in the state.", "source": "https://docs.fcc.gov/public/attachments/DOC-406055A1.pdf", "year": 2024, "verified": true},
+        {"claim": "Iberian blackout, 28 April 2025: mobile service was worst about seven hours in, with 50-100% of users offline in many areas as site batteries ran out.", "source": "https://broadbandbreakfast.com/iberian-blackout-highlights-gaps-in-telecom-network-resiliency/", "year": 2025, "verified": true},
+        {"claim": "77 FEMA-equipped Primary Entry Point radio stations with backup generators reach more than 90% of the US population.", "source": "https://www.fema.gov/press-release/20220628/fema-and-audacys-wwl-radio-unveil-new-emergency-broadcast-studio", "year": 2022, "verified": true},
+        {"claim": "New South Wales storm, June 2007: 78% of households used radio during the storm and 62% found it more useful than television (29%); 41% of mobile owners lost mobile service.", "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2443139/", "year": 2008, "verified": true},
+        {"claim": "32% of US homes had no radio at all in 2020, up from 4% in 2008.", "source": "https://radioinsight.com/headlines/184900/infinite-dial-mean-number-of-radios-in-home-drops-in-half-since-2008/", "year": 2020, "verified": true},
+        {"claim": "Katrina: 37 of 41 broadcast radio stations in and around New Orleans were knocked off the air (2 AM and 2 FM kept broadcasting); up to 2,000 cell sites were out and about 820 were still out a month later.", "source": "https://biotech.law.lsu.edu/katrina/govdocs/109-377/communications.pdf", "year": 2006, "verified": true}
+      ],
+      "confidence": "derived",
+      "notes": "The item is valued for a household that owns no battery radio. On the information need alone it is unlikely to pay for a US household with a car: about 0.16 comms-window days a year (step 2 base rates) x $15 x 2.5 people x 0.2 x 0.9 x 0.85 is under $1 a year, against roughly $10 a year of cost and upkeep time. Its rank will depend on the long-outage and nuclear hazards and on car ownership. A desktop weather-alert radio is a different product; see excluded."
+    },
+    {
+      "id": "phone-emergency-setup",
+      "name": "Phone alert and satellite setup",
+      "spec": "On every phone in the household: confirm government emergency alerts are switched on; register the mobile numbers and home address with the county or city opt-in notification system; install one official or hazard app with push alerts for the home area (in wildfire country, a fire-tracking app); run the satellite SOS or satellite texting demo if the phone has one; fill in the emergency contact and medical ID screen.",
+      "fromLonglistRows": [42, 45],
+      "scalesWith": "household",
+      "unit": "one-off setup of all the household's phones",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0, "hi": 0, "tag": "derived", "basis": "No purchase: the alert settings are part of the phone's operating system and county registration and the apps are free. The cost is the setup time."},
+        "product": "No product; operating-system settings, county alert registration, free apps",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 2, "mid": 4, "hi": 8, "tag": "guess", "basis": "Lasts until the household moves or a phone is replaced without its settings; most settings carry over."},
+      "setupHours": {"lo": 0.25, "mid": 0.5, "hi": 1, "tag": "guess", "basis": "A few minutes per phone plus finding and completing the local registration form."},
+      "upkeepHoursPerYear": {"lo": 0.05, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "A yearly check after system updates."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "derived", "basis": "Nothing to pay. Apple extended free satellite access for iPhone 14 to 16 for another year in September 2026 (search result only, not opened); a later charge is possible."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0.2, "tag": "guess", "basis": "Little everyday use beyond routine weather alerts."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.75, "mid": 0.9, "hi": 0.97, "tag": "derived", "basis": "90.9% of US adults with a working phone reported receiving the October 2023 national test alert (https://www.rand.org/content/dam/rand/pubs/research_reports/RRA2400/RRA2451-1/RAND_RRA2451-1.pdf). Does not cover the network failing before the alert is sent, which is inside fractionRemoved."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "reduce", "target": "fire", "hazards": ["wildfire"],
+         "fractionRemoved": {"lo": 0.02, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "In the Camp Fire fewer than 40% of residents had registered for the opt-in calls and at most 17% of the population was reached directly (https://nvlpubs.nist.gov/nistpubs/TechnicalNotes/NIST.TN.2252.pdf). I assume registration cuts the chance of learning too late by a third and that 20-50% of deaths turn on late awareness, the rest on immobility or choice: about 0.07-0.17."},
+         "adherence": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Registration stays valid until the household moves or changes number; the phone must be on and heard."},
+         "notes": "Targets direct deaths from a fast wildfire. I assumed the wildfire file puts them on the fire channel; move this if it uses another."},
+        {"type": "reduce", "target": "trauma", "hazards": ["flood", "severeStorm", "hurricane", "earthquake"],
+         "fractionRemoved": {"lo": 0.005, "mid": 0.03, "hi": 0.1, "tag": "guess", "basis": "Government alerts are on by default and only 7.2% of adults have switched off imminent-threat alerts (https://www.rand.org/content/dam/rand/pubs/research_reports/RRA2400/RRA2451-1/RAND_RRA2451-1.pdf), so the action changes little for most. Tornado warnings cut injuries by over 40% at some lead times (https://mercatus.org/students/research/journal-articles/tornado-warnings-lead-times-and-tornado-casualties-empirical): 0.07 x 0.4 = 0.03, with local sign-ups adding a little."},
+         "adherence": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Same as above."},
+         "notes": "Targets direct deaths and injuries in fast-onset events (flash flood, tornado, tsunami). I assumed these sit on the trauma channel."},
+        {"type": "reduce", "target": "information", "hazards": ["all"],
+         "fractionRemoved": {"lo": 0.01, "mid": 0.05, "hi": 0.12, "tag": "guess", "basis": "For the roughly 60% of US households with a satellite-capable phone, having tried the feature lifts the chance of using it from about 0.7 to 0.9: 0.6 x 0.2 x 0.7 x $10.50 = $0.9 of the $15 baseline day. All four inputs are guesses."},
+         "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Needs a charged phone and open sky."},
+         "notes": "Zero for a household with no satellite-capable phone, and probably near zero in Buenos Aires, where I could not confirm that any phone satellite service operates."}
+      ],
+      "evidence": [
+        {"claim": "17.5% of US adults have opted out of at least one alert type; 7.2% have opted out of imminent-threat alerts; 90.9% received the 2023 national test.", "source": "https://www.rand.org/content/dam/rand/pubs/research_reports/RRA2400/RRA2451-1/RAND_RRA2451-1.pdf", "year": 2024, "verified": true},
+        {"claim": "Camp Fire: opt-in calls reached at most 17% of the 39,000 residents of Paradise and Magalia; Wireless Emergency Alerts were not used; 85 died, 87% of them at home, median age 72.", "source": "https://nvlpubs.nist.gov/nistpubs/TechnicalNotes/NIST.TN.2252.pdf", "year": 2023, "verified": true},
+        {"claim": "Lahaina, 2023: 101 deaths; sirens were not sounded; cell tower and fibre damage took down the mobile network.", "source": "https://www.pbs.org/newshour/nation/maui-fire-department-report-on-deadly-wildfire-details-how-it-was-no-match-for-unprecedented-blazes", "year": 2024, "verified": true},
+        {"claim": "Tornado warnings reduce injuries by over 40% at some lead times; fatalities fall with lead times up to about 15 minutes, and the result beyond that is not robust.", "source": "https://mercatus.org/students/research/journal-articles/tornado-warnings-lead-times-and-tornado-casualties-empirical", "year": 2008, "verified": true},
+        {"claim": "2011 tsunami, 150 survivors interviewed: 40% did not get the official warning because of immediate blackouts and loss of communication.", "source": "https://nhess.copernicus.org/articles/13/2173/2013/nhess-13-2173-2013.pdf", "year": 2013, "verified": true},
+        {"claim": "Official warnings have a consistently significant effect on hurricane evacuation across 38 studies.", "source": "https://bvbvf1.bib-bvb.de/vufind/PrimoRecord/cdi_proquest_miscellaneous_1835031083", "year": 2016, "verified": false},
+        {"claim": "T-Mobile's satellite texting costs $10 a month on any carrier and needs an iPhone 14 or later, or one of about 600 other phones.", "source": "https://www.macrumors.com/2025/07/23/t-mobile-starlink-launch/", "year": 2025, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Almost all the value is in the two steps that are not on by default: registering with the local opt-in system and learning the phone's satellite feature. Alerts need a working network at the moment of sending, which is exactly what failed in Paradise and Lahaina. Europe's cell-broadcast systems are also on by default; I did not verify Argentina."
+    },
+    {
+      "id": "paper-contact-list",
+      "name": "Paper contact list",
+      "spec": "A card in each adult's wallet and one at home: mobile numbers of household members, two relatives or friends (one outside the region), doctor, pharmacy, insurer, utility fault lines and the local news radio frequencies. Reviewed yearly.",
+      "fromLonglistRows": [43],
+      "scalesWith": "household",
+      "unit": "set of cards for the household",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0, "hi": 2, "tag": "guess", "basis": "Paper and a pen; $2 if printed and laminated."},
+        "product": "Handwritten or printed cards",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 1, "mid": 3, "hi": 6, "tag": "guess", "basis": "Numbers change; a list older than a few years is partly wrong."},
+      "setupHours": {"lo": 0.2, "mid": 0.4, "hi": 1, "tag": "guess", "basis": "Copying ten to fifteen numbers and making copies."},
+      "upkeepHoursPerYear": {"lo": 0.05, "mid": 0.1, "hi": 0.25, "tag": "guess", "basis": "A yearly check."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0.5, "tag": "guess", "basis": "None to speak of."},
+      "everydayShare": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Also useful whenever a phone is lost, stolen, broken or flat."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Fails when out of date or not on the person."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "reduce", "target": "information", "hazards": ["all"],
+         "fractionRemoved": {"lo": 0.003, "mid": 0.02, "hi": 0.06, "tag": "guess", "basis": "Matters only when the household's own phones are dead or lost (about 0.25 of comms-window days), someone else's working line or satellite device is within reach (0.2) and the number is not known by heart (0.6): 0.25 x 0.2 x 0.6 x $10.50 = $0.3 of the $15 day. Fewer than half of Americans can recall their partner's number (https://www.pandasecurity.com/en/mediacenter/digital-amnesia-survey/)."},
+         "adherence": {"lo": 0.7, "mid": 0.9, "hi": 1, "tag": "guess", "basis": "If it is to hand it will be used."}},
+        {"type": "reduce", "target": "devicePower", "hazards": ["all"],
+         "fractionRemoved": {"lo": 0.01, "mid": 0.05, "hi": 0.15, "tag": "guess", "basis": "When the phone is flat but networks work, a borrowed phone is usually available (0.6); the list supplies the number (0.6); contact is about half of what a flat phone costs and a borrowed call does about a third of the job: 0.6 x 0.6 x 0.5 x 0.3 = 0.05."},
+         "adherence": {"lo": 0.7, "mid": 0.9, "hi": 1, "tag": "guess", "basis": "As above."},
+         "notes": "The devicePower need belongs to another researcher; drop this if that need is defined so that borrowing a phone is already assumed."}
+      ],
+      "evidence": [
+        {"claim": "Survey of 3,000 Americans, August 2020: fewer than half could recall their partner's number and nearly two thirds could not call their parents without their saved contacts.", "source": "https://www.pandasecurity.com/en/mediacenter/digital-amnesia-survey/", "year": 2020, "verified": true},
+        {"claim": "Japan, March 2011, self-selected online survey: the average time to first contact with family or friends was 3 h 15 min nationally and 4 h 9 min in the disaster area, and most first calls were to confirm safety.", "source": "https://global.weathernews.com/wp-content/uploads/2015/10/20110528_weathernews.pdf", "year": 2011, "verified": true},
+        {"claim": "In the 2007 New South Wales storm survey, emergency contact lists were among the less commonly held preparedness items.", "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2443139/", "year": 2008, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Free and quick, so it can rank well on a small effect. No study measures the effect."
+    },
+    {
+      "id": "two-way-radios",
+      "name": "Pair of two-way radios",
+      "spec": "Two licence-free handheld radios (FRS in the US, 0.5-2 W; PMR446 in Europe), kept charged or with spare cells, with an agreed channel and check-in times. No amateur-radio set: that needs a licence and practice.",
+      "fromLonglistRows": [44],
+      "scalesWith": "household",
+      "unit": "pair of radios",
+      "price": {
+        "usdPerUnit": {"lo": 25, "mid": 45, "hi": 90, "tag": "guess", "basis": "Step 2 took $45 for a Retevis RT22 pair from OutdoorGearLab's 2026 list; the manufacturer page returned 404 for me. The range is my estimate of the market."},
+        "product": "Retevis RT22 FRS radios, pair",
+        "source": "https://www.outdoorgearlab.com/topics/camping-and-hiking/best-walkie-talkies",
+        "verified": false
+      },
+      "lifeYears": {"lo": 4, "mid": 8, "hi": 12, "tag": "guess", "basis": "Limited by the rechargeable cells."},
+      "setupHours": {"lo": 0.3, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "Buy, charge, agree a channel, test the range around home."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Recharge every three to six months."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 2, "hi": 5, "tag": "guess", "basis": "Occasional replacement cells."},
+      "everydayShare": {"lo": 0, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Some use on hikes, ski trips and with children."},
+      "volumeLitresPerUnit": 0.8,
+      "reliability": {"lo": 0.4, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Self-discharged cells are the usual failure; both people must also be carrying one."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "reduce", "target": "information", "hazards": ["all"],
+         "fractionRemoved": {"lo": 0.003, "mid": 0.03, "hi": 0.08, "tag": "guess", "basis": "They link only people within about 0.5-1 mile in a city or 1-2 miles in a suburb (vendor table, https://support.cobra.com/support/solutions/articles/47001184443), so they serve only contact between household members who have split up nearby: about 12% of the contact value x 0.5 chance of being in range x $10.50 = $0.6 of the $15 day."},
+         "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.85, "tag": "guess", "basis": "Both parties must carry a charged set and keep the agreed channel."},
+         "notes": "No news, no reach to distant family and no dependable way to summon help."}
+      ],
+      "evidence": [
+        {"claim": "Typical handheld-to-handheld range for 2 W radios: 0.5-1 mile urban, 1-2+ miles suburban, 675 ft to 0.5 mile between buildings.", "source": "https://support.cobra.com/support/solutions/articles/47001184443", "year": 2026, "verified": true},
+        {"claim": "The Prepared advises amateur radio only for people who know how to use it.", "source": "https://theprepared.com/prepping-basics/guides/emergency-preparedness-checklist-prepping-beginners/", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Worth more to a household whose members are often apart but close by, or that would leave in two cars."
+    },
+    {
+      "id": "satellite-messenger",
+      "name": "Satellite messenger",
+      "spec": "A dedicated two-way satellite messenger with an SOS button (Garmin inReach Messenger class) on the cheapest plan that keeps SOS and pay-per-message texting active, kept charged. Households with an iPhone 14 or later, a Pixel 9 or later or a similar phone already have much of this in the phone.",
+      "fromLonglistRows": [45],
+      "scalesWith": "household",
+      "unit": "device with active plan",
+      "price": {
+        "usdPerUnit": {"lo": 280, "mid": 340, "hi": 440, "tag": "guess", "basis": "Device about $300 (step 2, from OutdoorGearLab; REI and Best Buy refused my fetch) plus a $39.99 activation fee (https://hikingguy.com/hiking-gear/garmin-inreach-subscription-cost-breakdown, reviewed October 2026)."},
+        "product": "Garmin inReach Messenger plus activation",
+        "source": "https://hikingguy.com/hiking-gear/garmin-inreach-subscription-cost-breakdown",
+        "verified": false
+      },
+      "lifeYears": {"lo": 4, "mid": 7, "hi": 10, "tag": "guess", "basis": "Battery ageing and network or plan changes."},
+      "setupHours": {"lo": 1, "mid": 1.5, "hi": 3, "tag": "guess", "basis": "Choose device and plan, activate, pair with phones, load contacts, send a test message."},
+      "upkeepHoursPerYear": {"lo": 0.2, "mid": 0.5, "hi": 1, "tag": "guess", "basis": "Quarterly charge, firmware update and test message."},
+      "upkeepUsdPerYear": {"lo": 50, "mid": 96, "hi": 180, "tag": "data", "basis": "Garmin's Enabled plan is $7.99 a month and Essential $14.99 (https://hikingguy.com/hiking-gear/garmin-inreach-subscription-cost-breakdown); 12 x 7.99 = $96. The low end assumes the plan is suspended for part of the year, which Garmin allows at no charge."},
+      "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.5, "tag": "guess", "basis": "High for people who hike, sail or drive in areas with no coverage; near zero otherwise."},
+      "volumeLitresPerUnit": 0.2,
+      "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Must be charged, on an active plan, and understood; needs open sky."},
+      "lateBuyClass": "specialty",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "reduce", "target": "information", "hazards": ["all"],
+         "fractionRemoved": {"lo": 0.12, "mid": 0.35, "hi": 0.6, "tag": "guess", "basis": "It restores about 85% of the contact value. With no satellite-capable phone that is 0.85 x $10.50 = $8.9 of an $18 day (0.49); with one it adds (0.85 - 0.49) x $10.50 = $3.8 to a $13 day (0.29). Weighting 40:60 gives $5.8 of the $15 average day, 0.39, shaded to 0.35 because rescue services are themselves stretched in a disaster."},
+         "adherence": {"lo": 0.7, "mid": 0.9, "hi": 1, "tag": "guess", "basis": "An owner cut off from family will use it."},
+         "notes": "Applies to hardship and to most of the mortality, which is the inability to call for help. Use about 0.5 for a household with no satellite-capable phone and about 0.3 for one with."}
+      ],
+      "evidence": [
+        {"claim": "Garmin inReach plans: Enabled $7.99, Essential $14.99, Standard $29.99, Premium $49.99 a month; $39.99 activation.", "source": "https://hikingguy.com/hiking-gear/garmin-inreach-subscription-cost-breakdown", "year": 2026, "verified": true},
+        {"claim": "Garmin's cheapest plan includes SOS, and a plan can be suspended at no cost for up to 12 months.", "source": "https://www.garmin.com/en-US/blog/outdoor/overview-inreach-subscription-plans/", "year": 2026, "verified": true},
+        {"claim": "Puerto Rico after Maria: households averaged 41 days without cell service and 9% could not reach 911 by phone.", "source": "https://www.wunderground.com/cat6/excess-deaths-and-toll-puerto-rico-hurricane-maria", "year": 2018, "verified": true},
+        {"claim": "Apple extended free satellite SOS and messaging for iPhone 14, 15 and 16 for a further year on 9 September 2026.", "source": "https://www.macrumors.com/2026/09/09/apple-extends-free-satellite-access/", "year": 2026, "verified": false},
+        {"claim": "After Helene the FCC let T-Mobile and SpaceX run direct-to-phone satellite alerts and trial texting over North Carolina.", "source": "https://www.t-mobile.com/news/network/hurricane-helene", "year": 2024, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "About $150 a year all in (340 over seven years plus $96), so it needs roughly ten comms-window person-days a year to pay; it should rank near the bottom except for households in remote places, or outside the countries where phone satellite services operate. A cheaper route for most US households is the phone they have, or T-Mobile's $10-a-month satellite add-on on any carrier."
+    },
+    {
+      "id": "offline-and-paper-maps",
+      "name": "Offline and paper maps",
+      "spec": "Offline map regions downloaded in each phone's map app for the home area and the routes to two places the household could go, refreshed yearly; one paper state or regional road map kept in the car or go-bag.",
+      "fromLonglistRows": [46],
+      "scalesWith": "household",
+      "unit": "downloads plus one paper map",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 10, "hi": 25, "tag": "guess", "basis": "Downloads are free. Step 2 found a Rand McNally map at $9.99 on NBC Select; I did not re-check it."},
+        "product": "Rand McNally folded state map",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 3, "mid": 5, "hi": 10, "tag": "guess", "basis": "Roads change slowly; downloads expire unless refreshed."},
+      "setupHours": {"lo": 0.2, "mid": 0.5, "hi": 1, "tag": "guess", "basis": "Pick regions, download on each phone, buy the map."},
+      "upkeepHoursPerYear": {"lo": 0.05, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Yearly refresh of the downloads."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 1, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0.1, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Offline maps also help on ordinary trips through areas with poor coverage."},
+      "volumeLitresPerUnit": 0.2,
+      "reliability": {"lo": 0.6, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "The download must cover where the household ends up going; the phone must be charged or the paper map in the car."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "reduce", "target": "information", "hazards": ["all"],
+         "fractionRemoved": {"lo": 0.005, "mid": 0.03, "hi": 0.08, "tag": "guess", "basis": "Restores navigation, which I put at about a third of the $3.25 ordinary-use share, on the minority of comms-window days when the household travels somewhere unfamiliar: about $0.4 of the $15 day."},
+         "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Used when needed if the download is current."}},
+        {"type": "reduce", "target": "displacement", "hazards": ["all"],
+         "fractionRemoved": {"lo": 0.002, "mid": 0.01, "hi": 0.04, "tag": "guess", "basis": "Leaving is a little quicker and less stressful when routes can be found without a network. No evidence found; in the Camp Fire the roads failed through gridlock, not navigation (https://nvlpubs.nist.gov/nistpubs/TechnicalNotes/NIST.TN.2252.pdf)."},
+         "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "As above."}}
+      ],
+      "evidence": [
+        {"claim": "Camp Fire: 19 of 85 victims were trying to leave; the report attributes road failures to limited routes, merging traffic, abandoned cars and downed trees and poles.", "source": "https://nvlpubs.nist.gov/nistpubs/TechnicalNotes/NIST.TN.2252.pdf", "year": 2023, "verified": true},
+        {"claim": "Ready.gov, the Red Cross, Sweden and The Prepared list local maps; no source quantifies their benefit.", "source": "https://www.ready.gov/kit", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "The free download does nearly all the work; the paper map covers only a dead phone. A compass is left out: see excluded."
+    },
+    {
+      "id": "whistle",
+      "name": "Whistle",
+      "spec": "One pealess safety whistle per person, on a keyring or fixed by the bed.",
+      "fromLonglistRows": [47],
+      "scalesWith": "person",
+      "unit": "whistle",
+      "price": {
+        "usdPerUnit": {"lo": 1.5, "mid": 3, "hi": 8, "tag": "guess", "basis": "Step 2 found two for $5.99 on NBC Select; I did not re-check it."},
+        "product": "Pealess safety whistle, pack of two",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 10, "mid": 20, "hi": 30, "tag": "guess", "basis": "Nothing to wear out."},
+      "setupHours": {"lo": 0.05, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Buy and attach."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0, "hi": 0.05, "tag": "guess", "basis": "None."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0, "mid": 0.1, "hi": 0.4, "tag": "guess", "basis": "Some use outdoors or for personal safety."},
+      "volumeLitresPerUnit": 0.02,
+      "reliability": {"lo": 0.7, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "It works if it is there; being within reach is counted in adherence."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": ["earthquake"],
+      "effects": [
+        {"type": "reduce", "target": "trauma", "hazards": ["earthquake"],
+         "fractionRemoved": {"lo": 0.001, "mid": 0.01, "hi": 0.04, "tag": "guess", "basis": "Helps only a person trapped alive who would otherwise not be heard. Time to extrication strongly predicts death (a 21-hour cut-off in one 2023 Turkish cohort, search result only), but no study measures what a whistle adds, and few deaths in US housing involve prolonged entrapment."},
+         "adherence": {"lo": 0.05, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "The chance it is within reach of a trapped person."}}
+      ],
+      "evidence": [
+        {"claim": "Review of 34 earthquakes, 1985-2004: live rescues up to 14 days after impact, with little formal data on what determines survival while trapped.", "source": "https://cambridge.org/core/journals/prehospital-and-disaster-medicine/article/surviving-collapsed-structure-entrapment-after-earthquakes-a-timetorescue-analysis/D24F04BFBA9EDA264EA11010418B09B5", "year": 2006, "verified": false},
+        {"claim": "Ready.gov, the Red Cross and The Prepared list a whistle to signal for help; none cites evidence.", "source": "https://www.ready.gov/kit", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Cheap enough that even a tiny effect could clear the bar in an earthquake zone, but the effect is a pure guess."
+    },
+    {
+      "id": "faraday-bag",
+      "name": "Shielded bag for the radio",
+      "spec": "A radio-frequency shielding pouch, or a steel ammunition tin lined with cardboard, in which the battery radio and a spare power bank are stored.",
+      "fromLonglistRows": [48],
+      "scalesWith": "household",
+      "unit": "bag",
+      "price": {
+        "usdPerUnit": {"lo": 10, "mid": 25, "hi": 45, "tag": "guess", "basis": "Step 2's unverified estimate of $15-40; I found no page to check."},
+        "product": "Generic shielding pouch",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 20, "tag": "guess", "basis": "Fabric pouches wear at the fold; a tin lasts indefinitely."},
+      "setupHours": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Buy and pack."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0, "hi": 0.1, "tag": "guess", "basis": "None beyond the radio's own yearly test."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 0, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0.05, "tag": "guess", "basis": "No everyday use."},
+      "volumeLitresPerUnit": 1,
+      "reliability": {"lo": 0.3, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Cheap pouches vary in how well they shield and must be fully closed. No test data read."},
+      "lateBuyClass": "specialty",
+      "requires": ["radio"],
+      "conditions": [],
+      "effects": [
+        {"type": "reduce", "target": "information", "hazards": ["nuclearNear"],
+         "fractionRemoved": {"lo": 0.003, "mid": 0.03, "hi": 0.1, "tag": "guess", "basis": "It protects only the radio's contribution (0.2 of the day) in the cases where an unshielded, switched-off battery radio would have been destroyed, which I put at about 15%: 0.2 x 0.15 = 0.03. I could not open the EMP Commission's 2008 test results to check the 15%."},
+         "adherence": {"lo": 0.3, "mid": 0.6, "hi": 0.9, "tag": "guess", "basis": "The radio must be in the bag when the pulse comes."},
+         "notes": "Of long grid failures only the electromagnetic-pulse kind threatens small unplugged electronics; geomagnetic storms and cyberattacks do not, so gridLong is left out."}
+      ],
+      "evidence": [
+        {"claim": "Only two of step 2's fifteen sources list shielding, both rationalist nuclear-preparedness posts.", "source": "https://www.lesswrong.com/posts/zzBbRotDubk33YdGd/nuclear-preparedness-guide", "year": 2022, "verified": false},
+        {"claim": "A 1985 US test series on amateur radio equipment reported that all equipment survived 50 kV/m undamaged (search result only; conditions not read).", "source": "https://apps.dtic.mil/sti/pdfs/ADA164438.pdf", "year": 1985, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Value is close to zero on any reading: it insures an item that is itself marginal, in one hazard, against a failure that may be uncommon."
+    },
+    {
+      "id": "offline-entertainment",
+      "name": "Books, games and downloaded media",
+      "spec": "A deck of cards, one board or travel game, two or three unread paperbacks, and a refreshed download of films, music, podcasts and e-books on a phone or tablet. Most homes already have some of this.",
+      "fromLonglistRows": [49],
+      "scalesWith": "household",
+      "unit": "set",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 15, "hi": 40, "tag": "guess", "basis": "My estimate: cards about $3, a game $10-25, second-hand books; downloads free with existing subscriptions."},
+        "product": "Playing cards, a travel game and paperbacks",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 20, "tag": "guess", "basis": "Durable; downloads need refreshing."},
+      "setupHours": {"lo": 0.2, "mid": 0.5, "hi": 1, "tag": "guess", "basis": "Buy and set downloads going."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.2, "hi": 0.5, "tag": "guess", "basis": "Refreshing the downloads."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 5, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Books and games are used anyway."},
+      "volumeLitresPerUnit": 3,
+      "reliability": {"lo": 0.8, "mid": 0.95, "hi": 1, "tag": "guess", "basis": "Little to go wrong; downloaded media need a charged device."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "reduce", "target": "information", "hazards": ["all"],
+         "fractionRemoved": {"lo": 0.01, "mid": 0.05, "hi": 0.12, "tag": "guess", "basis": "Recovers about a quarter of the $3.25 ordinary-use share of a day without internet, beyond what a typical home's books and toys already do: $0.8 of the $15 day. No evidence found."},
+         "adherence": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Used if the outage is long enough to be boring."}},
+        {"type": "other", "description": "Also eases long evenings in a power cut and stays in a shelter, for children most of all. Not quantified; if the model wants it, the same 0.05 could apply to the hardship of power and displacement days."}
+      ],
+      "evidence": [
+        {"claim": "Texas, Feb 2021: 71% lost internet service, and 45% of those rated the loss very or extremely serious.", "source": "https://www.uh.edu/hobby/winter2021/storm.pdf", "year": 2021, "verified": true},
+        {"claim": "Ready.gov, the Red Cross, Sweden and The Prepared list books, games or cards; none cites evidence.", "source": "https://www.ready.gov/kit", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Mostly an everyday purchase. The preparedness part is making sure something works with no internet."
+    }
+  ],
+  "excluded": [
+    {"what": "Row 44, amateur (ham) handheld radio", "reason": "Needs a licence and regular practice to be any use; The Prepared says the same. The time cost (tens of hours) dwarfs the device cost, and the benefit accrues to hobbyists."},
+    {"what": "Row 45, personal locator beacon (rescueME PLB1, $400)", "reason": "One-way distress signal built for wilderness and sea; it cannot message family, and a phone with satellite SOS or the messenger entry does more."},
+    {"what": "Satellite phone handset", "reason": "Over $1,000 plus a monthly plan; The Prepared lists it as overrated, and the messenger entry dominates it."},
+    {"what": "T-Mobile satellite add-on ($10 a month, any carrier)", "reason": "Not a separate entry: it is the cheaper alternative noted under satellite-messenger, and iPhone 14 and later already text by satellite at no charge."},
+    {"what": "Desktop NOAA weather-alert radio with alarm (Midland WR120 class, about $52)", "reason": "Its one advantage is waking the household for a night-time warning, which phone alerts already do for the 93% who have not switched them off. Worth a look only for households without a mobile phone or with no coverage at home."},
+    {"what": "Row 46, compass", "reason": "No household use without map-reading skill; phone positioning works without a network."},
+    {"what": "Keeping a copper landline", "reason": "Rarely offered now, costs several hundred dollars a year, and most remaining landlines run over the internet and die with the power."},
+    {"what": "Car radio", "reason": "Not an item: it is the baseline against which the battery radio is valued."}
+  ],
+  "blockedSources": [
+    "https://dash.harvard.edu/bitstream/1/37309252/1/nejmsa1803972.pdf (502) and the PMC copies (browser check): Kishore et al. on Maria; I used a Weather Underground summary for the 911, cell-service and delayed-care figures and could not read the breakdown by remoteness.",
+    "https://www.ofcom.org.uk/__data/assets/pdf_file/0023/272930/Consultation-Resilience-guidance-and-mobile-RAN-power-back-up.pdf and the February 2025 technical report (403): share of UK mobile sites with backup power and for how long.",
+    "https://www.gsma.com/get-involved/gsma-membership/gsma_resources/how-spains-mobile-networks-performed-during-the-iberian-grid-collapse/ (403): hour-by-hour mobile availability in the 2025 Iberian blackout.",
+    "https://www.gfdrr.org/sites/default/files/publication/knowledge-note-japan-earthquake-2-6_0.pdf (403): shares who evacuated at once or late in the 2011 tsunami.",
+    "https://apps.dtic.mil/sti/pdfs/ADA484672.pdf (403): EMP Commission 2008 test results for radios and phones, needed for the shielded-bag entry.",
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC6462102/ (browser check): Brynjolfsson et al. on what people would accept to give up online services; not used in any number.",
+    "https://www.csmonitor.com/USA/2024/0418/Maui-fire-report-Lahaina (403) and https://www.npr.org/2024/04/17/1245396324/maui-fire-report-communications-breakdown (timeout): Lahaina communications timeline; I found no figure for the share of residents who received an alert.",
+    "https://www.mintmobile.com/blog/gen-z-is-more-likely-to-memorize-phone-numbers-than-millennials/ (403): a newer survey on remembered phone numbers.",
+    "Retail and manufacturer price pages: midlandusa.com and fospower.com (429), rei.com and t-mobile.com (403), walmart.com (bot check), bestbuy.com (timeout), retevis.com (404), garmin.com (pages loaded without prices). No price in this file is verified on a retailer page.",
+    "Huang, Lindell and Prater 2016 (Environment and Behavior) and Macintyre et al. 2006 (Prehospital and Disaster Medicine): read only as search-result abstracts."
+  ],
+  "openQuestions": [
+    "Do the hazard files' comms windows start when service is lost, or when grid power fails? If the latter, subtract cell-site backup: about 0.3 day in the US, less in Western Europe, where Iberian mobile networks failed about seven hours into the 2025 blackout and many UK sites have little or no backup.",
+    "The information mortality curve is mostly the inability to call for help. On days when the emergencyCare window also applies, the engine should take the larger of the two, not the sum.",
+    "The schema gives one fractionRemoved per effect. The radio removes hardship but little mortality; the satellite messenger removes both. If the engine can split them, use the notes on each effect.",
+    "The radio's effect depends on car ownership (0.19 with a car, 0.38 without) and the messenger's on whether a phone in the household can text by satellite (0.3 with, 0.5 without). Neither is a household setting yet; car is a condition id, satellite-capable phone is not.",
+    "Which channel carries direct deaths in the wildfire, flood, severe storm and hurricane files? I put the alert setup's effect on fire for wildfire and trauma for the others.",
+    "The radio's effect on fallout in nuclearNear is a guess on another researcher's channel, and it may decide the radio's rank. Check it against the nuclear file and avoid counting it twice with any shelter-plan rule.",
+    "Western Europe and Buenos Aires: I did not verify whether phone satellite texting or default-on government alerts are available in Argentina, nor car ownership in Buenos Aires. The need curve and the alert, radio and messenger effects are US values.",
+    "The power-light file says devicePower should not be charged while the comms window is active because the phone is useless. With satellite texting that is no longer quite true: a charged phone recovers part of the contact value, which my baseline assumes. The engine may want chargePhone to gate that part.",
+    "A candidate the longlist missed, for the power group: a small battery backup for the home router or fibre terminal, which keeps home internet up through short power cuts when the provider's network is still running."
+  ]
+}

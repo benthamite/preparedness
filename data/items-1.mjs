@@ -67,6 +67,7 @@ export const items = [
     effects: () => [
       { type: 'supply', need: 'warmth', amount: 0.85 * 5.5 / 14 },
       { type: 'sideRisk', need: 'warmth', channel: 'co', micromortsPerDay: 'SIDE:heater' },
+      { type: 'sideRisk', need: 'warmth', channel: 'fire', micromortsPerDay: 'SIDE:heaterFire' },
     ],
   },
 
@@ -139,6 +140,7 @@ export const items = [
       { type: 'capability', capability: 'mainsPower' }, { type: 'capability', capability: 'chargePhone' },
       { type: 'supply', need: 'devicePower', amount: 35000 },
       { type: 'supply', need: 'medicalPower', amount: 35000 },
+      { type: 'capability', capability: 'generator' },
       { type: 'supply', need: 'refrigeration', amount: 35000 },
       { type: 'sideRisk', need: 'refrigeration', channel: 'co', micromortsPerDay: 'SIDE:generator' },
     ],

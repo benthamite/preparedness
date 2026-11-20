@@ -1,0 +1,512 @@
+{
+  "kind": "items",
+  "group": "mobility",
+  "needs": [
+    {
+      "id": "displacement",
+      "definition": "A person-day on which a household member cannot sleep at home because the home is under an evacuation order, cut off, or uninhabitable. It runs from the day of leaving until return or until a settled replacement home. The harm is the cost and misery of living elsewhere plus the risk of the journey; loss of the building and its contents is not included.",
+      "baselineCoverageDays": {
+        "lo": 0,
+        "mid": 0,
+        "hi": 0,
+        "tag": "derived",
+        "basis": "By definition nothing kept at home covers a day out of it. What an unprepared household falls back on (a relative's spare room, a credit card) is already inside the hardship curve, which is built from where displaced people in fact stay."
+      },
+      "hardshipUsdPerPersonDay": {
+        "tag": "derived",
+        "basis": "Days 2-7 = money about $50 + lost income about $10 + discomfort about $30. Money: surveys cited in Jiang et al. 2023 (https://par.nsf.gov/servlets/purl/10447248) give $88 per evacuating household per day (Lili, 2002) and $83 (Katrina and Rita, 2005), about $160 and $140 at 2026 prices, or $54-63 per person at 2.6 people; a bottom-up check (27% in hotels at $113-178 a room (fiscal 2027 federal per diem and the October 2026 national average rate, both from search snippets) shared by 2.5 plus $25 food, 62% hosted at about $10, fuel $10) gives $38-44. FEMA values a displaced day at one GSA room per family plus meals per diem less $9 food at home (https://fema.gov/sites/default/files/documents/fema_standard-economic-values-methodology-report_2023.pdf), which is the all-hotel upper case of roughly $105 per person. Day 1 adds the journey out and back (6-10 hours per adult). Later steps fall as hotels give way to rentals and routine returns, and are guesses; discomfort is a guess throughout.",
+        "steps": [
+          {"fromDay": 1, "lo": 60, "mid": 150, "hi": 400},
+          {"fromDay": 2, "lo": 35, "mid": 90, "hi": 230},
+          {"fromDay": 8, "lo": 30, "mid": 80, "hi": 220},
+          {"fromDay": 31, "lo": 20, "mid": 60, "hi": 180},
+          {"fromDay": 91, "lo": 10, "mid": 35, "hi": 120},
+          {"fromDay": 181, "lo": 3, "mid": 15, "hi": 60}
+        ]
+      },
+      "mortalityMicromortsPerPersonDay": {
+        "tag": "guess",
+        "basis": "Day 1 carries the journey: about 250 extra miles out and back at roughly 0.005 micromorts per occupant-mile (1.19 deaths per 100 million vehicle-miles in 2024 per an NHTSA search snippet; about 63% of them vehicle occupants and 1.5 occupants per vehicle, both from memory) is 1.2, rounded up for fatigue, smoke and chaotic traffic. Later days are a guess for stress, unfamiliar housing and, after a month, depression (Household Pulse: odds of depression 1.8 times higher after one to four weeks displaced, https://pmc.ncbi.nlm.nih.gov/articles/PMC12374215). Cross-check: with the multipliers below, a four-day evacuation of a normal age mix costs about 6 micromorts per evacuee; the Hurricane Rita evacuation, the worst on record, cost about 19 among people outside care homes (about 56 deaths in roughly 3 million).",
+        "steps": [
+          {"fromDay": 1, "lo": 0.3, "mid": 1.5, "hi": 6},
+          {"fromDay": 2, "lo": 0, "mid": 0.1, "hi": 0.6},
+          {"fromDay": 31, "lo": 0, "mid": 0.15, "hi": 0.8}
+        ]
+      },
+      "multipliers": [
+        {"profile": "child", "hardship": 0.7, "mortality": 0.7, "tag": "guess", "basis": "Shares a room and loses no wages but loses school; child passengers die at a lower rate per mile than adults. No child died in the Camp Fire (https://www.aafs.org/sites/default/files/media/documents/AAFS-2020-A40.pdf)."},
+        {"profile": "age60to74", "hardship": 1.1, "mortality": 5, "tag": "guess", "basis": "Placed between the healthy adult and the over-75 figure; plausible range 2 to 12."},
+        {"profile": "age75plus", "hardship": 1.5, "mortality": 30, "tag": "derived", "basis": "Rita: if four fifths of the roughly 56 community evacuation deaths were aged 65 or over (13% of 3 million evacuees), their risk was about 115 micromorts against about 4 for younger adults, a ratio near 30. About 90% of Fukushima's 1,656 indirect deaths were aged 66 or over (https://medicalxpress.com/news/2014-02-post-tsunami-deaths-outnumber-disaster-toll.html). Plausible range 8 to 100. Care-home residents are far worse off and are not this profile: evacuation raised their 90-day death risk by several percentage points (Dosa et al. 2012, https://pubmed.ncbi.nlm.nih.gov/21885350/)."},
+        {"profile": "powerDependent", "hardship": 2, "mortality": 10, "tag": "guess", "basis": "Equipment and power must travel too; oxygen users died in transit in Rita and in unpowered buildings in Irma. Plausible range 3 to 40."},
+        {"profile": "criticalDrug", "hardship": 1.3, "mortality": 4, "tag": "guess", "basis": "Displacement interrupts supply and routine; the interruption itself is counted under the medication need, so this is only the extra risk of travel and disruption."},
+        {"profile": "limitedMobility", "hardship": 2, "mortality": 10, "tag": "guess", "basis": "Needs accessible transport and lodging; Camp Fire victims had high rates of mobility-limiting disability and Rita's vehicle deaths were mostly frail people. Plausible range 3 to 40."}
+      ],
+      "notes": "The curve should agree with each hazard's leave cost: usdPerPersonDay plus the non-money hardship of having left ought to be near the day-2 step ($90), or leaving voluntarily and being ordered out will be valued differently. Money costs are before insurance (additional living expenses cover) and public aid, which reimburse part for some households. Local displacement (a house fire, a street flood) lacks the long drive, so its day 1 is nearer the low figure. Weighted by Household Pulse durations (43% under a week, 25% a week to a month, 11% one to six months, 7% longer, 14% never returned) the curve gives about $3,500 per displaced adult, or about $45 per US adult per year at the 1.3% annual displacement rate; the first three days are about a tenth of that total."
+    }
+  ],
+  "channels": [],
+  "items": [
+    {
+      "id": "go-bag",
+      "name": "Packed go-bag",
+      "spec": "One 25-35 litre backpack per adult, kept by the door or in the car: filled 1 litre bottle and about 2,400 kcal of bars; headlamp; power bank with cable and plug; small first-aid kit; three N95 masks; poncho and foil blanket; toiletries, toilet paper and wipes; socks, underwear, a warm layer and an old pair of closed shoes (already owned); lighter, whistle, pocket knife, tape, notepad, zip bags; copies of ID, insurance and prescriptions in a pouch and on a USB stick; spare house and car key; paper list of phone numbers. A card on top lists what to grab last: medication, glasses, phone, wallet, passport, laptop. Children share an adult's bag with a few extras. Cash and spare medication are separate entries.",
+      "fromLonglistRows": [90, 91],
+      "scalesWith": "person",
+      "unit": "bag per household member (a child's share is smaller)",
+      "price": {
+        "usdPerUnit": {
+          "lo": 50,
+          "mid": 130,
+          "hi": 400,
+          "tag": "guess",
+          "basis": "Built up from typical prices: backpack $30, bottle and bars $20, headlamp $20, power bank and cable $30, first-aid pouch $15, masks $6, poncho and blanket $8, toiletries $10, sundries $10, pouch, USB stick and key copies $15, knife $20: about $185 for an adult, less if the backpack is an old one, and about $50 for a child's share; $130 averages a household. Bounded by two prices read on 19 Nov 2026: a premade one-person kit at $39.99 (https://www.quill.com/ready-america-grab-n-go-1-person-3-days-backpack-emergency-kit-70180/cbs/421760.html) and The Prepared's level-1 list at $400-1,100 (https://theprepared.com/bug-out-bags/guides/bug-out-bag-list/)."
+        },
+        "product": "Self-assembled bag; for scale, Ready America 70180 premade kit $39.99 and The Prepared level-1 list $400-1,100",
+        "source": "https://www.quill.com/ready-america-grab-n-go-1-person-3-days-backpack-emergency-kit-70180/cbs/421760.html",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 8, "hi": 15, "tag": "guess", "basis": "Bag and hardware outlast ten years; bars, batteries and masks last about five."},
+      "setupHours": {"lo": 2, "mid": 4, "hi": 8, "tag": "guess", "basis": "Choosing, buying, copying documents and packing for a household."},
+      "upkeepHoursPerYear": {"lo": 0.5, "mid": 1, "hi": 2, "tag": "guess", "basis": "Two checks a year: recharge the power bank, swap clothes for the season and for growing children, rotate food."},
+      "upkeepUsdPerYear": {"lo": 3, "mid": 8, "hi": 20, "tag": "guess", "basis": "Replacing bars, batteries and masks for a household every five years or so."},
+      "everydayShare": {"lo": 0.05, "mid": 0.15, "hi": 0.5, "tag": "guess", "basis": "The bag only works if it stays packed, so little of it earns its keep day to day; the power bank and headlamp are borrowed for trips."},
+      "volumeLitresPerUnit": 30,
+      "reliability": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Chance the bag is where it should be, complete and current when the household has to leave."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "capability", "capability": "goBag", "notes": "Lets the household leave within about five minutes of deciding to go."},
+        {
+          "type": "reduce",
+          "target": "displacement",
+          "on": "hardship",
+          "hazards": ["all"],
+          "fractionRemoved": {
+            "lo": 0.01,
+            "mid": 0.04,
+            "hi": 0.12,
+            "tag": "guess",
+            "basis": "A household that leaves with no notice goes without chargers, toiletries, spare clothes, papers and sometimes glasses or medication; replacing them and doing without costs perhaps $50 (20-130) a person, about 15% of the first three days' $330 hardship and nothing after. The first three days are a tenth of displacement harm on Household Pulse durations and up to four tenths in hazards with short evacuations, so 0.15 x 0.1-0.4 gives 0.015-0.06."
+          },
+          "fractionRemovedFirst3Days": {"lo": 0.05, "mid": 0.15, "hi": 0.35, "tag": "guess", "basis": "Same argument without the averaging over long displacements; use this if the engine can limit an effect to early days."},
+          "adherence": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Share of departures in which the bag is in fact taken."},
+          "notes": "Hardship only. With half a day's warning anyone can pack an equivalent bag from the cupboard, which is why the late-buy class is staple: the bag earns nothing in a hurricane that was forecast two days ahead."
+        },
+        {
+          "type": "reduce",
+          "target": "trauma",
+          "on": "mortality",
+          "hazards": ["wildfire", "flood"],
+          "fractionRemoved": {
+            "lo": 0,
+            "mid": 0.04,
+            "hi": 0.15,
+            "tag": "guess",
+            "basis": "Marshall Fire evacuees spent a mean 64 minutes preparing after deciding to go, and each minute of preparation added 0.7 minutes to departure (https://mro.massey.ac.nz/server/api/core/bitstreams/5f9e7234-160d-47cf-8ee0-3261de5524c8/content). If packing is a third of that and the bag halves it, departure comes about 8 minutes sooner, under a tenth of the usual 90-140 minutes from awareness to leaving. Late evacuation accounts for 48% of Australian bushfire deaths (https://www.csiro.au/en/news/All/Articles/2016/December/bushfire-loss-data), so a small gain in time is taken to remove a few percent of deaths. The low end is zero because no study shows packed bags speed departure, and prepared households in both US regressions left no sooner."
+          },
+          "adherence": {"lo": 0.5, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "Owners still stop to gather pets, valuables and relatives."},
+          "notes": "Applies to deaths of people caught by the fire or water while still at home or on the road, assumed to sit on the hazard's trauma exposure. For scale: the Camp Fire killed 85 of about 38,000 residents (2,200 micromorts), mean age 72, very few of them young or middle-aged."
+        },
+        {"type": "other", "description": "Carries copies of ID and insurance papers, which speed hotel check-in, aid registration and claims. No measured effect."}
+      ],
+      "evidence": [
+        {"claim": "Marshall Fire 2021 survey (191 responses): delay from awareness to departure averaged 137 minutes (SD 263); preparation after deciding averaged 64 minutes; each preparation minute added 0.70 minutes of delay (p=0.01); 70% had no household emergency plan, and having one did not predict the decision to evacuate (p=0.41).", "source": "https://mro.massey.ac.nz/server/api/core/bitstreams/5f9e7234-160d-47cf-8ee0-3261de5524c8/content", "year": 2024, "verified": true},
+        {"claim": "Camp Fire 2018 survey: mean awareness 8:00 am, mean departure 9:33 am, median departure 9:00 am. Knowing the community evacuation plan went with learning of the fire 19 minutes sooner (p<0.01) but not with shorter preparation (+11 minutes, not significant) or earlier departure (+18 minutes, not significant).", "source": "https://rosap.ntl.bts.gov/view/dot/72581/dot_72581_DS1.pdf", "year": 2021, "verified": true},
+        {"claim": "Camp Fire: 85 deaths among about 38,000 inhabitants; ages 20 to 99, mean 72; no children or adolescents and very few young or middle-aged adults died; high rates of mobility-limiting disability.", "source": "https://www.aafs.org/sites/default/files/media/documents/AAFS-2020-A40.pdf", "year": 2020, "verified": true},
+        {"claim": "Australian bushfires 1901-2011: 733 civilian deaths; late evacuation was the activity in 48.3% of fatalities.", "source": "https://www.csiro.au/en/news/All/Articles/2016/December/bushfire-loss-data", "year": 2016, "verified": true},
+        {"claim": "A premade one-person 'three-day' kit at $39.99 holds one 2,400 kcal bar, six 4.25 oz water pouches, a light stick, a dust mask, a poncho, a blanket and an 18-piece first-aid kit: no torch, charger or documents.", "source": "https://www.quill.com/ready-america-grab-n-go-1-person-3-days-backpack-emergency-kit-70180/cbs/421760.html", "year": 2026, "verified": true},
+        {"claim": "The Prepared's level-1 bag: about 30 lines of contents, $400-1,100, 20.4 lb.", "source": "https://theprepared.com/bug-out-bags/guides/bug-out-bag-list/", "year": 2026, "verified": true},
+        {"claim": "Superstorm Sandy, 1,114 New York households: having a kit, plan and medication did not reduce adverse outcomes (taken from the step 2 prior-art report, not re-read).", "source": "https://www.cambridge.org/core/journals/disaster-medicine-and-public-health-preparedness/article/does-preparedness-matter-the-influence-of-household-preparedness-on-disaster-outcomes-during-superstorm-sandy/19287028C47560A8DBF30A31AECDC9C3", "year": 2020, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "At these medians the bag does not pay for an average household: it costs about $32 per person per year (purchase $16, plus a household share of set-up and upkeep time) and removes about 3% of a displacement harm worth about $45 per adult per year, most of it in events with enough warning to pack anyway. It does better only where no-notice evacuation is likely (wildfire, flash flood, earthquake). The model cannot credit peace of mind."
+    },
+    {
+      "id": "evacuation-plan",
+      "name": "Evacuation plan with a pre-arranged place to stay",
+      "spec": "One evening's work, written on one page and known to everyone in the home: (1) a named friend or relative one to three hours away who has agreed in advance to take the household in, and a fallback town with hotels; (2) two routes out, saved offline; (3) personal triggers stricter than an official order (leave at 'warning' or 'voluntary', or on seeing smoke, flames or rising water; know your hurricane zone); (4) who fetches children, pets and anyone who cannot drive, a meeting point and an out-of-area contact; (5) a five-minute grab list. Sign up for local emergency alerts. Review once a year.",
+      "fromLonglistRows": [92, 27],
+      "scalesWith": "household",
+      "unit": "plan",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 0, "hi": 20, "tag": "guess", "basis": "No purchase needed; the cost is time."},
+        "product": "No product: a conversation with the host and one written page",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 3, "mid": 5, "hi": 10, "tag": "guess", "basis": "Goes stale as jobs, schools, cars and the host's circumstances change."},
+      "setupHours": {"lo": 1.5, "mid": 3, "hi": 6, "tag": "guess", "basis": "Look up zone and routes, call the host, agree triggers with the household, write it down."},
+      "upkeepHoursPerYear": {"lo": 0.25, "mid": 0.5, "hi": 1.5, "tag": "guess", "basis": "Yearly review and a call to confirm the host."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 10, "tag": "guess", "basis": "None expected."},
+      "everydayShare": {"lo": 0, "mid": 0, "hi": 0.1, "tag": "guess", "basis": "No everyday use."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Chance the plan is remembered and the host still available when needed."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {"type": "capability", "capability": "evacuationPlan", "notes": "Destination, routes and triggers decided in advance."},
+        {
+          "type": "reduce",
+          "target": "displacement",
+          "on": "hardship",
+          "hazards": ["all"],
+          "fractionRemoved": {
+            "lo": 0.01,
+            "mid": 0.04,
+            "hi": 0.12,
+            "tag": "guess",
+            "basis": "Most evacuees stay with friends or family without any plan (median 62% across hurricane studies; 62% in Texas 2021), so the gain is only among the 27% (13% in Texas) who pay for rooms. If a standing invitation moves a third of them, 9% of households save about $65 of the $90 daily hardship: 6.5%, plus perhaps 2% for everyone from knowing where to go. That 8% holds for the first month, which is 35-70% of displacement harm, giving 0.03-0.055."
+          },
+          "fractionRemovedFirst30Days": {"lo": 0.02, "mid": 0.08, "hi": 0.2, "tag": "guess", "basis": "Same argument before averaging over long displacements, in which a host's welcome runs out."},
+          "adherence": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Share of displacements in which the arranged host is in fact used and not also displaced."},
+          "notes": "Hardship only. Net of the improvised arrangements an unprepared household makes."
+        },
+        {
+          "type": "reduce",
+          "target": "trauma",
+          "on": "mortality",
+          "hazards": ["wildfire", "hurricane", "flood"],
+          "fractionRemoved": {
+            "lo": 0,
+            "mid": 0.05,
+            "hi": 0.2,
+            "tag": "guess",
+            "basis": "Two routes by which a plan could save lives, neither measured. Leaving sooner: deciding takes longer than packing (Marshall Fire delay 137 minutes against 64 of preparation), and agreed triggers attack the deciding. Leaving at all: 31% of coastal residents said they would not evacuate if told to, but the reasons a plan addresses are the minority ones (roads too crowded 56%, pets 27%; cost named by 14% of Irma non-evacuees in a search snippet). Against this, plan-holders left no sooner in the Camp Fire, were no likelier to leave in the Marshall Fire, and fared no better after Sandy."
+          },
+          "adherence": {"lo": 0.3, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Plans to leave early are often abandoned for wait-and-see on the day."},
+          "notes": "Applies to deaths of people caught in the hazard zone, assumed to sit on the hazard's trauma exposure. For scale: about 1% of those exposed to Katrina's flooding in New Orleans died, nearly 60% of them over 65."
+        },
+        {
+          "type": "other",
+          "description": "Makes relocating cheaper and a little likelier in every hazard with a leave option, because a free bed is waiting. Suggested engine effect of type leave: cost cut 0.08 (0.02-0.2), feasibility gain 0.03 (0-0.1).",
+          "suggestedEngineEffect": {
+            "type": "leave",
+            "hazards": ["all"],
+            "cost": {"lo": 0.02, "mid": 0.08, "hi": 0.2, "tag": "guess", "basis": "Same arithmetic as the first-month displacement figure."},
+            "feasible": {"lo": 0, "mid": 0.03, "hi": 0.1, "tag": "guess", "basis": "A destination removes one of the lesser reasons people give for staying put."}
+          }
+        }
+      ],
+      "evidence": [
+        {"claim": "Across hurricane studies evacuees went to friends' and relatives' homes (median 62%, range 54-70%), commercial lodging (27%, 16-32%) and public shelters (3%, 2-6%); in the 2007 San Diego fires 11% used hotels, 8% campgrounds or vacation homes and 5% shelters.", "source": "https://par.nsf.gov/servlets/purl/10550364", "year": 2024, "verified": true},
+        {"claim": "Texas, February 2021: 18% left home; 44% of them went to a local relative, 18% to a local friend, 13% to a local hotel, 2% to a shelter.", "source": "https://www.uh.edu/hobby/winter2021/storm.pdf", "year": 2021, "verified": true},
+        {"claim": "Hurricane Bonnie 1998: 70% of evacuees stayed with friends or family, 16% in hotels, 6% in shelters. Cell-phone-based welfare cost of evacuating, excluding lodging and food: $117 per person under a mandatory order at Category 3 winds, $343 at Category 4-5.", "source": "https://jacobgellman.github.io/files/gellman_et_al_2024-cost_hurricane_evacuations.pdf", "year": 2026, "verified": true},
+        {"claim": "Hurricane Ike: evacuees' actual spending on transport, food and lodging averaged $227 ($296 under a mandatory order). The paper cites $88 a day for Lili (29% in commercial lodging), $83 a day for Katrina and Rita (18%) and $350 a day for Ike (30%).", "source": "https://par.nsf.gov/servlets/purl/10447248", "year": 2023, "verified": true},
+        {"claim": "Harvard survey of 5,046 adults in high-risk coastal counties, 2007: 31% would not evacuate if told to; of those, 75% said their home was safe, 56% that roads would be too crowded, 36% that evacuating was dangerous, 33% feared theft, 27% would not leave pets.", "source": "https://www.insurancejournal.com/magazines/mag-currents/2007/08/06/82747.htm", "year": 2007, "verified": true},
+        {"claim": "Katrina, New Orleans: mortality among the population exposed to flooding was about 1%; nearly 60% of the 771 fatalities analysed were over 65; two thirds were direct flood deaths.", "source": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:19187485&resultType=core&format=json", "year": 2009, "verified": true},
+        {"claim": "Residents affected by the 2018 Attica fire who had a predetermined route were 17 points likelier to expect to need under five minutes to get ready (stated intention, 152 households).", "source": "https://par.nsf.gov/servlets/purl/10550364", "year": 2024, "verified": true},
+        {"claim": "Camp Fire and Marshall Fire regressions: knowing or having a plan did not shorten preparation or bring departure forward (see the go-bag entry).", "source": "https://rosap.ntl.bts.gov/view/dot/72581/dot_72581_DS1.pdf", "year": 2021, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Costs about $23 a year in time. For an average US household it returns perhaps a tenth to a sixth of that; on a hurricane coast, where displacement is four to eight times likelier (Louisiana 11% and Florida 5% of adults in 2022, from the step 2 base-rates report), it approaches break-even. Absorbs the longlist's 'arrange another place to stay'."
+    },
+    {
+      "id": "half-tank-habit",
+      "name": "Keep the tank at least half full",
+      "spec": "Refuel the household's main vehicle when it reaches half a tank, which keeps about seven US gallons, 150-200 miles, in hand; for an electric car, charge nightly and do not let it sit below half. Fill up whenever a hurricane, fire-weather or winter-storm watch is issued.",
+      "fromLonglistRows": [40],
+      "scalesWith": "household",
+      "unit": "habit for one vehicle",
+      "price": {
+        "usdPerUnit": {"lo": 0, "mid": 5, "hi": 12, "tag": "guess", "basis": "Refuelling at half instead of a quarter raises the average level of a 14-gallon tank by an eighth, 1.75 gallons, about $5 of fuel held; it is burned later, so only the interest is a cost. Pump price assumed near $3 a gallon, not checked."},
+        "product": "No product: about 1.75 extra gallons of fuel held on average",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 20, "tag": "guess", "basis": "A habit has no service life; the figure only spreads a trivial set-up cost."},
+      "setupHours": {"lo": 0, "mid": 0.1, "hi": 0.5, "tag": "guess", "basis": "Deciding to do it."},
+      "upkeepHoursPerYear": {"lo": 0.3, "mid": 1, "hi": 3, "tag": "derived", "basis": "About 11,500 miles a year at 25 mpg is 460 gallons: 44 fills of 10.5 gallons (refuelling at a quarter) or 66 fills of 7 gallons (at a half). Twenty-two extra stops at about 4 minutes of fixed time each is 1.5 hours; less for the many drivers who already refuel early, nil for an electric car charged at home. Inputs are round figures from memory."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 5, "tag": "guess", "basis": "None beyond time."},
+      "everydayShare": {"lo": 0.9, "mid": 1, "hi": 1, "tag": "derived", "basis": "The fuel is used anyway."},
+      "volumeLitresPerUnit": 0,
+      "reliability": {"lo": 0.5, "mid": 0.75, "hi": 0.9, "tag": "guess", "basis": "Share of the time the tank is in fact above half once the habit is adopted."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": ["car"],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "displacement",
+          "on": "hardship",
+          "hazards": ["hurricane", "wildfire", "earthquake", "nuclearNear", "civilUnrest"],
+          "fractionRemoved": {
+            "lo": 0.002,
+            "mid": 0.01,
+            "hi": 0.04,
+            "tag": "guess",
+            "basis": "A driver who refuels at a quarter is below half a third of the time. In a mass evacuation perhaps 40% of them meet dry pumps or long queues (37-60% of stations in Florida metro areas were out of fuel around Irma), so 13% of households lose one to three hours, worth $20-60 a person: about $5 on a $330 three-day evacuation, 1.5%, and less over longer displacements."
+          },
+          "adherence": {"lo": 0.9, "mid": 1, "hi": 1, "tag": "guess", "basis": "A full tank is used automatically; lapses are in reliability."},
+          "notes": "Hardship only."
+        },
+        {
+          "type": "reduce",
+          "target": "trauma",
+          "on": "mortality",
+          "hazards": ["hurricane", "wildfire"],
+          "fractionRemoved": {
+            "lo": 0,
+            "mid": 0.015,
+            "hi": 0.05,
+            "tag": "guess",
+            "basis": "Fuel decides the outcome only for the few percent of households that would otherwise not leave, leave hours late, or run dry in a jam; in the Rita evacuation, 12-36 hours on the road, cars ran out of fuel in 100-mile queues in great heat. Unmeasured."
+          },
+          "adherence": {"lo": 0.9, "mid": 1, "hi": 1, "tag": "guess", "basis": "As above."},
+          "notes": "Applies to deaths from being caught in the hazard zone or on the road, assumed to sit on the hazard's trauma exposure."
+        },
+        {
+          "type": "other",
+          "description": "Raises the chance that leaving is possible where the event itself empties or shuts fuel stations (hurricane, long grid failure, fuel supply shock, nuclear war elsewhere), and gives a week or two of essential local driving in a fuel shortage. Suggested engine effect of type leave: feasibility gain 0.03 (0-0.08) in those hazards. Also feeds the car-charging entry, which needs fuel to run the engine.",
+          "suggestedEngineEffect": {
+            "type": "leave",
+            "hazards": ["hurricane", "gridLong", "supplyShock", "nuclearFar", "nuclearNear", "earthquake", "winterStorm"],
+            "feasible": {"lo": 0, "mid": 0.03, "hi": 0.08, "tag": "guess", "basis": "A third of drivers are below half at any moment; a tenth to a quarter of those could not refuel in a regional run on fuel."}
+          }
+        }
+      ],
+      "evidence": [
+        {"claim": "After Irma, GasBuddy data showed 60.3% of stations in Gainesville and more than 59% in Miami-Fort Lauderdale without fuel, and at least 50% in Tampa, Orlando, West Palm Beach, Tallahassee and Jacksonville.", "source": "https://247wallst.com/energy-economy/2017/09/12/more-than-50-of-gas-stations-without-fuel-in-florida-metro-areas-after-irma/", "year": 2017, "verified": true},
+        {"claim": "Before Irma's landfall, 37-43% of Miami-area stations, 60% in Gainesville and about 40% in Tampa were out of fuel (search snippets of NPR and CNN; pages did not load).", "source": "https://www.npr.org/2017/09/08/549536604/as-hurricane-irma-nears-gasoline-is-in-short-supply-for-floridians", "year": 2017, "verified": false},
+        {"claim": "Hurricane Rita: 2.5 to 3.7 million people left; evacuees spent about 12-36 hours on the road, with queues over 100 miles; about 107 deaths were tied to the evacuation, including 23 in a bus fire and 46 people found unresponsive in vehicles in heat.", "source": "https://en.wikipedia.org/wiki/Hurricane_Rita_evacuation", "year": 2005, "verified": true},
+        {"claim": "Rita: nearly 3.7 million evacuated the Texas coast; the evacuation accounted for over 100 of at least 119 deaths attributed to the storm (abstract only).", "source": "https://www.cambridge.org/core/journals/disaster-medicine-and-public-health-preparedness/article/reflection-on-lessons-learned-an-analysis-of-the-adverse-outcomes-observed-during-the-hurricane-rita-evacuation/573A0EAE07C980BA0A97D4953174A33F", "year": 2018, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Usually described as free. It is not: the extra stops cost about an hour a year, around $20, which is the same order as the benefit. Worth doing as a seasonal rule (fill up at a watch) even where the year-round habit does not pay."
+    },
+    {
+      "id": "car-emergency-kit",
+      "name": "Car emergency kit",
+      "spec": "In the boot of the main car: jump leads or a lithium jump starter, 12-volt tyre inflator and plug kit (and a checked spare), two warning triangles, headlamp, work gloves, 2 litres of water, a blanket and a phone cable. In cold-winter areas add an ice scraper, a folding shovel and a bag of sand or cat litter.",
+      "fromLonglistRows": [93],
+      "scalesWith": "household",
+      "unit": "kit for one car",
+      "price": {
+        "usdPerUnit": {"lo": 40, "mid": 90, "hi": 220, "tag": "guess", "basis": "Leads $20-30, inflator $30-40, plug kit $10, triangles $15-20, gloves and water $10; about $100 more if a lithium jump starter replaces the leads (NOCO GB40 at $99.95 in Best Buy and Walmart search snippets; no retailer page loaded). Premade kits ran $18-78 in Walmart snippets."},
+        "product": "Self-assembled kit; NOCO Boost GB40 jump starter as the optional upgrade",
+        "source": "https://www.bestbuy.com/product/noco-boost-gb40-1000a-ultrasafe-jump-starter-12v-portable-lithium-battery-booster-pack-6-0l-gas-3-0l-diesel/J7GRLJ2QJ7",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 8, "hi": 15, "tag": "guess", "basis": "Leads and triangles last decades; inflators and lithium packs five to eight years."},
+      "setupHours": {"lo": 0.5, "mid": 1.5, "hi": 3, "tag": "guess", "basis": "Buy, stow, and learn to use the jump starter and plug kit."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.3, "hi": 1, "tag": "guess", "basis": "Recharge the jump starter twice a year, check the spare tyre's pressure, swap the water."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 2, "hi": 10, "tag": "guess", "basis": "Water and the odd replacement."},
+      "everydayShare": {"lo": 0.15, "mid": 0.4, "hi": 0.9, "tag": "derived", "basis": "AAA took over 27 million roadside calls in 2024, about 7 million for batteries (https://newsroom.aaa.com/2025/04/aaa-urges-drivers-to-stay-proactive-on-auto-repair-and-maintenance/). With about 60 million members (from memory) that is a call every two to three years and a battery or slow-puncture call every five or so. Fixing those oneself saves about an hour's wait, or a $75-125 call-out for a non-member: $4-15 a year against a kit costing about $25 a year, so 0.15 to 0.6; higher for a driver without roadside cover."},
+      "volumeLitresPerUnit": 15,
+      "reliability": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Jump starter charged, spare inflated, owner able to use them."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": ["car"],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "trauma",
+          "on": "mortality",
+          "hazards": ["wildfire", "hurricane", "winterStorm"],
+          "fractionRemoved": {
+            "lo": 0,
+            "mid": 0.005,
+            "hi": 0.03,
+            "tag": "guess",
+            "basis": "27 million AAA calls over roughly 0.7 trillion member-miles is one breakdown per 26,000 miles: 0.6% on a 150-mile evacuation, perhaps 2% in heat, queues and debris. The kit cures about 40% of those (battery, slow puncture), so under 1% of evacuations are saved from a stall of several hours, and few stalls are fatal."
+          },
+          "adherence": {"lo": 0.6, "mid": 0.8, "hi": 0.95, "tag": "guess", "basis": "Share of curable breakdowns the owner in fact cures."},
+          "notes": "Effectively nil. In winter storms the blanket, shovel and sand matter for people stranded on the road, a risk the model's home-based winter hazard does not carry; deaths of stranded motorists occur (several in the Buffalo blizzard of December 2022) but no count was found."
+        },
+        {"type": "other", "description": "Nearly all of the value is everyday: dealing with a flat battery or slow puncture without waiting for a tow. That is in the everyday share, not in the hazard model."}
+      ],
+      "evidence": [
+        {"claim": "AAA received over 27 million emergency roadside calls in the US in 2024: roughly 13 million tows and about 7 million battery calls.", "source": "https://newsroom.aaa.com/2025/04/aaa-urges-drivers-to-stay-proactive-on-auto-repair-and-maintenance/", "year": 2025, "verified": true},
+        {"claim": "Texas, February 2021: 22 of 246 storm deaths were vehicle crashes (from the step 2 prior-art report); its categories do not separate deaths in stranded cars.", "source": "https://www.dshs.texas.gov/sites/default/files/news/updates/SMOC_FebWinterStorm_MortalitySurvReport_12-30-21.pdf", "year": 2021, "verified": false},
+        {"claim": "Buffalo blizzard, December 2022: Erie County deaths (31-39 in early reports) included people found in their cars; hundreds of motorists were rescued, some after two days (search snippets; no breakdown found).", "source": "https://www.npr.org/2022/12/27/1145589871/buffalo-winter-storm-aftermath", "year": 2022, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Rank it as an everyday motoring purchase. Servicing and winter tyres from the same longlist row are ordinary car upkeep and are excluded."
+    },
+    {
+      "id": "get-home-bag",
+      "name": "Get-home bag",
+      "spec": "A small pouch at the workplace or in a commuter's day bag: comfortable walking shoes and socks, half a litre of water, two snack bars, a small torch, power bank and cable, an N95 mask, a foil poncho, $40 in small notes and a paper map with the walking route home marked.",
+      "fromLonglistRows": [94],
+      "scalesWith": "person",
+      "unit": "pouch per commuter",
+      "price": {
+        "usdPerUnit": {"lo": 15, "mid": 45, "hi": 120, "tag": "guess", "basis": "Old shoes cost nothing; power bank $20-25, torch $10, bars, water, mask, poncho and map $15. The cash is not a cost. No price read."},
+        "product": "Self-assembled pouch",
+        "source": "",
+        "verified": false
+      },
+      "lifeYears": {"lo": 3, "mid": 6, "hi": 10, "tag": "guess", "basis": "Power bank and bars set the life."},
+      "setupHours": {"lo": 0.5, "mid": 1, "hi": 2, "tag": "guess", "basis": "Assemble it and walk or trace the route once."},
+      "upkeepHoursPerYear": {"lo": 0.1, "mid": 0.25, "hi": 0.5, "tag": "guess", "basis": "Recharge and replace snacks."},
+      "upkeepUsdPerYear": {"lo": 1, "mid": 3, "hi": 8, "tag": "guess", "basis": "Snacks and water."},
+      "everydayShare": {"lo": 0.2, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Snacks, charger and spare shoes at a desk get ordinary use."},
+      "volumeLitresPerUnit": 6,
+      "reliability": {"lo": 0.5, "mid": 0.7, "hi": 0.9, "tag": "guess", "basis": "It must be where the commuter is when transport stops."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "other",
+          "description": "Eases a forced walk home or a night at work when transport stops without notice (earthquake, blackout, attack, sudden storm). The model has no away-from-home state, so the value is given directly: annual chance of such a stranding for a city commuter 0.2-1%, hardship of the night $50-150, share removed about 30%, so $0.05-0.40 a year per commuter. No deaths attributable to the lack of such a bag were found.",
+          "suggestedAnnualValueUsdPerPerson": {"lo": 0.02, "mid": 0.15, "hi": 0.6, "tag": "guess", "basis": "Product of the three guesses in the description."}
+        }
+      ],
+      "evidence": [
+        {"claim": "On 11 March 2011 a Cabinet Office estimate put 5.15 million people in the Tokyo region unable to get home by midnight (search snippet of a Japan Times editorial and a government white paper; pages not opened).", "source": "https://japantimes.co.jp/opinion/2011/12/04/editorials/five-million-people", "year": 2011, "verified": false},
+        {"claim": "No study of get-home bags or their effect was found; The Prepared and Ready.gov recommend them without evidence (from the step 2 longlist).", "source": "https://theprepared.com/bug-out-bags/guides/bug-out-bag-list/", "year": 2026, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Costs about $16 a year per commuter and returns about a cent on the dollar. Worth it only for someone with a long commute on a single transit line in an earthquake city, and then mostly for the shoes."
+    },
+    {
+      "id": "travel-documents-keys",
+      "name": "Valid passport and spare keys",
+      "spec": "Keep each household member's passport valid with at least six months to run (renew adult passports in year nine) and store them where the grab list says. Have two spare house keys and one spare car key cut: one set in the go-bag, one with the pre-arranged host or a neighbour.",
+      "fromLonglistRows": [95],
+      "scalesWith": "person",
+      "unit": "valid passport per person, with a share of the household's spare keys",
+      "price": {
+        "usdPerUnit": {"lo": 35, "mid": 135, "hi": 190, "tag": "guess", "basis": "US adult passport book $130 to renew and $165 first time; passport card $30 and $65 (read on Wikipedia's infobox, https://en.wikipedia.org/wiki/United_States_passport; the State Department fee page refused the fetch). House key copies a few dollars each; a modern car key $50-300 shared across the household (not checked)."},
+        "product": "US passport book renewal ($130) plus key copies",
+        "source": "https://en.wikipedia.org/wiki/United_States_passport",
+        "verified": false
+      },
+      "lifeYears": {"lo": 5, "mid": 10, "hi": 10, "tag": "data", "basis": "Adult passports are valid for ten years, children's for five (https://en.wikipedia.org/wiki/United_States_passport)."},
+      "setupHours": {"lo": 1, "mid": 2, "hi": 4, "tag": "guess", "basis": "Photo, form, post office or online renewal; a trip to the key cutter."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Check expiry dates once a year."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 5, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0.2, "mid": 0.7, "hi": 1, "tag": "guess", "basis": "183 million US passports were in circulation in 2025, a little over half the population; for those holders travel pays for the document and the preparedness act is only renewing before it lapses. For someone who never travels abroad the share is near zero. Spare keys pay for themselves the first time someone is locked out."},
+      "volumeLitresPerUnit": 0.1,
+      "reliability": {"lo": 0.8, "mid": 0.9, "hi": 0.98, "tag": "guess", "basis": "Found and grabbed when leaving."},
+      "lateBuyClass": "none",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "other",
+          "description": "Makes leaving the country possible at short notice in the few scenarios where that is the escape (nuclear war, civil conflict, a severe pandemic before borders close, a currency crisis). Passports take weeks to issue and consular services jam in a crisis. For a US household nearly all relocation is domestic and needs no passport; within the Schengen area or Mercosur an identity card serves. Suggested engine effect of type leave: feasibility gain 0.05 (0-0.25) in those hazards only.",
+          "suggestedEngineEffect": {
+            "type": "leave",
+            "hazards": ["nuclearFar", "nuclearNear", "civilUnrest", "bankingCrisis", "pandemicSevere"],
+            "feasible": {"lo": 0, "mid": 0.05, "hi": 0.25, "tag": "guess", "basis": "No data. The gain is the chance that going abroad is both the best option and open, times the chance the household lacked a valid passport."}
+          }
+        },
+        {"type": "other", "description": "Proof of identity and address speeds hotel check-in, aid registration, insurance claims and re-entry to a closed zone; a spare key lets a second adult drive a second car or get back in. No measured effect; too small to give a fraction."}
+      ],
+      "evidence": [
+        {"claim": "US passport fees: book $165 first time and $130 renewal, card $65 and $30; adult validity ten years; 183 million in circulation in 2025.", "source": "https://en.wikipedia.org/wiki/United_States_passport", "year": 2025, "verified": true},
+        {"claim": "Samotsvety's 2022 estimate for London put the chance of failing to escape a nuclear strike, given warning signs, at 25% (from the step 2 prior-art report); nothing on the role of documents was found.", "source": "https://forum.effectivealtruism.org/posts/KRFXjCqqfGQAYirm5", "year": 2022, "verified": false}
+      ],
+      "confidence": "guess",
+      "notes": "Value comes almost wholly from tail hazards and from the reader's own probability that leaving the country would be right. Report the break-even probability, not a ratio."
+    },
+    {
+      "id": "evacuation-tent",
+      "name": "Small tent or tarp for outdoor shelter",
+      "spec": "A freestanding two- or three-person tent with flysheet, or at least a 3 by 4 metre tarp with cord and pegs, used with the sleeping bags and mats of the warmth entry: for sleeping in the garden, at a relative's or at a campsite when the house is unsafe and rooms are full or far away.",
+      "fromLonglistRows": [26],
+      "scalesWith": "household",
+      "unit": "tent for up to three people",
+      "price": {
+        "usdPerUnit": {"lo": 20, "mid": 100, "hi": 180, "tag": "derived", "basis": "Kelty Discovery Trail 2-Person Tent $129.95, read on the retailer's page on 19 Nov 2026 (https://www.kitterytradingpost.com/kelty-discovery-trail-2-person-tent/). Budget dome tents and tarps cost less (not checked), so the middle is set below the price read."},
+        "product": "Kelty Discovery Trail 2-Person Tent ($129.95); a budget dome tent or a tarp serves",
+        "source": "https://www.kitterytradingpost.com/kelty-discovery-trail-2-person-tent/",
+        "verified": true
+      },
+      "lifeYears": {"lo": 6, "mid": 10, "hi": 20, "tag": "guess", "basis": "Stored dry and rarely used."},
+      "setupHours": {"lo": 0.5, "mid": 1, "hi": 2, "tag": "guess", "basis": "Buy it and pitch it once."},
+      "upkeepHoursPerYear": {"lo": 0, "mid": 0.1, "hi": 0.3, "tag": "guess", "basis": "Check it now and then."},
+      "upkeepUsdPerYear": {"lo": 0, "mid": 0, "hi": 3, "tag": "guess", "basis": "None."},
+      "everydayShare": {"lo": 0.05, "mid": 0.3, "hi": 0.8, "tag": "guess", "basis": "High for households that camp, near zero for the rest."},
+      "volumeLitresPerUnit": 12,
+      "reliability": {"lo": 0.7, "mid": 0.85, "hi": 0.95, "tag": "guess", "basis": "Complete, findable and usable in the weather on the day."},
+      "lateBuyClass": "staple",
+      "requires": [],
+      "conditions": [],
+      "effects": [
+        {
+          "type": "reduce",
+          "target": "displacement",
+          "on": "hardship",
+          "hazards": ["earthquake"],
+          "fractionRemoved": {
+            "lo": 0.01,
+            "mid": 0.06,
+            "hi": 0.2,
+            "tag": "guess",
+            "basis": "After a damaging earthquake many households whose homes still stand sleep outside nearby for days (from memory of Northridge and Christchurch; no source opened). For those with no host close by, perhaps a fifth, a tent replaces a hotel or a long drive: it saves most of the $50 money cost and adds discomfort, a net $30 of the $90 day. 0.2 x 0.33 is about 6% for the first week or two in mild weather."
+          },
+          "adherence": {"lo": 0.3, "mid": 0.5, "hi": 0.8, "tag": "guess", "basis": "Weather, security and willingness to camp."},
+          "notes": "Hardship only."
+        },
+        {
+          "type": "reduce",
+          "target": "displacement",
+          "on": "hardship",
+          "hazards": ["wildfire", "hurricane", "flood", "nuclearFar", "gridLong", "civilUnrest"],
+          "fractionRemoved": {
+            "lo": 0,
+            "mid": 0.01,
+            "hi": 0.04,
+            "tag": "guess",
+            "basis": "Campgrounds and vacation homes took 8% of San Diego's 2007 fire evacuees, mostly people with caravans or cabins; a tent adds a cheap option for a few households when rooms are sold out."
+          },
+          "adherence": {"lo": 0.2, "mid": 0.3, "hi": 0.6, "tag": "guess", "basis": "Most people who can reach a bed will not camp."},
+          "notes": "Hardship only."
+        },
+        {"type": "other", "description": "This is the same object as the warmth group's indoor-tent entry. One tent serves both purposes; merge the two entries and keep both effects."}
+      ],
+      "evidence": [
+        {"claim": "2007 San Diego wildfires: evacuees went to hotels or motels (11%), campgrounds or vacation homes (8%) or public shelters (5%), the rest to friends and family.", "source": "https://par.nsf.gov/servlets/purl/10550364", "year": 2024, "verified": true},
+        {"claim": "Kelty Discovery Trail 2-Person Tent, $129.95.", "source": "https://www.kitterytradingpost.com/kelty-discovery-trail-2-person-tent/", "year": 2026, "verified": true}
+      ],
+      "confidence": "guess",
+      "notes": "Weak on its own; it earns a place only if the indoor-warmth use carries it or the household camps anyway."
+    }
+  ],
+  "excluded": [
+    {"what": "Row 91: change of clothes, sturdy shoes, rain gear, hat", "reason": "Already owned. Folded into the go-bag (old closed shoes, warm layer, poncho) and the get-home bag (walking shoes) at no price."},
+    {"what": "Arranging in advance a place to stay with friends or family (part of row 27)", "reason": "Folded into the evacuation plan; it is that entry's main source of value."},
+    {"what": "Premade '72-hour' backpacks ($25-40 for one person)", "reason": "Contents read at one retailer are too thin to change anything: one food bar, 0.75 litres of water, a light stick, no torch, charger or documents. Used only as the price floor for the go-bag."},
+    {"what": "The Prepared's full level-1 bug-out bag ($400-1,100, 20 lb)", "reason": "Maximal rather than sensible; its filter, radio, tarp, cordage and field knife duplicate other entries or serve wilderness travel, not a drive to a relative's house."},
+    {"what": "Row 93: vehicle servicing and winter tyres", "reason": "Ordinary car upkeep with everyday justification; not a preparedness purchase."},
+    {"what": "Row 93: tow strap and window-breaker tool", "reason": "No evidence found on either; cheap enough to add to the car kit without changing its numbers."},
+    {"what": "Row 94: everyday carry", "reason": "No distinct item beyond the get-home bag."},
+    {"what": "Deaths from failing or delaying to evacuate, as a baseline risk", "reason": "Belongs to the hazard files as trauma exposures. This file supplies only the fractions that items remove and the anchors used: Camp Fire 85 deaths in about 38,000 residents; Katrina about 1% of those exposed to flooding; Australian bushfires 48% of deaths during late evacuation."}
+  ],
+  "blockedSources": [
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC3608616/: Nomura et al. on Fukushima care-home evacuation (captcha); read on the PLOS site instead, without its tables of deaths and person-years",
+    "https://pubmed.ncbi.nlm.nih.gov/21885350/ , /26359666/ , /19187485/: PubMed demanded cookies; abstracts of Dosa 2012, Murakami 2015 and Jonkman 2009 read through the Europe PMC API. Dosa's wording on evacuation and 90-day death (2.7% and 5.3%) stayed ambiguous between a range of increases and a from-to change",
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC1522113/: Brodie et al. 2006, Katrina evacuees in Houston: reasons for not leaving (no car), share without medication; not obtained (PMC blocked, mirror returned an empty page)",
+    "https://link.springer.com/doi/10.1007/s11069-011-9715-x and https://core.ac.uk/download/79649316.pdf (403): Lindell, Kang and Prater 2011 on Hurricane Lili: preparation times by task, cost per day, duration; only a secondary citation of the $88 a day was read",
+    "Lindell, Sorensen, Baker and Lehman 2020, Transportation Research Part D 85: hurricane evacuation preparation-time distributions; no open copy found",
+    "https://www.cambridge.org/core/journals/disaster-medicine-and-public-health-preparedness/article/reflection-on-lessons-learned-an-analysis-of-the-adverse-outcomes-observed-during-the-hurricane-rita-evacuation/573A0EAE07C980BA0A97D4953174A33F: abstract only; ages and causes of the Rita evacuation deaths taken from Wikipedia",
+    "https://research.fs.usda.gov/download/treesearch/69107.pdf (403): share of households in 16 wildfire-prone communities with a go-bag or plan",
+    "https://www.arch.tamu.edu/app/uploads/2021/11/CBHES-Behavior-Survey-Report.pdf (404): Hurricane Harvey evacuation duration and household cost by type of accommodation",
+    "https://www.preventionweb.net/quick/81750 (403): Urban Institute analysis of Household Pulse hardships among displaced adults (food shortage, isolation, scams)",
+    "https://www.nhtsa.gov/press-releases/nhtsa-estimates-39345-traffic-fatalities-2024 (403): 2024 road fatality rate; the 1.19-1.20 per 100 million vehicle-miles is from a search snippet",
+    "https://www.federalregister.gov/documents/2026/09/10/2026-18439/maximum-per-diem-reimbursement-rates-for-the-continental-united-states-conus and https://www.gsa.gov/travel/plan-book/per-diem-rates: fiscal 2027 standard per diem ($113 lodging, $68 meals) seen only in search snippets",
+    "https://travel.state.gov/content/travel/en/passports/how-apply/fees.html (403): passport fees; taken from Wikipedia",
+    "https://www.npr.org/2017/09/08/549536604/as-hurricane-irma-nears-gasoline-is-in-short-supply-for-floridians (timeout) and https://money.cnn.com/2017/09/08/investing/gas-shortage-florida-hurricane-irma-miami/index.html (503): pre-landfall fuel outages by city",
+    "https://www.npr.org/2024/10/29/nx-s1-5169937/hurricane-evacuations-are-about-5-times-more-expensive-than-20-years-ago (timeout): recent household evacuation costs",
+    "https://www.hsph.harvard.edu/horp/wp-content/uploads/sites/94/2012/09/WP20HighRiskHurricane.pdf (moved): Harvard hurricane-readiness survey; figures taken from an Insurance Journal summary",
+    "https://readyamerica.com/?p=17529 (503), https://no.co/gb40 (403), https://www.basspro.com/shop/en/noco-genius-boost-plus-gb40-jump-starter-power-pack-2217938 (403), https://www.harborfreight.com/ (403): go-bag and car-kit prices",
+    "Whitehead 2003 (Ocean and Coastal Management) and Mozumder and Vasquez 2015 (Natural Hazards): household evacuation cost of $211-292 and $194 to over $300 seen only in search snippets and not used in the arithmetic"
+  ],
+  "openQuestions": [
+    "The engine has an effect of type leave (feasibility gain, cost cut) that the brief's schema lacks. Three entries carry suggested values for it inside an 'other' effect, under suggestedEngineEffect.",
+    "Reduce effects here carry an extra field 'on' (hardship or mortality), matching the engine. Without it the mechanical translation would apply a hardship fraction to deaths as well.",
+    "The go-bag and the plan act on the first days or weeks of a displacement, but a reduce effect applies to every day. The fractions given are averaged down for that; the unaveraged figures are in fractionRemovedFirst3Days and fractionRemovedFirst30Days. Which is right depends on how long the hazard files make displacement windows.",
+    "The trauma fractions assume the hazard files put deaths of people caught in the fire, surge or flood on the trauma channel. If those deaths are modelled elsewhere, or are ended by the leave option, the fractions need re-pointing.",
+    "The displacement curve and each hazard's leave cost value the same thing from two sides and should agree: day 2 here is $90 a person, of which about $50 is money.",
+    "Late-buy class staple is used for the go-bag to mean 'can be packed from the cupboard given half a day's warning'. A hazard's staple probability describes shops, so it understates this.",
+    "The model has no state for being away from home when an event starts, so the get-home bag's value is supplied as a dollar figure rather than through a need.",
+    "Household Pulse counts 0.2% of adults a year as displaced and never returned. Whether that is displacement or migration decides a large share of total displacement harm; the curve tapers to $15 a day after six months so that it is not charged at the full rate indefinitely.",
+    "The evacuation-tent entry and the warmth group's indoor-tent are one object, and the go-bag's power bank and headlamp overlap the power-light group's. Merge or bundle.",
+    "No study measures whether a packed bag or a written plan brings departure forward. Two US wildfire surveys suggest not. One survey question after the next large evacuation (was a bag packed beforehand; minutes from decision to departure) would replace the central guess in this file.",
+    "Candidates not researched: a pet carrier and pet plan (27% of would-be stayers cite pets), a roof-escape tool for homes in surge zones, and checking that home insurance includes additional living expenses."
+  ]
+}
