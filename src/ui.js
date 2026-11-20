@@ -1,7 +1,7 @@
 // The page. Assumes the engine (rank, robustness, defaultSettings) and DATA
 // are in scope: tools/build-page.mjs puts them in the same script.
 
-const STORE = 'preparedness-settings-v1';
+const STORE = 'preparedness-settings-v2';
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -23,9 +23,9 @@ const money = (x) => {
   const d = a >= 100 ? 0 : a >= 10 ? 1 : 2;
   return (x < 0 ? '−$' : '$') + a.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
 };
-const whole = (x) => '$' + Math.round(x).toLocaleString('en-US');
+const whole = (x) => (x < 0 ? '−$' : '$') + Math.round(Math.abs(x)).toLocaleString('en-US');
 const num = (x, d = 1) => x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
-const ratioText = (x) => (x === Infinity ? '∞' : x >= 100 ? Math.round(x).toLocaleString('en-US') : x >= 10 ? num(x, 0) : num(x, 1));
+const ratioText = (x) => (x === Infinity ? '∞' : x >= 100 ? Math.round(x).toLocaleString('en-US') : x >= 10 ? num(x, 0) : num(x, x < 0.1 && x > -0.1 ? 2 : 1));
 const pct = (p) => {
   const x = 100 * p;
   if (x === 0) return '0';
@@ -34,6 +34,8 @@ const pct = (p) => {
 
 const ITEM = Object.fromEntries(DATA.items.map((it) => [it.id, it]));
 const HAZARD_LABEL = (id) => (DATA.hazards[id] && DATA.hazards[id].label) || id;
+const AI = DATA.ai || null;
+const CUSTOM_YEARS = [2028, 2030, 2035];
 
 // ---- controls ----
 
@@ -45,7 +47,7 @@ const HOUSEHOLD = [
   ['onMedication', 'People on daily prescription medicine'],
   ['criticalDrug', '…whose medicine is dangerous to miss'],
   ['powerDependent', 'People who depend on a powered medical device'],
-  ['infants', 'Infants'],
+  ['infants', 'Infants (counted among the children)'],
   ['pets', 'Pets'],
 ];
 const TICKS = [
@@ -56,13 +58,26 @@ const TICKS = [
   ['wildfire', 'Wildfire zone'],
   ['flood', 'Flood zone'],
 ];
+const HOME = ['cooking', 'heating', 'airConditioning', 'pumpedWater', 'car'];
 
 function controls() {
-  const sel = (id, label, options, value) => `<div class="field"><label for="${id}">${label}</label><select id="${id}">${options.map(([v, t]) => `<option value="${v}"${String(v) === String(value) ? ' selected' : ''}>${t}</option>`).join('')}</select></div>`;
-  const numf = (id, label, value, step = 1) => `<div class="field"><label for="${id}">${label}</label><input type="number" id="${id}" min="0" step="${step}" value="${value}"></div>`;
+  const sel = (id, label, options, value) => `<div class="field"><label for="${id}">${label}</label><select id="${id}">${options.map(([v, t]) => `<option value="${v}"${String(v) === String(value) ? ' selected' : ''}>${esc(t)}</option>`).join('')}</select></div>`;
+  const numf = (id, label, value, step = 1, max = '') => `<div class="field"><label for="${id}">${label}</label><input type="number" id="${id}" min="0"${max !== '' ? ` max="${max}"` : ''} step="${step}" value="${value}"></div>`;
   const chk = (id, label, on) => `<div class="field check"><input type="checkbox" id="${id}"${on ? ' checked' : ''}><label for="${id}">${label}</label></div>`;
   const s = settings;
   const p = s.parameters || {};
+  const ai = s.ai || {};
+  const custom = Object.fromEntries((ai.custom || []).map((c) => [c.year, c.p]));
+  const aiPanel = !AI ? '' : `
+    <div class="panel"><h3>Artificial intelligence</h3>
+      ${sel('ai-timeline', 'When AGI arrives', [['none', 'Leave AI out'], ...Object.entries(AI.timelines).map(([k, v]) => [k, v.label]), ['custom', 'My own numbers']], ai.timeline || 'none')}
+      <div id="ai-custom"${ai.timeline === 'custom' ? '' : ' style="display:none"'}>
+        ${CUSTOM_YEARS.map((y) => numf(`ai-p-${y}`, `Chance of AGI by the end of ${y} (%)`, custom[y] !== undefined ? Math.round(1000 * custom[y]) / 10 : '', 1, 100)).join('')}
+      </div>
+      <div class="field"><label for="ai-concern">How concerned you are</label><span class="range"><span class="meta">sceptic</span><input type="range" id="ai-concern" min="0" max="100" step="5" value="${Math.round(100 * (ai.concern === undefined ? 0.5 : ai.concern))}"><span class="meta">very</span></span></div>
+      ${numf('ai-horizon', 'Years you are planning for', ai.horizonYears || AI.horizonYears, 1, 30)}
+      <div class="meta" id="ai-note"></div>
+    </div>`;
   $('controls').innerHTML = `
   <div class="panels">
     <div class="panel"><h3>Household</h3>
@@ -76,12 +91,12 @@ function controls() {
       ${chk('airConditioning', 'Air conditioning', s.airConditioning)}
       ${chk('pumpedWater', 'Tap water needs an electric pump', s.pumpedWater)}
       ${chk('car', 'Car', s.car)}
-    </div>
-    <div class="panel"><h3>Where you live</h3>
+      <h3 style="margin-top:10px">Where you live</h3>
       ${TICKS.map(([k, label]) => chk(`tick-${k}`, label, s.ticks[k])).join('')}
     </div>
+    ${aiPanel}
     <div class="panel"><h3>Values</h3>
-      ${sel('outlook', 'Risk outlook', Object.entries(DATA.outlooks).map(([k, v]) => [k, v.label]), s.outlook)}
+      ${sel('outlook', 'Other risks', Object.entries(DATA.outlooks).map(([k, v]) => [k, v.label]), s.outlook)}
       ${numf('p-micromort', 'A one-in-a-million risk of death is worth ($)', p.micromortValueUsd ?? '', 0.5)}
       ${numf('p-time', 'An hour of your time is worth ($)', p.timeValueUsdPerHour ?? '', 1)}
       ${numf('budget', 'Budget, upfront ($)', s.budget ?? '', 50)}
@@ -89,7 +104,7 @@ function controls() {
     </div>
   </div>
   <details class="panel" id="haz-panel"${s.showHazards ? ' open' : ''}>
-    <summary>Annual probabilities (edit any)</summary>
+    <summary>Yearly probabilities (edit any)</summary>
     <div class="hazards" id="hazards"></div>
     <div class="field" style="margin-top:8px"><button type="button" id="copy-probs">Copy these numbers</button><input type="text" id="probs-text" readonly style="flex:1;display:none"></div>
   </details>`;
@@ -97,7 +112,7 @@ function controls() {
 
 function hazardInputs() {
   const live = Object.fromEntries(result.hazards.map((h) => [h.id, h.p]));
-  $('hazards').innerHTML = Object.keys(DATA.hazards).map((id) => {
+  $('hazards').innerHTML = Object.keys(DATA.hazards).filter((id) => !DATA.hazards[id].everyday).map((id) => {
     const on = id in live;
     const custom = settings.probabilities && settings.probabilities[id] !== undefined;
     const value = on ? pct(live[id]).replace(/,/g, '') : '';
@@ -118,6 +133,18 @@ function readControls() {
   s.parameters.timeValueUsdPerHour = opt('p-time');
   s.budget = opt('budget');
   s.showHazards = $('haz-panel').open;
+  if (AI) {
+    const points = CUSTOM_YEARS.map((y) => ({ year: y, p: opt(`ai-p-${y}`) })).filter((c) => c.p !== undefined).map((c) => ({ year: c.year, p: Math.min(1, c.p / 100) }));
+    // Later years cannot be less likely than earlier ones.
+    for (let i = 1; i < points.length; i++) points[i].p = Math.max(points[i].p, points[i - 1].p);
+    s.ai = {
+      timeline: $('ai-timeline').value, custom: points,
+      concern: Number($('ai-concern').value) / 100,
+      horizonYears: Math.max(1, Math.min(30, Math.round(opt('ai-horizon') || AI.horizonYears))),
+    };
+    if (s.ai.timeline === 'custom' && !points.length) s.ai.timeline = 'none';
+    $('ai-custom').style.display = $('ai-timeline').value === 'custom' ? '' : 'none';
+  }
 }
 
 function save() {
@@ -137,7 +164,7 @@ function detail(e) {
   const parts = [];
   for (const x of e.items) {
     const it = ITEM[x.id];
-    parts.push(`<p><b>${esc(it.name)}.</b> ${esc(it.spec || '')}${it.units && x.units ? ` Quantity: ${num(x.units, 0)} ${esc(it.units)}.` : ''} <span class="tag tag-${it.confidence || 'guess'}">${it.confidence || 'guess'}</span></p>`);
+    parts.push(`<p><b>${esc(it.name)}.</b> ${esc(it.spec || '')} <span class="tag tag-${it.confidence || 'guess'}">${it.confidence || 'guess'}</span></p>`);
     if (it.note) parts.push(`<p>${esc(it.note)}</p>`);
   }
   const total = e.byHazard.reduce((s, h) => s + Math.max(0, h.value), 0);
@@ -145,8 +172,10 @@ function detail(e) {
     parts.push('<p>Where the value comes from: ' + e.byHazard.filter((h) => h.value > 0.005 * total).slice(0, 6)
       .map((h) => `${esc(HAZARD_LABEL(h.id))} ${Math.round(100 * h.value / total)}%`).join(', ') + '.</p>');
   }
-  if (e.breakEven && e.breakEven.probability > 0 && e.byHazard[0].value > 0.5 * e.valueUsd) {
-    parts.push(`<p>Pays for itself if the yearly chance of “${esc(HAZARD_LABEL(e.breakEven.hazard))}” is above ${pct(e.breakEven.probability)}%. You have it at ${pct(e.breakEven.current)}%.</p>`);
+  const be = e.breakEven;
+  if (be && !DATA.hazards[be.hazard].everyday && e.byHazard[0].value > 0.5 * e.valueUsd) {
+    if (be.probability <= 0) parts.push(`<p>Pays for itself even without “${esc(HAZARD_LABEL(be.hazard))}”.</p>`);
+    else if (be.probability <= 1) parts.push(`<p>Pays for itself if the yearly chance of “${esc(HAZARD_LABEL(be.hazard))}” is above ${pct(be.probability)}%. It is set at ${pct(be.current)}%.</p>`);
   }
   if (e.setupHours > 0) parts.push(`<p>Time to set up: ${num(e.setupHours, 1)} hours, counted in the yearly cost.</p>`);
   const src = e.items.flatMap((x) => ITEM[x.id].sources || []);
@@ -159,8 +188,6 @@ function detail(e) {
 function render() {
   const r = result;
   const v = r.micromortValueUsd;
-  const un = r.harm.unprepared;
-  const start = r.harm.start;
   const budget = settings.budget;
   let cutoff = r.entries.findIndex((e) => !(e.ratio > 1));
   if (cutoff < 0) cutoff = r.entries.length;
@@ -175,11 +202,15 @@ function render() {
   const avertedM = picked.reduce((s, e) => s + e.micromorts, 0);
   const upfront = picked.length ? picked[picked.length - 1].cumulativeUpfrontUsd : 0;
   const annual = picked.length ? picked[picked.length - 1].cumulativeAnnualUsd : 0;
-  const totalHarm = un.usd + v * un.mm;
-  const share = totalHarm > 0 ? 100 * (averted$ + v * avertedM + (un.usd - start.usd) + v * (un.mm - start.mm)) / totalHarm : 0;
 
-  $('summary').innerHTML = `Unprepared, this household can expect harm worth <b>${whole(totalHarm)} a year</b> from the events modelled: ${whole(un.usd)} of hardship and loss, and ${num(un.mm, 0)} micromorts (a ${num(un.mm / 1e4, 2)}% yearly chance of death across the household). `
-    + `The ${picked.length} entries above the line cost <b>${whole(upfront)} upfront</b> (${whole(annual)} a year, all in) and avert about <b>${Math.round(share)}%</b> of that harm.`;
+  $('summary').innerHTML = picked.length
+    ? `The <b>${picked.length} entries above the line</b> cost <b>${whole(upfront)} upfront</b>, or ${whole(annual)} a year with upkeep and your time. Each year they avert, in expectation, <b>${whole(averted$)} of hardship and loss and ${num(avertedM, avertedM >= 10 ? 0 : 1)} micromorts</b>: worth ${whole(averted$ + v * avertedM)} in all, at ${money(v)} per micromort.`
+    : 'Nothing on the list pays for itself at these settings.';
+  if (AI) {
+    const on = settings.ai && settings.ai.timeline && settings.ai.timeline !== 'none';
+    $('ai-note').textContent = !on ? 'The probabilities below are base rates, with AI left out.'
+      : `The probabilities below now reflect your timeline.${r.survival < 0.995 ? ` Every value is scaled by ${num(r.survival, 2)}: the chance, over your horizon, that no existential catastrophe has made preparation moot.` : ''}`;
+  }
 
   const owned = Object.entries(settings.owned || {}).filter(([id, lv]) => lv > 0 && ITEM[id]);
   $('owned').innerHTML = owned.length
@@ -203,7 +234,7 @@ function render() {
     const main = e.byHazard[0];
     const mainText = main && e.valueUsd > 0 && main.value > 0 ? `${esc(HAZARD_LABEL(main.id))} ${Math.round(100 * main.value / e.valueUsd)}%` : '';
     const s = sure && sure[i] ? `${Math.round(100 * sure[i].pAbove1)}%` : '…';
-    html += `<tr class="entry${i >= cutoff ? ' below' : ''}" data-key="${key}"><td class="cb"><input type="checkbox" data-own="${i}" title="I already have this"></td><td class="r">${i + 1}</td><td class="name" data-toggle="${key}">${entryName(e)}</td><td class="r">${whole(e.upfrontUsd)}</td><td class="r">${money(e.annualCostUsd)}</td><td class="r">${money(e.hardshipUsd)}</td><td class="r">${num(e.micromorts, e.micromorts >= 10 ? 0 : 2)}</td><td class="r"><span class="bar" style="width:${barw(e.ratio)}px"></span>${ratioText(e.ratio)}</td><td class="r">${s}</td><td>${mainText}</td></tr>`;
+    html += `<tr class="entry${i >= cutoff ? ' below' : ''}" data-key="${key}"><td class="cb"><input type="checkbox" data-own="${i}" title="I already have this"></td><td class="r">${i + 1}</td><td class="name" data-toggle="${key}">${entryName(e)}<div class="sub">${esc(ITEM[e.items[0].id].group || '')}</div></td><td class="r">${whole(e.upfrontUsd)}</td><td class="r">${money(e.annualCostUsd)}</td><td class="r">${money(e.hardshipUsd)}</td><td class="r">${num(e.micromorts, Math.abs(e.micromorts) >= 10 ? 0 : 2)}</td><td class="r"><span class="bar" style="width:${barw(e.ratio)}px"></span>${ratioText(e.ratio)}</td><td class="r">${s}</td><td>${mainText}</td></tr>`;
     if (open[key]) html += `<tr class="detail"><td colspan="10">${detail(e)}</td></tr>`;
   });
   html += '</tbody></table>';
@@ -231,7 +262,7 @@ function compute() {
   render();
   save();
   // The uncertainty pass runs in slices so the page stays responsive.
-  const N = 120, SLICE = 12;
+  const N = 40, SLICE = 2;
   const order = result.entries;
   const all = order.map(() => []);
   let done = 0;
@@ -245,13 +276,14 @@ function compute() {
       render();
     } else setTimeout(step, 0);
   };
-  setTimeout(step, 30);
+  setTimeout(step, 50);
 }
 
 function changed() {
   readControls();
+  $('summary').textContent = 'Working…';
   clearTimeout(timer);
-  timer = setTimeout(compute, 120);
+  timer = setTimeout(compute, 150);
 }
 
 $('controls').addEventListener('change', (ev) => {
@@ -260,11 +292,23 @@ $('controls').addEventListener('change', (ev) => {
     settings.probabilities = settings.probabilities || {};
     if (ev.target.value === '') delete settings.probabilities[hz];
     else settings.probabilities[hz] = Math.min(1, Math.max(0, Number(ev.target.value) / 100));
-  } else if (ev.target.id === 'outlook' || ev.target.id === 'location') {
+    changed();
+    return;
+  }
+  if (['outlook', 'location', 'ai-timeline', 'ai-concern', 'ai-horizon'].includes(ev.target.id) || ev.target.id.startsWith('ai-p-')) {
     settings.probabilities = {};
+  }
+  if (ev.target.id === 'location') {
+    // A new place brings its typical home; the reader then corrects it.
+    readControls();
+    const loc = DATA.locations[settings.location];
+    for (const k of HOME) if (loc.home && loc.home[k] !== undefined) settings[k] = loc.home[k];
+    if (loc.ticks) settings.ticks = { ...loc.ticks };
+    controls();
   }
   changed();
 });
+$('controls').addEventListener('input', (ev) => { if (ev.target.id === 'ai-concern') changed(); });
 $('controls').addEventListener('click', (ev) => {
   if (ev.target.id === 'reset') {
     settings = defaultSettings(DATA);
@@ -273,7 +317,7 @@ $('controls').addEventListener('click', (ev) => {
     compute();
   } else if (ev.target.id === 'copy-probs') {
     // The probabilities in use, as text: percent a year by hazard.
-    const text = JSON.stringify(Object.fromEntries(result.hazards.map((h) => [h.id, Number((100 * h.p).toPrecision(3))])));
+    const text = JSON.stringify(Object.fromEntries(result.hazards.filter((h) => !DATA.hazards[h.id].everyday).map((h) => [h.id, Number((100 * h.p).toPrecision(3))])));
     const box = $('probs-text');
     box.value = text;
     box.style.display = '';
