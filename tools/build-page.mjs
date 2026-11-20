@@ -48,6 +48,7 @@ ${css}</style>
 <body>
 <div id="controls"></div>
 <div class="summary" id="summary"></div>
+<div class="export" id="export"><button type="button" id="copy-list">Copy the list as text</button><button type="button" id="download-list">Download it</button><button type="button" id="copy-link">Copy a link to these settings</button></div>
 <div class="owned" id="owned"></div>
 <div class="meta">Click an entry for details. Tick what you already have and the rest is re-ranked.</div>
 <div class="table-wrap" id="output"></div>

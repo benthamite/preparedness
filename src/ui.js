@@ -11,7 +11,43 @@ try {
   if (saved && saved.version === DATA.version) settings = saved.settings;
 } catch (e) { /* storage unavailable: start from the defaults */ }
 
+// A shared link carries its settings after "#list=" in the address of the
+// note (or of this page when opened on its own), and takes precedence.
+const LINK_KEY = 'list=';
+function hostLocation() {
+  try { if (window.frameElement) return parent.location; } catch (e) { /* cross-origin parent */ }
+  return location;
+}
+function encodeSettings(x) {
+  const bytes = new TextEncoder().encode(JSON.stringify({ version: DATA.version, settings: x }));
+  return btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function decodeSettings(code) {
+  const b = atob(code.replace(/-/g, '+').replace(/_/g, '/'));
+  return JSON.parse(new TextDecoder().decode(Uint8Array.from(b, (c) => c.charCodeAt(0))));
+}
+try {
+  const hash = hostLocation().hash || '';
+  const at = hash.indexOf(LINK_KEY);
+  if (at >= 0) {
+    const shared = decodeSettings(hash.slice(at + LINK_KEY.length));
+    // Settings from an older version of the model are merged onto today's
+    // defaults, so fields it added get their default values.
+    settings = { ...defaultSettings(DATA), ...shared.settings };
+  }
+} catch (e) { /* a damaged link: keep the saved or default settings */ }
+
+// Once the reader changes anything, the address no longer describes the list,
+// so the settings are dropped from it; otherwise a reload would undo the change.
+function dropLink() {
+  try {
+    const L = hostLocation();
+    if (L.hash.includes(LINK_KEY)) (L === location ? history : parent.history).replaceState(null, '', L.pathname + L.search);
+  } catch (e) { /* nothing to drop */ }
+}
+
 let result = null;
+let settingsTouched = false;
 let sure = null;
 let open = {};
 let timer = null;
@@ -153,6 +189,7 @@ function readControls() {
 }
 
 function save() {
+  if (result && settingsTouched) dropLink();
   try { localStorage.setItem(STORE, JSON.stringify({ version: DATA.version, settings })); } catch (e) { /* ignore */ }
 }
 
@@ -188,6 +225,64 @@ function detail(e) {
     parts.push('<p>Sources: ' + src.slice(0, 6).map((u) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/, '').split('/')[0])}</a>`).join(', ') + '.</p>');
   }
   return parts.join('');
+}
+
+// The list as plain text (Markdown), for the reader to keep or to give to an
+// assistant: a fetched link shows only the default list, because the page
+// computes the list in the browser.
+function listText() {
+  const r = result;
+  const s = settings;
+  const h = s.household;
+  let cutoff = r.entries.findIndex((e) => !(e.ratio > 1));
+  if (cutoff < 0) cutoff = r.entries.length;
+  const people = HOUSEHOLD.filter(([k]) => h[k] > 0).map(([k, label]) => `${h[k]} × ${label.replace(/^…/, '')}`).join('; ');
+  const ticks = TICKS.filter(([k]) => s.ticks && s.ticks[k]).map(([, label]) => label.toLowerCase()).join(', ');
+  const timeline = !AI || !s.ai || s.ai.timeline === 'none' ? 'left out' : (AI.timelines && AI.timelines[s.ai.timeline] ? AI.timelines[s.ai.timeline].label : s.ai.timeline);
+  const name = (e) => e.items.map((x) => ITEM[x.id].name + (x.label ? ` (${x.label})` : '')).join(' + ');
+  const line = (e, i) => {
+    const specs = e.items.map((x) => ITEM[x.id].spec).filter(Boolean).join(' ');
+    const main = e.byHazard[0];
+    const forText = main && e.valueUsd > 0 && main.value > 0 ? `; mostly for: ${HAZARD_LABEL(main.id)}` : '';
+    return `${i + 1}. **${name(e)}**: ${whole(e.upfrontUsd)} upfront, ${money(e.annualCostUsd)} a year; benefit ÷ cost ${ratioText(e.ratio)}${forText}.${specs ? `\n   ${specs}` : ''}`;
+  };
+  const out = [
+    '# My preparedness list',
+    '',
+    `From ${hostLocation().origin}${hostLocation().pathname}. Each entry is valued given the ones above it, so buy in order.`,
+    '',
+    `- Household: ${people}`,
+    `- Location: ${DATA.locations[s.location] ? DATA.locations[s.location].label : s.location}; ${s.dwelling}${ticks ? `; ${ticks}` : ''}`,
+    `- Artificial intelligence: ${timeline}`,
+    '',
+    `## Worth buying or doing (${cutoff} entries, ${whole(cutoff ? r.entries[cutoff - 1].cumulativeUpfrontUsd : 0)} upfront)`,
+    '',
+    ...r.entries.slice(0, cutoff).map(line),
+    '',
+    '## Next in line (benefit below cost)',
+    '',
+    ...r.entries.slice(cutoff, cutoff + 10).map((e, j) => line(e, cutoff + j)),
+  ];
+  const owned = Object.entries(s.owned || {}).filter(([id, lv]) => lv > 0 && ITEM[id]);
+  if (owned.length) out.push('', '## Already have', '', ...owned.map(([id, lv]) => `- ${ITEM[id].name}${ITEM[id].ladder ? ` (${ITEM[id].ladder[lv - 1].label})` : ''}`));
+  out.push('', `Settings link: ${shareLink()}`, '');
+  return out.join('\n');
+}
+
+function shareLink() {
+  const L = hostLocation();
+  return `${L.origin}${L.pathname}#${LINK_KEY}${encodeSettings(settings)}`;
+}
+
+function flash(button, text) {
+  const old = button.textContent;
+  button.textContent = text;
+  setTimeout(() => { button.textContent = old; }, 1500);
+}
+
+function copy(text, button) {
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => flash(button, 'Copied'), () => flash(button, 'Copy failed'));
+  else flash(button, 'Copy failed');
 }
 
 function render() {
@@ -285,6 +380,7 @@ function compute() {
 }
 
 function changed() {
+  settingsTouched = true;
   readControls();
   $('summary').textContent = 'Working…';
   clearTimeout(timer);
@@ -317,6 +413,7 @@ $('controls').addEventListener('input', (ev) => { if (ev.target.id === 'ai-conce
 $('controls').addEventListener('click', (ev) => {
   if (ev.target.id === 'reset') {
     settings = defaultSettings(DATA);
+    settingsTouched = true;
     open = {};
     controls();
     compute();
@@ -341,12 +438,27 @@ $('output').addEventListener('change', (ev) => {
   if (i === undefined) return;
   settings.owned = settings.owned || {};
   for (const [id, lv] of result.entries[Number(i)].add) settings.owned[id] = Math.max(settings.owned[id] || 0, lv);
+  settingsTouched = true;
   compute();
+});
+$('export').addEventListener('click', (ev) => {
+  if (!result) return;
+  if (ev.target.id === 'copy-link') copy(shareLink(), ev.target);
+  else if (ev.target.id === 'copy-list') copy(listText(), ev.target);
+  else if (ev.target.id === 'download-list') {
+    const a = document.createElement('a');
+    a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(listText());
+    a.download = 'preparedness-list.md';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
 });
 $('owned').addEventListener('click', (ev) => {
   const id = ev.target.dataset && ev.target.dataset.unown;
   if (!id) return;
   delete settings.owned[id];
+  settingsTouched = true;
   compute();
 });
 
