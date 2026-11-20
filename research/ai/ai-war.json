@@ -137,7 +137,7 @@
       "survivableShare": {"lo": 0.5, "mid": 0.8, "hi": 0.95, "tag": "guess",
         "basis": "A war wide enough to reach Buenos Aires would be near the worst case, so a larger share than usual is beyond household help."},
       "evidence": [
-        {"claim": "Step 2 base rates, section 5: direct strike risk for Buenos Aires is judged about zero; exposure shifts to trade collapse and famine elsewhere.", "source": "/Users/pablostafforini/repos/preparedness/research/step2/base-rates.md", "year": 2026, "verified": true},
+        {"claim": "Step 2 base rates, section 5: direct strike risk for Buenos Aires is judged about zero; exposure shifts to trade collapse and famine elsewhere.", "source": "research/step2/base-rates.md", "year": 2026, "verified": true},
         {"claim": "MacAskill and Moorhouse: 'An industrial explosion could enable a world with dramatically larger nuclear stockpiles.'", "source": "https://www.forethought.org/research/preparing-for-the-intelligence-explosion", "year": 2025, "verified": true}
       ],
       "notes": "For practical purposes zero. All nuclear exposure for Buenos Aires belongs under nuclearFar."
@@ -268,7 +268,7 @@
         "basis": "Unrest of the 1989 and 2001 kind is survivable and stocks help directly."},
       "evidence": [
         {"claim": "December 2001: President De la Rúa declared a state of siege on 19 December and resigned the next day; deaths are reported as 39 (Wikipedia), 30 or fewer in other accounts; CELS counts five dead and 227 injured in Plaza de Mayo alone. Search snippets.", "source": "https://cels.org.ar/web/en/tag/december-19-20-2001", "year": 2001, "verified": false},
-        {"claim": "Step 2 base rates, section 7: Argentine deposit freezes in 1989 and 2001, about 4% a year.", "source": "/Users/pablostafforini/repos/preparedness/research/step2/base-rates.md", "year": 2026, "verified": true},
+        {"claim": "Step 2 base rates, section 7: Argentine deposit freezes in 1989 and 2001, about 4% a year.", "source": "research/step2/base-rates.md", "year": 2026, "verified": true},
         {"claim": "Narayanan and Kapoor: 'Diffusion occurs over decades, not years'.", "source": "https://www.normaltech.ai/p/ai-as-normal-technology", "year": 2025, "verified": true}
       ],
       "notes": "No source addresses AI and unrest in Argentina or Latin America. Every number here is my own guess from the country's record."

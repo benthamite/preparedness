@@ -23,7 +23,7 @@ directory given in your assignment:
 Then run the validator on your JSON file and fix every error it reports:
 
 ```
-node /Users/pablostafforini/repos/preparedness/tools/validate-research.mjs <path-to-json>
+node tools/validate-research.mjs <path-to-json>
 ```
 
 Write nothing else to disk. Do not run git commands that change anything.

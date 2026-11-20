@@ -47,5 +47,5 @@ To put the page on the site, build it into the site's static files, where the
 note's iframe expects it:
 
 ```
-node tools/build-page.mjs --out ~/repos/stafforini.com/static/images/preparedness-list.html
+node tools/build-page.mjs --out ../stafforini.com/static/images/preparedness-list.html
 ```

@@ -273,7 +273,7 @@
         }
       ],
       "evidence": [
-        {"claim": "The Prepared, the source of this row, itself rates antibiotic ointment as no better than petroleum jelly; no study of outcomes from holding these products was found.", "source": "/Users/pablostafforini/repos/preparedness/research/step2/item-longlist.md", "year": 2026, "verified": false}
+        {"claim": "The Prepared, the source of this row, itself rates antibiotic ointment as no better than petroleum jelly; no study of outcomes from holding these products was found.", "source": "research/step2/item-longlist.md", "year": 2026, "verified": false}
       ],
       "confidence": "guess",
       "notes": "Comfort only. Rank it on everyday use."
