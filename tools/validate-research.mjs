@@ -263,12 +263,52 @@ function validate(doc) {
     });
   }
 
+  // Kind "ai": how advanced AI changes hazard probabilities. See research/BRIEF-AI.md.
+  function ai(doc) {
+    const rates = doc.hazardRates;
+    if (rates !== undefined && !Array.isArray(rates)) err('hazardRates', 'must be an array');
+    (Array.isArray(rates) ? rates : []).forEach((r, i) => {
+      const p = `hazardRates[${i}]${isObj(r) && isStr(r.hazard) ? ` (${r.hazard})` : ''}`;
+      if (!isObj(r)) { err(p, 'must be an object'); return; }
+      if (!r.newHazard) oneOf(r.hazard, HAZARDS, `${p}.hazard`, 'hazard id (or set newHazard: true)');
+      else if (!isStr(r.hazard)) err(`${p}.hazard`, 'must be a non-empty string');
+      oneOf(r.location, LOCATIONS, `${p}.location`, 'location');
+      for (const k of ['baseline', 'now', 'transition', 'after']) Q(r[k], `${p}.${k}`, { max: 1 });
+      if (!isStr(r.mechanism)) err(`${p}.mechanism`, 'must be a non-empty string');
+      evidence(r.evidence, `${p}.evidence`, true);
+    });
+    const views = doc.views;
+    if (views !== undefined && !Array.isArray(views)) err('views', 'must be an array');
+    (Array.isArray(views) ? views : []).forEach((x, i) => {
+      const p = `views[${i}]`;
+      if (!isObj(x)) { err(p, 'must be an object'); return; }
+      for (const k of ['who', 'claim', 'source']) if (!isStr(x[k])) err(`${p}.${k}`, 'must be a non-empty string');
+      if (typeof x.verified !== 'boolean') err(`${p}.verified`, 'must be true or false');
+    });
+    const tl = doc.timelines;
+    if (tl !== undefined && !Array.isArray(tl)) err('timelines', 'must be an array');
+    (Array.isArray(tl) ? tl : []).forEach((x, i) => {
+      const p = `timelines[${i}]`;
+      if (!isObj(x)) { err(p, 'must be an object'); return; }
+      for (const k of ['id', 'label', 'source']) if (!isStr(x[k])) err(`${p}.${k}`, 'must be a non-empty string');
+      if (!Array.isArray(x.cumulative) || x.cumulative.length < 2) { err(`${p}.cumulative`, 'needs at least two {year, p} points'); return; }
+      let lastYear = 0, lastP = 0;
+      x.cumulative.forEach((c, j) => {
+        if (!isObj(c) || !Number.isInteger(c.year) || !isNum(c.p) || c.p < 0 || c.p > 1 || c.year <= lastYear || c.p < lastP) err(`${p}.cumulative[${j}]`, 'needs an increasing year and a non-decreasing p in [0, 1]');
+        else { lastYear = c.year; lastP = c.p; }
+      });
+    });
+    if (doc.parameters !== undefined) parameters(doc);
+    if (!rates && !tl && !views) err('root', 'needs hazardRates, timelines or views');
+  }
+
   if (!isObj(doc)) return ['root: must be a JSON object'];
   if (!isStr(doc.group)) err('group', 'must be a non-empty string');
   if (doc.kind === 'items') items(doc);
   else if (doc.kind === 'hazards') hazards(doc);
   else if (doc.kind === 'parameters') parameters(doc);
-  else err('kind', 'must be items, hazards or parameters');
+  else if (doc.kind === 'ai') ai(doc);
+  else err('kind', 'must be items, hazards, parameters or ai');
   strings(doc.blockedSources, 'blockedSources');
   strings(doc.openQuestions, 'openQuestions');
   return errors;
