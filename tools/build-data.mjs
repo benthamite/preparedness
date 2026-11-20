@@ -370,8 +370,10 @@ for (const [family, fields] of Object.entries(COUNTRY_FIELDS)) {
     if (config.places.presetCountries.includes(c.iso2)) continue;
     const e = (countries[c.iso2] ||= { name: listed.name, preset: listed.preset, families: [], values: {} });
     for (const field of fields) {
-      const q = (config.places.adjust[c.iso2] || {})[field] || c.values[field];
+      let q = c.values[field];
       if (!q) { warn(`country ${c.iso2}: ${field} missing`); continue; }
+      const fix = (config.places.adjust[c.iso2] || {})[field];
+      if (fix) { const f = fix.mid / q.mid; q = { lo: q.lo * f, mid: fix.mid, hi: q.hi * f, tag: q.tag, basis: `${q.basis} Adjusted: ${fix.reason}` }; }
       e.values[field] = T(q, /forecast|pessimistic|probability/.test(field) ? { max: 1 } : {});
     }
     e.families.push(family);

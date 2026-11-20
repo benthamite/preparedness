@@ -1,0 +1,431 @@
+{
+  "kind": "countries",
+  "group": "grid",
+  "method": "One conversion for every country, the one behind the Western Europe and Buenos Aires presets. Take unplanned SAIFI (interruptions per customer a year) and CAIDI (SAIDI / SAIFI) without major or exceptional events, for urban customers where a source gives them. Assume interruption lengths are log-normal with sigma 1.2 and mean equal to CAIDI, so the share lasting 4 hours or more is S4 = 1 - Phi((ln 4 - ln CAIDI + 0.72) / 1.2). Rate of long local outages = SAIFI x S4, times 0.9 where the figure is national (the AHS 2023 urban/all ratio for the United States); add a rate for same-day system-wide blackouts that the indices exclude (1.15% a year in Europe as in the preset, 0.3-1% elsewhere in the rich world, 0.5-5% in middle-income countries from each grid's record); probability = 1 - exp(-rate). The 4-hour threshold is what the Western Europe and Buenos Aires anchors used; applied to EIA's United States indices it also reproduces the AHS-based 0.11, so it is the conversion that puts all three anchors on one scale (at 6 hours the same indices give about half). Inputs: CEER Benchmarking Report 6.1 (2014-16 means, the Western Europe anchor's source) for 22 European countries; EIA for the United States; national regulators or utilities for Canada, Argentina, Brazil, Chile, Colombia, China, Indonesia and the Philippines; the World Bank Doing Business 2020 SAIDI and SAIFI (largest business city, 2018-19) for the rest and as a cross-check everywhere; Enterprise Surveys (share of firms with outages 2023-25, outages a month in older rounds) as a further check. Ranges divide and multiply the rate by 2 (good data), 2.5 or 3 (poor data). durationFactor is the mean length of a 4-hour-plus outage under the same log-normal at the country's CAIDI divided by the same at the preset's reference CAIDI (United States 2.0 h, Western Europe 0.83 h, Buenos Aires 1.9 h); it moves much less than CAIDI itself because every counted outage is already at least 4 hours long. Where the source covers only the largest city or old years, the range is wider.",
+  "anchors": [
+    {
+      "preset": "us",
+      "field": "localOutage.probability",
+      "reproduced": {"lo": 0.059, "mid": 0.113, "hi": 0.21, "tag": "derived", "basis": "EIA 2021-25 without major event days: SAIFI 1.02-1.09 (mean 1.06), CAIDI 116-124 min (2.0 h) (https://www.eia.gov/electricity/annual/html/epa_11_01.html). S4 = 12.0%, rate 0.127, plus 0.008 for system-wide blackouts (2003 Northeast), times 0.9 urban = 0.113."},
+      "comment": "Preset 0.11 (0.06-0.16) came from the AHS 2023 household survey (17.7% with a 6 h+ outage less 6.9% regional events). The SAIDI/SAIFI route gives 0.113, within 3%. At a 6-hour threshold the same indices would give 0.066: the survey shows far more long outages than a log-normal fitted to non-major-event indices implies, and the 4-hour threshold happens to absorb that gap."
+    },
+    {
+      "preset": "westernEurope",
+      "field": "localOutage.probability",
+      "reproduced": {"lo": 0.016, "mid": 0.0325, "hi": 0.065, "tag": "derived", "basis": "CEER 6.1 Tables 8 and 16, 2014-16 means, converted country by country (S4 from each country's own CAIDI, x0.9 urban, +1.15% blackouts) and weighted by population over the ten countries the preset used (CH, DE, DK, AT, IT, GB, FR, ES, PT, IE): 0.0325 (https://ceer.eu/wp-content/uploads/2024/04/C18-EQS-86-03_Benchmarking_Report_6.1.pdf)."},
+      "comment": "Preset 0.03 (0.012-0.07), pooled SAIDI 35 min and SAIFI 0.7. Converting per country instead of pooling gives 0.0325; over all 26 European countries that borrow this preset it is 0.042, because Poland, the Baltics and France sit above the pooled figure. The preset's basis calls its CEER figures 'including exceptional events', but the values it quotes (Germany 12.8, France 48.7, Italy 37.1 min) are from Tables 8 and 16, without exceptional events, which is the right choice for this hazard."
+    },
+    {
+      "preset": "buenosAires",
+      "field": "localOutage.probability",
+      "reproduced": {"lo": 0.1, "mid": 0.22, "hi": 0.45, "tag": "derived", "basis": "ENRE semester 57 (Sep 2024-Feb 2025): Edenor SAIFI 1.39 and SAIDI 3.58 h, Edesur 4.12 and 7.37 h (https://econojournal.com.ar/?p=120080). City comunas 0.7 and 4.2 interruptions a year (preset's ENRE semester 46 ratios), CAIDI 2.58 and 1.79 h, S4 16.7% and 10.2%: 11.0% and 34.9%, weighted 45/55 = 24.1%; +5% force majeure blackouts -7.5% heat-wave cuts = 21.6%."},
+      "comment": "Preset 0.25 (0.1-0.5). Same steps give 0.22; the preset rounded up to 0.25 because Edesur's other semester was worse (annual SAIDI 16.4 h in 2024). Within the range."
+    },
+    {
+      "preset": "us",
+      "field": "localOutage.durationFactor",
+      "reproduced": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "Reference CAIDI 2.0 h (EIA 2021-25 without major event days); mean length of a 4 h+ outage under the log-normal 8.5 h, against the preset's window median 8 h and 90th percentile 12 h."},
+      "comment": "1 by construction. The log-normal's conditional median (6.3 h) is a little below the preset's 8 h, which is a guess anchored on the same EIA CAIDI."
+    },
+    {
+      "preset": "westernEurope",
+      "field": "localOutage.durationFactor",
+      "reproduced": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "Reference CAIDI 0.83 h (CEER pooled 35 min / 0.7); mean length of a 4 h+ outage 7.1 h, conditional median 5.6 h, against the preset's median 6 h."},
+      "comment": "1 by construction; the preset's median agrees with the conversion."
+    },
+    {
+      "preset": "buenosAires",
+      "field": "localOutage.durationFactor",
+      "reproduced": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "Reference CAIDI 1.9 h (city comunas, frequency-weighted Edenor 2.58 h and Edesur 1.79 h); mean length of a 4 h+ outage 8.4 h, conditional median 6.2 h, against the preset's median 7.2 h."},
+      "comment": "1 by construction. The preset's long tail (99th percentile 5 days) rests on events, not on CAIDI, and the factor scales it unchanged."
+    }
+  ],
+  "countries": [
+    {
+      "iso2": "AU", "name": "Australia",
+      "values": {
+        "localOutage.probability": {"lo": 0.027, "mid": 0.065, "hi": 0.15, "tag": "derived", "basis": "Doing Business 2020, Sydney: SAIDI 1.0 h, SAIFI 0.6 (World Bank API, IC.ELC.SAID.XD.DB1619 and IC.ELC.SAIF.XD.DB1619, https://api.worldbank.org/v2/country/AUS/indicator/IC.ELC.SAIF.XD.DB1619?source=1). Urban SAIFI 0.9 and CAIDI 1.4 h, between that and AER urban-feeder targets (Powercor 0.72 and 57 min, search snippet): S4 7.0%, rate 0.063 + 0.004 = 0.065."},
+        "localOutage.durationFactor": {"lo": 0.65, "mid": 0.92, "hi": 1.4, "tag": "derived", "basis": "CAIDI 1.4 h against the United States' 2.0 h: mean 4 h+ outage 7.8 h against 8.5 h."}
+      },
+      "notes": "AER reports could not be loaded (timeouts), so no national unplanned SAIDI excluding major event days was read. Enterprise Surveys 2025: 57% of firms had an outage in the year, against 23% in the United States; a sign the figure may be low."
+    },
+    {
+      "iso2": "AT", "name": "Austria",
+      "values": {
+        "localOutage.probability": {"lo": 0.013, "mid": 0.025, "hi": 0.049, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 28 min, SAIFI 0.59, CAIDI 0.80 h (https://ceer.eu/wp-content/uploads/2024/04/C18-EQS-86-03_Benchmarking_Report_6.1.pdf). S4 2.6% x 0.9 = 0.014, + 0.0115 blackouts = 0.025."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 0.99, "hi": 1.5, "tag": "derived", "basis": "CAIDI 0.80 h against Western Europe's 0.83 h."}
+      },
+      "notes": "Doing Business 2020 Vienna: SAIDI 0.63 h, SAIFI 0.61. ACER total SAIDI 2021-23 (incl. planned) 0.6-1.3 h, about the 2016 level (https://aegis.acer.europa.eu/chest/dataitems/891/view)."
+    },
+    {
+      "iso2": "BE", "name": "Belgium",
+      "values": {
+        "localOutage.probability": {"lo": 0.011, "mid": 0.028, "hi": 0.068, "tag": "derived", "basis": "Not in CEER 6.1's tables. Doing Business 2020, Brussels: SAIDI 0.41 h, SAIFI 0.40, CAIDI 1.03 h (World Bank API, https://api.worldbank.org/v2/country/BEL/indicator/IC.ELC.SAID.XD.DB1619?source=1). S4 4.2%, rate 0.017 + 0.0115 = 0.028."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.04, "hi": 1.6, "tag": "derived", "basis": "CAIDI 1.03 h against 0.83 h."}
+      },
+      "notes": "Largest city only, 2018-19; range widened. ACER SAIDI 2021-24 incl. planned 0.17-1.24 h."
+    },
+    {
+      "iso2": "CA", "name": "Canada",
+      "values": {
+        "localOutage.probability": {"lo": 0.06, "mid": 0.14, "hi": 0.3, "tag": "derived", "basis": "Electricity Canada 2024, significant events excluded: SAIDI 5.14 h, SAIFI 2.44, CAIDI 2.10 h, national and including planned outages (https://www.electricity.ca/files/SE-Scorecard-2025-v2-FINAL.pdf). Urban SAIFI 1.5 (Toronto 1.48, Doing Business 2020): S4 12.8%, rate 0.19 + 0.004 = 0.18; lowered to 0.14 because Toronto's own CAIDI is 0.66 h."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.01, "hi": 1.5, "tag": "derived", "basis": "CAIDI 2.1 h against the United States' 2.0 h."}
+      },
+      "notes": "National SAIFI is more than twice the US figure, partly because Canada counts planned outages and uses a narrower significant-event exclusion. Doing Business 2020 Toronto: SAIDI 0.98 h, SAIFI 1.48."
+    },
+    {
+      "iso2": "CL", "name": "Chile",
+      "values": {
+        "localOutage.probability": {"lo": 0.1, "mid": 0.23, "hi": 0.48, "tag": "derived", "basis": "SEC data quoted in La Tercera (May 2024): national SAIDI averaged just under 13 h a year over five years, all causes (https://www.enel.cl/content/dam/enel-cl/conoce-enel/reforma-distribucion/20240525-La-Tercera-por-se-corta-la-luz.pdf); Doing Business 2020 Santiago: SAIDI 2.9 h, SAIFI 1.47. Urban SAIFI 1.8, CAIDI 2.1 h: S4 12.8%, rate 0.23, + 0.03 for system blackouts (February 2025 national blackout) = 0.23."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.03, "hi": 1.6, "tag": "derived", "basis": "CAIDI 2.1 h against Buenos Aires' 1.9 h."}
+      },
+      "notes": "Winter storms and snow that cut Santiago for days (2017, 2023, May and August 2024) belong to severeStorm, not here."
+    },
+    {
+      "iso2": "CO", "name": "Colombia",
+      "values": {
+        "localOutage.probability": {"lo": 0.15, "mid": 0.33, "hi": 0.6, "tag": "guess", "basis": "SSPD: national 2022 SAIDI below 27.2 h and SAIFI below 35.1, many short interruptions (https://superservicios.gov.co/sites/default/files/inline-files/Informe-de-Calidad-del-Servicio-de-Energia-2022.pdf); Enel Bogota 2023 about 8.6 h and 9.2 (search snippet); Doing Business 2020 Bogota 4.5 h, 3.8. Urban SAIFI 12, CAIDI 0.95 h: S4 3.6%, rate 0.43 + 0.01 = 0.36, rounded down because the log-normal tail is uncertain when most cuts are short."},
+        "localOutage.durationFactor": {"lo": 0.6, "mid": 0.9, "hi": 1.5, "tag": "derived", "basis": "CAIDI 0.95 h against 1.9 h gives 0.86."}
+      },
+      "notes": "Caribbean-coast cities (Air-e, Afinia) are far worse than Bogota and Medellin."
+    },
+    {
+      "iso2": "CR", "name": "Costa Rica",
+      "values": {
+        "localOutage.probability": {"lo": 0.04, "mid": 0.12, "hi": 0.35, "tag": "guess", "basis": "Doing Business 2020, San Jose: SAIDI 0.54 h, SAIFI 0.21 (rate 0.03) conflicts with Enterprise Surveys 2023: 51% of firms had an outage (https://api.worldbank.org/v2/country/CRI/indicator/IC.ELC.OUTG.ZS). Assumed SAIFI 1.5, CAIDI 2 h plus 2% for drought rationing (May 2024) gives 0.18; entered between the two."},
+        "localOutage.durationFactor": {"lo": 0.6, "mid": 1.0, "hi": 1.7, "tag": "guess", "basis": "No CAIDI beyond Doing Business (2.6 h, factor 1.1); taken as 1."}
+      },
+      "notes": "No regulator (ARESEP) figures read."
+    },
+    {
+      "iso2": "CZ", "name": "Czechia",
+      "values": {
+        "localOutage.probability": {"lo": 0.026, "mid": 0.052, "hi": 0.1, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 80 min, SAIFI 1.53, CAIDI 0.87 h (https://ceer.eu/wp-content/uploads/2024/04/C18-EQS-86-03_Benchmarking_Report_6.1.pdf). S4 3.1% x 0.9 = 0.042, + 0.0115 = 0.052."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.0, "hi": 1.5, "tag": "derived", "basis": "CAIDI 0.87 h against 0.83 h."}
+      },
+      "notes": "Doing Business 2020 Prague: SAIDI 0.48 h, SAIFI 0.35, so a Prague flat is perhaps half this."
+    },
+    {
+      "iso2": "DK", "name": "Denmark",
+      "values": {
+        "localOutage.probability": {"lo": 0.008, "mid": 0.017, "hi": 0.034, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 13.9 min, SAIFI 0.35, CAIDI 0.65 h (https://ceer.eu/wp-content/uploads/2024/04/C18-EQS-86-03_Benchmarking_Report_6.1.pdf). S4 1.75% x 0.9 = 0.006, + 0.0115 = 0.017."},
+        "localOutage.durationFactor": {"lo": 0.65, "mid": 0.96, "hi": 1.45, "tag": "derived", "basis": "CAIDI 0.65 h against 0.83 h."}
+      },
+      "notes": "Mostly the generic system-blackout allowance."
+    },
+    {
+      "iso2": "EE", "name": "Estonia",
+      "values": {
+        "localOutage.probability": {"lo": 0.025, "mid": 0.08, "hi": 0.2, "tag": "derived", "basis": "CEER 6.1 Tables 7/15 only (including exceptional events), 2014-16: SAIDI 145 min, SAIFI 1.13, CAIDI 2.1 h; storms removed by x0.85 SAIFI and x0.8 CAIDI (ratios from countries reporting both): 0.96, 1.7 h. S4 9.5% x 0.9 = 0.082, + 0.0115 = 0.094; mid lowered to 0.08 because Tallinn is far better (Doing Business 2020: 0.3 h, 0.18). Checker: 0.094 is the rate; as a probability it is 1 - exp(-0.093) = 0.089 before the judgment cut to 0.08, which is kept."},
+        "localOutage.durationFactor": {"lo": 0.75, "mid": 1.15, "hi": 1.8, "tag": "derived", "basis": "CAIDI 1.7 h against 0.83 h."}
+      },
+      "notes": "National figures are dominated by rural storm damage; ACER total SAIDI rose to 7 h in 2023 (storms)."
+    },
+    {
+      "iso2": "FI", "name": "Finland",
+      "values": {
+        "localOutage.probability": {"lo": 0.016, "mid": 0.039, "hi": 0.094, "tag": "derived", "basis": "CEER 6.1 Tables 7/15 (including exceptional events), 2014-16: SAIDI 97.5 min, SAIFI 1.89, CAIDI 0.86 h; storms removed (x0.85, x0.8): 1.60, 0.69 h. S4 2.0% x 0.9 = 0.028, + 0.0115 = 0.039."},
+        "localOutage.durationFactor": {"lo": 0.65, "mid": 0.97, "hi": 1.5, "tag": "derived", "basis": "CAIDI 0.69 h against 0.83 h."}
+      },
+      "notes": "Helsinki (Doing Business 2020): SAIDI 0.2 h, SAIFI 0.16; city flats are well below the national figure."
+    },
+    {
+      "iso2": "FR", "name": "France",
+      "values": {
+        "localOutage.probability": {"lo": 0.025, "mid": 0.05, "hi": 0.097, "tag": "derived", "basis": "CEER 6.1 Table 8: unplanned SAIDI without exceptional events 50 min (2014-16); CEER's French SAIFI (0.08) uses another definition, so SAIFI 0.55 long unplanned cuts per LV customer (2021-24, Enedis via https://selectra.info/energie/actualites/marche/coupure-electricite-france-vivez-vous-zone-haut-risque, which gives critere B 72.9 min in 2023). CAIDI 1.52 h, S4 8.0% x 0.9 = 0.040, + 0.0115 = 0.05. Checker: the cited Selectra page gives no long-cut frequency and no 0.55; it gives 2.08 cuts per customer in 2023 (the CRE mass-market indicator, which also counts short cuts of 1 s to 3 min) and 72.9 min. The SAIFI input is therefore unsourced. Figure kept because with SAIDI fixed at 50 min the result barely moves: SAIFI 0.4 gives 0.056, 0.8 gives 0.042, 1.0 gives 0.036, all inside the range."},
+        "localOutage.durationFactor": {"lo": 0.8, "mid": 1.13, "hi": 1.7, "tag": "derived", "basis": "CAIDI 1.52 h against 0.83 h. Checker: CAIDI rests on the unsourced SAIFI 0.55; at SAIFI 0.8 the factor is 1.04 and at 1.0 it is 1.00, near the low end of the range."}
+      },
+      "notes": "Doing Business 2020 Paris: SAIDI 0.35 h, SAIFI 0.29. The long-cut frequency is from a secondary source quoting Enedis."
+    },
+    {
+      "iso2": "DE", "name": "Germany",
+      "values": {
+        "localOutage.probability": {"lo": 0.007, "mid": 0.014, "hi": 0.035, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 12.6 min, SAIFI 0.55, CAIDI 0.38 h (https://ceer.eu/wp-content/uploads/2024/04/C18-EQS-86-03_Benchmarking_Report_6.1.pdf). S4 0.5% x 0.9 = 0.003, + 0.0115 = 0.014. High end raised for the Berlin cable and substation arson attacks of 2025-26 (recalled, not checked)."},
+        "localOutage.durationFactor": {"lo": 0.6, "mid": 0.89, "hi": 1.35, "tag": "derived", "basis": "CAIDI 0.38 h against 0.83 h."}
+      },
+      "notes": "Almost all of the figure is the generic blackout allowance. ACER SAIDI 2021-23 about 0.2 h. Doing Business 2020 Berlin: 0.25 h, 0.3."
+    },
+    {
+      "iso2": "GR", "name": "Greece",
+      "values": {
+        "localOutage.probability": {"lo": 0.025, "mid": 0.065, "hi": 0.13, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 94 min, SAIFI 1.56, CAIDI 1.0 h. S4 4.0% x 0.9 = 0.056, + 0.0115 = 0.065. Low end lowered because ACER total SAIDI 2021-23 (2.3 h) is about 40% below CEER's 2016 total (https://aegis.acer.europa.eu/chest/dataitems/891/view)."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.03, "hi": 1.55, "tag": "derived", "basis": "CAIDI 1.0 h against 0.83 h."}
+      },
+      "notes": "Doing Business 2020 Athens: SAIDI 1.57 h, SAIFI 1.44."
+    },
+    {
+      "iso2": "HU", "name": "Hungary",
+      "values": {
+        "localOutage.probability": {"lo": 0.028, "mid": 0.068, "hi": 0.16, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2015-16: SAIDI 82 min, SAIFI 1.05, CAIDI 1.31 h. S4 6.3% x 0.9 = 0.059, + 0.0115 = 0.068."},
+        "localOutage.durationFactor": {"lo": 0.75, "mid": 1.09, "hi": 1.65, "tag": "derived", "basis": "CAIDI 1.31 h against 0.83 h."}
+      },
+      "notes": "Only two years of data. Doing Business 2020 Budapest: SAIDI 2.56 h, SAIFI 1.23."
+    },
+    {
+      "iso2": "IS", "name": "Iceland",
+      "values": {
+        "localOutage.probability": {"lo": 0.015, "mid": 0.044, "hi": 0.13, "tag": "derived", "basis": "Not in CEER 6.1. Doing Business 2020, Reykjavik: SAIDI 0.63 h, SAIFI 0.41, CAIDI 1.54 h (https://api.worldbank.org/v2/country/ISL/indicator/IC.ELC.SAID.XD.DB1619?source=1). S4 8.1%, rate 0.033 + 0.0115 = 0.044."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.13, "hi": 1.9, "tag": "derived", "basis": "CAIDI 1.54 h against 0.83 h."}
+      },
+      "notes": "One city, one year; wide range. An isolated grid, so the European blackout allowance is a stand-in."
+    },
+    {
+      "iso2": "IE", "name": "Ireland",
+      "values": {
+        "localOutage.probability": {"lo": 0.034, "mid": 0.067, "hi": 0.13, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2015-16: SAIDI 81 min, SAIFI 1.06, CAIDI 1.28 h. S4 6.0% x 0.9 = 0.057, + 0.0115 = 0.067."},
+        "localOutage.durationFactor": {"lo": 0.75, "mid": 1.08, "hi": 1.6, "tag": "derived", "basis": "CAIDI 1.28 h against 0.83 h."}
+      },
+      "notes": "Doing Business 2020 Dublin: SAIDI 0.8 h, SAIFI 0.57; ACER total SAIDI 2021-24 1.6-2.0 h."
+    },
+    {
+      "iso2": "IL", "name": "Israel",
+      "values": {
+        "localOutage.probability": {"lo": 0.02, "mid": 0.051, "hi": 0.16, "tag": "derived", "basis": "Doing Business 2020, Tel Aviv: SAIDI 1.45 h, SAIFI 2.04, CAIDI 0.71 h (https://api.worldbank.org/v2/country/ISR/indicator/IC.ELC.SAIF.XD.DB1619?source=1). S4 2.1%, rate 0.042, + 0.01 for war damage to the grid = 0.052. Checker: mid changed from 0.055 to 0.051; the basis's own rate of 0.052 converts to 1 - exp(-0.052) = 0.051, and nothing in the basis supports 0.055."},
+        "localOutage.durationFactor": {"lo": 0.6, "mid": 0.97, "hi": 1.6, "tag": "derived", "basis": "CAIDI 0.71 h against 0.83 h."}
+      },
+      "notes": "Largest city only, 2018-19. Missile strikes on power infrastructure (2024-25) are only roughly allowed for."
+    },
+    {
+      "iso2": "IT", "name": "Italy",
+      "values": {
+        "localOutage.probability": {"lo": 0.011, "mid": 0.021, "hi": 0.042, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 41 min, SAIFI 1.63, CAIDI 0.42 h. S4 0.66% x 0.9 = 0.010, + 0.0115 = 0.021."},
+        "localOutage.durationFactor": {"lo": 0.6, "mid": 0.91, "hi": 1.35, "tag": "derived", "basis": "CAIDI 0.42 h against 0.83 h."}
+      },
+      "notes": "Frequent but short interruptions. Doing Business 2020 Rome: SAIDI 1.3 h, SAIFI 2.22. The 2003 national blackout is inside the generic allowance."
+    },
+    {
+      "iso2": "JP", "name": "Japan",
+      "values": {
+        "localOutage.probability": {"lo": 0.002, "mid": 0.006, "hi": 0.018, "tag": "derived", "basis": "Doing Business 2020, Tokyo and Osaka: SAIDI 0.0375 h, SAIFI 0.024, CAIDI 1.56 h (https://api.worldbank.org/v2/country/JPN/indicator/IC.ELC.SAIF.XD.DB1619?source=1). Rate 0.002, + 0.004 for system events = 0.006."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.13, "hi": 1.9, "tag": "derived", "basis": "CAIDI 1.56 h against 0.83 h."}
+      },
+      "notes": "Earthquake and typhoon outages (Hokkaido 2018, Chiba 2019) belong to their hazards. The generic European blackout rate is not applied: Japan has had no non-disaster system blackout in decades."
+    },
+    {
+      "iso2": "KR", "name": "South Korea",
+      "values": {
+        "localOutage.probability": {"lo": 0.0014, "mid": 0.0043, "hi": 0.013, "tag": "derived", "basis": "Doing Business 2020, Seoul: SAIDI 0.04 h, SAIFI 0.05, CAIDI 0.8 h (https://api.worldbank.org/v2/country/KOR/indicator/IC.ELC.SAIF.XD.DB1619?source=1). Rate 0.0013, + 0.003 (the September 2011 rolling cuts) = 0.0043."},
+        "localOutage.durationFactor": {"lo": 0.6, "mid": 0.99, "hi": 1.7, "tag": "derived", "basis": "CAIDI 0.8 h against 0.83 h."}
+      },
+      "notes": "One of the most reliable grids anywhere; largest city only."
+    },
+    {
+      "iso2": "LV", "name": "Latvia",
+      "values": {
+        "localOutage.probability": {"lo": 0.033, "mid": 0.08, "hi": 0.19, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 128 min, SAIFI 2.24, CAIDI 0.95 h. S4 3.6% x 0.9 = 0.073, + 0.0115 = 0.081."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.02, "hi": 1.6, "tag": "derived", "basis": "CAIDI 0.95 h against 0.83 h."}
+      },
+      "notes": "Indices were falling fast to 2016. Doing Business 2020 Riga: SAIDI 0.99 h, SAIFI 0.42 (CAIDI 2.4 h), which gives about the same probability. Baltic grids joined the continental European system in February 2025."
+    },
+    {
+      "iso2": "LT", "name": "Lithuania",
+      "values": {
+        "localOutage.probability": {"lo": 0.018, "mid": 0.044, "hi": 0.105, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 47 min, SAIFI 0.63, CAIDI 1.25 h. S4 5.8% x 0.9 = 0.033, + 0.0115 = 0.044."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.08, "hi": 1.7, "tag": "derived", "basis": "CAIDI 1.25 h against 0.83 h."}
+      },
+      "notes": "Doing Business 2020 Vilnius: SAIDI 0.4 h, SAIFI 0.4."
+    },
+    {
+      "iso2": "LU", "name": "Luxembourg",
+      "values": {
+        "localOutage.probability": {"lo": 0.0095, "mid": 0.024, "hi": 0.058, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 19 min, SAIFI 0.29, CAIDI 1.1 h. S4 4.7% x 0.9 = 0.012, + 0.0115 = 0.024."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.05, "hi": 1.6, "tag": "derived", "basis": "CAIDI 1.1 h against 0.83 h."}
+      },
+      "notes": ""
+    },
+    {
+      "iso2": "MX", "name": "Mexico",
+      "values": {
+        "localOutage.probability": {"lo": 0.04, "mid": 0.11, "hi": 0.3, "tag": "guess", "basis": "Doing Business 2020, Mexico City and Monterrey: SAIDI 0.58 h, SAIFI 0.85 (rate 0.017, implausibly low); Enterprise Surveys: 1.6 firm outages a month in 2010 (https://ourworldindata.org/grapher/power-outages-in-firms-per-month) and 28% of firms with an outage in 2023. Assumed urban SAIFI 2, CAIDI 1.2 h: S4 5.4%, rate 0.11 + 0.01 = 0.11."},
+        "localOutage.durationFactor": {"lo": 0.6, "mid": 0.9, "hi": 1.6, "tag": "guess", "basis": "Assumed CAIDI 1.2 h against 1.9 h."}
+      },
+      "notes": "CFE distribution SAIDI not found; the May 2024 heat-driven rolling cuts belong to heatWave."
+    },
+    {
+      "iso2": "NL", "name": "Netherlands",
+      "values": {
+        "localOutage.probability": {"lo": 0.0105, "mid": 0.021, "hi": 0.041, "tag": "derived", "basis": "CEER 6.1 Tables 7/15 (no series without exceptional events), 2014-16: SAIDI 24.6 min, SAIFI 0.34, CAIDI 1.22 h; x0.85, x0.8: 0.29, 0.97 h. S4 3.75% x 0.9 = 0.010, + 0.0115 = 0.021."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.03, "hi": 1.55, "tag": "derived", "basis": "CAIDI 0.97 h against 0.83 h."}
+      },
+      "notes": "Almost entirely underground network. Doing Business 2020 Amsterdam: SAIDI 0.78 h, SAIFI 0.54."
+    },
+    {
+      "iso2": "NZ", "name": "New Zealand",
+      "values": {
+        "localOutage.probability": {"lo": 0.055, "mid": 0.13, "hi": 0.29, "tag": "derived", "basis": "Doing Business 2020, Auckland: SAIDI 3.77 h, SAIFI 2.14, including planned (World Bank API); Vector about 175 min and 1.48 (search snippet). SAIFI 1.3, CAIDI 1.8 h: S4 10.3%, rate 0.134 + 0.003 = 0.13."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 0.97, "hi": 1.45, "tag": "derived", "basis": "CAIDI 1.8 h against 2.0 h."}
+      },
+      "notes": "Commerce Commission performance data not read. Planned outages with notice are a large share of New Zealand SAIDI and count here."
+    },
+    {
+      "iso2": "NO", "name": "Norway",
+      "values": {
+        "localOutage.probability": {"lo": 0.019, "mid": 0.048, "hi": 0.115, "tag": "derived", "basis": "CEER 6.1 Tables 7/15 (including exceptional events), 2014-16: SAIDI 111.5 min, SAIFI 1.87, CAIDI 0.99 h; x0.85, x0.8: 1.59, 0.80 h. S4 2.6% x 0.9 = 0.037, + 0.0115 = 0.048."},
+        "localOutage.durationFactor": {"lo": 0.65, "mid": 0.99, "hi": 1.55, "tag": "derived", "basis": "CAIDI 0.80 h against 0.83 h."}
+      },
+      "notes": "Doing Business 2020 Oslo: SAIDI 1.5 h, SAIFI 1.3, about the same probability."
+    },
+    {
+      "iso2": "PL", "name": "Poland",
+      "values": {
+        "localOutage.probability": {"lo": 0.055, "mid": 0.13, "hi": 0.3, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 205 min, SAIFI 3.18, CAIDI 1.08 h. S4 4.5% x 0.9 = 0.129, + 0.0115 = 0.13. ACER total SAIDI 2021-23 (4.3 h) is close to CEER's 2016 total, so no trend correction."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.05, "hi": 1.65, "tag": "derived", "basis": "CAIDI 1.08 h against 0.83 h."}
+      },
+      "notes": "National figures are driven by rural overhead lines; Warsaw (Doing Business 2020: SAIDI 1.13 h, SAIFI 1.09) would give about 0.06. The uniform 0.9 urban factor probably overstates a city flat's risk here more than elsewhere."
+    },
+    {
+      "iso2": "PT", "name": "Portugal",
+      "values": {
+        "localOutage.probability": {"lo": 0.022, "mid": 0.043, "hi": 0.084, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 69 min, SAIFI 1.48, CAIDI 0.77 h. S4 2.4% x 0.9 = 0.032, + 0.0115 = 0.043."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 0.99, "hi": 1.5, "tag": "derived", "basis": "CAIDI 0.77 h against 0.83 h."}
+      },
+      "notes": "The April 2025 Iberian blackout is the kind of event the 1.15% allowance covers. Doing Business 2020 Lisbon: SAIDI 0.54 h, SAIFI 0.61."
+    },
+    {
+      "iso2": "SK", "name": "Slovakia",
+      "values": {
+        "localOutage.probability": {"lo": 0.014, "mid": 0.034, "hi": 0.083, "tag": "derived", "basis": "CEER 6.1 Tables 7/15 (including exceptional events), 2014-16: SAIDI 84 min, SAIFI 1.70, CAIDI 0.82 h; x0.85, x0.8: 1.45, 0.66 h. S4 1.8% x 0.9 = 0.023, + 0.0115 = 0.034."},
+        "localOutage.durationFactor": {"lo": 0.65, "mid": 0.96, "hi": 1.5, "tag": "derived", "basis": "CAIDI 0.66 h against 0.83 h."}
+      },
+      "notes": "Doing Business 2020 Bratislava: SAIDI 0.88 h, SAIFI 0.68."
+    },
+    {
+      "iso2": "SI", "name": "Slovenia",
+      "values": {
+        "localOutage.probability": {"lo": 0.011, "mid": 0.027, "hi": 0.067, "tag": "derived", "basis": "CEER 6.1 Tables 7/15, 2015-16 (2014 ice storm left out): SAIDI 72 min, SAIFI 1.70, CAIDI 0.70 h; x0.85, x0.8: 1.44, 0.56 h. S4 1.3% x 0.9 = 0.016, + 0.0115 = 0.027."},
+        "localOutage.durationFactor": {"lo": 0.6, "mid": 0.94, "hi": 1.45, "tag": "derived", "basis": "CAIDI 0.56 h against 0.83 h."}
+      },
+      "notes": "CEER's Slovenian series without exceptional events covers one voltage level only and was not used. Doing Business 2020 Ljubljana: SAIDI 0.13 h, SAIFI 0.27."
+    },
+    {
+      "iso2": "ES", "name": "Spain",
+      "values": {
+        "localOutage.probability": {"lo": 0.019, "mid": 0.037, "hi": 0.073, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 54 min, SAIFI 1.14, CAIDI 0.79 h. S4 2.6% x 0.9 = 0.027, + 0.0115 = 0.037."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 0.99, "hi": 1.5, "tag": "derived", "basis": "CAIDI 0.79 h against 0.83 h."}
+      },
+      "notes": "Doing Business 2020 Madrid: SAIDI 0.51 h, SAIFI 0.71."
+    },
+    {
+      "iso2": "SE", "name": "Sweden",
+      "values": {
+        "localOutage.probability": {"lo": 0.028, "mid": 0.056, "hi": 0.109, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 76 min, SAIFI 1.22, CAIDI 1.03 h. S4 4.2% x 0.9 = 0.046, + 0.0115 = 0.056."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.04, "hi": 1.55, "tag": "derived", "basis": "CAIDI 1.03 h against 0.83 h."}
+      },
+      "notes": "Doing Business 2020 Stockholm: SAIDI 0.61 h, SAIFI 0.66, about half the national probability."
+    },
+    {
+      "iso2": "CH", "name": "Switzerland",
+      "values": {
+        "localOutage.probability": {"lo": 0.0086, "mid": 0.017, "hi": 0.034, "tag": "derived", "basis": "CEER 6.1 Tables 8/16, 2014-16: SAIDI 11 min, SAIFI 0.22, CAIDI 0.85 h. S4 2.9% x 0.9 = 0.006, + 0.0115 = 0.017."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.0, "hi": 1.5, "tag": "derived", "basis": "CAIDI 0.85 h against 0.83 h."}
+      },
+      "notes": "Mostly the generic blackout allowance."
+    },
+    {
+      "iso2": "TR", "name": "Turkey",
+      "values": {
+        "localOutage.probability": {"lo": 0.1, "mid": 0.3, "hi": 0.65, "tag": "guess", "basis": "Doing Business 2020, Istanbul: SAIDI 44.7 h, SAIFI 19.5, including planned cuts (World Bank API), which would give 0.94; Enterprise Surveys: 0.7 firm outages a month in 2019 and 33% of firms with any outage in 2024 (https://api.worldbank.org/v2/country/TUR/indicator/IC.ELC.OUTG.ZS). Announced daytime planned cuts of several hours are common in Istanbul; entered between the two."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.05, "hi": 1.8, "tag": "guess", "basis": "Doing Business CAIDI 2.29 h against 1.9 h gives 1.05."}
+      },
+      "notes": "No EPDK national OKSURE/OKSIK figure found; Enerjisa's report would not load. The 2015 national blackout (most of the country, 7-10 h) adds about 2% a year."
+    },
+    {
+      "iso2": "GB", "name": "United Kingdom",
+      "values": {
+        "localOutage.probability": {"lo": 0.022, "mid": 0.045, "hi": 0.087, "tag": "derived", "basis": "CEER 6.1 Tables 8/16 (Great Britain), 2014-16: SAIDI 45.5 min, SAIFI 0.54, CAIDI 1.40 h. S4 7.0% x 0.9 = 0.034, + 0.0115 = 0.045."},
+        "localOutage.durationFactor": {"lo": 0.75, "mid": 1.11, "hi": 1.65, "tag": "derived", "basis": "CAIDI 1.40 h against 0.83 h."}
+      },
+      "notes": "Doing Business 2020 London: SAIDI 0.28 h, SAIFI 0.14. Northern Ireland not separately covered."
+    },
+    {
+      "iso2": "US", "name": "United States",
+      "values": {
+        "localOutage.probability": {"lo": 0.06, "mid": 0.11, "hi": 0.2, "tag": "derived", "basis": "EIA 2021-25 without major event days: SAIFI 1.06, CAIDI 2.0 h (https://www.eia.gov/electricity/annual/html/epa_11_01.html). S4 12.0%, rate 0.127 + 0.008 blackouts, x0.9 urban (AHS 2023) = 0.113; the preset's AHS-based 0.11 kept."},
+        "localOutage.durationFactor": {"lo": 0.75, "mid": 1.0, "hi": 1.3, "tag": "derived", "basis": "The reference: CAIDI 2.0 h."}
+      },
+      "notes": "Doing Business 2020 New York and Los Angeles: SAIDI 1.28 h, SAIFI 0.38, which give 0.083 by the same conversion."
+    },
+    {
+      "iso2": "AR", "name": "Argentina",
+      "values": {
+        "localOutage.probability": {"lo": 0.1, "mid": 0.25, "hi": 0.5, "tag": "derived", "basis": "The Buenos Aires anchor: ENRE semester 57 (https://econojournal.com.ar/?p=120080) converted as above gives 0.22, the preset 0.25. No comparable figures read for Cordoba, Rosario or Mendoza, so the preset is kept with its range."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.0, "hi": 1.5, "tag": "derived", "basis": "Same as the preset."}
+      },
+      "notes": "Doing Business 2020 Buenos Aires: SAIDI 4.51 h, SAIFI 14.39 (CAIDI 19 min) gives only 0.05; its definition evidently differs from ENRE's."
+    },
+    {
+      "iso2": "BR", "name": "Brazil",
+      "values": {
+        "localOutage.probability": {"lo": 0.2, "mid": 0.37, "hi": 0.6, "tag": "derived", "basis": "ANEEL 2025: DEC 9.3 h, FEC 4.66 a consumer, national, emergencies and critical days excluded (https://diariodocomercio.com.br/variedades/consumidores-ficaram-93-horas-em-media-sem-energia-em-2025-diz-aneel-reducao-e-de-92/). CAIDI 2.0 h, S4 12.0%, x0.8 urban = 0.445, + 0.02 for national blackouts (2009, 2018, 2023) = 0.37."},
+        "localOutage.durationFactor": {"lo": 0.7, "mid": 1.01, "hi": 1.5, "tag": "derived", "basis": "CAIDI 2.0 h against 1.9 h."}
+      },
+      "notes": "Doing Business 2020 Sao Paulo and Rio: SAIDI 6.64 h, SAIFI 3.72, giving 0.31. The multi-day Sao Paulo storm outages of 2023-24 belong to severeStorm. Rate of long outages about 0.46 a year."
+    },
+    {
+      "iso2": "CN", "name": "China",
+      "values": {
+        "localOutage.probability": {"lo": 0.055, "mid": 0.13, "hi": 0.3, "tag": "derived", "basis": "NEA/CEC 2024: urban reliability 99.977% = 2.0 h a customer a year; national 6.71 h and 2.12 interruptions, CAIDI 3.2 h (https://finance.sina.cn/2025-03-28/detail-inerfcmm7090437.d.html). With urban SAIFI 0.6 (city reports, search snippet), CAIDI 3.4 h, S4 23%: rate 0.137 + 0.005 (2021 north-east rationing) = 0.13; nearly the same for any SAIFI from 0.4 to 1 because SAIDI is fixed."},
+        "localOutage.durationFactor": {"lo": 0.8, "mid": 1.2, "hi": 1.8, "tag": "derived", "basis": "CAIDI 3.4 h against 1.9 h gives 1.19: long announced maintenance cuts."}
+      },
+      "notes": "Chinese indices count 10 kV customers, not households, and include planned cuts; faults inside residential compounds are missed. Doing Business 2020 Shanghai/Beijing: SAIDI 0.9 h, SAIFI 0.19 (CAIDI 4.8 h). Enterprise Surveys 2024: 4% of firms with an outage."
+    },
+    {
+      "iso2": "IN", "name": "India",
+      "values": {
+        "localOutage.probability": {"lo": 0.25, "mid": 0.55, "hi": 0.85, "tag": "guess", "basis": "Doing Business 2020, Mumbai and Delhi: SAIDI 3.72 h, SAIFI 2.38, CAIDI 1.56 h gives 0.18 for the best-served metros (World Bank API). Elsewhere: urban supply averaged 23.3 h a day in FY2024-25 (CSRD, snippet) and 38% of households reported daily cuts in May 2024, 18% of 2-12 h (LocalCircles, snippet). 30% metros at 0.18 and 70% other cities at about 0.75 gives 0.58."},
+        "localOutage.durationFactor": {"lo": 0.8, "mid": 1.2, "hi": 2.2, "tag": "guess", "basis": "Metro CAIDI 1.56 h gives 0.95; scheduled blocks and transformer failures outside the metros run longer."}
+      },
+      "notes": "Enterprise Surveys 2022: 1.3 firm outages a month (https://ourworldindata.org/grapher/power-outages-in-firms-per-month). Outside the metros the rate of 4 h+ cuts is above one a year, so the probability understates the harm (see open questions)."
+    },
+    {
+      "iso2": "ID", "name": "Indonesia",
+      "values": {
+        "localOutage.probability": {"lo": 0.09, "mid": 0.22, "hi": 0.46, "tag": "derived", "basis": "PLN 2024: SAIDI 320 min, SAIFI 3.23, CAIDI 1.65 h (https://www.cnbcindonesia.com/news/20250215121149-4-610879/pln-catat-penurunan-durasi-dan-frekuensi-gangguan-di-2024). S4 9.0% x 0.7 for cities (Doing Business 2020 Jakarta/Surabaya: 2.82 h, 2.18) = 0.20, + 0.04 for Java-Bali system blackouts (2005, 2019) = 0.22."},
+        "localOutage.durationFactor": {"lo": 0.65, "mid": 0.97, "hi": 1.6, "tag": "derived", "basis": "CAIDI 1.65 h against 1.9 h."}
+      },
+      "notes": "Outer-island cities are much worse than Java."
+    },
+    {
+      "iso2": "NG", "name": "Nigeria",
+      "values": {
+        "localOutage.probability": {"lo": 0.8, "mid": 0.95, "hi": 0.995, "tag": "derived", "basis": "Enterprise Surveys: 32.8 outages a month for firms in 2014 (https://ourworldindata.org/grapher/power-outages-in-firms-per-month) and 82% of firms with an outage in 2025 (https://api.worldbank.org/v2/country/NGA/indicator/IC.ELC.OUTG.ZS); the grid collapsed almost monthly in 2024 and again in December 2025 and January 2026 (https://allafrica.com/stories/202602020399.html). A 4 h+ cut in a year is close to certain; Band A customers are the exception."},
+        "localOutage.durationFactor": {"lo": 1.3, "mid": 2.5, "hi": 5, "tag": "guess", "basis": "Most urban customers get well under 20 h of supply a day and failed transformers wait weeks; no CAIDI found."}
+      },
+      "notes": "Doing Business reported no SAIDI or SAIFI. The rate is dozens of long outages a year; a probability capped at 1 cannot carry it."
+    },
+    {
+      "iso2": "PH", "name": "Philippines",
+      "values": {
+        "localOutage.probability": {"lo": 0.075, "mid": 0.18, "hi": 0.39, "tag": "derived", "basis": "Meralco 2024: SAIFI 1.041, SAIDI 108.2 min, CAIDI 1.73 h (https://philstar.com/headlines/2025/03/20/2429561/through-innovative-and-cutting-edge-initiatives-meralco-drives-transformative-energy-future). Other cities worse: urban SAIFI 1.6, CAIDI 1.8 h, S4 10.3% = 0.165, + 0.03 for island-grid blackouts (Panay, January 2024) = 0.18."},
+        "localOutage.durationFactor": {"lo": 0.65, "mid": 0.99, "hi": 1.6, "tag": "derived", "basis": "CAIDI 1.8 h against 1.9 h."}
+      },
+      "notes": "Typhoon outages belong to hurricane. Doing Business 2020 Manila: SAIDI 3.57 h, SAIFI 2.23."
+    },
+    {
+      "iso2": "ZA", "name": "South Africa",
+      "values": {
+        "localOutage.probability": {"lo": 0.25, "mid": 0.5, "hi": 0.85, "tag": "guess", "basis": "No load shedding since 16 May 2025 (504 days on 4 October 2026; load reduction 2.8% of Eskom customers, https://www.sanews.gov.za/node/84735). Doing Business 2020 Johannesburg: SAIDI 30.5 h, SAIFI 5.98 (CAIDI 5.1 h) gives 0.87, but that year had load shedding. Municipal network failures in Johannesburg, Tshwane and Ekurhuleni remain frequent; Cape Town is reliable."},
+        "localOutage.durationFactor": {"lo": 1.1, "mid": 1.6, "hi": 3, "tag": "guess", "basis": "CAIDI 5.1 h gives 1.39 by the formula; raised for slow municipal repairs (cable theft, substation failures lasting days)."}
+      },
+      "notes": "If load shedding returns, the probability goes toward 1. Enterprise Surveys 2020: 7.7 firm outages a month, 92% of firms."
+    }
+  ],
+  "blockedSources": [
+    "https://ceer.eu/wp-content/uploads/2024/04/7th-Benchmarking-Report-2022.pdf: over the fetch size limit; newer CEER unplanned SAIDI and SAIFI by country than 6.1's 2016",
+    "https://www.aer.gov.au/system/files/2025-12/AER%20-%202025%20Electricity%20and%20gas%20networks%20performance%20report%20-%20December%202025.pdf: timed out; Australian unplanned SAIDI and SAIFI by feeder type (also the State of the energy market chapter and the infographic)",
+    "https://www.enerjisainvestorrelations.com/medium/ReportAndPresentation/File/3534/enerjisasustainabilityreport2024.pdf: connection refused; Istanbul and Ankara SAIDI/SAIFI. No EPDK national OKSURE/OKSIK series found",
+    "https://www.enterprisesurveys.org/en/data/exploreeconomies/2025/nigeria: JavaScript only; outages a month and their length for the 2023-25 surveys (the WDI series IC.ELC.OUTG is archived)",
+    "https://www.bworldonline.com/spotlight/2025/03/07/657949/: HTTP 403 (Meralco figures read on philstar instead)",
+    "Electricity Canada 2023 Service Continuity report: paywalled; urban and utility-level indices",
+    "India CSRD FY2024-25 report (Ministry of Power/REC): only search snippets; urban hours of supply and interruption index by discom",
+    "CFE distribution TIU/SAIDI (Mexico) and ARESEP indices (Costa Rica): not found"
+  ],
+  "openQuestions": [
+    "Threshold: BRIEF-COUNTRIES defines localOutage at 6 hours, but the Western Europe and Buenos Aires anchors were built at 4 hours and the US anchor from a 6-hour survey. I used 4 hours on non-major-event indices because it reproduces all three anchors; at 6 hours the same indices give about half. The definition text should say which scale the presets are on.",
+    "Saturation: localOutage is one event a year at most. For Nigeria (dozens of long cuts a year), India outside the metros, South Africa, Turkey, Colombia and Brazil the rate of 4 h+ cuts approaches or exceeds one a year, so the model understates their harm. A rate field (expected events a year) would fix this; the rates are in the notes or recoverable as -ln(1 - p).",
+    "Heat-wave overlap: the Buenos Aires anchor subtracted heat-wave cuts (7.5%) because the preset's heatWave carries its own power window. For the other middle-income countries I subtracted nothing; where their indices include heat-driven cuts (India, Brazil, Mexico, Turkey) a household with hot summers ticked double-counts some outages.",
+    "The 0.9 urban factor is the US survey ratio for any outage; for countries whose national indices are dominated by rural overhead lines (Poland, the Baltics, the Nordic countries, Canada) a city flat's risk is probably lower still. Doing Business largest-city figures, given in the notes, suggest by how much.",
+    "Sabotage and war damage (Berlin arson 2025-26, strikes on Israeli infrastructure) were treated as local outages with small allowances; the AI researchers' cyberOutage or the war hazards may already cover part of them.",
+    "Checker: India's 0.55 rests on snippets (an online household poll and CSRD hours of supply). Enterprise Surveys, which the method uses as a cross-check, show 19.9% (2022) and 15.4% (2025) of Indian firms with any outage in the year (https://api.worldbank.org/v2/country/IND/indicator/IC.ELC.OUTG.ZS), against 22.6% in the United States and 56.6% in Australia. That series ranks countries erratically, so it does not settle the figure, but it points below 0.55 rather than above."
+  ]
+}

@@ -34,8 +34,25 @@ export default {
     // the country.
     presetCountries: ['US'],
     presetCities: { AR: ['Buenos Aires'] },
-    // Corrections to a country researcher's figure, with the reason.
-    adjust: {},
+    // Corrections to a country researcher's figure, with the reason. `mid`
+    // moves the middle figure and scales the range with it.
+    adjust: {
+      // The brief counted any 25% loss of purchasing power; the preset's
+      // definition leaves out inflation that deposit interest roughly
+      // matches. On the preset's definition (grid-banking.check.md).
+      AR: {
+        'bankingCrisis.forecast': { mid: 0.27, reason: 'Devaluations and freezes only, as the preset defines the hazard; chronic inflation that deposits roughly match is left out (research/countries/grid-banking.check.md).' },
+        'bankingCrisis.pessimistic': { mid: 0.43, reason: 'As for the forecast.' },
+      },
+      TR: {
+        'bankingCrisis.forecast': { mid: 0.10, reason: 'As for Argentina: on the preset\'s definition (research/countries/grid-banking.check.md).' },
+        'bankingCrisis.pessimistic': { mid: 0.23, reason: 'As for the forecast.' },
+      },
+      // The researcher's own rule gives southern Europe a reporting factor of
+      // 0.75 for burglary, not 0.6 (violence-fire.check.md).
+      ES: { 'violentCrime.scale': { mid: 0.52, reason: 'Burglary reporting factor 0.75, the researcher\'s rule for southern Europe (research/countries/violence-fire.check.md).' } },
+      IT: { 'violentCrime.scale': { mid: 0.70, reason: 'As for Spain.' } },
+    },
     // How a city's district ratings (ThinkHazard: H high, M medium, L low,
     // V very low) and climate normals become the local-hazard ticks. A tick
     // stands for living in a zone with the hazard's preset probability.
@@ -326,7 +343,13 @@ export default {
       profile: (R, T) => ({
         probability: { all: 1 }, windows: {},
         exposures: [{ channel: 'fire', micromortsPerPerson: T(R.channels.fire.everydayAnnualMicromortsPerPerson), financialUsdPerHousehold: T(R.channels.fire.everydayAnnualUsdPerHousehold, { scale: 0.35 }) }],
-        exposureScale: { dwelling: { house: 1.15, apartment: 0.5 }, location: { westernEurope: 0.5, buenosAires: 1 } },
+        // Location factors: the fire researcher for countries
+        // (research/countries/fire.md) reproduced the presets from death
+        // registrations and adjusted for the share of homes with a working
+        // smoke alarm, since the US figure is for a home without one: 0.36
+        // for Western Europe and 0.52 for Argentina, against fire-co.json's
+        // 0.5 and 1, which lacked that step.
+        exposureScale: { dwelling: { house: 1.15, apartment: 0.5 }, location: { westernEurope: 0.36, buenosAires: 0.52 } },
       }),
     },
     coIncident: {
@@ -340,7 +363,9 @@ export default {
         // fuel and has no attached garage, against 1.1 for one that does;
         // and location factors of 0.8 for Western Europe and 2 for Buenos
         // Aires, where unflued gas heaters are common in flats.
-        exposureScale: { dwelling: { house: 1.15, apartment: 0.5 }, location: { westernEurope: 0.8, buenosAires: 2 }, conditions: [{ if: 'allElectric', factor: 0.09 }] },
+        // The country researcher's reproduction of the presets from death
+        // registrations is 0.51 and 1.8 (research/countries/fire.md).
+        exposureScale: { dwelling: { house: 1.15, apartment: 0.5 }, location: { westernEurope: 0.51, buenosAires: 1.8 }, conditions: [{ if: 'allElectric', factor: 0.09 }] },
       }),
     },
     homeMedicalEmergency: {

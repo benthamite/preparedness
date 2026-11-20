@@ -1,0 +1,265 @@
+{
+  "kind": "countries",
+  "group": "violence",
+  "method": "violentCrime.scale = 0.5 x D + 0.5 x B, the two parts weighted equally because in the United States the 1.2 micromorts a person (x $14.6 x 2.5 people = $44) and the $40 of loss carry about equal weight. D, the deaths ratio, is the UNODC intentional-homicide rate (latest year, read from the Wikipedia table built on UNODC data) divided by the US rate of the same year (2024: 5.0, FBI; 2023: 5.76, UNODC; 2020-22 recalled), times s, the share of homicide committed in robbery or burglary relative to the US share (about 9%: NVDRS robbery 6.5% + burglary 2.5%). s is 0.7 for rich low-homicide countries (England and Wales: 6% of homicides in furtherance of theft or gain, ONS), 0.85 for South Africa (SAPS: robbery 382 of 5,596 murders with a known factor), about 0.25 for Brazil, Mexico and Colombia, where gang and cartel killing dominates (Brazil: 807 latrocinio victims among 40,775 violent deaths in 2025), and a guess elsewhere. B, the loss ratio, is household burglary frequency relative to the US times L, the loss per burglary in dollars relative to the US. In Europe frequency is Eurostat's police-recorded burglary of private homes per 100,000 (mean of 2022-24) over the US police-recorded figure (about 140: 779,542 burglaries in 2024, about 60% residential, which matches the NCVS 8.2 per 1,000 households at a 45% reporting rate), times 0.6 for the higher reporting of insured European households (0.75 in central, eastern and southern Europe); L = 1. Elsewhere frequency comes from victim surveys (South Africa's housebreaking 5.9% and home robbery 1.1% of households against the US 0.71%) or is a guess, and L is 0.45-0.65 for upper-middle-income and 0.2-0.3 for lower-middle-income countries (goods, repairs and time cost fewer dollars). Ranges take the 5th and 95th percentiles of s and B together. civilUnrest follows the anchors: list the episodes since 1990 that meet the threshold (riot curfew or state of siege, serious rioting or looting, disorder sustained over days, or armed conflict on home territory, including missile and rocket fire on cities and cartel or insurgent violence that shuts a city down), give each the share of the country's urban population living in the cities it touched, as the US anchor counts whole cities under curfew, sum, and divide by the years; the forecast leans towards the rate of the last ten to fifteen years and present conditions (Verisk Maplecroft's ranking, elections and wars in the next year); the pessimistic figure is two to three times the forecast, as for the anchors, or the recent peak rate where that is higher. Episodes come from Wikipedia's List of riots and event pages I fetched; population shares are my estimates.",
+  "anchors": [
+    {"preset": "us", "field": "violentCrime.scale", "reproduced": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "Reference country: 1 by definition."}, "comment": "Identical by construction."},
+    {"preset": "westernEurope", "field": "violentCrime.scale", "reproduced": {"lo": 0.25, "mid": 0.5, "hi": 1.0, "tag": "derived", "basis": "Population-weighted mean of my figures for the 16 western European countries on this preset: D 0.12 (homicide about 0.89 per 100,000 against 5.0, x 0.7), B 0.85 (Eurostat police data, reporting-corrected; England and Wales from ONS). 0.5 x 0.12 + 0.5 x 0.85 = 0.49."}, "comment": "Preset 0.4. My components are close to the preset researcher's (mortality 0.12 against 0.2, loss 0.85 against 1.0), but blending them with equal weight gives 0.5; the preset's 0.4 implies a weight of about three quarters on deaths, which I could not trace. 0.4 lies inside my range. Owners who keep 0.4 should scale my European figures by 0.8."},
+    {"preset": "buenosAires", "field": "violentCrime.scale", "reproduced": {"lo": 0.64, "mid": 1.5, "hi": 3.0, "tag": "guess", "basis": "Argentina: D = 3.94 / 5.0 x 1.2 = 0.95 (UNODC 2024; robbery killings a larger share than in the US, guess); B = 4 times US burglary frequency x 0.5 for smaller losses = 2.0 (guess). 0.5 x 0.95 + 0.5 x 2.0 = 1.47."}, "comment": "Preset 1.5, reproduced; the components match the preset researcher's (mortality 1.0, loss 2.0). The burglary half rests on a guess, as the preset's did."},
+    {"preset": "us", "field": "civilUnrest.forecast", "reproduced": {"lo": 0.003, "mid": 0.01, "hi": 0.03, "tag": "guess", "basis": "Anchor's own count: 92 million person-episodes (1967-68, 1992, 2020, others) over 62 years x 260 million = 0.6% a year, 1.5% in 2015-26. Adding the downtown Los Angeles curfew of June 2025 (https://en.wikipedia.org/wiki/List_of_riots) changes nothing at this precision."}, "comment": "Reproduced at 1%."},
+    {"preset": "us", "field": "civilUnrest.pessimistic", "reproduced": {"lo": 0.01, "mid": 0.03, "hi": 0.08, "tag": "guess", "basis": "A 2020-sized wave (18% of residents) every six years; Verisk Maplecroft ranks the US fifth in the world and first among Western democracies for riot risk in 2026 (https://www.insurancejournal.com/news/international/2026/02/17/858246.htm)."}, "comment": "Reproduced at 3%."},
+    {"preset": "westernEurope", "field": "civilUnrest.forecast", "reproduced": {"lo": 0.004, "mid": 0.013, "hi": 0.03, "tag": "guess", "basis": "With the anchor's weights (France 4%, England 1%, elsewhere 0.3%) the population-weighted figure is 1.0%. With my country figures (France 5% after the October 2026 riots and curfews, UK 1.3% with Northern Ireland, the others 0.15-1.2%) it is 1.3%."}, "comment": "Reproduced at 1.0% by the anchor's method; my update is 1.3%, nearly all from France."},
+    {"preset": "westernEurope", "field": "civilUnrest.pessimistic", "reproduced": {"lo": 0.012, "mid": 0.031, "hi": 0.07, "tag": "guess", "basis": "Population-weighted mean of my pessimistic figures for the same 16 countries (France 10%, UK 4%, the others 0.5-3.5%)."}, "comment": "Preset 3%, reproduced."},
+    {"preset": "buenosAires", "field": "civilUnrest.forecast", "reproduced": {"lo": 0.015, "mid": 0.04, "hi": 0.1, "tag": "derived", "basis": "Argentina as a whole: 1989 (about 50% of the urban population), 2001 (70%, nationwide state of siege), 2013 (30%, looting in about 20 provinces after the Cordoba police strike), 2023 (15%), Rosario 2024 (3.5%) and smaller ones, 1.7 over 43 years = 4.0%."}, "comment": "Preset 4% for Greater Buenos Aires; the national count gives the same."},
+    {"preset": "buenosAires", "field": "civilUnrest.pessimistic", "reproduced": {"lo": 0.03, "mid": 0.08, "hi": 0.18, "tag": "guess", "basis": "The anchor's reasoning: a currency break around the 2027 election bringing a December like 2001; twice the forecast."}, "comment": "Preset 8%, kept."}
+  ],
+  "countries": [
+    {"iso2": "AU", "name": "Australia", "values": {
+      "violentCrime.scale": {"lo": 0.33, "mid": 0.7, "hi": 1.4, "tag": "guess", "basis": "D = 0.94/5.0 x 0.7 = 0.13 (UNODC 2024, https://en.wikipedia.org/wiki/List_of_countries_by_intentional_homicide_rate); B = 1.3, a guess from recalled ABS surveys putting break-ins near 2% of households against 0.71% in the US."},
+      "civilUnrest.forecast": {"lo": 0.001, "mid": 0.004, "hi": 0.012, "tag": "guess", "basis": "Cronulla and Macquarie Fields 2005, Redfern 2004, Melbourne and Sydney anti-lockdown riots 2021, Wakeley 2024 (https://en.wikipedia.org/wiki/List_of_riots): about 0.2 of the urban population over 37 years, 0.5% a year."},
+      "civilUnrest.pessimistic": {"lo": 0.004, "mid": 0.012, "hi": 0.03, "tag": "guess", "basis": "Three times the forecast, as for the anchors."}},
+      "notes": "D 0.13, B 1.3. Burglary is the larger half and is not from a fetched source."},
+    {"iso2": "AT", "name": "Austria", "values": {
+      "violentCrime.scale": {"lo": 0.1, "mid": 0.22, "hi": 0.48, "tag": "derived", "basis": "D = 0.99/5.0 x 0.7 = 0.14 (UNODC 2024); B = 73 burglaries of homes per 100,000 (Eurostat 2022-24, https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/crim_off_cat?iccs=ICCS05012&unit=P_HTHAB) / 140 x 0.6 = 0.31."},
+      "civilUnrest.forecast": {"lo": 0.0005, "mid": 0.002, "hi": 0.008, "tag": "guess", "basis": "No qualifying episode since 1990 on the List of riots; the anchor's 'elsewhere in Europe' 0.3%, shaded down."},
+      "civilUnrest.pessimistic": {"lo": 0.002, "mid": 0.006, "hi": 0.02, "tag": "guess", "basis": "Three times the forecast; adds a little for war reaching central Europe."}},
+      "notes": "D 0.14, B 0.31."},
+    {"iso2": "BE", "name": "Belgium", "values": {
+      "violentCrime.scale": {"lo": 0.34, "mid": 0.75, "hi": 1.6, "tag": "derived", "basis": "D = 1.08 (2021)/6.8 (US 2021) x 0.7 = 0.11 (UNODC); B = 323 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 1.38."},
+      "civilUnrest.forecast": {"lo": 0.0015, "mid": 0.005, "hi": 0.015, "tag": "guess", "basis": "Brussels communes: Forest 1991, Anderlecht 2020, Schaerbeek 2021, three nights after the World Cup in 2022 (https://en.wikipedia.org/wiki/List_of_riots); counted by commune, about 0.15 over 37 years, more lately."},
+      "civilUnrest.pessimistic": {"lo": 0.005, "mid": 0.015, "hi": 0.04, "tag": "guess", "basis": "Three times the forecast; affordability protests reached Belgian cities in autumn 2026 (https://www.insurancejournal.com/news/international/2026/11/12/892199.htm)."}},
+      "notes": "D 0.11, B 1.38. Belgium's police count of home burglary is among Europe's highest."},
+    {"iso2": "CA", "name": "Canada", "values": {
+      "violentCrime.scale": {"lo": 0.33, "mid": 0.66, "hi": 1.3, "tag": "guess", "basis": "D = 1.98/5.0 x 0.8 = 0.32 (UNODC 2024); B = 1.0, a guess from recalled Statistics Canada break-and-enter rates near the US police rate with similar reporting."},
+      "civilUnrest.forecast": {"lo": 0.001, "mid": 0.004, "hi": 0.012, "tag": "guess", "basis": "Oka 1990, Quebec City 2001, Toronto G20 2010 (8% of the population), Ottawa occupation and state of emergency 2022, Montreal 2021 (https://en.wikipedia.org/wiki/List_of_riots): about 0.16 over 37 years."},
+      "civilUnrest.pessimistic": {"lo": 0.004, "mid": 0.012, "hi": 0.03, "tag": "guess", "basis": "Three times the forecast."}},
+      "notes": "D 0.32, B 1.0."},
+    {"iso2": "CL", "name": "Chile", "values": {
+      "violentCrime.scale": {"lo": 0.62, "mid": 1.5, "hi": 3.0, "tag": "guess", "basis": "D = 6.11/5.0 x 0.45 = 0.55 (UNODC 2024; organised-crime killings lower the robbery share); B = 4.5 times US burglary frequency (ENUSC home burglary about 3-5% of households, recalled) x 0.55 for smaller losses = 2.5."},
+      "civilUnrest.forecast": {"lo": 0.01, "mid": 0.03, "hi": 0.07, "tag": "derived", "basis": "October 2019: state of emergency and 22:00-07:00 curfew in 16 regions, widespread looting, 36 dead (https://en.wikipedia.org/wiki/2019%E2%80%932022_Chilean_protests), about 80% of the urban population; plus Concepcion looting and curfew 2010 and Santiago riots 2011: 1.1 over 37 years = 3%, 6% since 2010."},
+      "civilUnrest.pessimistic": {"lo": 0.03, "mid": 0.07, "hi": 0.14, "tag": "guess", "basis": "The 2010-26 rate, on the view that 2019 was not a one-off."}},
+      "notes": "D 0.55, B 2.5."},
+    {"iso2": "CO", "name": "Colombia", "values": {
+      "violentCrime.scale": {"lo": 0.44, "mid": 1.1, "hi": 2.7, "tag": "guess", "basis": "D = 24.35/5.0 x 0.25 = 1.2 (UNODC 2024; s as for Brazil, where robbery killings are 2% of violent deaths); B = 2.5 x 0.4 = 1.0 (guess)."},
+      "civilUnrest.forecast": {"lo": 0.015, "mid": 0.04, "hi": 0.09, "tag": "guess", "basis": "Medellin and Bogota bombing campaigns 1990-93, curfews in Bogota and Cali in November 2019, Bogota riots in September 2020, the 2021 strike (Cali blockades, food and fuel shortages, 26-75 dead, https://en.wikipedia.org/wiki/2021_Colombian_protests), Cali and Catatumbo violence 2025: about 1.8 over 37 years = 5%."},
+      "civilUnrest.pessimistic": {"lo": 0.04, "mid": 0.09, "hi": 0.18, "tag": "guess", "basis": "A 2021-scale strike or an urban turn of the armed conflict every ten years."}},
+      "notes": "D 1.2, B 1.0. Much of the qualifying risk is armed violence, which the Buenos Aires preset's windows treat as rioting."},
+    {"iso2": "CR", "name": "Costa Rica", "values": {
+      "violentCrime.scale": {"lo": 0.66, "mid": 1.6, "hi": 3.6, "tag": "guess", "basis": "D = 17.1/5.0 x 0.35 = 1.2 (UNODC 2024; most killings are between drug gangs); B = 4 x 0.5 = 2.0 (guess: household surveys put home burglary near 4%, recalled)."},
+      "civilUnrest.forecast": {"lo": 0.0015, "mid": 0.005, "hi": 0.015, "tag": "guess", "basis": "No riot curfew or looting wave since 1990; the October 2020 road blockades were disruptive but not riots. Set above Western Europe's 'elsewhere' for the rise in gang violence."},
+      "civilUnrest.pessimistic": {"lo": 0.005, "mid": 0.015, "hi": 0.04, "tag": "guess", "basis": "Three times the forecast."}},
+      "notes": "D 1.2, B 2.0."},
+    {"iso2": "CZ", "name": "Czechia", "values": {
+      "violentCrime.scale": {"lo": 0.08, "mid": 0.17, "hi": 0.47, "tag": "derived", "basis": "D = 0.62/5.0 x 0.7 = 0.086 (UNODC 2024); B = 48 per 100,000 (Eurostat 2022-24) / 140 x 0.75 = 0.26; definitions may be narrower than in western Europe, so the high end is wide."},
+      "civilUnrest.forecast": {"lo": 0.0003, "mid": 0.001, "hi": 0.005, "tag": "guess", "basis": "No qualifying episode since 1990 on the List of riots."},
+      "civilUnrest.pessimistic": {"lo": 0.001, "mid": 0.004, "hi": 0.012, "tag": "guess", "basis": "Four times the forecast, adding war reaching central Europe."}},
+      "notes": "D 0.086, B 0.26."},
+    {"iso2": "DK", "name": "Denmark", "values": {
+      "violentCrime.scale": {"lo": 0.4, "mid": 0.88, "hi": 1.9, "tag": "derived", "basis": "D = 0.84/5.0 x 0.7 = 0.12 (UNODC 2024); B = 383 per 100,000 (Eurostat 2022-24, the highest in the EU) / 140 x 0.6 = 1.64."},
+      "civilUnrest.forecast": {"lo": 0.001, "mid": 0.004, "hi": 0.012, "tag": "guess", "basis": "Copenhagen: Norrebro 1993, Ungdomshuset 2007, youth riots 2008, Norrebro 2019 (https://en.wikipedia.org/wiki/List_of_riots); about 0.24 over 37 years counted by district."},
+      "civilUnrest.pessimistic": {"lo": 0.004, "mid": 0.012, "hi": 0.03, "tag": "guess", "basis": "Three times the forecast."}},
+      "notes": "D 0.12, B 1.64."},
+    {"iso2": "EE", "name": "Estonia", "values": {
+      "violentCrime.scale": {"lo": 0.097, "mid": 0.2, "hi": 0.5, "tag": "derived", "basis": "D = 1.76/5.0 x 0.6 = 0.21 (UNODC 2024; mostly alcohol-related disputes); B = 36 per 100,000 (Eurostat 2022-24) / 140 x 0.75 = 0.19."},
+      "civilUnrest.forecast": {"lo": 0.002, "mid": 0.007, "hi": 0.025, "tag": "guess", "basis": "Bronze Night riots and looting in Tallinn, 2007 (a third of the population), 0.9% a year; I use 0.2% for unrest plus about 0.5% for Russian attack on Estonian territory."},
+      "civilUnrest.pessimistic": {"lo": 0.01, "mid": 0.03, "hi": 0.08, "tag": "guess", "basis": "A pessimist's 3% a year for Russia testing NATO in the Baltic, most of which would reach Estonian towns."}},
+      "notes": "D 0.21, B 0.19. The war share overlaps greatPowerWar."},
+    {"iso2": "FI", "name": "Finland", "values": {
+      "violentCrime.scale": {"lo": 0.096, "mid": 0.21, "hi": 0.44, "tag": "derived", "basis": "D = 0.93 (2023)/5.76 x 0.7 = 0.11 (UNODC); B = 69 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 0.30."},
+      "civilUnrest.forecast": {"lo": 0.0005, "mid": 0.002, "hi": 0.008, "tag": "guess", "basis": "No qualifying episode since 1990; mostly the small chance of fighting on Finnish territory."},
+      "civilUnrest.pessimistic": {"lo": 0.002, "mid": 0.008, "hi": 0.025, "tag": "guess", "basis": "Four times the forecast for a Russia-NATO war along the border."}},
+      "notes": "D 0.11, B 0.30."},
+    {"iso2": "FR", "name": "France", "values": {
+      "violentCrime.scale": {"lo": 0.33, "mid": 0.72, "hi": 1.6, "tag": "derived", "basis": "D = 1.33/5.0 x 0.7 = 0.19 (UNODC 2024); B = 293 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 1.25."},
+      "civilUnrest.forecast": {"lo": 0.02, "mid": 0.05, "hi": 0.1, "tag": "derived", "basis": "The anchor's France figure is 4% (2005, 2018-19, 2023, 2026; 92% of the population over 22 years). October 2026: rioting and looting in many cities, 2,300 arrests in a day, curfews in Paris, Lyon, Nice and Lille (https://aljazeera.com/news/2026/10/19/frances-macron-declines-ministers-resignation-after-violent-protests); 2018-26 runs near 8%. 5%."},
+      "civilUnrest.pessimistic": {"lo": 0.05, "mid": 0.1, "hi": 0.2, "tag": "guess", "basis": "The 2018-26 rate with the present wave continuing; Verisk Maplecroft ranks France seventh in the world (https://www.insurancejournal.com/news/international/2026/02/17/858246.htm)."}},
+      "notes": "D 0.19, B 1.25. Unrest risk is the highest in western Europe."},
+    {"iso2": "DE", "name": "Germany", "values": {
+      "violentCrime.scale": {"lo": 0.12, "mid": 0.25, "hi": 0.55, "tag": "derived", "basis": "D = 0.92/5.0 x 0.7 = 0.13 (UNODC 2024); B = 89 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 0.38."},
+      "civilUnrest.forecast": {"lo": 0.001, "mid": 0.003, "hi": 0.01, "tag": "guess", "basis": "Hoyerswerda 1991, Rostock 1992, Hamburg G20 2017 (2% of the population), Chemnitz 2018, Stuttgart 2020 (https://en.wikipedia.org/wiki/List_of_riots): about 0.06 over 37 years, 0.15%; the anchor's 0.3% for 'elsewhere'."},
+      "civilUnrest.pessimistic": {"lo": 0.003, "mid": 0.01, "hi": 0.03, "tag": "guess", "basis": "Three times the forecast, including Russian strikes on German territory in a NATO war."}},
+      "notes": "D 0.13, B 0.38."},
+    {"iso2": "GR", "name": "Greece", "values": {
+      "violentCrime.scale": {"lo": 0.1, "mid": 0.22, "hi": 0.6, "tag": "derived", "basis": "D = 0.85/5.0 x 0.7 = 0.12 (UNODC 2024); B = 60 per 100,000 (Eurostat 2022-24) / 140 x 0.75 = 0.32."},
+      "civilUnrest.forecast": {"lo": 0.004, "mid": 0.012, "hi": 0.03, "tag": "guess", "basis": "Athens (a third of the population) in December 2008, May 2010, 2011 and February 2012, plus Thessaloniki 2008 (https://en.wikipedia.org/wiki/List_of_riots): 1.5 over 37 years = 4%, but nothing comparable since 2012 beyond clashes in the government quarter; 1.2%."},
+      "civilUnrest.pessimistic": {"lo": 0.012, "mid": 0.035, "hi": 0.08, "tag": "guess", "basis": "The 1990-2026 rate, on a return of 2008-12 conditions."}},
+      "notes": "D 0.12, B 0.32."},
+    {"iso2": "HU", "name": "Hungary", "values": {
+      "violentCrime.scale": {"lo": 0.085, "mid": 0.22, "hi": 0.55, "tag": "guess", "basis": "D = 0.70/5.0 x 0.7 = 0.10 (UNODC 2024); B = 0.35, a guess (Hungary reports no Eurostat burglary figure; neighbours run 0.1-0.45)."},
+      "civilUnrest.forecast": {"lo": 0.001, "mid": 0.003, "hi": 0.012, "tag": "guess", "basis": "Budapest riots of September-October 2006 (17% of the population) (https://en.wikipedia.org/wiki/List_of_riots): 0.5% a year, shaded down."},
+      "civilUnrest.pessimistic": {"lo": 0.003, "mid": 0.01, "hi": 0.03, "tag": "guess", "basis": "Three times the forecast."}},
+      "notes": "D 0.10, B 0.35 (guess)."},
+    {"iso2": "IS", "name": "Iceland", "values": {
+      "violentCrime.scale": {"lo": 0.12, "mid": 0.28, "hi": 0.66, "tag": "derived", "basis": "D: 2024's 2.03 per 100,000 is a handful of killings in a population of 400,000; I use a ratio of 0.2 (typical years 0.3-1.5) x 0.7 = 0.14; B = 99 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 0.42."},
+      "civilUnrest.forecast": {"lo": 0.0002, "mid": 0.001, "hi": 0.005, "tag": "guess", "basis": "Only the 2009 protests in Reykjavik, mostly peaceful."},
+      "civilUnrest.pessimistic": {"lo": 0.001, "mid": 0.004, "hi": 0.012, "tag": "guess", "basis": "Four times the forecast."}},
+      "notes": "D 0.14, B 0.42."},
+    {"iso2": "IE", "name": "Ireland", "values": {
+      "violentCrime.scale": {"lo": 0.17, "mid": 0.4, "hi": 0.85, "tag": "guess", "basis": "D = 0.70/5.0 x 0.7 = 0.10 (UNODC 2024); B = 0.7, a guess from recalled Garda burglary counts (Ireland reports none to Eurostat)."},
+      "civilUnrest.forecast": {"lo": 0.002, "mid": 0.006, "hi": 0.02, "tag": "guess", "basis": "Dublin riots of 2006 and 23-24 November 2023 (looting, trams and buses burned; https://en.wikipedia.org/wiki/List_of_riots), Citywest 2025; Dublin is 28% of the population: about 0.4 over 37 years, 0.6% a year counted with half weight for one-night events."},
+      "civilUnrest.pessimistic": {"lo": 0.006, "mid": 0.02, "hi": 0.05, "tag": "guess", "basis": "Anti-immigration disorder recurring yearly in Dublin."}},
+      "notes": "D 0.10, B 0.7 (guess)."},
+    {"iso2": "IL", "name": "Israel", "values": {
+      "violentCrime.scale": {"lo": 0.25, "mid": 0.55, "hi": 1.1, "tag": "guess", "basis": "D = 3.72/5.0 x 0.4 = 0.30 (UNODC 2024; most killings are feuds among criminal families in Arab towns, so few are burglary or robbery); B = 0.8 (guess)."},
+      "civilUnrest.forecast": {"lo": 0.15, "mid": 0.35, "hi": 0.6, "tag": "derived", "basis": "Missile or rocket fire on most cities in 2014, 2021 (with riots and a curfew in Lod), 2023, 2024, 2025 and 2026; in 2026 Iranian missiles hit Tel Aviv, Jerusalem, Haifa and the Negev over 40 days and again in June-July, killing about 26 civilians and injuring 4,000-7,000 (https://en.wikipedia.org/wiki/2026_Iranian_strikes_on_Israel), and the war is ongoing (https://en.wikipedia.org/wiki/2026_Iran_war). Six of the last 13 years touched most of the urban population; with a ceasefire likely to hold part of the year, 35%."},
+      "civilUnrest.pessimistic": {"lo": 0.3, "mid": 0.55, "hi": 0.8, "tag": "guess", "basis": "The 2023-26 frequency (every year) shaded for a ceasefire holding."}},
+      "notes": "D 0.30, B 0.8. Unrest here is war, not riot: the Western Europe preset's windows (riot-shaped, conflict share 2%) fit poorly. See openQuestions."},
+    {"iso2": "IT", "name": "Italy", "values": {
+      "violentCrime.scale": {"lo": 0.26, "mid": 0.57, "hi": 1.2, "tag": "derived", "basis": "D = 0.57/5.0 x 0.7 = 0.079 (UNODC 2024); B = 247 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 1.06."},
+      "civilUnrest.forecast": {"lo": 0.001, "mid": 0.003, "hi": 0.01, "tag": "guess", "basis": "Genoa G8 2001, Rome 2011, Naples and other cities' COVID riots of October 2020 (https://en.wikipedia.org/wiki/List_of_riots): about 0.1 over 37 years."},
+      "civilUnrest.pessimistic": {"lo": 0.003, "mid": 0.01, "hi": 0.03, "tag": "guess", "basis": "Three times the forecast."}},
+      "notes": "D 0.079, B 1.06."},
+    {"iso2": "JP", "name": "Japan", "values": {
+      "violentCrime.scale": {"lo": 0.023, "mid": 0.056, "hi": 0.13, "tag": "guess", "basis": "D = 0.23/5.0 x 0.7 = 0.032 (UNODC 2024); B = 0.08, a guess from recalled police counts of residential break-ins (under 20 per 100,000)."},
+      "civilUnrest.forecast": {"lo": 0.0002, "mid": 0.001, "hi": 0.005, "tag": "guess", "basis": "Only the Kamagasaki disturbances in Osaka (1990, 2008); a little for strikes on Japan in a Taiwan or Korea war."},
+      "civilUnrest.pessimistic": {"lo": 0.0015, "mid": 0.005, "hi": 0.015, "tag": "guess", "basis": "A pessimist's view of a Taiwan crisis reaching bases in Japanese cities."}},
+      "notes": "D 0.032, B 0.08."},
+    {"iso2": "KR", "name": "South Korea", "values": {
+      "violentCrime.scale": {"lo": 0.042, "mid": 0.11, "hi": 0.27, "tag": "guess", "basis": "D = 0.49/5.0 x 0.7 = 0.069 (UNODC 2024); B = 0.15 (guess)."},
+      "civilUnrest.forecast": {"lo": 0.001, "mid": 0.004, "hi": 0.015, "tag": "guess", "basis": "Martial law declared in Seoul for six hours in December 2024 (counted at a fifth), student riots of the 1990s, and about 0.2% a year for North Korean fire on cities."},
+      "civilUnrest.pessimistic": {"lo": 0.005, "mid": 0.015, "hi": 0.04, "tag": "guess", "basis": "Four times the forecast."}},
+      "notes": "D 0.069, B 0.15."},
+    {"iso2": "LV", "name": "Latvia", "values": {
+      "violentCrime.scale": {"lo": 0.11, "mid": 0.23, "hi": 0.53, "tag": "derived", "basis": "D = 2.78/5.0 x 0.6 = 0.33 (UNODC 2024); B = 24 per 100,000 (Eurostat 2022-24) / 140 x 0.75 = 0.13, possibly a narrow definition."},
+      "civilUnrest.forecast": {"lo": 0.002, "mid": 0.007, "hi": 0.025, "tag": "guess", "basis": "Riga riot and looting of January 2009 (a third of the population), 0.9% a year, shaded to 0.2%, plus about 0.5% for Russian attack."},
+      "civilUnrest.pessimistic": {"lo": 0.01, "mid": 0.03, "hi": 0.08, "tag": "guess", "basis": "As for Estonia."}},
+      "notes": "D 0.33, B 0.13."},
+    {"iso2": "LT", "name": "Lithuania", "values": {
+      "violentCrime.scale": {"lo": 0.11, "mid": 0.23, "hi": 0.53, "tag": "derived", "basis": "D = 2.66/5.0 x 0.6 = 0.32 (UNODC 2024); B = 26 per 100,000 (Eurostat 2022-24) / 140 x 0.75 = 0.14."},
+      "civilUnrest.forecast": {"lo": 0.002, "mid": 0.007, "hi": 0.025, "tag": "guess", "basis": "Vilnius riot of January 2009 (a fifth of the population); the 2021 clash at the Seimas does not count. Plus about 0.5% for Russian attack (Suwalki gap)."},
+      "civilUnrest.pessimistic": {"lo": 0.01, "mid": 0.03, "hi": 0.08, "tag": "guess", "basis": "As for Estonia."}},
+      "notes": "D 0.32, B 0.14."},
+    {"iso2": "LU", "name": "Luxembourg", "values": {
+      "violentCrime.scale": {"lo": 0.21, "mid": 0.47, "hi": 1.0, "tag": "derived", "basis": "D = 1.53 (2022)/6.3 x 0.7 = 0.17 (UNODC; a few killings a year); B = 176 per 100,000 (Eurostat 2020-21) / 140 x 0.6 = 0.76."},
+      "civilUnrest.forecast": {"lo": 0.0002, "mid": 0.001, "hi": 0.005, "tag": "guess", "basis": "No qualifying episode since 1990."},
+      "civilUnrest.pessimistic": {"lo": 0.001, "mid": 0.004, "hi": 0.012, "tag": "guess", "basis": "Four times the forecast."}},
+      "notes": "D 0.17, B 0.76."},
+    {"iso2": "MX", "name": "Mexico", "values": {
+      "violentCrime.scale": {"lo": 0.66, "mid": 1.6, "hi": 3.8, "tag": "guess", "basis": "D = 25.6/5.0 x 0.25 = 1.3 (UNODC 2024; cartel killings dominate); B = 4 x 0.5 = 2.0 (guess: ENVIPE home burglary about 3-4% of households, recalled)."},
+      "civilUnrest.forecast": {"lo": 0.02, "mid": 0.05, "hi": 0.1, "tag": "guess", "basis": "Cities shut down by cartel war: Juarez, Tijuana, Monterrey, Tamaulipas 2008-12 (about 10% of the urban population a year), 3-5% a year since (Culiacan from September 2024: 2,425 killings in Sinaloa in 17 months, https://grupoanimal.mx/explicaciones/sinaloa-homicidios-dolosos-conflicto, search snippet), plus the January 2017 fuel-price looting (20%) and Oaxaca 2006: about 6% a year since 2008."},
+      "civilUnrest.pessimistic": {"lo": 0.05, "mid": 0.1, "hi": 0.2, "tag": "guess", "basis": "The 2008-12 rate, if US pressure on the cartels sets off wars in more cities."}},
+      "notes": "D 1.3, B 2.0. Qualifying events are cartel violence more than riots."},
+    {"iso2": "NL", "name": "Netherlands", "values": {
+      "violentCrime.scale": {"lo": 0.15, "mid": 0.32, "hi": 0.69, "tag": "derived", "basis": "D = 0.66/5.0 x 0.7 = 0.092 (UNODC 2024); B = 125 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 0.54."},
+      "civilUnrest.forecast": {"lo": 0.002, "mid": 0.006, "hi": 0.02, "tag": "guess", "basis": "Curfew riots in about ten cities in January 2021, Rotterdam November 2021, Amsterdam November 2024, The Hague 2025 (https://en.wikipedia.org/wiki/List_of_riots): about 0.28 over 37 years, nearly all since 2021."},
+      "civilUnrest.pessimistic": {"lo": 0.006, "mid": 0.02, "hi": 0.05, "tag": "guess", "basis": "The 2021-26 rate."}},
+      "notes": "D 0.092, B 0.54."},
+    {"iso2": "NZ", "name": "New Zealand", "values": {
+      "violentCrime.scale": {"lo": 0.39, "mid": 0.83, "hi": 1.7, "tag": "guess", "basis": "D = 1.46 (2022)/6.3 x 0.7 = 0.16 (UNODC); B = 1.5, a guess from recalled victim surveys that put household burglary well above the US rate."},
+      "civilUnrest.forecast": {"lo": 0.0005, "mid": 0.002, "hi": 0.008, "tag": "guess", "basis": "Only the occupation of Parliament grounds in Wellington, ending in a riot in March 2022."},
+      "civilUnrest.pessimistic": {"lo": 0.002, "mid": 0.007, "hi": 0.02, "tag": "guess", "basis": "Three and a half times the forecast."}},
+      "notes": "D 0.16, B 1.5 (guess)."},
+    {"iso2": "NO", "name": "Norway", "values": {
+      "violentCrime.scale": {"lo": 0.12, "mid": 0.3, "hi": 0.7, "tag": "guess", "basis": "D = 0.70/5.0 x 0.7 = 0.098 (UNODC 2024); B = 0.5 (guess; Norway reports no Eurostat burglary figure)."},
+      "civilUnrest.forecast": {"lo": 0.0004, "mid": 0.0015, "hi": 0.006, "tag": "guess", "basis": "Only the Gaza riots in Oslo, January 2009."},
+      "civilUnrest.pessimistic": {"lo": 0.0015, "mid": 0.005, "hi": 0.015, "tag": "guess", "basis": "Three times the forecast, including war in the north."}},
+      "notes": "D 0.098, B 0.5 (guess)."},
+    {"iso2": "PL", "name": "Poland", "values": {
+      "violentCrime.scale": {"lo": 0.077, "mid": 0.16, "hi": 0.44, "tag": "derived", "basis": "D = 0.68/5.0 x 0.7 = 0.095 (UNODC 2024); B = 44 per 100,000 (Eurostat 2021-24) / 140 x 0.75 = 0.23."},
+      "civilUnrest.forecast": {"lo": 0.001, "mid": 0.004, "hi": 0.015, "tag": "guess", "basis": "Independence Day riots in Warsaw (one day each) and Elk 2017; mostly about 0.2% for Russian strikes on Polish territory."},
+      "civilUnrest.pessimistic": {"lo": 0.005, "mid": 0.015, "hi": 0.04, "tag": "guess", "basis": "A pessimist's NATO-Russia war risk."}},
+      "notes": "D 0.095, B 0.23."},
+    {"iso2": "PT", "name": "Portugal", "values": {
+      "violentCrime.scale": {"lo": 0.12, "mid": 0.26, "hi": 0.74, "tag": "derived", "basis": "D = 0.71 (2023)/5.76 x 0.7 = 0.086 (UNODC); B = 81 per 100,000 (Eurostat 2022-24) / 140 x 0.75 = 0.43."},
+      "civilUnrest.forecast": {"lo": 0.001, "mid": 0.004, "hi": 0.012, "tag": "guess", "basis": "Several nights of rioting in Lisbon's suburbs in October 2024 after a police shooting; about 0.15 over 37 years."},
+      "civilUnrest.pessimistic": {"lo": 0.004, "mid": 0.012, "hi": 0.03, "tag": "guess", "basis": "Three times the forecast; affordability protests in 2026 (https://www.insurancejournal.com/news/international/2026/11/12/892199.htm)."}},
+      "notes": "D 0.086, B 0.43."},
+    {"iso2": "SK", "name": "Slovakia", "values": {
+      "violentCrime.scale": {"lo": 0.058, "mid": 0.12, "hi": 0.28, "tag": "derived", "basis": "D = 1.07/5.0 x 0.7 = 0.15 (UNODC 2024); B = 17 per 100,000 (Eurostat 2022-24) / 140 x 0.75 = 0.09, probably a narrow definition, so the high end is three times that."},
+      "civilUnrest.forecast": {"lo": 0.0004, "mid": 0.0015, "hi": 0.006, "tag": "guess", "basis": "No qualifying episode since 1990; some weight for polarised politics."},
+      "civilUnrest.pessimistic": {"lo": 0.0015, "mid": 0.005, "hi": 0.015, "tag": "guess", "basis": "Three times the forecast."}},
+      "notes": "D 0.15, B 0.09."},
+    {"iso2": "SI", "name": "Slovenia", "values": {
+      "violentCrime.scale": {"lo": 0.12, "mid": 0.27, "hi": 0.76, "tag": "derived", "basis": "D = 0.71/5.0 x 0.7 = 0.099 (UNODC 2024); B = 83 per 100,000 (Eurostat 2022-24) / 140 x 0.75 = 0.44."},
+      "civilUnrest.forecast": {"lo": 0.001, "mid": 0.003, "hi": 0.01, "tag": "guess", "basis": "Maribor and Ljubljana riots of 2012-13 (a fifth of the population), 0.5% a year, shaded down."},
+      "civilUnrest.pessimistic": {"lo": 0.003, "mid": 0.01, "hi": 0.03, "tag": "guess", "basis": "Three times the forecast."}},
+      "notes": "D 0.099, B 0.44."},
+    {"iso2": "ES", "name": "Spain", "values": {
+      "violentCrime.scale": {"lo": 0.2, "mid": 0.43, "hi": 0.93, "tag": "derived", "basis": "D = 0.73/5.0 x 0.7 = 0.10 (UNODC 2024); B = 175 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 0.75."},
+      "civilUnrest.forecast": {"lo": 0.002, "mid": 0.005, "hi": 0.015, "tag": "guess", "basis": "El Ejido 2000, Barcelona October 2019 (a week of rioting), Barcelona and Madrid February 2021, Torre-Pacheco 2025 (https://en.wikipedia.org/wiki/List_of_riots): 0.35% a year since 1990, 1.2% since 2017."},
+      "civilUnrest.pessimistic": {"lo": 0.005, "mid": 0.015, "hi": 0.04, "tag": "guess", "basis": "The 2017-26 rate."}},
+      "notes": "D 0.10, B 0.75."},
+    {"iso2": "SE", "name": "Sweden", "values": {
+      "violentCrime.scale": {"lo": 0.35, "mid": 0.77, "hi": 1.7, "tag": "derived", "basis": "D = 0.87/5.0 x 0.7 = 0.12 (UNODC 2024; gang shootings are mostly away from homes); B = 329 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 1.41."},
+      "civilUnrest.forecast": {"lo": 0.002, "mid": 0.006, "hi": 0.02, "tag": "guess", "basis": "Malmo 2008, Stockholm suburbs 2013, Rinkeby 2017, Easter riots in five cities 2022 (https://en.wikipedia.org/wiki/List_of_riots): 0.75% a year since 1990, 2% since 2013, counted by district."},
+      "civilUnrest.pessimistic": {"lo": 0.006, "mid": 0.02, "hi": 0.05, "tag": "guess", "basis": "The 2013-26 rate."}},
+      "notes": "D 0.12, B 1.41."},
+    {"iso2": "CH", "name": "Switzerland", "values": {
+      "violentCrime.scale": {"lo": 0.29, "mid": 0.63, "hi": 1.4, "tag": "derived", "basis": "D = 0.50/5.0 x 0.7 = 0.071 (UNODC 2024); B = 276 per 100,000 (Eurostat 2022-24, rising) / 140 x 0.6 = 1.18."},
+      "civilUnrest.forecast": {"lo": 0.0005, "mid": 0.002, "hi": 0.008, "tag": "guess", "basis": "Two nights in Lausanne in 2025 and one in Bern; nothing larger since 1990."},
+      "civilUnrest.pessimistic": {"lo": 0.002, "mid": 0.006, "hi": 0.02, "tag": "guess", "basis": "Three times the forecast."}},
+      "notes": "D 0.071, B 1.18."},
+    {"iso2": "TR", "name": "Turkey", "values": {
+      "violentCrime.scale": {"lo": 0.1, "mid": 0.27, "hi": 0.69, "tag": "guess", "basis": "D = 2.41/5.0 x 0.5 = 0.24 (UNODC 2024; mostly disputes and feuds); B = 0.6 x 0.5 = 0.3 (guess; Eurostat's police count of 63 per 100,000 is under-reported)."},
+      "civilUnrest.forecast": {"lo": 0.01, "mid": 0.025, "hi": 0.06, "tag": "guess", "basis": "PKK fighting in south-eastern cities in the 1990s and 2015-16 (curfews in Sur, Cizre, Nusaybin), Kobani riots 2014, Gezi 2013 (half weight), the coup attempt of July 2016 in Istanbul and Ankara, Kayseri 2024: about 0.75 over 37 years, 2% a year, 3.8% since 2013."},
+      "civilUnrest.pessimistic": {"lo": 0.03, "mid": 0.06, "hi": 0.12, "tag": "guess", "basis": "The post-2013 rate plus spillover from the 2026 Iran war (Iranian missiles intercepted over Turkey, https://en.wikipedia.org/wiki/2026_Iran_war)."}},
+      "notes": "D 0.24, B 0.3."},
+    {"iso2": "GB", "name": "United Kingdom", "values": {
+      "violentCrime.scale": {"lo": 0.29, "mid": 0.63, "hi": 1.4, "tag": "derived", "basis": "D = 0.93 (England and Wales 2023)/5.76 x 0.7 = 0.11, s from ONS's 6% of homicides in furtherance of theft or gain (https://www.ons.gov.uk/peoplepopulationandcommunity/crimeandjustice/articles/homicideinenglandandwales/yearendingmarch2024); B = about 167,000 home burglaries of 245,284 police-recorded (https://www.ons.gov.uk/peoplepopulationandcommunity/crimeandjustice/bulletins/crimeinenglandandwales/yearendingmarch2025) = 273 per 100,000 / 140 x 0.6 = 1.15."},
+      "civilUnrest.forecast": {"lo": 0.004, "mid": 0.013, "hi": 0.035, "tag": "guess", "basis": "The anchor's England figure, 1% (2011 and 2024, 25% of the population over 26 years), plus Northern Ireland's near-yearly riots (Belfast 2021 and June 2026, Ballymena 2025; https://en.wikipedia.org/wiki/List_of_riots)."},
+      "civilUnrest.pessimistic": {"lo": 0.015, "mid": 0.04, "hi": 0.09, "tag": "guess", "basis": "A 2024-scale wave every three years on rising anti-immigration tension."}},
+      "notes": "D 0.11, B 1.15."},
+    {"iso2": "US", "name": "United States", "values": {
+      "violentCrime.scale": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "Reference country: 1 by definition (1.2 micromorts a person and $40 a household a year, data/config.mjs)."},
+      "civilUnrest.forecast": {"lo": 0.003, "mid": 0.01, "hi": 0.03, "tag": "guess", "basis": "Preset figure, reproduced: 0.6% a year over 1965-2026 and 1.5% over 2015-26 by residents of cities under riot curfew; the Los Angeles curfew of June 2025 was confined downtown."},
+      "civilUnrest.pessimistic": {"lo": 0.01, "mid": 0.03, "hi": 0.08, "tag": "guess", "basis": "Preset figure: a 2020-scale wave every six years (https://www.insurancejournal.com/news/international/2026/02/17/858246.htm)."}},
+      "notes": "Anchor."},
+    {"iso2": "AR", "name": "Argentina", "values": {
+      "violentCrime.scale": {"lo": 0.64, "mid": 1.5, "hi": 3.0, "tag": "guess", "basis": "D = 3.94/5.0 x 1.2 = 0.95 (UNODC 2024; killings in robberies are a larger share than in the US, recalled); B = 4 x 0.5 = 2.0 (guess). Matches the Buenos Aires preset."},
+      "civilUnrest.forecast": {"lo": 0.015, "mid": 0.04, "hi": 0.1, "tag": "derived", "basis": "1989, 2001, 2013 and 2023 looting waves plus Rosario 2024: 1.7 of the urban population over 43 years = 4.0%, as the preset."},
+      "civilUnrest.pessimistic": {"lo": 0.03, "mid": 0.08, "hi": 0.18, "tag": "guess", "basis": "Preset figure: a currency break around the 2027 election."}},
+      "notes": "D 0.95, B 2.0. Same as the preset."},
+    {"iso2": "BR", "name": "Brazil", "values": {
+      "violentCrime.scale": {"lo": 0.53, "mid": 1.1, "hi": 2.9, "tag": "guess", "basis": "D = 18.7/5.0 x 0.25 = 0.93 (UNODC 2024; robbery killings 807 of 40,775 violent deaths in 2025 = 2% against 9% in the US, widened for misclassification, https://www.folhape.com.br/noticias/mortes-violentas-caem-82-no-pais-em-2025-feminicidios-aumentam-4/502136/ and search snippet); B = 3 x 0.45 = 1.35 (guess)."},
+      "civilUnrest.forecast": {"lo": 0.01, "mid": 0.025, "hi": 0.06, "tag": "guess", "basis": "Sao Paulo PCC attacks 2006 (11% of the urban population), the 2013 protests (half weight), Rio 2010 and October 2025, police strikes with looting in Salvador 2012 and 2014, Recife 2014, Vitoria 2017, Fortaleza 2020, gang attack waves in Fortaleza 2019, Manaus 2021, Natal 2023: about 0.57 over 37 years, 2.7% a year since 2010."},
+      "civilUnrest.pessimistic": {"lo": 0.03, "mid": 0.06, "hi": 0.12, "tag": "guess", "basis": "Twice the post-2010 rate, for a contested 2026-27 political cycle and wider gang warfare."}},
+      "notes": "D 0.93, B 1.35. Routine shootouts in Rio's favelas are counted in violentCrime, not here."},
+    {"iso2": "CN", "name": "China", "values": {
+      "violentCrime.scale": {"lo": 0.087, "mid": 0.28, "hi": 0.78, "tag": "guess", "basis": "D = 0.50 (2020)/6.5 x 0.8 = 0.062 (UNODC; under-recording suspected, so s runs to 2); B = 1.2 x 0.4 = 0.5 (guess)."},
+      "civilUnrest.forecast": {"lo": 0.001, "mid": 0.004, "hi": 0.015, "tag": "guess", "basis": "Lhasa 2008, Urumqi 2009 (riot and curfew), anti-Japanese riots in dozens of cities 2005 and 2012, COVID clashes 2022 (https://en.wikipedia.org/wiki/List_of_riots): about 0.07 of the urban population over 37 years, plus 0.2% for strikes on the mainland in a Taiwan war."},
+      "civilUnrest.pessimistic": {"lo": 0.005, "mid": 0.015, "hi": 0.04, "tag": "guess", "basis": "A pessimist's Taiwan-war risk and under-reporting of unrest."}},
+      "notes": "D 0.062, B 0.5. Both fields rest on thin, possibly censored data."},
+    {"iso2": "IN", "name": "India", "values": {
+      "violentCrime.scale": {"lo": 0.084, "mid": 0.22, "hi": 0.59, "tag": "guess", "basis": "D = 2.72 (2023)/5.76 x 0.5 = 0.24 (UNODC; most murders follow disputes, so few are robberies); B = 1 x 0.2 = 0.2 (guess)."},
+      "civilUnrest.forecast": {"lo": 0.012, "mid": 0.03, "hi": 0.07, "tag": "guess", "basis": "Curfews after communal riots several times a year (Mumbai 1992-93, Gujarat 2002, Delhi 2020, Bengaluru 2020, Nuh 2023, Manipur 2023-25, Nagpur 2025 and dozens more, https://en.wikipedia.org/wiki/List_of_riots), usually in part of a city; counted at half the city, about 2.5% a year, plus 0.5% for Pakistani fire on border cities as in May 2025."},
+      "civilUnrest.pessimistic": {"lo": 0.03, "mid": 0.06, "hi": 0.12, "tag": "guess", "basis": "Twice the forecast: a 2002-scale communal wave or a longer India-Pakistan war."}},
+      "notes": "D 0.24, B 0.2."},
+    {"iso2": "ID", "name": "Indonesia", "values": {
+      "violentCrime.scale": {"lo": 0.072, "mid": 0.26, "hi": 0.75, "tag": "guess", "basis": "D = 0.42/5.0 x 0.8 = 0.066 (UNODC 2024; recorded homicide is probably too low, so s runs to 2.5); B = 1.5 x 0.3 = 0.45 (guess)."},
+      "civilUnrest.forecast": {"lo": 0.012, "mid": 0.035, "hi": 0.08, "tag": "derived", "basis": "May 1998 (25% of the urban population), Ambon and Poso 1999-2002, Jakarta 2019 and 2020, Papua 2019, and 25 August-9 September 2025: arson in Jakarta, Bandung, Surabaya, Makassar, Solo and Yogyakarta, politicians' homes looted, about 10 dead (https://en.wikipedia.org/wiki/August_2025_Indonesian_protests), about 35%: 0.95 over 37 years = 2.6%, 3.7% since 2010."},
+      "civilUnrest.pessimistic": {"lo": 0.035, "mid": 0.08, "hi": 0.16, "tag": "guess", "basis": "Twice the post-2010 rate."}},
+      "notes": "D 0.066, B 0.45."},
+    {"iso2": "NG", "name": "Nigeria", "values": {
+      "violentCrime.scale": {"lo": 0.42, "mid": 1.1, "hi": 2.6, "tag": "guess", "basis": "D = 15.7 (2023, a UNODC estimate)/5.76 x 0.6 = 1.6 (armed robbery of homes is common in cities; banditry and farmer-herder killings are rural); B = 3 x 0.2 = 0.6 (guess)."},
+      "civilUnrest.forecast": {"lo": 0.025, "mid": 0.06, "hi": 0.13, "tag": "derived", "basis": "Kaduna 2000 and 2002, Jos 2001-10, post-election riots across the north 2011, Boko Haram in Maiduguri 2009-15, #EndSARS 2020 (Lagos 24-hour curfew, curfews 'on millions', looting in Jos; https://en.wikipedia.org/wiki/End_SARS), curfews in Kano, Kaduna, Borno and three more states in August 2024 (https://en.wikipedia.org/wiki/End_Bad_Governance_protests), sit-at-home enforcement in the south-east since 2021: 5% a year since 2010; raised for the February 2027 election."},
+      "civilUnrest.pessimistic": {"lo": 0.06, "mid": 0.14, "hi": 0.28, "tag": "guess", "basis": "A 2011-style post-election wave plus 2020-scale protests."}},
+      "notes": "D 1.6, B 0.6. Homicide is a model estimate; no burglary survey found."},
+    {"iso2": "PH", "name": "Philippines", "values": {
+      "violentCrime.scale": {"lo": 0.12, "mid": 0.34, "hi": 0.83, "tag": "guess", "basis": "D = 4.31/5.0 x 0.5 = 0.43 (UNODC 2024); B = 1 x 0.25 = 0.25 (guess)."},
+      "civilUnrest.forecast": {"lo": 0.005, "mid": 0.015, "hi": 0.04, "tag": "guess", "basis": "EDSA III siege and state of rebellion in Metro Manila 2001 (25% of the urban population), Zamboanga 2013, Marawi and martial law in Mindanao 2017-19, the Manila riots of 21 September 2025 (over 200 arrests, search results): about 0.55 over 37 years, 1.5% a year."},
+      "civilUnrest.pessimistic": {"lo": 0.015, "mid": 0.04, "hi": 0.09, "tag": "guess", "basis": "The flood-control corruption protests escalating; Mindanao insurgency reviving."}},
+      "notes": "D 0.43, B 0.25."},
+    {"iso2": "ZA", "name": "South Africa", "values": {
+      "violentCrime.scale": {"lo": 3.3, "mid": 5.3, "hi": 8.3, "tag": "derived", "basis": "D = 39.7/5.0 x 0.85 = 6.8 (UNODC 2024; SAPS: robbery behind 382 of 5,596 murders, 6.8%, https://www.gov.za/sites/default/files/crimestats.pdf); B = (5.9% housebreaking + 1.1% home robbery of households, Stats SA 2023/24, https://thestar.com.my/news/world/2024/08/28/over-1-mln-south-african-households-affected-by-housebreaking-report) / 0.71% = 9.9, used 8.5 for urban, x 0.45 for smaller losses = 3.8."},
+      "civilUnrest.forecast": {"lo": 0.015, "mid": 0.04, "hi": 0.09, "tag": "derived", "basis": "July 2021 in KwaZulu-Natal and Gauteng (about 45% of the population; 354 dead, over 200 malls looted, fuel and food shortages, https://en.wikipedia.org/wiki/2021_South_African_unrest), xenophobic riots 2008, 2015, 2019, Cape Town 2023: about 1.0 over 31 years since 1995 = 3.3%; 7% counting 1990-94."},
+      "civilUnrest.pessimistic": {"lo": 0.04, "mid": 0.09, "hi": 0.18, "tag": "guess", "basis": "The 1990-2026 rate: a 2021-scale wave every ten years plus local looting."}},
+      "notes": "D 6.8, B 3.8. The highest violentCrime figure on the list by far."}
+  ],
+  "blockedSources": [
+    "https://citizen.co.za/news/south-africa/crime/saps-crime-statistics-leading-causes-of-murder (403): SAPS murder causes for a later quarter; I read the Q1 2024/25 SAPS deck instead.",
+    "https://monitormercantil.com.br/mortes-violentas-cairam-82-no-pais-em-2025-mas-feminicidios-aumentaram-4/ (403): the count of 807 latrocinio victims in 2025, which I have only from a search snippet.",
+    "https://www.inegi.org.mx/contenidos/saladeprensa/boletines/2026/envipe/ENVIPE2026_CP.pdf: read, but the household-burglary rate is only in the full ENVIPE results, not opened.",
+    "https://adprensa.cl/wp/wp-content/uploads/2026/07/sintesis-nacional-enusc-2025.pdf: the pages with Chile's household burglary rate were not reached.",
+    "https://elsubmarinojujuy.com.ar/wp-content/uploads/Informe_SNIC_Nacional_2023.pdf: text not extractable; it would give Argentina's share of homicides in robberies.",
+    "https://en.wikipedia.org/wiki/Sinaloa_Cartel_civil_war (404): effects of the Culiacan war on daily life.",
+    "ONS Crime Survey for England and Wales: the bulletin gives no household burglary rate; police counts used instead."
+  ],
+  "openQuestions": [
+    "The engine applies one violentCrime scale to both micromorts and dollars. Deaths and losses differ by country far more than either does from the blend (South Africa D 6.8, B 3.8; France D 0.19, B 1.25). Each country's notes give D and B; splitting the field into a mortality scale and a loss scale would let the engine value deaths at the country's micromortValueUsd without distorting losses.",
+    "My equal-weight blend gives 0.5 for Western Europe against the preset's 0.4. If the owner keeps 0.4, my European figures should be multiplied by about 0.8 to stay on the preset's scale.",
+    "Israel's civilUnrest (35%) is war, not riot: the Western Europe preset's windows and its 2% conflict share understate shelter days and school closures and overstate looting. The same holds, less starkly, for cartel and insurgent violence in Mexico, Colombia, Brazil and Nigeria under the Buenos Aires preset's 1% conflict share.",
+    "For Estonia, Latvia, Lithuania, Poland, Finland, Korea, Japan and China part of civilUnrest is attack by a foreign state, which overlaps greatPowerWar (and nuclear hazards); the engine may count it twice.",
+    "Police-recorded burglary definitions differ: Slovakia, Latvia, Lithuania and Estonia come out implausibly low against western Europe and may count only flats or only completed break-ins.",
+    "The loss factor L (0.2-0.65 outside rich countries) is my guess at how far stolen goods, repairs and time cost fewer dollars; the prices family's priceIndex and timeValueUsdPerHour could replace it."
+  ]
+}

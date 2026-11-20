@@ -1,0 +1,245 @@
+{
+  "kind": "countries",
+  "group": "fire",
+  "method": "houseFire.scale: deaths from accidental exposure to smoke, fire and flames (ICD-10 X00-X09, plus half of Y26, fires of undetermined intent) in the WHO Mortality Database, pooled over 2017-2024 (whatever years each country reported), age-standardised to the 2022 US population in three groups (0-14, 15-64, 65+) with World Bank population, and divided by the same rate for the United States (9.6 deaths per million crude, 9.75 age-standardised). Where CTIF World Fire Statistics No. 31 gives the country's 2020-2024 fire deaths per 100,000, that ratio to the US (1.07), corrected by the same age factor, is averaged with the death-registration ratio (geometric mean). Wildfire disasters inside the pooled years (Greece 2018, Portugal 2017, Australia 2019-20) are removed. Where the place-of-occurrence digit shows a smaller share of fire deaths at home than in the US (about 0.82), the ratio is scaled down (Brazil, Mexico, Colombia, Turkey, Korea). Finally, because the model's US figure (10 micromorts) is for a home with no working smoke alarm, each ratio is multiplied by (1 - 0.84 x 0.55) / (1 - p x 0.55), where p is the country's share of homes with a working alarm (mostly guessed) and 0.55 the alarm's effect, so that the figure describes an alarm-less home in every country. Countries with no death registration (China, India, Indonesia, Nigeria) use GBD 2021 regional rates for fire, heat and hot substances against High-income North America, cut to the structure-fire share, and national fire statistics as a floor; Norway uses CTIF alone. coIncident.scale: accidental poisoning by gases (X47, plus half of Y17, undetermined intent), age-standardised the same way, relative to the US, then multiplied by 1.42: 1.3 because only about 65% of US X47 deaths are carbon monoxide (624 accidental CO deaths in 2022 against 960 X47 deaths) against about 85% elsewhere, 1.5 because only about 40% of US CO deaths occur at home (fire-co.json) against about 60% elsewhere, and 0.73 because 49% of US homes have a working CO alarm and almost none elsewhere, so the observed rate understates the US alarm-less rate more. Small countries are shrunk toward a regional mean. China, India and Indonesia use GBD 2021 CO death rates against High-income North America (0.314 per 100,000).",
+  "anchors": [
+    {
+      "preset": "us",
+      "field": "houseFire.scale",
+      "reproduced": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "By construction: the US death-registration rate (X00-X09 + half Y26, 3,195 deaths a year in 2017-2023, 9.6 per million) is the denominator for every country. NFPA home fire deaths (2,600-2,920 a year) are 85-90% of it. https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "comment": "Same as the preset. The ratio method assumes the US share of fire deaths that occur in homes (about 0.82-0.9) holds elsewhere unless the place digit says otherwise."
+    },
+    {
+      "preset": "westernEurope",
+      "field": "houseFire.scale",
+      "reproduced": {"lo": 0.25, "mid": 0.36, "hi": 0.55, "tag": "derived", "basis": "Population-weighted over the 18 Western European countries in this file: 0.41 before the smoke-alarm adjustment, 0.36 after it. United Kingdom alone: 0.39 before, 0.42 after (England's dwelling-fire deaths 3.6 per million against NFPA's 8.2 gave the preset 0.44). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "comment": "Preset 0.5 (0.3-1.0). The preset rounded England's 0.44 up and took no account of age (Europe is older, which raises crude rates) or of low alarm ownership in Italy, Spain, Portugal and Greece. My figure is inside the preset's range, at its lower end."
+    },
+    {
+      "preset": "buenosAires",
+      "field": "houseFire.scale",
+      "reproduced": {"lo": 0.24, "mid": 0.52, "hi": 1.1, "tag": "derived", "basis": "Argentina 2017-2023: X00-X09 216 a year plus Y26 (undetermined) 277 a year, counted at half; age-standardised ratio to the US 0.91. Times the alarm factor 0.57 (about 10% of homes with a working alarm, a guess) gives 0.52. https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "comment": "Preset 1.0 (0.4-2.0) was a guess with no national count. The registration data before the alarm adjustment, 0.91, confirm it. The alarm adjustment halves it, because the preset's figure applies to a home with no alarm, and nearly all Argentine homes are in that state already. Counting all of Y26 as accidental would give 1.25 before adjustment, none of it 0.57. The data are national, not for the city."
+    },
+    {
+      "preset": "us",
+      "field": "coIncident.scale",
+      "reproduced": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "By construction: US X47 + half Y17, 1,004 deaths a year in 2017-2023 (3.0 per million), is the denominator. https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "comment": "Same as the preset. GBD 2021 gives High-income North America 0.314 per 100,000 age-standardised, consistent with X47, not with CDC's narrower count of about 1.6-1.9 per million."
+    },
+    {
+      "preset": "westernEurope",
+      "field": "coIncident.scale",
+      "reproduced": {"lo": 0.26, "mid": 0.51, "hi": 1.0, "tag": "derived", "basis": "Population-weighted X47 + half Y17 ratio over 18 Western European countries is 0.34; times 1.42 for the differences in gas mix, place and CO alarms gives 0.49, and the per-country shrinkage and the UK's factor (1.8) bring the weighted mean of the final figures to 0.51. GBD 2021: Western Europe 0.086 against High-income North America 0.314 per 100,000 (0.27 before the 1.42). https://pmc.ncbi.nlm.nih.gov/articles/PMC10602911/"},
+      "comment": "Preset 0.8 (0.3-1.3). The preset set French (1.5-2.0 per million, 2008) and German figures against CDC's narrower US count (1.6); registration data on a like-for-like code give Western Europe about a third of the US rate, and the 1.42 brings it back to about a half. Inside the preset's range, below its middle."
+    },
+    {
+      "preset": "buenosAires",
+      "field": "coIncident.scale",
+      "reproduced": {"lo": 0.82, "mid": 1.8, "hi": 4.0, "tag": "derived", "basis": "Argentina 2017-2023: X47 111 a year and Y17 95 a year (half counted), age-standardised ratio to the US 1.29, times 1.42 = 1.83. GBD 2021 Southern Latin America 0.342 against 0.314 per 100,000 agrees (1.09 before the 1.42). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "comment": "Preset 2 (0.7-4). Close. National figure; Buenos Aires is milder than the south, where 38.5% of cases occur, so the city alone may be nearer 1.5."
+    }
+  ],
+  "countries": [
+    {"iso2": "AU", "name": "Australia", "values": {
+      "houseFire.scale": {"lo": 0.18, "mid": 0.29, "hi": 0.48, "tag": "derived", "basis": "WHO deaths 2017-2024 (X00-X09 + half Y26; 2019-20 bushfire deaths removed), age-standardised ratio to the US 0.27; times alarm factor 1.07 (90% of homes with a working alarm, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.12, "mid": 0.24, "hi": 0.5, "tag": "derived", "basis": "X47 + half Y17, 2017-2024, age-standardised ratio to the US 0.17, times 1.42. GBD Australasia 0.083 per 100,000 against 0.314 agrees. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.27. Unflued gas heaters exist but CO deaths are few."},
+    {"iso2": "AT", "name": "Austria", "values": {
+      "houseFire.scale": {"lo": 0.15, "mid": 0.28, "hi": 0.51, "tag": "derived", "basis": "WHO 2017-2024 ratio 0.34 and CTIF 2020-24 (0.50 per 100,000) ratio 0.42, geometric mean 0.38; times alarm factor 0.74 (about half of homes, guess; mandatory only in new buildings in most states). https://www.ctif.org/sites/default/files/2026-06/CTIF_Report31_ERG.pdf"},
+      "coIncident.scale": {"lo": 0.44, "mid": 0.96, "hi": 2.1, "tag": "derived", "basis": "X47 + half Y17, 2017-2024, ratio 0.68, times 1.42. Y17 (98 deaths) is nearly as large as X47 (108), so the coding of intent moves this by a third. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.38."},
+    {"iso2": "BE", "name": "Belgium", "values": {
+      "houseFire.scale": {"lo": 0.27, "mid": 0.45, "hi": 0.74, "tag": "derived", "basis": "WHO 2017-2022 ratio 0.57 and CTIF ratio 0.38, geometric mean 0.47; alarm factor 0.96 (80%, guess; mandatory in all three regions). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.46, "mid": 0.96, "hi": 2.0, "tag": "derived", "basis": "X47 + half Y17, 2017-2022, ratio 0.67, times 1.42. Belgium has a known CO problem from old gas water heaters. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.47."},
+    {"iso2": "CA", "name": "Canada", "values": {
+      "houseFire.scale": {"lo": 0.37, "mid": 0.61, "hi": 1.0, "tag": "derived", "basis": "WHO 2017-2024 ratio 0.57; alarm factor 1.07 (90%, guess). Not in CTIF's death table. https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.38, "mid": 0.75, "hi": 1.5, "tag": "derived", "basis": "X47 + half Y17, 2017-2024, ratio 0.54, times 1.4 rather than 1.42: US-like attached garages and generators, and CO alarms required in several provinces. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.57."},
+    {"iso2": "CL", "name": "Chile", "values": {
+      "houseFire.scale": {"lo": 0.42, "mid": 1.0, "hi": 2.4, "tag": "derived", "basis": "WHO 2017-2023: X00-X09 330 a year (17 per million), ratio 1.95; times alarm factor 0.57 (10%, guess) = 1.11, lowered to 1.0 because 47% of deaths have no place code and some are wildfire deaths. https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.39, "mid": 0.82, "hi": 1.7, "tag": "derived", "basis": "X47, 2017-2023, ratio 0.57, times 1.42. Kerosene and gas heaters are common. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 1.95, the highest in Latin America here; no fire-service total found to check it. Wood heating in the south and informal housing."},
+    {"iso2": "CO", "name": "Colombia", "values": {
+      "houseFire.scale": {"lo": 0.059, "mid": 0.14, "hi": 0.33, "tag": "derived", "basis": "WHO 2017-2023 ratio 0.33; times 0.77 because only 63% of place-coded fire deaths are at home (US about 82%); times alarm factor 0.55 (5%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.19, "mid": 0.44, "hi": 1.0, "tag": "derived", "basis": "X47 + half Y17, 2017-2023, ratio 0.31, times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.26. Bogotá's altitude and gas heaters may make urban CO higher than the national mean."},
+    {"iso2": "CR", "name": "Costa Rica", "values": {
+      "houseFire.scale": {"lo": 0.076, "mid": 0.18, "hi": 0.43, "tag": "derived", "basis": "WHO 2017-2023 ratio 0.32 (about 14 deaths a year); alarm factor 0.57 (10%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.11, "mid": 0.33, "hi": 1.0, "tag": "derived", "basis": "X47 ratio 0.08 from about one death a year, shrunk toward a regional 0.3 (weight 0.31 on own data), 0.23, times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Small numbers; warm climate, little indoor combustion heating."},
+    {"iso2": "CZ", "name": "Czechia", "values": {
+      "houseFire.scale": {"lo": 0.22, "mid": 0.43, "hi": 0.85, "tag": "derived", "basis": "WHO 2017-2024 ratio 0.47 but CTIF (1.12 per 100,000, fire-service count) 0.97; geometric mean 0.68; alarm factor 0.64 (30%, guess). https://www.ctif.org/sites/default/files/2026-06/CTIF_Report31_ERG.pdf"},
+      "coIncident.scale": {"lo": 0.53, "mid": 1.25, "hi": 2.9, "tag": "derived", "basis": "X47 + half Y17 ratio 1.17, times 1.42, times 0.75 because the fire service counts 122 fire deaths a year against 52 registered under X00-X09, which suggests some fire-smoke deaths are coded X47. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.68. Registration and fire-service counts disagree by a factor of two."},
+    {"iso2": "DK", "name": "Denmark", "values": {
+      "houseFire.scale": {"lo": 0.43, "mid": 0.72, "hi": 1.2, "tag": "derived", "basis": "WHO 2017-2022 ratio 0.83 and CTIF ratio 0.75, mean 0.79; alarm factor 0.92 (75%: over a quarter of homes lack one, Copenhagen Post survey, search snippet). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.1, "mid": 0.3, "hi": 0.86, "tag": "derived", "basis": "X47 ratio 0.12 from about two deaths a year, shrunk toward the Nordic 0.27 (weight 0.38), 0.21, times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.79."},
+    {"iso2": "EE", "name": "Estonia", "values": {
+      "houseFire.scale": {"lo": 1.6, "mid": 2.7, "hi": 4.5, "tag": "derived", "basis": "WHO 2017-2024: 40 fire deaths a year (30 per million), ratio 2.88; CTIF 2.87 per 100,000, ratio 2.48; mean 2.67; alarm factor 1.01 (85%, guess; mandatory since 2009). https://www.ctif.org/sites/default/files/2026-06/CTIF_Report31_ERG.pdf"},
+      "coIncident.scale": {"lo": 1.0, "mid": 2.4, "hi": 5.6, "tag": "derived", "basis": "X47 + half Y17 ratio 1.68, times 1.42. Stove heating in older housing. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 2.67. Baltic fire death rates are among the highest in Europe (alcohol, smoking, wooden houses, stoves), falling over time."},
+    {"iso2": "FI", "name": "Finland", "values": {
+      "houseFire.scale": {"lo": 0.51, "mid": 0.84, "hi": 1.4, "tag": "derived", "basis": "WHO 2017-2024 ratio 0.78 and CTIF ratio 0.77; alarm factor 1.09 (92%, guess; mandatory since 2000). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.34, "mid": 0.75, "hi": 1.7, "tag": "derived", "basis": "X47 + half Y17 ratio 0.53, times 1.42. Wood stoves and saunas. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.77."},
+    {"iso2": "FR", "name": "France", "values": {
+      "houseFire.scale": {"lo": 0.28, "mid": 0.43, "hi": 0.66, "tag": "derived", "basis": "WHO 2017-2023 ratio 0.52 and CTIF ratio 0.38, mean 0.45; alarm factor 0.96 (80%, guess; mandatory since 2015). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.25, "mid": 0.49, "hi": 0.97, "tag": "derived", "basis": "X47 + half Y17, 2017-2023, ratio 0.35 (about 77 deaths a year), times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.45. The preset's CO source (1.5-2.0 per million) is from 2008; registered X47 deaths are now about 1.1 per million."},
+    {"iso2": "DE", "name": "Germany", "values": {
+      "houseFire.scale": {"lo": 0.24, "mid": 0.36, "hi": 0.55, "tag": "derived", "basis": "WHO 2017-2020 (no later years) ratio 0.38 and CTIF ratio 0.36; alarm factor 0.96 (80%, guess; mandatory in every state by 2021). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.24, "mid": 0.5, "hi": 1.0, "tag": "derived", "basis": "X47 + half Y17, 2017-2020, ratio 0.35, times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.37. Germany is absent from the WHO file after 2020."},
+    {"iso2": "GR", "name": "Greece", "values": {
+      "houseFire.scale": {"lo": 0.19, "mid": 0.38, "hi": 0.78, "tag": "derived", "basis": "WHO 2017-2022 ratio 0.91 after removing about 100 Mati wildfire deaths (2018); CTIF ratio 0.49; mean 0.67; alarm factor 0.57 (10%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.24, "mid": 0.56, "hi": 1.3, "tag": "derived", "basis": "X47 ratio 0.40, times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.67. Registration counts nearly twice the fire service's deaths."},
+    {"iso2": "HU", "name": "Hungary", "values": {
+      "houseFire.scale": {"lo": 0.33, "mid": 0.59, "hi": 1.0, "tag": "derived", "basis": "WHO 2017-2024 ratio 1.17 and CTIF ratio 0.87, mean 1.01; alarm factor 0.59 (15%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.72, "mid": 1.5, "hi": 3.1, "tag": "derived", "basis": "X47 + half Y17 ratio 1.06, times 1.42. Gas convector heaters and wood stoves. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 1.01."},
+    {"iso2": "IS", "name": "Iceland", "values": {
+      "houseFire.scale": {"lo": 0.29, "mid": 0.71, "hi": 1.8, "tag": "derived", "basis": "WHO ratio 0.46 and CTIF ratio 0.96 from a handful of deaths; mean 0.67 shrunk toward the Nordic mean 0.72 (weight 0.3 on own data); alarm factor 1.01 (85%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.17, "mid": 0.61, "hi": 2.2, "tag": "derived", "basis": "X47 ratio 0.87 from 7 deaths in 8 years, shrunk toward the Nordic 0.27 (weight 0.27), 0.43, times 1.42. Geothermal heating, little combustion. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "About two fire deaths a year; essentially a Nordic prior."},
+    {"iso2": "IE", "name": "Ireland", "values": {
+      "houseFire.scale": {"lo": 0.24, "mid": 0.43, "hi": 0.77, "tag": "derived", "basis": "WHO 2017-2022 ratio 0.43 and CTIF ratio 0.43; alarm factor 1.01 (85%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.22, "mid": 0.55, "hi": 1.4, "tag": "derived", "basis": "X47 ratio 0.46 shrunk toward the UK's 0.23 (weight 0.68), 0.39, times 1.42. Solid-fuel heating is still common. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.43."},
+    {"iso2": "IL", "name": "Israel", "values": {
+      "houseFire.scale": {"lo": 0.12, "mid": 0.23, "hi": 0.46, "tag": "derived", "basis": "WHO 2017-2023 ratio 0.36 and CTIF ratio 0.32; alarm factor 0.69 (40%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.1, "mid": 0.3, "hi": 0.86, "tag": "derived", "basis": "X47 ratio 0.12 from about 3 deaths a year, shrunk toward 0.3 (weight 0.51), 0.21, times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.34."},
+    {"iso2": "IT", "name": "Italy", "values": {
+      "houseFire.scale": {"lo": 0.12, "mid": 0.22, "hi": 0.39, "tag": "derived", "basis": "WHO 2017-2023 ratio 0.38 (crude 0.48; an old population); not in CTIF's death table; alarm factor 0.57 (10%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.19, "mid": 0.4, "hi": 0.83, "tag": "derived", "basis": "X47 ratio 0.28 (Italy codes no Y17), times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.38."},
+    {"iso2": "JP", "name": "Japan", "values": {
+      "houseFire.scale": {"lo": 0.32, "mid": 0.53, "hi": 0.88, "tag": "derived", "basis": "WHO 2017-2023: X00-X09 970 a year, age-standardised ratio 0.55 (crude 0.80; 15-64 only 0.41); Y26 left out because the X00-X09 count already matches the fire agency's residential deaths excluding suicide by fire; alarm factor 0.96 (80%; the fire agency's installation rate of about 85% is recalled, not read). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.31, "mid": 0.64, "hi": 1.3, "tag": "derived", "basis": "X47 + half Y17 ratio 0.45, times 1.42. Kerosene and gas heaters are common indoors. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.55. CTIF's Japanese count (1,429) includes suicides and was not used."},
+    {"iso2": "KR", "name": "South Korea", "values": {
+      "houseFire.scale": {"lo": 0.21, "mid": 0.39, "hi": 0.72, "tag": "derived", "basis": "WHO 2017-2023 ratio 0.57 and CTIF ratio 0.55, mean 0.56; times 0.93 (76% of place-coded deaths at home); alarm factor 0.74 (50%, guess; required in homes since 2017). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.43, "mid": 0.94, "hi": 2.1, "tag": "derived", "basis": "X47 + half Y17 ratio 0.66, times 1.42. Charcoal-burning suicides are coded X67 and excluded; some may sit in Y17. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.52."},
+    {"iso2": "LV", "name": "Latvia", "values": {
+      "houseFire.scale": {"lo": 1.8, "mid": 3.1, "hi": 5.3, "tag": "derived", "basis": "WHO 2017-2024: 94 fire deaths a year (49 per million), ratio 4.75; CTIF 4.23 per 100,000, ratio 3.66; mean 4.17; alarm factor 0.74 (50%, guess). https://www.ctif.org/sites/default/files/2026-06/CTIF_Report31_ERG.pdf"},
+      "coIncident.scale": {"lo": 0.65, "mid": 1.64, "hi": 4.1, "tag": "derived", "basis": "X47 + half Y17 ratio 1.16, times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 4.17. The highest fire death rate in this list."},
+    {"iso2": "LT", "name": "Lithuania", "values": {
+      "houseFire.scale": {"lo": 1.2, "mid": 2.0, "hi": 3.4, "tag": "derived", "basis": "WHO 2021-2024 ratio 2.62 and CTIF 3.09 per 100,000, ratio 2.67; alarm factor 0.74 (50%, guess). https://www.ctif.org/sites/default/files/2026-06/CTIF_Report31_ERG.pdf"},
+      "coIncident.scale": {"lo": 0.73, "mid": 2.1, "hi": 6.0, "tag": "derived", "basis": "X47 + half Y17, 2021-2024 only, ratio 1.48, times 1.42. In 2017-2020 X47 was 4.7 times higher while X00-X09 was lower, which looks like fire deaths coded as gas poisoning before 2021. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 2.65. GBD 2021 still lists Lithuania among the ten worst CO countries, probably from the older coding."},
+    {"iso2": "LU", "name": "Luxembourg", "values": {
+      "houseFire.scale": {"lo": 0.12, "mid": 0.3, "hi": 0.75, "tag": "derived", "basis": "WHO 2017-2024 ratio 0.28 from about 1.6 deaths a year, shrunk toward the Belgium-Netherlands-Germany-France mean 0.37 (weight 0.27), 0.34; alarm factor 0.87 (70%, guess; mandatory since 2021). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.14, "mid": 0.5, "hi": 1.8, "tag": "derived", "basis": "X47 ratio 0.17 from two deaths, shrunk toward the same neighbours' 0.37 (weight 0.11), 0.35, times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Essentially its neighbours' figures."},
+    {"iso2": "MX", "name": "Mexico", "values": {
+      "houseFire.scale": {"lo": 0.13, "mid": 0.29, "hi": 0.64, "tag": "derived", "basis": "WHO 2017-2023 ratio 0.71; times 0.74 (61% of place-coded fire deaths at home); alarm factor 0.55 (5%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.68, "mid": 1.41, "hi": 2.9, "tag": "derived", "basis": "X47 + half Y17, 2017-2023, 320 deaths a year, ratio 0.99, times 1.42. Gas water heaters and braziers indoors. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.53."},
+    {"iso2": "NL", "name": "Netherlands", "values": {
+      "houseFire.scale": {"lo": 0.11, "mid": 0.19, "hi": 0.34, "tag": "derived", "basis": "WHO 2017-2024 ratio 0.23 and CTIF ratio 0.16; alarm factor 0.96 (80%, guess; mandatory since 2022). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.097, "mid": 0.26, "hi": 0.7, "tag": "derived", "basis": "X47 ratio 0.10 (5 deaths a year), shrunk toward 0.37 (weight 0.67), 0.19, times 1.42. Almost all homes burn gas, so per gas-burning home the risk is truly low. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.19. The lowest fire figure among rich countries here."},
+    {"iso2": "NZ", "name": "New Zealand", "values": {
+      "houseFire.scale": {"lo": 0.13, "mid": 0.26, "hi": 0.51, "tag": "derived", "basis": "WHO 2017-2020 ratio 0.27 and CTIF ratio 0.24; alarm factor 1.01 (85%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.14, "mid": 0.4, "hi": 1.1, "tag": "derived", "basis": "X47 ratio 0.35 from about 5 deaths a year, shrunk toward 0.2 (Australia, UK; weight 0.52), 0.28, times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.26."},
+    {"iso2": "NO", "name": "Norway", "values": {
+      "houseFire.scale": {"lo": 0.43, "mid": 0.77, "hi": 1.4, "tag": "derived", "basis": "Norway is not in the WHO file. CTIF 2020-24: 0.78 per 100,000 against the US 1.07, age-corrected with Sweden's factor, 0.67; alarm factor 1.15 (97%, guess; required since 1990). https://www.ctif.org/sites/default/files/2026-06/CTIF_Report31_ERG.pdf"},
+      "coIncident.scale": {"lo": 0.12, "mid": 0.44, "hi": 1.6, "tag": "guess", "basis": "No registration data; mean of Sweden, Denmark and Finland after shrinkage (0.31), times 1.42. Mostly electric heating but many wood stoves."}},
+      "notes": "Fire before the alarm adjustment: 0.67. Only a fire-service source."},
+    {"iso2": "PL", "name": "Poland", "values": {
+      "houseFire.scale": {"lo": 0.44, "mid": 0.72, "hi": 1.2, "tag": "derived", "basis": "WHO 2017-2024 ratio 1.29 and CTIF ratio 1.18, mean 1.23; alarm factor 0.59 (15%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.79, "mid": 1.65, "hi": 3.4, "tag": "derived", "basis": "X47 + half Y17, 136 deaths a year, ratio 1.16, times 1.42. Coal stoves and gas water heaters in bathrooms. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 1.23."},
+    {"iso2": "PT", "name": "Portugal", "values": {
+      "houseFire.scale": {"lo": 0.11, "mid": 0.23, "hi": 0.47, "tag": "derived", "basis": "WHO 2017-2019 and 2022 ratio 0.48 after removing about 115 wildfire deaths of 2017; CTIF ratio 0.35; mean 0.41; alarm factor 0.57 (10%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.36, "mid": 0.89, "hi": 2.2, "tag": "derived", "basis": "X47 + half Y17 ratio 0.62, times 1.42. Gas water heaters and braziers in unheated homes. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.41."},
+    {"iso2": "SK", "name": "Slovakia", "values": {
+      "houseFire.scale": {"lo": 0.25, "mid": 0.48, "hi": 0.91, "tag": "derived", "basis": "WHO 2017-2024 ratio 0.76 and CTIF ratio 0.82; alarm factor 0.60 (20%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.55, "mid": 1.29, "hi": 3.0, "tag": "derived", "basis": "X47 + half Y17 ratio 0.91, times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.79."},
+    {"iso2": "SI", "name": "Slovenia", "values": {
+      "houseFire.scale": {"lo": 0.073, "mid": 0.16, "hi": 0.35, "tag": "derived", "basis": "WHO 2017-2024 ratio 0.38 and CTIF ratio 0.20 (about 8 deaths a year), mean 0.27; alarm factor 0.60 (20%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.29, "mid": 0.84, "hi": 2.4, "tag": "derived", "basis": "X47 + half Y17 ratio 0.54, shrunk toward Austria-Hungary-Italy 0.67 (weight 0.59), 0.59, times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.27. Small numbers."},
+    {"iso2": "ES", "name": "Spain", "values": {
+      "houseFire.scale": {"lo": 0.14, "mid": 0.23, "hi": 0.38, "tag": "derived", "basis": "WHO 2017-2024 ratio 0.41 and CTIF ratio 0.36, mean 0.38; alarm factor 0.60 (20%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.35, "mid": 0.7, "hi": 1.4, "tag": "derived", "basis": "X47 ratio 0.49 (75 deaths a year), times 1.42. Butane heaters and braziers. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.38."},
+    {"iso2": "SE", "name": "Sweden", "values": {
+      "houseFire.scale": {"lo": 0.44, "mid": 0.72, "hi": 1.2, "tag": "derived", "basis": "WHO 2017-2024 ratio 0.60 and CTIF ratio 0.73, mean 0.67; alarm factor 1.09 (92%, guess; required since 2004). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.11, "mid": 0.29, "hi": 0.78, "tag": "derived", "basis": "X47 ratio 0.16 (5 deaths a year), shrunk toward Finland-Denmark-Norway 0.3 (weight 0.67), 0.20, times 1.42. District heating and heat pumps. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.67."},
+    {"iso2": "CH", "name": "Switzerland", "values": {
+      "houseFire.scale": {"lo": 0.087, "mid": 0.16, "hi": 0.29, "tag": "derived", "basis": "WHO 2017-2023 ratio 0.27 and CTIF ratio 0.22, mean 0.24; alarm factor 0.67 (35%, guess; not required in most cantons). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.18, "mid": 0.42, "hi": 0.99, "tag": "derived", "basis": "X47 + half Y17 ratio 0.25 shrunk toward 0.4 (weight 0.71), 0.29, times 1.42. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.24."},
+    {"iso2": "TR", "name": "Turkey", "values": {
+      "houseFire.scale": {"lo": 0.071, "mid": 0.17, "hi": 0.41, "tag": "derived", "basis": "WHO 2017-2023 ratio 0.35 (221 deaths a year); times 0.89 (73% of place-coded deaths at home); alarm factor 0.55 (5%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 1.1, "mid": 2.35, "hi": 4.9, "tag": "derived", "basis": "X47, 2017-2023, 316 deaths a year (3.8 per million), ratio 1.65, times 1.42. Coal stoves and flued gas water heaters (sofben). https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.31. Turkey registers many injury deaths as unspecified (X59), so fire may be under-registered."},
+    {"iso2": "GB", "name": "United Kingdom", "values": {
+      "houseFire.scale": {"lo": 0.28, "mid": 0.42, "hi": 0.64, "tag": "derived", "basis": "WHO 2017-2024 ratio 0.36 and CTIF ratio 0.42, mean 0.39; alarm factor 1.07 (about 90%; 93% of English homes had at least one in 2014-15, English Housing Survey via search snippet). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.21, "mid": 0.42, "hi": 0.83, "tag": "derived", "basis": "X47 + half Y17 ratio 0.23, times 1.8 rather than 1.42 because CO alarms are common (required with solid-fuel and, in Scotland, all fuel-burning appliances), so the observed rate understates the alarm-less rate as in the US. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.39; the preset used England's 0.44."},
+    {"iso2": "US", "name": "United States", "values": {
+      "houseFire.scale": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "The reference: 1 by definition."},
+      "coIncident.scale": {"lo": 1, "mid": 1, "hi": 1, "tag": "derived", "basis": "The reference: 1 by definition."}},
+      "notes": "Denominators: fire 9.75 per million age-standardised (X00-X09 + half Y26, 2017-2023), CO 3.04 per million (X47 + half Y17)."},
+    {"iso2": "AR", "name": "Argentina", "values": {
+      "houseFire.scale": {"lo": 0.24, "mid": 0.52, "hi": 1.1, "tag": "derived", "basis": "WHO 2017-2023: X00-X09 216 a year and Y26 (undetermined) 277 a year counted at half; ratio 0.91; alarm factor 0.57 (10%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.82, "mid": 1.8, "hi": 4.0, "tag": "derived", "basis": "X47 111 a year and Y17 95 a year counted at half; ratio 1.29, times 1.42. GBD Southern Latin America agrees. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.91. Argentina codes more fire deaths as undetermined than as accidental, so the treatment of Y26 is the largest uncertainty."},
+    {"iso2": "BR", "name": "Brazil", "values": {
+      "houseFire.scale": {"lo": 0.13, "mid": 0.28, "hi": 0.62, "tag": "derived", "basis": "WHO 2017-2023 ratio 0.60 (1,054 deaths a year); times 0.84 (69% of place-coded deaths at home); alarm factor 0.55 (5%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.037, "mid": 0.1, "hi": 0.27, "tag": "derived", "basis": "X47 + half Y17 ratio 0.07, times 1.42; GBD Tropical Latin America 0.029 per 100,000 against 0.314 agrees. Warm climate, little indoor heating. https://pmc.ncbi.nlm.nih.gov/articles/PMC10602911/"}},
+      "notes": "Fire before the alarm adjustment: 0.50."},
+    {"iso2": "CN", "name": "China", "values": {
+      "houseFire.scale": {"lo": 0.083, "mid": 0.25, "hi": 0.75, "tag": "derived", "basis": "No registration data. GBD 2021 East Asia, fire, heat and hot substances, 0.6 against High-income North America 0.65 per 100,000 (0.92); times 0.77 for the larger share of scalds; times 0.6 for an urban home (rural houses and coal heating carry most deaths, a guess); alarm factor 0.57. Official counts (CTIF: 0.08 per 100,000) are a floor. https://pmc.ncbi.nlm.nih.gov/articles/PMC12091820/"},
+      "coIncident.scale": {"lo": 0.54, "mid": 1.8, "hi": 6.0, "tag": "derived", "basis": "GBD 2021: China 0.8 per 100,000 age-standardised against High-income North America 0.314 (2.55); times 1.42; times 0.5 because coal heating in rural north China carries most deaths (guess). https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2025.1642416/full"}},
+      "notes": "Both figures rest on GBD modelling of China's sample registration and on a guessed urban discount."},
+    {"iso2": "IN", "name": "India", "values": {
+      "houseFire.scale": {"lo": 0.13, "mid": 0.38, "hi": 1.1, "tag": "derived", "basis": "NCRB: 5,888 fire-accident deaths in 2024, about 60% residential, 2.4 per million against the US home 8.6 (0.28), times 2-4 for under-recording; GBD South Asia 1.9 per 100,000 against 0.65 (2.9) times a structure-fire share of 0.25 (0.73). Middle 0.7, times alarm factor 0.55. https://insights.dataful.in/articles/nearly-6000-fire-accident-deaths-in-2024-despite-sharp-decline-in-accidents"},
+      "coIncident.scale": {"lo": 0.084, "mid": 0.35, "hi": 1.5, "tag": "guess", "basis": "GBD 2021 South Asia 0.068 per 100,000 against 0.314 (0.22), times 1.42 = 0.31; raised slightly for winter brazier (angithi) deaths in closed rooms in the north that GBD may miss. https://pmc.ncbi.nlm.nih.gov/articles/PMC10602911/"}},
+      "notes": "Most Indian burn deaths are cooking and clothing burns, not house fires, which smoke alarms do not address; they are left out."},
+    {"iso2": "ID", "name": "Indonesia", "values": {
+      "houseFire.scale": {"lo": 0.12, "mid": 0.35, "hi": 1.05, "tag": "guess", "basis": "GBD 2021 Southeast Asia 0.7 per 100,000 against 0.65 (1.08), times a guessed structure-fire share of 0.6/0.97, times alarm factor 0.55. Dense urban kampungs burn often. https://pmc.ncbi.nlm.nih.gov/articles/PMC12091820/"},
+      "coIncident.scale": {"lo": 0.14, "mid": 0.45, "hi": 1.5, "tag": "derived", "basis": "GBD 2021 Southeast Asia 0.101 per 100,000 against 0.314 (0.32), times 1.42. https://pmc.ncbi.nlm.nih.gov/articles/PMC10602911/"}},
+      "notes": "Regional GBD figures only."},
+    {"iso2": "NG", "name": "Nigeria", "values": {
+      "houseFire.scale": {"lo": 0.23, "mid": 0.8, "hi": 2.8, "tag": "guess", "basis": "GBD 2021 Western sub-Saharan Africa 3.9 per 100,000 against 0.65 (6.0), times a guessed structure-fire share of 0.35 and alarm factor 0.55 = 1.15, lowered because GBD's figure there is modelled (UI 1.7-5.4) and urban housing is mostly masonry. CTIF's 0.07 per 100,000 is a fire-service fragment. https://pmc.ncbi.nlm.nih.gov/articles/PMC12091820/"},
+      "coIncident.scale": {"lo": 0.29, "mid": 1.2, "hi": 5.0, "tag": "guess", "basis": "GBD 2021 Western sub-Saharan Africa gives only 0.15 of the US rate, but nightly generator use is widespread and press estimates run from 100 to about 1,400 generator deaths a year (0.5-6 per million, search snippets); at about 1.5 per million and a home share near 1, against the US 1.9 per million of CO deaths, about 1.2."}},
+      "notes": "No death registration. The least certain country for both fields."},
+    {"iso2": "PH", "name": "Philippines", "values": {
+      "houseFire.scale": {"lo": 0.13, "mid": 0.28, "hi": 0.62, "tag": "derived", "basis": "WHO 2017-2019 ratio 0.62 (young population; crude 0.41) and CTIF (0.29 per 100,000) ratio 0.41, mean 0.50; alarm factor 0.55 (5%, guess). https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.064, "mid": 0.23, "hi": 0.82, "tag": "derived", "basis": "X47 ratio 0.08 and GBD Southeast Asia 0.32, geometric mean 0.16, times 1.42. Registration coverage is incomplete. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 0.50."},
+    {"iso2": "ZA", "name": "South Africa", "values": {
+      "houseFire.scale": {"lo": 0.84, "mid": 2.0, "hi": 4.8, "tag": "derived", "basis": "WHO 2017-2020: X00-X09 2,519 deaths a year (41 per million), ratio 5.0; times 0.8 for non-structure burns (guess); alarm factor 0.55 = 2.2, lowered to 2.0 because informal-settlement shack fires weigh less in an average urban home. GBD Southern sub-Saharan Africa 5.1 against 0.65 per 100,000 agrees. https://www.who.int/data/data-collection-tools/who-mortality-database"},
+      "coIncident.scale": {"lo": 0.45, "mid": 1.4, "hi": 4.3, "tag": "derived", "basis": "South Africa codes almost all gas deaths as undetermined (Y17 224 a year against X47 10): counting 80% of Y17 gives a ratio of 1.18, GBD Southern sub-Saharan Africa 0.57; middle 1.0, times 1.42. Braziers and paraffin heaters. https://www.who.int/data/data-collection-tools/who-mortality-database"}},
+      "notes": "Fire before the alarm adjustment: 4.0."}
+  ],
+  "blockedSources": [
+    "https://ourworldindata.org/grapher/fire-death-rates.csv (and api.ourworldindata.org indicator 1165066): GBD 2023 age-standardised fire death rates for every country; 403, licence-restricted.",
+    "https://vizhub.healthdata.org/gbd-results/: country-level GBD 2021 rates for fire and for carbon monoxide; interactive tool, not attempted.",
+    "https://factly.in/data-between-2014-2022-madhya-pradesh-maharashtra-and-gujarat-accounted-for-more-than-50-of-all-fire-accidents: NCRB residential fire deaths for India (403).",
+    "WHO Mortality Database documentation PDF: the age-format codes were applied from the file layout and known WHO conventions, not read from the document.",
+    "Norway: absent from the WHO ICD-10 files; national cause-of-death data (Statistics Norway) not fetched.",
+    "Bomberos de Chile and Argentine fire-service totals: not found, so Chile's and Argentina's registration counts could not be checked."
+  ],
+  "openQuestions": [
+    "The smoke-alarm adjustment follows the definition (the US 10 micromorts is for a home without a working alarm), but it was not applied to the presets. On this method the buenosAires preset would be about 0.5, not 1, and westernEurope about 0.36, not 0.5. The figures before adjustment are in each country's notes if the owner prefers to drop it.",
+    "houseFire.scale also multiplies the property-loss dollars. It is calibrated on deaths only; property losses in US dollars should probably also scale with price level, which this family does not supply.",
+    "Alarm ownership by country is mostly guessed. It would be better as an 'already owned' default per country, since the model's smoke-alarm item is the main thing this scale feeds.",
+    "Latvia (3.1), Estonia (2.7), South Africa (2.0) and Lithuania (2.0) are two to three times the US: check that nothing in the engine assumes the scale is at most about 1.",
+    "The CO factor of 1.42 (gas mix, home share, CO-alarm ownership) is a guess common to every country but the US, the UK and Canada; it decides the level of every CO figure against the US.",
+    "Urban versus national: registration data are national; only China gets an explicit urban discount."
+  ]
+}

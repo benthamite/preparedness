@@ -1,0 +1,427 @@
+{
+  "kind": "countries",
+  "group": "banking",
+  "method": "An event-year is a calendar year in which (a) the currency's December-average dollar rate implies a loss of 30% or more of its dollar value on the previous December (BIS monthly averages, WS_XRU; for the US the BIS broad nominal effective index), (b) December year-on-year CPI inflation reaches 33.3%, i.e. a 25% loss of purchasing power (BIS WS_LONG_CPI; World Bank annual averages where BIS has no series), or (c) a national deposit freeze, bank holiday or withdrawal limit of three days or more begins (Laeven and Valencia, IMF WP/18/206; India's 2016 demonetisation added). For the forecast I count currency-or-freeze years in 1995-2025, weighting year y by 0.5^((2025-y)/15), which gives 16.86 weighted years; transition-era and pre-euro national-currency events fall before 1995 or are excluded. Each country's rate is the gamma-Poisson posterior (0.5 + weighted events)/(0.5/g + 16.86), where g is the pooled weighted rate of the 46 countries' own records in the country's current S&P band: 0.2% for AAA/AA+ issuers plus sterling and the yen (0 events in 310 country-years; equal to the us preset), 1.0% for AA to A- (Korea 1997 and 2008, Iceland 2008), 1.75% for BBB (Indonesia 1997-98, Mexico 1995, India 2016), 6.5% for BB (Brazil, South Africa, Turkey), 25% for B (Argentina, Nigeria); for euro members 0.14%, 0.35% and 0.7% for AAA/AA+, AA to A- and BBB, which average to the pooled euro-area freeze rate (Greece 2015, Cyprus 2013: about 0.35% a year). Present conditions enter through the current rating and, for three countries only, through a stated multiplier (Argentina 0.84 from the central bank survey's exchange-rate forecast, Turkey 0.6 from its CDS and managed lira, Nigeria 0.7 from the floated naira) and, where inflation is close to 33.3% now (Argentina 33.1%, Turkey 29.8% in October 2026), an added chance that inflation alone crosses the threshold. The pessimistic figure is the forecast's odds times 10^(0.39 - 0.25(log10 odds + 0.75)), a curve fitted to the three preset pairs. The 5th and 95th percentiles are interpolated in log p from the presets' own ranges.",
+  "anchors": [
+    {
+      "preset": "us",
+      "field": "bankingCrisis.forecast",
+      "reproduced": {"lo": 0.00028, "mid": 0.0019, "hi": 0.0095, "tag": "derived", "basis": "No US event-year since 1933: the broad dollar's worst 12-month fall since 1994 is 10.4% (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_EER/1.0/M.N.B.US), inflation peaked at 13.5% in 1980, no freeze since the 1933 holiday. Prior 0.2% (zero events in 310 country-years of the ten AAA/AA+ or reserve-currency issuers); 0.5/(0.5/0.002 + 16.86) = 0.19%."},
+      "comment": "Preset 0.002 (0.0003-0.01): reproduced. The 0.2% prior for this band was set equal to the preset, so this is a consistency check rather than an independent test; the pooled zero in 310 country-years allows anything up to about 1% at 95%."
+    },
+    {
+      "preset": "us",
+      "field": "bankingCrisis.pessimistic",
+      "reproduced": {"lo": 0.0037, "mid": 0.014, "hi": 0.038, "tag": "guess", "basis": "The pessimist curve fitted to the three preset pairs gives odds x 7.4 at 0.19%."},
+      "comment": "Preset 0.015 (0.004-0.04): reproduced by construction, since the curve is fitted to the presets. The preset's own reasoning (a 10% a year US debt crisis, of which 15% reach this threshold) is the scenario behind it."
+    },
+    {
+      "preset": "westernEurope",
+      "field": "bankingCrisis.forecast",
+      "reproduced": {"lo": 0.0005, "mid": 0.0029, "hi": 0.013, "tag": "derived", "basis": "Population-weighted mean of my figures for Germany, France, the UK, Italy, Spain, the Netherlands, Belgium, Portugal, Greece, Sweden, Austria, Switzerland, Denmark, Finland, Norway and Ireland (about 430 million people; populations approximate): 0.29%."},
+      "comment": "Preset 0.003 (0.0005-0.012): reproduced. The euro priors are set from the pooled euro-area freeze rate, not from the preset; Italy (0.57%) and Greece (1.3%) carry a third of the weighted total."
+    },
+    {
+      "preset": "westernEurope",
+      "field": "bankingCrisis.pessimistic",
+      "reproduced": {"lo": 0.0055, "mid": 0.019, "hi": 0.05, "tag": "guess", "basis": "Population-weighted mean of the same 16 countries' pessimistic figures: 1.9%."},
+      "comment": "Preset 0.02 (0.005-0.05): reproduced."
+    },
+    {
+      "preset": "buenosAires",
+      "field": "bankingCrisis.forecast",
+      "reproduced": {"lo": 0.25, "mid": 0.42, "hi": 0.67, "tag": "guess", "basis": "Argentina by the same method: currency-or-freeze part 0.32 from 1995-2025, cut to 0.27 for present conditions; plus a 0.2 chance that inflation alone exceeds 33.3% in the next 12 months: 0.27 + 0.73 x 0.2 = 0.42."},
+      "comment": "Preset 0.15 (0.07-0.3): my figure is 1.8 times higher on the currency-or-freeze part alone and 2.8 times higher in all. Three reasons. BIS December averages put 2016 at 30.1% and 2024 at 37.1%, and the December 2001 freeze is an event-year of its own, so there are 8 events in 1995-2025, not 5. My weights favour recent years, which were Argentina's worst. And the preset reads inflation as 23.6% in the year to September; that is the January-September cumulative. INDEC's year-on-year rate was 33.4% in September and 33.1% in October 2026 (https://www.forbesargentina.com/money/subio-inflacion-octubre-ubico-22-n102387), right at the 33.3% that a 25% loss of purchasing power means. Checker: two of the three reasons need correcting. First, the 2024 event is the devaluation of 13 December 2023 counted a second time: the December 2023 average mixes 12 days at about 365 pesos with 19 at about 805. End-of-December rates (808.48 on 29 December 2023, 1,032.5 on 30 December 2024, BIS daily WS_XRU D.AR.ARS.A) give a 21.7% loss in 2024. Without it the history gives 0.27, not 0.32; the final currency-or-freeze 0.27 comes from the central bank survey and does not change. Third, the 23.6% is indeed the January-September cumulative (iProfesional, 3 November 2026: 'la inflacion alcanzo el 23,6% hasta septiembre'), but it appears only in a source claim of the step-3 file: the preset's 0.15 uses no inflation figure, and its definition excludes 'inflation that deposit interest roughly matches'. On the preset's own definition the comparison is 0.27 against 0.15; the extra 0.15 from the inflation-only branch is a difference of definition, not a misreading."
+    },
+    {
+      "preset": "buenosAires",
+      "field": "bankingCrisis.pessimistic",
+      "reproduced": {"lo": 0.31, "mid": 0.55, "hi": 0.84, "tag": "guess", "basis": "The pessimist curve applied to 0.42."},
+      "comment": "Preset 0.3 (0.15-0.5). Higher for the same reasons as the forecast; 0.55 is also the share of 2016-2025 years with an event (6 currency years and 2 inflation-only years out of 10, less a discount for the present band regime). Checker: 2024 is an inflation-only year (December inflation 118%) rather than a currency year (see the forecast comment), so the count is 5 and 3, still 8 of 10."
+    }
+  ],
+  "countries": [
+    {
+      "iso2": "AU", "name": "Australia",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00028, "mid": 0.0019, "hi": 0.0095, "tag": "derived", "basis": "No event-year in 1995-2025: the Australian dollar's worst December-on-December fall was 23% (2008), inflation stayed low, no freeze (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.AU..A; https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf). AAA prior 0.2%: 0.5/(0.5/0.002 + 16.86) = 0.19%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0037, "mid": 0.014, "hi": 0.038, "tag": "guess", "basis": "Pessimist curve fitted to the presets: odds x 7.4. Scenario: a China-led commodity and housing bust that takes the currency down 30% in a year, which 2008 approached."}
+      },
+      "notes": "S&P AAA. The 2008 fall (23%) is the closest call; a commodity-currency shock is the main path."
+    },
+    {
+      "iso2": "AT", "name": "Austria",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00018, "mid": 0.0013, "hi": 0.0073, "tag": "derived", "basis": "Euro member since 1999; no freeze or holiday (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf) and the euro's worst December-on-December fall against the dollar is under 20% (https://stats.bis.org). Euro AAA/AA+ prior 0.14%: 0.5/(0.5/0.0014 + 16.86) = 0.13%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0028, "mid": 0.011, "hi": 0.031, "tag": "guess", "basis": "Pessimist curve fitted to the presets: odds x 8.5. Scenario: a euro break-up or a Cyprus-style bail-in reaching a core member."}
+      },
+      "notes": "S&P AA+. Banking crisis 2008 (Laeven-Valencia) without any loss of deposit access."
+    },
+    {
+      "iso2": "BE", "name": "Belgium",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00053, "mid": 0.0031, "hi": 0.014, "tag": "derived", "basis": "Euro member since 1999; no freeze or holiday (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf); the euro never fell 30% in a year (https://stats.bis.org). Euro AA-to-A- prior 0.35%: 0.5/(0.5/0.0035 + 16.86) = 0.31%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0059, "mid": 0.021, "hi": 0.052, "tag": "guess", "basis": "Pessimist curve: odds x 6.8. Rogoff names Belgium, with the UK and France, as a candidate for a debt crisis (https://247wallst.com/personal-finance/2026/08/29/a-harvard-economist-says-the-debt-reckoning-is-coming-and-names-who-pays-for-it/, via the step-3 file)."}
+      },
+      "notes": "S&P AA-. Fortis and Dexia were rescued in 2008 without any freeze."
+    },
+    {
+      "iso2": "CA", "name": "Canada",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00028, "mid": 0.0019, "hi": 0.0095, "tag": "derived", "basis": "No event-year since 1970: the Canadian dollar never fell 20% December-on-December, inflation stayed low, no systemic banking crisis in Laeven-Valencia (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.CA..A; https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf). AAA prior: 0.19%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0037, "mid": 0.014, "hi": 0.038, "tag": "guess", "basis": "Pessimist curve: odds x 7.4."}
+      },
+      "notes": "S&P AAA. Tied to the US dollar; a US crisis is the main path."
+    },
+    {
+      "iso2": "CL", "name": "Chile",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0016, "mid": 0.0075, "hi": 0.028, "tag": "derived", "basis": "Events in 1982, 1984 and 1985 (peso down 46%, 31% and 31%; https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.CL..A) but none since 1995 (worst 23%, 2008). Band prior for S&P A 1.0%: 0.5/(0.5/0.01 + 16.86) = 0.75%; spread 87 points in August 2026, the lowest in Latin America after Uruguay (https://www.bloomberglinea.com/mercados/asi-cerro-el-riesgo-pais-en-america-latina-en-agosto-argentina-y-uruguay-en-los-extremos/)."},
+        "bankingCrisis.pessimistic": {"lo": 0.013, "mid": 0.039, "hi": 0.09, "tag": "guess", "basis": "Pessimist curve: odds x 5.4. Scenario: a copper collapse with a 2008-sized peso fall that goes further."}
+      },
+      "notes": "S&P A. Free float and inflation targeting since 1999; the 1980s debt crisis is outside the window."
+    },
+    {
+      "iso2": "CO", "name": "Colombia",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0056, "mid": 0.02, "hi": 0.062, "tag": "derived", "basis": "One event since 1970 (1985, peso down 33%) and none since 1995; the 2015 fall was 28% (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.CO..A). BB band prior 6.5%: 0.5/(0.5/0.065 + 16.86) = 2.0%."},
+        "bankingCrisis.pessimistic": {"lo": 0.03, "mid": 0.08, "hi": 0.16, "tag": "guess", "basis": "Pessimist curve: odds x 4.2. Scenario: the fiscal slippage behind S&P's April 2026 downgrade to BB- turns into a run on the peso, as the 28% fall of 2015 nearly did."}
+      },
+      "notes": "S&P cut Colombia to BB- in April 2026 (search snippet of the S&P release); spread 189 points in August 2026; the peso rose 21% against the dollar in the year to October 2026 (BIS), so present pressure is low."
+    },
+    {
+      "iso2": "CR", "name": "Costa Rica",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0056, "mid": 0.02, "hi": 0.062, "tag": "derived", "basis": "Events in 1981-82 (colon down 76%, inflation 90%) but none since 1995 (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.CR..A; World Bank inflation). BB band prior 6.5%: 2.0%."},
+        "bankingCrisis.pessimistic": {"lo": 0.03, "mid": 0.08, "hi": 0.16, "tag": "guess", "basis": "Pessimist curve: odds x 4.2."}
+      },
+      "notes": "S&P BB, Fitch positive outlook; spread 127 points in August 2026; the colon rose 12% in the year to September 2026. Many deposits are in dollars, which shields them from a colon fall but not from a freeze."
+    },
+    {
+      "iso2": "CZ", "name": "Czechia",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0016, "mid": 0.0075, "hi": 0.028, "tag": "derived", "basis": "Since 1995 the koruna's worst fall was 21% (1997) and inflation stayed low (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.CZ..A); the 1991 price liberalisation (52%) is transition-era and excluded. AA- band prior 1.0%: 0.75%."},
+        "bankingCrisis.pessimistic": {"lo": 0.013, "mid": 0.039, "hi": 0.09, "tag": "guess", "basis": "Pessimist curve: odds x 5.4."}
+      },
+      "notes": "S&P AA-. Own currency, high reserves."
+    },
+    {
+      "iso2": "DK", "name": "Denmark",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00028, "mid": 0.0019, "hi": 0.0095, "tag": "derived", "basis": "No event-year since 1970; the krone is pegged to the euro and never fell 20% against the dollar December-on-December (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.DK..A). AAA prior: 0.19%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0037, "mid": 0.014, "hi": 0.038, "tag": "guess", "basis": "Pessimist curve: odds x 7.4."}
+      },
+      "notes": "S&P AAA. Banking crisis 2008 without loss of deposit access."
+    },
+    {
+      "iso2": "EE", "name": "Estonia",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00053, "mid": 0.0031, "hi": 0.014, "tag": "derived", "basis": "No event since 1995 (currency board, euro from 2011); the 1992-94 hyperinflation is transition-era and excluded (https://stats.bis.org). Euro AA-to-A- prior 0.35%: 0.31%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0059, "mid": 0.021, "hi": 0.052, "tag": "guess", "basis": "Pessimist curve: odds x 6.8. A war with Russia is the frontline-state pessimist's path."}
+      },
+      "notes": "S&P A+. Banking system dominated by Nordic banks."
+    },
+    {
+      "iso2": "FI", "name": "Finland",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00018, "mid": 0.0013, "hi": 0.0073, "tag": "derived", "basis": "Banking crisis 1991 and markka devaluation 1993 (Laeven-Valencia, https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf) without deposit restrictions, and the 1993 fall was under 30% December-on-December; euro since 1999. Euro AA+ prior: 0.13%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0028, "mid": 0.011, "hi": 0.031, "tag": "guess", "basis": "Pessimist curve: odds x 8.5."}
+      },
+      "notes": "S&P AA+."
+    },
+    {
+      "iso2": "FR", "name": "France",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00053, "mid": 0.0031, "hi": 0.014, "tag": "derived", "basis": "No event since 1970 (https://stats.bis.org; https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf). Euro A+ prior 0.35%: 0.31%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0059, "mid": 0.021, "hi": 0.052, "tag": "guess", "basis": "Pessimist curve: odds x 6.8. Rogoff names France among the next debt crises; public debt 119% of GDP in mid-2026 (step-3 file)."}
+      },
+      "notes": "S&P A+ with negative outlook; Fitch A+ negative on 30 October 2026 (https://en.wikipedia.org/wiki/List_of_countries_by_credit_rating). A French debt crisis would test the ECB's backstop rather than lead straight to deposit limits."
+    },
+    {
+      "iso2": "DE", "name": "Germany",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00018, "mid": 0.0013, "hi": 0.0073, "tag": "derived", "basis": "No event since 1970 (https://stats.bis.org; https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf). Euro AAA prior 0.14%: 0.13%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0028, "mid": 0.011, "hi": 0.031, "tag": "guess", "basis": "Pessimist curve: odds x 8.5. In a euro break-up German depositors would more likely gain than lose."}
+      },
+      "notes": "S&P AAA. Banking crisis 2008 without loss of deposit access."
+    },
+    {
+      "iso2": "GR", "name": "Greece",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0031, "mid": 0.013, "hi": 0.043, "tag": "derived", "basis": "One event since 1995: the 2015 bank holiday of 21 days and withdrawal limits (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf), weight 0.63. Euro BBB prior 0.7%: (0.5 + 0.63)/(0.5/0.007 + 16.86) = 1.3%."},
+        "bankingCrisis.pessimistic": {"lo": 0.02, "mid": 0.058, "hi": 0.12, "tag": "guess", "basis": "Pessimist curve: odds x 4.7. Scenario: a repeat of 2015 in the next euro debt crisis."}
+      },
+      "notes": "S&P BBB. Capital controls lasted to September 2019. Debt is mostly official and long, which lowers near-term risk."
+    },
+    {
+      "iso2": "HU", "name": "Hungary",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0026, "mid": 0.011, "hi": 0.038, "tag": "derived", "basis": "No event since 1995 (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.HU..A); the forint's worst 12-month fall on monthly averages was 28% (to March 2009). BBB band prior 1.75%: 0.5/(0.5/0.0175 + 16.86) = 1.1%."},
+        "bankingCrisis.pessimistic": {"lo": 0.018, "mid": 0.052, "hi": 0.11, "tag": "guess", "basis": "Pessimist curve: odds x 4.9. Scenario: a 2008-style run on the forint that does not reverse."}
+      },
+      "notes": "S&P BBB- with negative outlook (affirmed May 2026, search snippet). The forint has come close (28% in 2008-09) without crossing."
+    },
+    {
+      "iso2": "IS", "name": "Iceland",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0036, "mid": 0.014, "hi": 0.047, "tag": "derived", "basis": "Events in 1980, 1982, 1983 and 2008 (krona down 50% December-on-December in 2008; https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.IS..A); weight 0.46 since 1995. A+ band prior 1.0%: (0.5 + 0.46)/(50 + 16.86) = 1.4%."},
+        "bankingCrisis.pessimistic": {"lo": 0.022, "mid": 0.062, "hi": 0.13, "tag": "guess", "basis": "Pessimist curve: odds x 4.6."}
+      },
+      "notes": "S&P A+ (positive). Smallest currency in the list; capital controls 2008-2017 restricted foreign exchange, not domestic deposits."
+    },
+    {
+      "iso2": "IE", "name": "Ireland",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00018, "mid": 0.0013, "hi": 0.0073, "tag": "derived", "basis": "Banking crisis 2008 with a blanket guarantee but no freeze (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf); euro since 1999. Euro AA+ prior: 0.13%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0028, "mid": 0.011, "hi": 0.031, "tag": "guess", "basis": "Pessimist curve: odds x 8.5."}
+      },
+      "notes": "S&P AA+. The 2010 bailout kept deposits whole."
+    },
+    {
+      "iso2": "IL", "name": "Israel",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0016, "mid": 0.0075, "hi": 0.028, "tag": "derived", "basis": "Events every year 1980-85 (inflation up to 445%; https://stats.bis.org/api/v2/data/dataflow/BIS/WS_LONG_CPI/1.0/M.IL.771) but none since stabilisation; shekel up 6% in the year to October 2026. A band prior 1.0%: 0.75%."},
+        "bankingCrisis.pessimistic": {"lo": 0.013, "mid": 0.039, "hi": 0.09, "tag": "guess", "basis": "Pessimist curve: odds x 5.4. Scenario: a wider regional war that hits reserves and the shekel."}
+      },
+      "notes": "S&P A. War since 2023 has not moved the currency to anywhere near the threshold."
+    },
+    {
+      "iso2": "IT", "name": "Italy",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0011, "mid": 0.0057, "hi": 0.023, "tag": "derived", "basis": "No event since 1970; the lira's worst fall was 23% (1981) and the euro has none (https://stats.bis.org). Euro BBB prior 0.7%: 0.5/(0.5/0.007 + 16.86) = 0.57%."},
+        "bankingCrisis.pessimistic": {"lo": 0.01, "mid": 0.032, "hi": 0.076, "tag": "guess", "basis": "Pessimist curve: odds x 5.8. Scenario: a debt run that the ECB does not stop, with Greek-style controls."}
+      },
+      "notes": "S&P BBB+. The largest single contributor to the western European average."
+    },
+    {
+      "iso2": "JP", "name": "Japan",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00028, "mid": 0.0019, "hi": 0.0095, "tag": "derived", "basis": "No event since 1970: the yen never fell 20% December-on-December, the 1997 banking crisis had no freeze (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.JP..A; https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf). Reserve-currency prior 0.2%: 0.19%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0037, "mid": 0.014, "hi": 0.038, "tag": "guess", "basis": "Pessimist curve: odds x 7.4. Scenario: a bond-market revolt against debt of about 230% of GDP that the Bank of Japan meets by printing, taking the yen down 30% in a year."}
+      },
+      "notes": "S&P A+. Placed with the AAA band because the yen is a reserve currency, as Laeven and Valencia note for advanced economies; the yen lost about a third over 2021-24, but never 30% within a year."
+    },
+    {
+      "iso2": "KR", "name": "South Korea",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0049, "mid": 0.018, "hi": 0.057, "tag": "derived", "basis": "Events in 1997 (won down 44%) and 2008 (32%) December-on-December (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.KR..A); weight 0.73. AA band prior 1.0%: (0.5 + 0.73)/(50 + 16.86) = 1.8%."},
+        "bankingCrisis.pessimistic": {"lo": 0.028, "mid": 0.075, "hi": 0.15, "tag": "guess", "basis": "Pessimist curve: odds x 4.4. Scenario: a global dollar squeeze as in 2008, or conflict on the peninsula."}
+      },
+      "notes": "S&P AA. The won is a high-beta currency: twice past 30% in 30 years despite a high rating."
+    },
+    {
+      "iso2": "LV", "name": "Latvia",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00053, "mid": 0.0031, "hi": 0.014, "tag": "derived", "basis": "No national event since 1995 (lats pegged, euro from 2014); 1992-93 hyperinflation excluded as transition-era (https://stats.bis.org). Euro A prior 0.35%: 0.31%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0059, "mid": 0.021, "hi": 0.052, "tag": "guess", "basis": "Pessimist curve: odds x 6.8."}
+      },
+      "notes": "S&P A. Parex Bank limited large withdrawals in 2008-09 (recalled); one bank, not national."
+    },
+    {
+      "iso2": "LT", "name": "Lithuania",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00053, "mid": 0.0031, "hi": 0.014, "tag": "derived", "basis": "No currency or freeze event since 1995 (currency board, euro from 2015); 1992-95 inflation excluded as transition-era (https://stats.bis.org). Euro A prior 0.35%: 0.31%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0059, "mid": 0.021, "hi": 0.052, "tag": "guess", "basis": "Pessimist curve: odds x 6.8."}
+      },
+      "notes": "S&P A."
+    },
+    {
+      "iso2": "LU", "name": "Luxembourg",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00018, "mid": 0.0013, "hi": 0.0073, "tag": "derived", "basis": "No event since 1970; banking crisis 2008 without a freeze (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf). Euro AAA prior: 0.13%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0028, "mid": 0.011, "hi": 0.031, "tag": "guess", "basis": "Pessimist curve: odds x 8.5."}
+      },
+      "notes": "S&P AAA. Banking assets far larger than GDP; Kaupthing Luxembourg's depositors waited months for access in 2008-09 (recalled), a single-bank case."
+    },
+    {
+      "iso2": "MX", "name": "Mexico",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0043, "mid": 0.017, "hi": 0.053, "tag": "derived", "basis": "Events 1982-88 and 1995 (peso down 48%, inflation 52%; https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.MX..A); weight 0.25 since 1995. BBB band prior 1.75%: (0.5 + 0.25)/(28.6 + 16.86) = 1.65%."},
+        "bankingCrisis.pessimistic": {"lo": 0.025, "mid": 0.069, "hi": 0.15, "tag": "guess", "basis": "Pessimist curve: odds x 4.3. Scenario: a US trade or security rupture."}
+      },
+      "notes": "S&P BBB; spread 196 points in August 2026. Free float since 1995; dollar deposits were forcibly converted in 1982 (recalled)."
+    },
+    {
+      "iso2": "NL", "name": "Netherlands",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00018, "mid": 0.0013, "hi": 0.0073, "tag": "derived", "basis": "No event since 1970; banking crisis 2008 without a freeze (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf). Euro AAA prior: 0.13%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0028, "mid": 0.011, "hi": 0.031, "tag": "guess", "basis": "Pessimist curve: odds x 8.5."}
+      },
+      "notes": "S&P AAA."
+    },
+    {
+      "iso2": "NZ", "name": "New Zealand",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00028, "mid": 0.0019, "hi": 0.0095, "tag": "derived", "basis": "No event-year since 1970; the worst December-on-December fall was 28% (2008; https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.NZ..A). AA+ prior 0.2%: 0.19%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0037, "mid": 0.014, "hi": 0.038, "tag": "guess", "basis": "Pessimist curve: odds x 7.4."}
+      },
+      "notes": "S&P AA+. The 2008 fall came close. New Zealand's Open Bank Resolution scheme can freeze part of a failed bank's deposits; it has never been used (recalled)."
+    },
+    {
+      "iso2": "NO", "name": "Norway",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00028, "mid": 0.0019, "hi": 0.0095, "tag": "derived", "basis": "No event-year since 1970; worst fall 22% (2008); banking crisis 1991 without a freeze (https://stats.bis.org; https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf). AAA prior: 0.19%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0037, "mid": 0.014, "hi": 0.038, "tag": "guess", "basis": "Pessimist curve: odds x 7.4."}
+      },
+      "notes": "S&P AAA. Sovereign wealth fund far larger than GDP."
+    },
+    {
+      "iso2": "PL", "name": "Poland",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0016, "mid": 0.0075, "hi": 0.028, "tag": "derived", "basis": "No event since 1995 (the zloty lost 36% over the 12 months to March 2009 on monthly averages, but under 20% December-on-December); 1980s and early-1990s events excluded as planned-economy and transition-era (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.PL..A). A- band prior 1.0%: 0.75%."},
+        "bankingCrisis.pessimistic": {"lo": 0.013, "mid": 0.039, "hi": 0.09, "tag": "guess", "basis": "Pessimist curve: odds x 5.4. Scenario: a war with Russia on NATO's eastern flank."}
+      },
+      "notes": "S&P A-."
+    },
+    {
+      "iso2": "PT", "name": "Portugal",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00053, "mid": 0.0031, "hi": 0.014, "tag": "derived", "basis": "Only pre-euro event: the escudo fell 30.3% in 1983 (https://stats.bis.org); none since the euro; 2008 banking crisis without a freeze. Euro A+ prior 0.35%: 0.31%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0059, "mid": 0.021, "hi": 0.052, "tag": "guess", "basis": "Pessimist curve: odds x 6.8."}
+      },
+      "notes": "S&P A+. Bailout 2011 without deposit restrictions; Banco Espirito Santo (2014) was resolved without touching deposits."
+    },
+    {
+      "iso2": "SK", "name": "Slovakia",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00053, "mid": 0.0031, "hi": 0.014, "tag": "derived", "basis": "No event since 1995; 1991 inflation (54%) excluded as transition-era; euro since 2009 (https://stats.bis.org). Euro A prior 0.35%: 0.31%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0059, "mid": 0.021, "hi": 0.052, "tag": "guess", "basis": "Pessimist curve: odds x 6.8."}
+      },
+      "notes": "S&P A with negative outlook (April 2026)."
+    },
+    {
+      "iso2": "SI", "name": "Slovenia",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00053, "mid": 0.0031, "hi": 0.014, "tag": "derived", "basis": "No event since 1995; the Yugoslav-era hyperinflation and the 1992 tolar fall (40%) are excluded as transition-era; euro since 2007 (https://stats.bis.org). Euro AA prior band (AA to A-) 0.35%: 0.31%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0059, "mid": 0.021, "hi": 0.052, "tag": "guess", "basis": "Pessimist curve: odds x 6.8."}
+      },
+      "notes": "S&P AA. Banking crisis 2013 resolved with state capital, no freeze."
+    },
+    {
+      "iso2": "ES", "name": "Spain",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00053, "mid": 0.0031, "hi": 0.014, "tag": "derived", "basis": "No event since 1970 (worst peseta fall 23%, 1982); banking crises 1977 and 2008 without a freeze (https://stats.bis.org; https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf). Euro A+ prior 0.35%: 0.31%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0059, "mid": 0.021, "hi": 0.052, "tag": "guess", "basis": "Pessimist curve: odds x 6.8."}
+      },
+      "notes": "S&P A+. The 2012 bank bailout kept deposits whole; Banco Popular (2017) was sold overnight."
+    },
+    {
+      "iso2": "SE", "name": "Sweden",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00028, "mid": 0.0019, "hi": 0.0095, "tag": "derived", "basis": "No event-year since 1970; banking crisis 1991 and krona float 1992-93 without a freeze or a 30% fall (https://stats.bis.org; https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf). AAA prior: 0.19%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0037, "mid": 0.014, "hi": 0.038, "tag": "guess", "basis": "Pessimist curve: odds x 7.4."}
+      },
+      "notes": "S&P AAA."
+    },
+    {
+      "iso2": "CH", "name": "Switzerland",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00028, "mid": 0.0019, "hi": 0.0095, "tag": "derived", "basis": "No event-year since 1970; the franc tends to rise in crises; Credit Suisse (2023) was merged without loss of deposit access (https://stats.bis.org; https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf). AAA prior: 0.19%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0037, "mid": 0.014, "hi": 0.038, "tag": "guess", "basis": "Pessimist curve: odds x 7.4."}
+      },
+      "notes": "S&P AAA."
+    },
+    {
+      "iso2": "TR", "name": "Turkey",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.18, "mid": 0.32, "hi": 0.55, "tag": "guess", "basis": "Currency events 1995-99, 2001, 2021 and 2023 (lira down 34-53%; https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.TR..A), weight 3.45: posterior with the BB prior 16%, times 0.6 for the managed lira (15% loss in the year to October 2026) and CDS of 217 points (https://www.hurriyetdailynews.com/turkiyes-cds-falls-to-lowest-level-in-6-5-months-226086) = 9.6%. Inflation was 29.77% in October 2026 with 2.58% that month (https://www.anews.com.tr/turkey/2026/11/03/turkiyes-annual-consumer-inflation-stands-at-2977-in-october/amp); a 0.25 chance it alone passes 33.3% gives 0.096 + 0.904 x 0.25 = 0.32."},
+        "bankingCrisis.pessimistic": {"lo": 0.26, "mid": 0.48, "hi": 0.74, "tag": "guess", "basis": "Pessimist curve applied to 0.32. Scenario: a return to the 2021-24 pattern, when 4 years out of 4 met the threshold by currency or inflation."}
+      },
+      "notes": "S&P BB-. Inflation-only years (2000, 2022, 2024) are not in the history count; they enter through today's inflation instead. About 0.23 of the 0.32 is the inflation-only branch, in which lira deposits paying near-inflation rates lose little: see openQuestions. Checker: the CDS figure (217 points) is from 26 August 2026, not current; the article says it was the lowest since 18 February."
+    },
+    {
+      "iso2": "GB", "name": "United Kingdom",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00028, "mid": 0.0019, "hi": 0.0095, "tag": "derived", "basis": "No event-year since 1970: sterling's worst December-on-December fall was 26% (2008), the 2007 banking crisis had no freeze (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.GB..A; https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf). Reserve-currency prior 0.2%: 0.19%."},
+        "bankingCrisis.pessimistic": {"lo": 0.0037, "mid": 0.014, "hi": 0.038, "tag": "guess", "basis": "Pessimist curve: odds x 7.4. Rogoff names the UK as a candidate for a debt crisis; the 2022 gilt crisis is the pessimist's precedent."}
+      },
+      "notes": "S&P AA. Placed with the AAA band as a reserve-currency issuer. Northern Rock (2007) queues lasted days but deposits stayed usable."
+    },
+    {
+      "iso2": "US", "name": "United States",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.00028, "mid": 0.0019, "hi": 0.0095, "tag": "derived", "basis": "No event-year since the 1933 bank holiday; the broad dollar's worst 12-month fall since 1994 is 10.4% (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_EER/1.0/M.N.B.US). AA+ prior 0.2%: 0.19%; inflation 3.7% in September 2026 (BIS WS_LONG_CPI)."},
+        "bankingCrisis.pessimistic": {"lo": 0.0037, "mid": 0.014, "hi": 0.038, "tag": "guess", "basis": "Pessimist curve: odds x 7.4, the same as the preset's Dalio-Rogoff scenario (10% a year debt crisis x 15% crossing the threshold)."}
+      },
+      "notes": "S&P AA+. Matches the preset."
+    },
+    {
+      "iso2": "AR", "name": "Argentina",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.25, "mid": 0.42, "hi": 0.67, "tag": "guess", "basis": "Currency-or-freeze years 2001, 2002, 2016, 2018, 2019, 2022, 2023, 2024 (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.AR..A; freezes 1989 and 2001 in https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf) give 32%; the October 2026 central bank survey expects 1,985 pesos per dollar in October 2027 against 2,216 for a 30% loss from 1,551 (https://perfil.com/economia/rem-del-bcra-el-precio-que-le-ponen-a-la-inflacion-y-al-dolar-45-actores-del-mercado-a9fcc7k2dRuP), about 0.27 at 15-20% volatility. Inflation is 33.1% a year (https://www.forbesargentina.com/money/subio-inflacion-octubre-ubico-22-n102387); a 0.2 chance it alone passes 33.3% gives 0.27 + 0.73 x 0.2 = 0.42. Checker: 2024 is the 13 December 2023 devaluation counted twice by December averaging (end-of-December rates give a 21.7% loss in 2024, BIS daily); without it the history gives 0.27 and the survey multiplier becomes about 1.0, so the currency-or-freeze 0.27 stands. The same survey expects 21.8% inflation over the next 12 months (top ten forecasters 23.2%) and 30.4% for 2026; the 0.2 chance that inflation alone passes 33.3% should be read against that. Figure not changed: see openQuestions on whether the inflation-only branch belongs here at all."},
+        "bankingCrisis.pessimistic": {"lo": 0.31, "mid": 0.55, "hi": 0.84, "tag": "guess", "basis": "Pessimist curve applied to 0.42; 8 of the 10 years 2016-2025 met the threshold by currency or inflation (BIS)."}
+      },
+      "notes": "S&P B-. Three times the buenosAires preset (0.15); see the anchor comments. The survey has under-forecast monthly inflation (1.8% expected for October, 2.2% printed). About 0.15 of the 0.42 is the inflation-only branch."
+    },
+    {
+      "iso2": "BR", "name": "Brazil",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.028, "mid": 0.072, "hi": 0.17, "tag": "derived", "basis": "Currency events 1999, 2002 and 2015 (real down 35%, 35% and 32% December-on-December; https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.BR..A), weight 1.28; the 1990 freeze and 1980-94 hyperinflation fall before the window. BB prior 6.5%: (0.5 + 1.28)/(7.7 + 16.86) = 7.2%."},
+        "bankingCrisis.pessimistic": {"lo": 0.087, "mid": 0.19, "hi": 0.34, "tag": "guess", "basis": "Pessimist curve: odds x 3.0. Scenario: fiscal dominance after the 2026 election, a 2002 or 2015 rerun."}
+      },
+      "notes": "S&P BB; spread 174 points in August 2026; the real rose 5% in the year to October 2026. The real is a high-beta currency: three falls just over 30% in 17 years, each partly reversed."
+    },
+    {
+      "iso2": "CN", "name": "China",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0016, "mid": 0.0075, "hi": 0.028, "tag": "derived", "basis": "No event since 1995; the 1994 unification (official rate down 31.5%) is excluded, as in Laeven-Valencia, because most trade already used the swap rate (https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf; https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.CN..A). A+ prior 1.0% (the yuan is not freely convertible, so not in the reserve band): 0.75%."},
+        "bankingCrisis.pessimistic": {"lo": 0.013, "mid": 0.039, "hi": 0.09, "tag": "guess", "basis": "Pessimist curve: odds x 5.4. Scenario: a property-and-local-debt crisis met by a step devaluation, or sanctions in a Taiwan crisis freezing foreign-currency access."}
+      },
+      "notes": "S&P A+. The 2022 Henan rural-bank freeze locked hundreds of thousands of depositors' accounts for months (recalled); regional freezes of this kind add risk for a small share of households that a national count does not capture."
+    },
+    {
+      "iso2": "IN", "name": "India",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0075, "mid": 0.026, "hi": 0.074, "tag": "derived", "basis": "One event since 1995: demonetisation, with withdrawals capped at Rs 24,000 a week from 14 November 2016 until 13 March 2017 (https://en.wikipedia.org/wiki/2016_Indian_banknote_demonetisation), weight 0.66; the rupee never fell 30% December-on-December (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.IN..A). BBB prior 1.75%: (0.5 + 0.66)/(28.6 + 16.86) = 2.6%."},
+        "bankingCrisis.pessimistic": {"lo": 0.037, "mid": 0.094, "hi": 0.19, "tag": "guess", "basis": "Pessimist curve: odds x 3.9."}
+      },
+      "notes": "S&P BBB. Without counting demonetisation the figure would be 1.1%. The rupee was at a record 95.5 per dollar in October 2026, 7% down on the year (BIS): pressure, but far from 30%."
+    },
+    {
+      "iso2": "ID", "name": "Indonesia",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0067, "mid": 0.023, "hi": 0.069, "tag": "derived", "basis": "Events 1997 (rupiah down 51%) and 1998 (37%, inflation 78%) December-on-December (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.ID..A), weight 0.56. BBB prior 1.75%: (0.5 + 0.56)/(28.6 + 16.86) = 2.3%."},
+        "bankingCrisis.pessimistic": {"lo": 0.034, "mid": 0.088, "hi": 0.18, "tag": "guess", "basis": "Pessimist curve: odds x 4.1. Scenario: fiscal-rule and central-bank-independence worries turn the 2025-26 slide into a run."}
+      },
+      "notes": "S&P BBB. The rupiah was near a record 18,000 per dollar in October 2026, 8% down on the year (BIS)."
+    },
+    {
+      "iso2": "NG", "name": "Nigeria",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.055, "mid": 0.12, "hi": 0.26, "tag": "guess", "basis": "Currency events 1999, 2016, 2023 and 2024 (naira down 78%, 36%, 50% and 42%; https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.NG..A), weight 2.83: posterior with the B prior 17.6%, times 0.7 because the naira now floats and rose 13% in the year to August 2026 while inflation fell to 14.06% (https://gazettengr.com/nigerias-inflation-rate-dropped-to-14-06-in-october-nbs/) = 12%."},
+        "bankingCrisis.pessimistic": {"lo": 0.13, "mid": 0.27, "hi": 0.45, "tag": "guess", "basis": "Pessimist curve applied to 0.12: an oil-price collapse with a return to rationed dollars."}
+      },
+      "notes": "S&P B- (Fitch and Moody's B/B3 in 2025). In early 2023 cash withdrawals were capped and new notes scarce for weeks; that year is already a currency event. The 0.7 multiplier is a judgment. Checker: 17.6% is the posterior, not the prior (the B prior is 25%). The 1999 event is the abolition of the official rate in favour of the market rate, a unification like China's 1994 one, which this file excludes; Laeven and Valencia date Nigeria's currency crises 1983, 1989, 1997 and 2016, not 1999. Treating 1999 as China's 1994 is treated (and dropping Argentina's double-counted 2024 from the B prior) gives 0.11 instead of 0.12; not changed, as the difference is inside the range."
+    },
+    {
+      "iso2": "PH", "name": "Philippines",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.0026, "mid": 0.011, "hi": 0.038, "tag": "derived", "basis": "Events 1983-84 but none since 1995; the 1997 fall was 29%, just under the threshold (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.PH..A). BBB+ band prior 1.75%: 0.5/(28.6 + 16.86) = 1.1%."},
+        "bankingCrisis.pessimistic": {"lo": 0.018, "mid": 0.052, "hi": 0.11, "tag": "guess", "basis": "Pessimist curve: odds x 4.9."}
+      },
+      "notes": "S&P BBB+. An energy importer hit by the 2026 oil shock; the peso was 8% down on the year to October 2026."
+    },
+    {
+      "iso2": "ZA", "name": "South Africa",
+      "values": {
+        "bankingCrisis.forecast": {"lo": 0.018, "mid": 0.052, "hi": 0.13, "tag": "derived", "basis": "Currency events 2001 (rand down 34%) and 2008 (32%) December-on-December (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.ZA..A), weight 0.79; 2015 was 23%. BB prior 6.5%: (0.5 + 0.79)/(7.7 + 16.86) = 5.2%."},
+        "bankingCrisis.pessimistic": {"lo": 0.067, "mid": 0.15, "hi": 0.28, "tag": "guess", "basis": "Pessimist curve: odds x 3.2."}
+      },
+      "notes": "S&P BB (positive). Deep, liquid rand market: it falls hard in global shocks and recovers."
+    }
+  ],
+  "blockedSources": [
+    "https://www.imf.org/external/datamapper/api/v1/PCPIEPCH (Access Denied, and 'Blob not found' on other routes): WEO end-of-period inflation and 2026-27 projections for every country; I used BIS monthly CPI and World Bank annual averages instead, and no projections except Argentina's survey.",
+    "https://www.worldgovernmentbonds.com/sovereign-cds/ (table loads by script): five-year CDS for all countries; I have spreads only for Latin America (Bloomberg Linea, end of August 2026) and Turkey.",
+    "Laeven-Valencia dataset spreadsheet (per-episode deposit-freeze and holiday dates): not opened. The paper's text gives 8 freezes (most recent Cyprus 2013, Ukraine 2014, Greece 2015) and 6 holidays; Argentina's dates come from the step-3 file; Brazil's 1990 freeze is recalled and changes no count, since 1990 is a currency year anyway.",
+    "https://en.wikipedia.org/wiki/List_of_countries_by_credit_rating: S&P column read; Fitch partly and Moody's not; the page says the tables are not fully updated. Colombia's April 2026 downgrade to BB- and Hungary's May 2026 affirmation are search snippets."
+  ],
+  "openQuestions": [
+    "The purchasing-power criterion (a 25% loss, i.e. 33.3% inflation in a year) puts Argentina (33.1% now) and Turkey (29.8%) at the threshold, so a third or more of their figures is the chance that steady inflation crosses a line, with no crisis. Deposits there earn close to inflation, so the loss share the model attaches to bankingCrisis (35% in Buenos Aires) is far too high for that branch. Either drop the criterion for chronic inflation, or give inflation-only events their own small loss share. Currency-or-freeze only: Argentina 0.27, Turkey 0.10.",
+    "The buenosAires preset (0.15) rests on reading 23.6% as year-on-year inflation; it is the January-September 2026 cumulative. By its own definition the preset should be about 0.4 (0.27 currency-or-freeze only). Checker: not so. The preset's definition (research/step3/tail-finance-unrest.json, buenosAires) says 'Exchange controls alone, and inflation that deposit interest roughly matches, do not count', and its basis uses no inflation figure; the mislabelled 23.6% appears only in a source claim of that file. On the preset's own definition the comparable figure is the currency-or-freeze 0.27 (pessimistic 0.43 by the same curve), and Turkey's is 0.10 (pessimistic 0.23). Which definition governs is for the model's owner: the brief's wording includes the purchasing-power test without that exclusion.",
+    "presetFor sends every unlisted middle-income country to buenosAires, and so to 0.15 a year. By this method listed middle-income countries without Argentina's history get 0.7-2.6% (Chile, China, Mexico, Colombia, Costa Rica, Philippines, India, Indonesia). Unlisted countries (Malaysia, Thailand, Vietnam, Peru, Morocco...) should get a separate default, for example the BBB/BB prior of 1-2%, not Argentina's figure; frontier economies with recent crises (Egypt, Pakistan, Ghana, Sri Lanka, Lebanon) would need their own.",
+    "December-average changes miss falls that peak inside the year and partly reverse. Over any rolling 12 months of monthly averages (BIS) Colombia lost 37% to August 2015 (28% December-on-December), Poland 36% to March 2009, the Philippines 38% to January 1998; Turkey's August 2018 fall is also missed. Counting those would roughly double the figures for Colombia, Poland and the Philippines. I kept December averages because the preset used them.",
+    "Withdrawal limits without a bank holiday: India 2016 and Nigeria 2023 are counted. Without India's the Indian figure would be 1.1% instead of 2.6%.",
+    "Euro members share one currency, so a break-up would hit all of them in the same year; the figures are per household and need no correlation, but a reader comparing countries should know the euro priors are one pooled rate split by rating."
+  ]
+}
