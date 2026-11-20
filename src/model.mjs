@@ -251,12 +251,12 @@ function crf(r, years) {
 // ---------------------------------------------------------------------------
 //
 // The reader states when they expect AGI and how concerned they are. For each
-// hazard the data gives four annual rates: `baseline` (AI's effect removed),
-// `now` (before AGI), `transition` (the years just after AGI arrives) and
-// `after`. Each rate is [low, middle, high]: the view of a careful sceptic,
-// the central view, and the view of someone highly concerned. The hazard's
-// probability is shifted by the average, over the planning horizon, of the
-// rate the reader's timeline implies, less the baseline.
+// hazard the data gives annual rates for `now` (before AGI), `transition`
+// (the years just after AGI arrives) and `after`. Each rate is [low, middle,
+// high]: the view of a careful sceptic, the central view, and the view of
+// someone highly concerned. The model's own probabilities are today's. With
+// a timeline chosen, each is shifted by the average, over the planning
+// horizon, of the rate the timeline implies, less today's rate.
 
 // Value of a [low, middle, high] triple at concern c in [0, 1].
 export function atConcern(t, c) {
@@ -309,7 +309,7 @@ export function aiShift(ai, settings, hazardId, loc) {
     sum += (1 - arrived) * now + (arrived - over) * during + over * after;
   }
   // Only the share of the added risk that a household could survive counts.
-  return (sum / H - atConcern(r.baseline, c)) * (r.survivable === undefined ? 1 : r.survivable);
+  return (sum / H - now) * (r.survivable === undefined ? 1 : r.survivable);
 }
 
 // The chance, averaged over the planning horizon, that no existential

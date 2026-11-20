@@ -161,8 +161,9 @@ export default {
       exposureScale: { location: { westernEurope: 0.5 } },
     },
     pandemicSevere: {
+      // tail-pandemic.json puts care at about 0.5 micromorts a day here:
+      // overwhelmed, and at the peak unreachable.
       label: 'Pandemic far worse than COVID-19', from: 'tail-pandemic',
-      needScale: { emergencyCare: { mortality: 0.4 } },
     },
     nuclearNear: {
       label: 'Nuclear war reaching your region', from: 'tail-nuclear-grid',
@@ -337,10 +338,6 @@ export default {
       long: { from: 'preset-long', label: 'Long: the 2040s (forecasting panels, researcher surveys)' },
       never: { from: 'preset-not-this-century', label: 'Not this century' },
     },
-    // In these files the low and high figures for the rate with AI removed
-    // are bounds on that rate, not the sceptic's and the concerned view of
-    // it; the middle figure is used at every level of concern.
-    baselineIsPoint: ['ai-economy'],
     // Slips in the researchers' own arithmetic, found on verification.
     corrections: [
       { hazard: 'pandemicSevere', location: 'all', field: 'now', mid: 0.004, reason: 'ai-bio.md: 0.3% + 0.8% x 0.12 = 0.396%, entered as 0.45%.' },

@@ -510,9 +510,9 @@
    "bankingCrisis": {
     "us": {
      "baseline": [
+      0.0003,
       0.001,
-      0.001,
-      0.001
+      0.003
      ],
      "now": [
       0.001,
@@ -533,9 +533,9 @@
     },
     "westernEurope": {
      "baseline": [
+      0.0007,
       0.002,
-      0.002,
-      0.002
+      0.005
      ],
      "now": [
       0.002,
@@ -556,9 +556,9 @@
     },
     "buenosAires": {
      "baseline": [
+      0.04,
       0.07,
-      0.07,
-      0.07
+      0.15
      ],
      "now": [
       0.07,
@@ -581,9 +581,9 @@
    "supplyShock": {
     "us": {
      "baseline": [
+      0.02,
       0.045,
-      0.045,
-      0.045
+      0.08
      ],
      "now": [
       0.045,
@@ -604,9 +604,9 @@
     },
     "westernEurope": {
      "baseline": [
+      0.03,
       0.06,
-      0.06,
-      0.06
+      0.1
      ],
      "now": [
       0.06,
@@ -627,9 +627,9 @@
     },
     "buenosAires": {
      "baseline": [
+      0.08,
       0.15,
-      0.15,
-      0.15
+      0.25
      ],
      "now": [
       0.15,
@@ -652,9 +652,9 @@
    "aiFraud": {
     "us": {
      "baseline": [
+      0.025,
       0.05,
-      0.05,
-      0.05
+      0.09
      ],
      "now": [
       0.03,
@@ -675,9 +675,9 @@
     },
     "westernEurope": {
      "baseline": [
+      0.015,
       0.035,
-      0.035,
-      0.035
+      0.07
      ],
      "now": [
       0.02,
@@ -698,9 +698,9 @@
     },
     "buenosAires": {
      "baseline": [
+      0.02,
       0.05,
-      0.05,
-      0.05
+      0.1
      ],
      "now": [
       0.025,
@@ -3069,8 +3069,7 @@
        "basis": "No warning.",
        "max": 1
       }
-     },
-     "exposures": []
+     }
     },
     "buenosAires": {
      "windows": {
@@ -3250,8 +3249,7 @@
        "basis": "No warning.",
        "max": 1
       }
-     },
-     "exposures": []
+     }
     }
    }
   },
@@ -4716,8 +4714,7 @@
        "basis": "Electric heaters and gas cylinders sell out in cold snaps; guess.",
        "max": 1
       }
-     },
-     "exposures": []
+     }
     }
    }
   },
@@ -4998,8 +4995,7 @@
        "basis": "Fans and portable air conditioners sell out within days in European heat waves; guess.",
        "max": 1
       }
-     },
-     "exposures": []
+     }
     },
     "buenosAires": {
      "windows": {
@@ -5162,8 +5158,7 @@
        "basis": "Fans are stocked everywhere; air conditioners cannot be installed within days in summer. Guess.",
        "max": 1
       }
-     },
-     "exposures": []
+     }
     }
    }
   },
@@ -8982,11 +8977,6 @@
     "hi": 1.7,
     "tag": "guess",
     "basis": "Uncertainty about how long disruptions of this kind last, applied to every window of the hazard."
-   },
-   "needScale": {
-    "emergencyCare": {
-     "mortality": 0.4
-    }
    }
   },
   "nuclearNear": {
@@ -11030,28 +11020,28 @@
    "tickBox": null,
    "probability": {
     "us": {
-     "lo": 0.00005,
-     "mid": 0.0005,
-     "hi": 0.0025,
+     "lo": 0.0001,
+     "mid": 0.001,
+     "hi": 0.008,
      "max": 1,
      "tag": "derived",
-     "basis": "Attack-caused blackout of 1-14 days reaching this household, AI removed. Half of the FRI/GovAI pilot's 2026 median (1% for a US grid cyberattack doing at least $10bn of damage, which at GovAI's $100-250 per person-day is about 40-100m person-days, taken as 12% of households out a day or more): 0.5% x 12% = 0.06%, plus ~0.02% from $1-10bn events = 0.08%, shaded to 0.05% because no cyberattack has ever cut power in the US. Lo: a sceptic in the line of Maschmeyer (zero US events, three short ones in Ukraine). Hi: the pilot's upper quartile (2%) x 12%. https://forecastingresearch.org/research/ai-cyber-risks-capabilities"
+     "basis": "Pilot medians at face value: 1% x 12% = 0.12%, plus ~0.05% from $1-10bn events = 0.17%, shaded to 0.1% because 2026 has almost passed without such an event; equals the pilot's 1.5-2x uplift from AI that can do industrial-control tasks applied to the baseline. Lo: sceptic who notes that AI has not changed state intent and that RAND's forecasters gave 4% to any AI-enabled state disruption of G20 infrastructure by July 2026 (resolved No). Hi: pilot upper quartile with that uplift (7-10%) x 12%, after a Mythos checkpoint completed UK AISI's operational-technology range in May 2026. https://forecastingresearch.org/research/ai-cyber-risks-capabilities"
     },
     "westernEurope": {
-     "lo": 0.00005,
-     "mid": 0.0004,
+     "lo": 0.0001,
+     "mid": 0.0008,
+     "hi": 0.006,
+     "max": 1,
+     "tag": "guess",
+     "basis": "Twice baseline, as for the US. The two nearest misses on record are European: Poland, 29 December 2025 (over 30 wind and solar sites and a heat plant serving almost half a million customers, no loss of supply) and a small UK generator shut for four days in July 2026 with no customer effect. Lo: both failed to cut supply. Hi: both show intent to destroy, in winter. https://cert.pl/en/posts/2026/01/incident-report-energy-sector-2025/"
+    },
+    "buenosAires": {
+     "lo": 0.00004,
+     "mid": 0.0003,
      "hi": 0.002,
      "max": 1,
      "tag": "guess",
-     "basis": "US derivation scaled by 0.8: no public counterpart to Volt Typhoon's pre-positioning, but Russia is an active adversary. Lo: sceptic counting zero attack-caused outages in the EU or UK. Hi: FRI pilot upper quartile transposed."
-    },
-    "buenosAires": {
-     "lo": 0.00002,
-     "mid": 0.00015,
-     "hi": 0.001,
-     "max": 1,
-     "tag": "guess",
-     "basis": "Guess: 30% of the US mid. No state is known to hold access to Argentine utilities for use in war, and I found no report of an attack on Edenor, Edesur, CAMMESA or Transener; the remaining route is criminal ransomware reaching operations. Lo: sceptic, no events. Hi: weak defences (a national CERT of a handful of staff) on a grid that already fails often."
+     "basis": "Twice baseline: incidents reported to CERT.ar rose from 200-400 a year to more than 700 in 2026, and AI-run intrusion campaigns pick targets by weakness rather than nationality. Lo: reporting, not attacks, rose (the agency's own caveat). Hi: as baseline. https://www.infobae.com/economia/2026/09/13/alerta-por-el-crecimiento-de-ciberataques-en-america-latina-el-antecedente-que-encendio-alarmas-y-que-pasa-en-la-argentina/"
     }
    },
    "windows": {
@@ -11154,28 +11144,28 @@
    "tickBox": null,
    "probability": {
     "us": {
-     "lo": 0.0001,
-     "mid": 0.0005,
-     "hi": 0.002,
+     "lo": 0.0002,
+     "mid": 0.0015,
+     "hi": 0.01,
      "max": 1,
      "tag": "guess",
-     "basis": "Guess resting on recollection, not on a fetched source: ransomware against US credit unions and their vendors in 2023-24 locked members out for days, roughly 0.1-0.2% of households a year, halved because many kept card access. No large US bank or card network has been down for a day through attack. Lo: sceptic counting large institutions only. Hi: counts every vendor incident."
+     "basis": "Guess: three times baseline. Cross-check: FRI pilot's 5-8% a year for a $10bn data-damaging worm x ~2% that such a worm takes out a given household's bank or cards = 0.1-0.16%. The Bank of England says frontier AI has 'increased financial stability risks', partly through faster patching. Lo: every US bank outage of 2026 was short and accidental. Hi: the Iranian precedent (two banks largely offline for about 12 days in June 2025) recurring at a mid-sized US bank each year."
     },
     "westernEurope": {
-     "lo": 0.0001,
-     "mid": 0.0005,
-     "hi": 0.002,
+     "lo": 0.0002,
+     "mid": 0.0015,
+     "hi": 0.01,
      "max": 1,
      "tag": "guess",
-     "basis": "Guess, as for the US. Each country's payments run through fewer banks and schemes, so events are rarer but each reaches more households."
+     "basis": "Guess, as for the US; the Bank of England's July 2026 warning applies directly."
     },
     "buenosAires": {
-     "lo": 0.0002,
-     "mid": 0.001,
-     "hi": 0.004,
+     "lo": 0.0004,
+     "mid": 0.0025,
+     "hi": 0.015,
      "max": 1,
      "tag": "guess",
-     "basis": "Guess: twice the US. Retail payments run through a few shared processors (Red Link, Banelco, Prisma, Mercado Pago) with weaker defences; I found no attack that stopped them for a day."
+     "basis": "Guess: 2.5 times baseline. A Red Link failure on 16-17 November 2026, reported as technical, hit the home banking of about 30 banks at once, which shows how far one fault reaches. Lo: hours, not days, and not an attack. Hi: a wiper at one processor."
     }
    },
    "windows": {
@@ -11213,12 +11203,12 @@
    "tickBox": null,
    "probability": {
     "all": {
-     "lo": 0.00003,
-     "mid": 0.0003,
-     "hi": 0.002,
+     "lo": 0.0001,
+     "mid": 0.0008,
+     "hi": 0.005,
      "max": 1,
      "tag": "guess",
-     "basis": "Guess. One attack has taken a national mobile network down for days (Kyivstar, December 2023, in wartime); none in the US, western Europe or Argentina. Lo: sceptic, zero events outside war. Hi: counts the access Chinese services already hold in US carriers as usable at will."
+     "basis": "Guess: 2.5 times baseline, mostly from accidents: Microsoft's email and collaboration services were down about 36 hours in November 2026 after a network change. Lo: accidents of this kind predate AI. Hi: Volt Typhoon's access to communications providers plus AI-speed exploitation."
     }
    },
    "windows": {
@@ -11272,28 +11262,28 @@
    "tickBox": null,
    "probability": {
     "us": {
-     "lo": 0.05,
-     "mid": 0.05,
-     "hi": 0.05,
+     "lo": 0.03,
+     "mid": 0.06,
+     "hi": 0.1,
      "max": 1,
      "tag": "derived",
-     "basis": "Today's rate less an AI share of 10–20%, which nobody has measured; the FBI's tagged floor is 4.3% of losses. Reported losses rose 25% in 2024 and 27% in 2025 (FTC), but no source attributes the rise to AI."
+     "basis": "Gallup: 10% of adults live in a household scammed in 2025; imposter scams are 'nearly one in three' FTC reports but lose money less often, so 2–3% of households; plus account takeover, Javelin's 6 million victims over about 132 million households (my assumption) = 4.5%, cut to 3% for overlap and vendor optimism. lo: BJS's 1.25% of adults plus takeover. hi: all scams."
     },
     "westernEurope": {
-     "lo": 0.035,
-     "mid": 0.035,
-     "hi": 0.035,
+     "lo": 0.02,
+     "mid": 0.04,
+     "hi": 0.08,
      "max": 1,
      "tag": "guess",
-     "basis": "Today's rate less an unmeasured AI share of 10–20%."
+     "basis": "England and Wales: 7.8% of people were fraud victims in the year to March 2026, mostly card and bank fraud; about 71% of incidents involve a loss and 70% of those are fully reimbursed. I take roughly half of loss-bearing incidents as impersonation or takeover. Authorised push payment cases alone are 248,070, about 0.9% of UK households. No EU-wide annual prevalence exists."
     },
     "buenosAires": {
-     "lo": 0.05,
-     "mid": 0.05,
-     "hi": 0.05,
+     "lo": 0.025,
+     "mid": 0.06,
+     "hi": 0.12,
      "max": 1,
      "tag": "guess",
-     "basis": "Today's rate less an unmeasured AI share. In August 2024 the head of the federal cybercrime unit said no Argentine case using AI had been detected; nothing later was found."
+     "basis": "No survey gives Argentine fraud prevalence. Reports to the federal unit rose 21% in 2024 to 34,468, a small fraction of incidents. I assume the US rate, since impersonation by telephone and takeover of messaging accounts are common."
     }
    },
    "windows": {},
@@ -11342,27 +11332,27 @@
    "probability": {
     "us": {
      "lo": 0.004,
-     "mid": 0.015,
+     "mid": 0.016,
      "hi": 0.035,
      "max": 1,
      "tag": "derived",
-     "basis": "Onset per year of a US-China or Russia-NATO conventional war that stays non-nuclear, AI's contribution removed: (US-China 1.17% + Russia-NATO 1.0% x 0.5 effect on a US household) x 0.88 non-nuclear. US-China from Metaculus Q8362 (8% before 2035 = 1.0%/yr) and Q11480 x Q11112 (23% x 57% = 13% = 1.7%/yr), less a guessed 10% AI share. Lo: long-peace sceptic near Metaculus Q7452 (0.36%/yr); hi: Clare's upper bound (50% 'in the coming decades', about 2.6%/yr if read as by 2050) plus Europe."
+     "basis": "Same chain with today's forecasts unadjusted: (1.3% + 1.0% x 0.5) x 0.88 = 1.6%. Lo: Polymarket prices a Chinese invasion of Taiwan by end-2026 at 1% and ODNI's March 2026 assessment sees no plan for 2027; hi: FutureSearch's 3% for a direct US-China war by end-2027 (2.4%/yr) plus Europe."
     },
     "westernEurope": {
      "lo": 0.005,
-     "mid": 0.018,
+     "mid": 0.019,
      "hi": 0.04,
      "max": 1,
      "tag": "derived",
-     "basis": "(US-China 1.17% x 0.9 effect + Russia-NATO 1.0% x 1.0) x 0.88 non-nuclear = 1.8%, AI's share removed. Russia-NATO from Metaculus Q8636 (13% by 2035 for a war without the US = 1.7%/yr, 127 forecasters, criteria not read) shaded down toward Q7452 (US-Russia war before 2050: 8% = 0.36%/yr). Lo and hi as for the US entry."
+     "basis": "(1.3% x 0.9 + 1.0%) x 0.88 = 1.9%. Lo: forecasters who read Q7452's 0.36%/yr as the right scale for Russia; hi: Metaculus Q8636 taken at face value plus FutureSearch's US-China figure."
     },
     "buenosAires": {
      "lo": 0.003,
-     "mid": 0.011,
+     "mid": 0.012,
      "hi": 0.028,
      "max": 1,
      "tag": "derived",
-     "basis": "(US-China 1.17% x 0.8 effect + Russia-NATO 1.0% x 0.35) x 0.88 non-nuclear = 1.1%, AI's share removed. The effect factors are guesses: a US-China war cuts Argentina's second-largest trade relationship and sets off a global flight from risk; a European war reaches it mainly through energy and grain prices, as in 2022. Lo and hi as for the US entry, scaled."
+     "basis": "(1.3% x 0.8 + 1.0% x 0.35) x 0.88 = 1.2%. Ends as for the US entry, scaled by the same factors."
     }
    },
    "windows": {
@@ -13706,94 +13696,6 @@
     "https://www.cdc.gov/mmwr/preview/mmwrhtml/mm6136a1.htm"
    ],
    "provenance": "power-light:spare-batteries"
-  },
-  {
-   "id": "candles",
-   "name": "Candles",
-   "group": "Light and power",
-   "spec": "100 unscented tealights (4 h each) burned in jars or holders, with matches or a lighter.",
-   "units": "pack of 100 tealights",
-   "confidence": "guess",
-   "scalesWith": "household",
-   "price": {
-    "lo": 5,
-    "mid": 7,
-    "hi": 20,
-    "tag": "data",
-    "basis": "IKEA GLIMMA 100 tealights $6.99, 4 h each, read on https://www.ikea.com/us/en/p/glimma-unscented-tealights-50097995/. High end adds holders and matches."
-   },
-   "lifeYears": {
-    "lo": 10,
-    "mid": 20,
-    "hi": 40,
-    "tag": "guess",
-    "basis": "Wax does not expire."
-   },
-   "setupHours": {
-    "lo": 0.1,
-    "mid": 0.2,
-    "hi": 0.5,
-    "tag": "guess",
-    "basis": "Buy; find holders."
-   },
-   "upkeepHoursPerYear": {
-    "lo": 0,
-    "mid": 0,
-    "hi": 0.1,
-    "tag": "guess",
-    "basis": "None."
-   },
-   "upkeepUsdPerYear": {
-    "lo": 0,
-    "mid": 0,
-    "hi": 1,
-    "tag": "guess",
-    "basis": "None."
-   },
-   "everydayShare": {
-    "lo": 0.2,
-    "mid": 0.5,
-    "hi": 0.8,
-    "tag": "guess",
-    "basis": "Many households burn them anyway.",
-    "max": 1
-   },
-   "volumeLitres": 2,
-   "reliability": {
-    "lo": 0.75,
-    "mid": 0.9,
-    "hi": 0.98,
-    "tag": "guess",
-    "basis": "Needs a lighter or matches at hand.",
-    "max": 1
-   },
-   "lateBuyClass": "staple",
-   "lateUptake": 0.3,
-   "requires": [],
-   "conditions": [],
-   "effects": [
-    {
-     "type": "supply",
-     "need": "light",
-     "amount": 80
-    },
-    {
-     "type": "sideRisk",
-     "need": "light",
-     "channel": "fire",
-     "micromortsPerDay": {
-      "lo": 0.03,
-      "mid": 0.1,
-      "hi": 0.4,
-      "tag": "derived",
-      "basis": "NFPA: candles cause 70-81 home fire deaths a year; 34% of deaths in the fatal fires reviewed were in homes without power and 12% of those were temporary outages, so about 4% or 3-5 deaths a year. Over a guessed 0.25-0.4 dark outage evenings per household a year x 35% lighting candles x 2.5 people = 29-46M person-evenings, 0.09-0.14 each. https://content.nfpa.org/-/media/Project/Storefront/Catalog/Files/Research/NFPA-Research/US-Fire-Problem/Fire-causes/osCandles.pdf"
-     }
-    }
-   ],
-   "sources": [
-    "https://www.ikea.com/us/en/p/glimma-unscented-tealights-50097995/"
-   ],
-   "provenance": "power-light:candles"
   },
   {
    "id": "power-bank",

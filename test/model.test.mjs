@@ -373,16 +373,19 @@ test('AI timelines shift hazard probabilities', () => {
   near(atConcern([0, 4, 16], 0.25), 2);
   near(p(undefined), 0.1);
   near(p({ timeline: 'none' }), 0.1);
-  // AGI never arrives: today's rate throughout.
-  near(p({ timeline: 'never', concern: 0.5 }), 0.2);
-  near(p({ timeline: 'never', concern: 0 }), 0.1);
-  near(p({ timeline: 'never', concern: 1 }), 0.4);
-  // AGI arrives as the horizon starts: every year is a transition year.
-  near(p({ timeline: 'arrived', concern: 0.5 }), 0.4);
+  // AGI never arrives: today's rate throughout, whatever the concern.
+  near(p({ timeline: 'never', concern: 0.5 }), 0.1);
+  near(p({ timeline: 'never', concern: 1 }), 0.1);
+  // AGI arrives as the horizon starts: every year is a transition year, so
+  // the probability rises by the transition rate less today's.
+  near(p({ timeline: 'arrived', concern: 0.5 }), 0.1 + (0.4 - 0.2));
+  near(p({ timeline: 'arrived', concern: 1 }), 0.1 + (0.8 - 0.4));
   // Even odds by the end of 2028, nothing after.
-  near(p({ timeline: 'custom', custom: [{ year: 2028, p: 0.5 }], concern: 0.5 }), 0.28);
+  near(p({ timeline: 'custom', custom: [{ year: 2028, p: 0.5 }], concern: 0.5 }), 0.1 + 0.08);
   // A longer horizon reaches the years after the transition.
-  near(p({ timeline: 'arrived', concern: 0.5, horizonYears: 10 }), 0.1 + (0.5 * 0.4 + 0.5 * 0.05) - 0.1);
+  near(p({ timeline: 'arrived', concern: 0.5, horizonYears: 10 }), 0.1 + (0.5 * 0.4 + 0.5 * 0.05) - 0.2);
+  // A timeline wholly in the past counts as arriving now.
+  near(p({ timeline: 'longAgo', concern: 0.5 }), 0.1 + (0.4 - 0.2));
   // A probability the reader sets by hand overrides all of it.
   near(run(d, { ai: { timeline: 'arrived' }, probabilities: { storm: 0.07 } }).hazards[0].p, 0.07);
 });

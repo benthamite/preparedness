@@ -123,13 +123,6 @@ export const items = [
     effects: () => [{ type: 'supply', need: 'light', amount: 60 }],
   },
   {
-    id: 'candles', from: 'candles', group: 'Light and power', lateUptake: 0.3,
-    effects: () => [
-      { type: 'supply', need: 'light', amount: 80 },
-      { type: 'sideRisk', need: 'light', channel: 'fire', micromortsPerDay: 'SIDE:candles' },
-    ],
-  },
-  {
     id: 'power-bank', from: 'power-bank', group: 'Light and power', units: 'watt-hours', lateUptake: 0.3,
     ladder: [{ label: '10,000 mAh', units: 37 }, { label: '20,000 mAh', units: 74 }, { label: '40,000 mAh', units: 148 }],
     effects: () => [{ type: 'capability', capability: 'chargePhone' }, { type: 'supply', need: 'devicePower', amount: 1 }],
@@ -268,6 +261,7 @@ export const dropped = {
   'mylar-blankets': 'Removes about 1.5% of cold harm at home, where bedding does the same job; it belongs in a go-bag.',
   'indoor-tent': 'Overlaps with the warm-room plan and removes about 7% of cold harm for $80.',
   'indoor-propane-heater': 'Merged with its fuel into one entry.',
+  candles: 'Not ranked: batteries give the same light without the fire risk, and the model would credit candles with preventing falls, which the researcher says they do not.',
   headlamp: 'Merged into the second-light entry.',
   lantern: 'Merged into the second-light entry.',
   'car-charging-kit': 'For car owners, charging from the car is already in the baseline for device power.',

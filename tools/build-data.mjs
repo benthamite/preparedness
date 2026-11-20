@@ -183,13 +183,18 @@ for (const [id, spec] of Object.entries(config.hazards)) {
   for (const h of entries) {
     if (h === primary) continue;
     const locs = [...new Set(h.annualProbability.map((a) => a.location))].filter((l) => l !== 'all' && l !== 'us');
-    for (const l of locs) byLocation[l] = profileOf(h);
+    for (const l of locs) {
+      byLocation[l] = profileOf(h);
+      // Where the location researcher gave no exposures of their own, the
+      // base profile's stand (carbon monoxide and fire in outages).
+      if (!(h.exposures || []).length) delete byLocation[l].exposures;
+    }
   }
-  // A hazard that exists only because of the AI research takes its base
-  // probability from that research's figure with AI's effect removed.
+  // A hazard that exists only because of the AI research takes its
+  // probability from that research's figure for today.
   if (spec.aiBase) {
     for (const [l, r] of Object.entries(AI.rates[id] || {})) {
-      probability[l] = { lo: r.baseline.lo, mid: r.baseline.mid, hi: r.baseline.hi, max: 1, tag: r.baseline.tag, basis: r.baseline.basis };
+      probability[l] = { lo: r.now.lo, mid: r.now.mid, hi: r.now.hi, max: 1, tag: r.now.tag, basis: r.now.basis };
     }
     if (!AI.rates[id]) warn(`hazard ${id}: no AI research`);
   }
@@ -343,9 +348,7 @@ for (const it of items) {
 // The sceptic's AI effect should not exceed the concerned view's.
 for (const [hz, byLoc] of Object.entries((ai || {}).hazards || {})) {
   for (const [l, r] of Object.entries(byLoc)) {
-    for (const k of ['now', 'transition']) {
-      if (r[k][0] - r.baseline[0] > r[k][2] - r.baseline[2] + 1e-12) warn(`AI rates for ${hz} in ${l}: the ${k} effect falls as concern rises`);
-    }
+    if (r.transition[0] - r.now[0] > r.transition[2] - r.now[2] + 1e-12) warn(`AI rates for ${hz} in ${l}: the effect of AGI falls as concern rises`);
   }
 }
 
