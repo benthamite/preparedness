@@ -67,10 +67,16 @@ for a home without the relevant item.
 ### 2. Events
 
 For each hazard the engine evaluates a fixed, stratified set of events. Each
-event has a severity quantile `q` between 0 and 1. Everything about the event
-is a function of `q`: worse events are worse on every dimension (windows are
-comonotonic). A window that occurs with probability `p` occurs in the worst
-`p` share of events.
+event has a severity quantile `q` between 0 and 1. Its windows are functions
+of `q`: worse events are worse on every dimension (windows are comonotonic).
+A window that occurs with probability `p` occurs in the worst `p` share of
+events. Window lengths follow the researcher's 50th, 90th and 99th
+percentiles and are not extended beyond one and a half times the 99th.
+
+Being forced out of the home is the exception. It is a separate branch of
+every event, with its own probability whatever the severity: a household may
+be displaced or not, and when it is, what it stored at home is out of reach
+for as long as that lasts.
 
 ### 3. Windows
 
@@ -119,8 +125,15 @@ has:
   whose interruption is dangerous), `limitedMobility`.
 
 Curves describe harm given realistic improvisation (drinking untreated water,
-eating less, wearing every layer, sharing with neighbours) but not relocation,
-which the engine handles separately.
+wearing every layer, sharing with neighbours) but not relocation, which the
+engine handles separately.
+
+Two rules keep long events honest. A person's risk of death in an event is
+capped at certainty: micromorts summed over many days are converted to the
+chance of dying at least once. And a household short of food rations it: with
+`F` days of full rations and a window of `W` days it eats half rations while
+that lasts the window, quarter rations if it does not, and goes without only
+when even that runs out, each stage with its own, lower, curves.
 
 Canonical need ids: `water`, `food`, `warmth`, `cooling`, `light`,
 `devicePower`, `refrigeration`, `medicalPower`, `information`, `medication`,
@@ -138,7 +151,10 @@ place. Each hazard gives the probability that leaving is feasible, the
 earliest day, and the cost (fixed, and per person per day). A household that
 can leave does so on the day that minimises its total cost. So supplies are
 worth the harm they avert before leaving is possible or when it is not
-possible, plus the cost of leaving that they make unnecessary.
+possible, plus the cost of leaving that they make unnecessary. Where leaving
+is held up by roads, fuel and transport, the share still stuck halves every
+ten days; where few can leave because there is nowhere better to go (a
+nuclear war, a pandemic), time does not help.
 
 ### 6. Items
 
@@ -161,9 +177,13 @@ Items act through effects:
 | `review` | practice: multiplies every other item's chance of failing |
 | `other` | anything that fits none of the above, described in words (research files only) |
 
-An item can require capabilities or other items (rice requires `cook` and
-water). An item bought late, after warning, counts as owned in both the
-prepared and unprepared worlds, so pre-buying it earns nothing in that event.
+An item can require capabilities or other items (stove fuel requires a
+stove). Whether an item works, and whether it is bought late, enter as
+expectations, not as draws: an owned item counts at its reliability, and any
+household with warning may buy an item late, with a probability that is the
+hazard's (do shops still have it) times the item's (would a household think
+to buy it). Buying late what one already owns adds nothing, so pre-buying
+earns nothing in the share of events where it would have been bought anyway.
 
 ### 7. Value, cost and ranking
 
@@ -195,13 +215,16 @@ probability: the annual chance of that hazard above which the item pays.
 The reader states when they expect AGI (a preset anchored on named forecasts,
 or their own probabilities by 2028, 2030 and 2035), how concerned they are,
 and how many years they are planning for. For each hazard the AI research
-gives four yearly rates: with AI's effect removed, now, during the five years
-after AGI arrives, and after that. Each rate is three figures: the view of a
-careful sceptic, the central view, and the view of someone highly concerned;
-the reader's level of concern picks between them. The hazard's probability is
-shifted by the average over the planning horizon of the rate the timeline
-implies, less the rate with AI removed, times the share of that risk a
-household could survive.
+gives yearly rates for now, for the five years after AGI arrives, and for the
+time after that. Each rate is three figures: the view of a careful sceptic,
+the central view, and the view of someone highly concerned; the reader's
+level of concern picks between them. The model's own probabilities are
+today's. With a timeline chosen, each is shifted by the average over the
+planning horizon of the rate the timeline implies, less today's rate, times
+the share of that risk a household could survive. Leaving AI out therefore
+means assuming that today's rates persist, not that AI has no effect today.
+A chosen timeline replaces the pessimistic outlook for the hazards it covers,
+since that outlook was built on the same forecasts.
 
 Every hazard's weight is also scaled by the chance, over the horizon, that no
 existential catastrophe has happened: nothing a household owns is worth
@@ -217,3 +240,19 @@ A probability the reader sets by hand overrides all of this for that hazard.
 - Risk aversion. Values are expected values, so insurance never pays on these
   terms; it is reported with its loading, not ranked.
 - Interactions between hazards (a pandemic during a blackout).
+- What the list ranks on is each parameter's median. For skewed parameters
+  the expected value is higher, so entries that rest on a tail hazard would
+  score higher on means, and everyday entries a little lower. The page's
+  "chance it pays" column shows how often each entry clears the bar across
+  the ranges.
+
+## Verification
+
+Six verifiers checked the ranking before publication: five took groups of
+entries, one audited the engine. They re-opened the sources that carry most
+weight, reproduced each entry's value by hand from `data/model.json`, and
+compared the engine with brute-force recomputation. What they found, and what
+was changed, is in the commit history of 19 November 2026 and in the comments
+of `data/config.mjs` and the item files. The largest corrections were the cap
+on deaths, the rationing rule, displacement as its own branch, expected values
+in place of per-event draws, and the limit on window lengths.
