@@ -63,7 +63,9 @@ const HOME = ['cooking', 'heating', 'airConditioning', 'pumpedWater', 'car'];
 function controls() {
   const sel = (id, label, options, value) => `<div class="field"><label for="${id}">${label}</label><select id="${id}">${options.map(([v, t]) => `<option value="${v}"${String(v) === String(value) ? ' selected' : ''}>${esc(t)}</option>`).join('')}</select></div>`;
   const numf = (id, label, value, step = 1, max = '') => `<div class="field"><label for="${id}">${label}</label><input type="number" id="${id}" min="0"${max !== '' ? ` max="${max}"` : ''} step="${step}" value="${value}"></div>`;
-  const chk = (id, label, on) => `<div class="field check"><input type="checkbox" id="${id}"${on ? ' checked' : ''}><label for="${id}">${label}</label></div>`;
+  const chk = (id, label, on, off = false) => `<div class="field check${off ? ' off' : ''}"><input type="checkbox" id="${id}"${on && !off ? ' checked' : ''}${off ? ' disabled title="Not modelled for this location"' : ''}><label for="${id}">${label}</label></div>`;
+  // A local hazard can be ticked only where the research gives it a probability.
+  const absent = (k) => { const h = DATA.hazards[k]; return !!h && h.probability[settings.location] === undefined && h.probability.all === undefined; };
   const s = settings;
   const p = s.parameters || {};
   const ai = s.ai || {};
@@ -91,8 +93,9 @@ function controls() {
       ${chk('airConditioning', 'Air conditioning', s.airConditioning)}
       ${chk('pumpedWater', 'Tap water needs an electric pump', s.pumpedWater)}
       ${chk('car', 'Car', s.car)}
+      ${sel('pantryDays', 'Days you could eat from your kitchen now', [[3, '3'], [7, '7'], [14, '14'], [30, '30']], s.pantryDays ?? 14)}
       <h3 style="margin-top:10px">Where you live</h3>
-      ${TICKS.map(([k, label]) => chk(`tick-${k}`, label, s.ticks[k])).join('')}
+      ${TICKS.map(([k, label]) => chk(`tick-${k}`, label, s.ticks[k], absent(k))).join('')}
     </div>
     ${aiPanel}
     <div class="panel"><h3>Values</h3>
@@ -126,7 +129,8 @@ function readControls() {
   if (s.household.adults + s.household.children + s.household.age60to74 + s.household.age75plus === 0) s.household.adults = 1;
   for (const k of ['location', 'dwelling', 'cooking', 'heating', 'outlook']) s[k] = $(k).value;
   for (const k of ['airConditioning', 'pumpedWater', 'car']) s[k] = $(k).checked;
-  for (const [k] of TICKS) s.ticks[k] = $(`tick-${k}`).checked;
+  s.pantryDays = Number($('pantryDays').value);
+  for (const [k] of TICKS) s.ticks[k] = $(`tick-${k}`).checked && !$(`tick-${k}`).disabled;
   s.parameters = s.parameters || {};
   const opt = (id) => ($(id).value === '' ? undefined : Math.max(0, Number($(id).value)));
   s.parameters.micromortValueUsd = opt('p-micromort');

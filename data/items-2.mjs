@@ -366,7 +366,17 @@ export const items = [
     id: 'discretion', from: 'discretion-about-supplies', group: 'Protection', upkeepHoursPerYear: 0.1,
     effects: (s, T2) => reduceAll(s, T2),
   },
-  { id: 'digital-hygiene', from: 'basic-digital-security', group: 'Protection', everydayUpkeep: true, effects: (s, T2) => reduceAll(s, T2, { on: 'hardship' }) },
+  {
+    // The researcher's effect inside disasters and banking crises is, in
+    // their words, a token. What the entry does is cut everyday losses to
+    // fraud: about a fifth of an out-of-pocket loss of $10 to $25 a year.
+    id: 'digital-hygiene', from: 'basic-digital-security', group: 'Protection', everydayUpkeep: true,
+    effects: () => [{
+      type: 'reduce', target: 'financialLoss', hazards: ['aiFraud'], on: 'hardship',
+      fraction: guess(0.01, 0.04, 0.1, 'plans-skills-security.json: removes about 20% of an out-of-pocket loss of $10 to $25 a year, against an expected loss to scams of about $100.', 1),
+      adherence: 0.8,
+    }],
+  },
 
   // ---- tools ----
   { id: 'tools-bundle', from: 'basic-tools-bundle', group: 'Tools', effects: (s, T2) => reduceAll(s, T2) },

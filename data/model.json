@@ -21692,31 +21692,18 @@
      "type": "reduce",
      "target": "financialLoss",
      "hazards": [
-      "hurricane",
-      "flood",
-      "wildfire",
-      "earthquake",
-      "pandemicModerate",
-      "pandemicSevere",
-      "bankingCrisis"
+      "aiFraud"
      ],
-     "adherence": {
-      "lo": 0.5,
-      "mid": 0.8,
-      "hi": 0.95,
-      "tag": "guess",
-      "basis": "Set-up still in place.",
-      "max": 1
-     },
+     "on": "hardship",
      "fraction": {
-      "lo": 0,
-      "mid": 0.01,
-      "hi": 0.05,
+      "lo": 0.01,
+      "mid": 0.04,
+      "hi": 0.1,
       "tag": "guess",
-      "basis": "Phishing and impostor fraud rise after disasters and in financial scares; printed recovery codes keep accounts reachable when a phone is lost. No data on the size.",
+      "basis": "plans-skills-security.json: removes about 20% of an out-of-pocket loss of $10 to $25 a year, against an expected loss to scams of about $100.",
       "max": 1
      },
-     "on": "hardship"
+     "adherence": 0.8
     }
    ],
    "sources": [

@@ -112,7 +112,7 @@ function makeStrata(segments) {
   }
   return out;
 }
-export const STRATA = makeStrata([[0, 0.5, 3], [0.5, 0.9, 5], [0.9, 0.99, 8], [0.99, 0.999, 5], [0.999, 1, 3]]);
+export const STRATA = makeStrata([[0, 0.5, 2], [0.5, 0.9, 4], [0.9, 0.99, 6], [0.99, 0.999, 4], [0.999, 1, 2]]);
 
 // Length in days of a window at quantile u of its own distribution, from its
 // 50th, 90th and 99th percentiles. Interpolates on a log scale against the
@@ -416,7 +416,10 @@ export function buildWorld(m, settings) {
     let xScale = (es.dwelling && es.dwelling[settings.dwelling] !== undefined ? es.dwelling[settings.dwelling] : 1)
       * (es.location && es.location[loc] !== undefined ? es.location[loc] : 1);
     for (const c of es.conditions || []) if (holds(c.if, settings)) xScale *= c.factor;
-    const half = h.leave && h.leave.halfLifeDays !== undefined ? h.leave.halfLifeDays : 10;
+    // Where leaving is held up by roads, fuel and transport, time brings a
+    // way out; where few can leave because there is nowhere better to go
+    // (a nuclear war, a pandemic), it does not.
+    const half = h.leave && h.leave.halfLifeDays !== undefined ? h.leave.halfLifeDays : (h.leave && h.leave.feasible >= 0.3 ? 10 : 0);
     const hz = {
       id, index: hazards.length, p, pw: p * survival, spec: h,
       late: { staple: late.staple || 0, specialty: late.specialty || 0, none: 0 },
