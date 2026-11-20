@@ -4,17 +4,19 @@
 // Exits 0 when every file is valid, 1 otherwise. Prints one line per error.
 
 import { readFileSync } from 'node:fs';
+import { COUNTRIES, COUNTRY_FIELDS } from '../data/countries.mjs';
 
 const TAGS = ['data', 'derived', 'guess'];
 const NEEDS = ['water', 'food', 'warmth', 'cooling', 'light', 'devicePower', 'refrigeration',
-  'medicalPower', 'information', 'medication', 'sanitation', 'payments', 'displacement'];
+  'medicalPower', 'information', 'medication', 'sanitation', 'payments', 'displacement', 'dataAccess'];
 const CHANNELS = ['infection', 'smoke', 'fallout', 'co', 'fire', 'trauma', 'violence', 'financialLoss'];
 const WINDOWS = ['power', 'gas', 'water', 'food', 'medication', 'emergencyCare', 'payments',
   'comms', 'sanitation', 'displacement'];
 const HAZARDS = ['localOutage', 'severeStorm', 'winterStorm', 'heatWave', 'hurricane', 'earthquake',
   'wildfire', 'flood', 'waterSystemFailure', 'supplyShock', 'pandemicModerate', 'pandemicSevere',
   'nuclearNear', 'nuclearFar', 'gridLong', 'bankingCrisis', 'civilUnrest', 'houseFire', 'coIncident',
-  'homeMedicalEmergency'];
+  'homeMedicalEmergency', 'seasonalIllness', 'violentCrime', 'cyberOutage', 'paymentsOutage', 'commsOutage',
+  'cyberSupplyShock', 'aiFraud', 'greatPowerWar'];
 const PROFILES = ['child', 'age60to74', 'age75plus', 'powerDependent', 'criticalDrug', 'limitedMobility'];
 const CONDITIONS = ['coldWinters', 'hotSummers', 'hurricane', 'earthquake', 'wildfire', 'flood',
   'house', 'apartment', 'car', 'infant', 'pet', 'powerDependent', 'criticalDrug', 'age60plus'];
@@ -302,13 +304,54 @@ function validate(doc) {
     if (!rates && !tl && !views) err('root', 'needs hazardRates, timelines or views');
   }
 
+
+  // Country figures (research/BRIEF-COUNTRIES.md): every listed country, every
+  // field of the family.
+  function countries(d) {
+    const fields = COUNTRY_FIELDS[d.group];
+    if (!fields) { err('group', `must be one of ${Object.keys(COUNTRY_FIELDS).join(', ')}`); return; }
+    if (!isStr(d.method)) err('method', 'must be a non-empty string');
+    if (!Array.isArray(d.anchors) || !d.anchors.length) err('anchors', 'must be a non-empty array');
+    else d.anchors.forEach((a, i) => {
+      const p = `anchors[${i}]`;
+      if (!isObj(a)) { err(p, 'must be an object'); return; }
+      if (!['us', 'westernEurope', 'buenosAires'].includes(a.preset)) err(`${p}.preset`, 'must be us, westernEurope or buenosAires');
+      if (!fields.includes(a.field)) err(`${p}.field`, `must be one of ${fields.join(', ')}`);
+      Q(a.reproduced, `${p}.reproduced`);
+      if (!isStr(a.comment)) err(`${p}.comment`, 'must be a non-empty string');
+    });
+    if (!Array.isArray(d.countries)) { err('countries', 'must be an array'); return; }
+    const seen = new Set();
+    d.countries.forEach((c, i) => {
+      const p = `countries[${i}]`;
+      if (!isObj(c)) { err(p, 'must be an object'); return; }
+      if (!COUNTRIES.some((x) => x.iso2 === c.iso2)) err(`${p}.iso2`, `${c.iso2} is not in data/countries.mjs`);
+      if (seen.has(c.iso2)) err(`${p}.iso2`, `${c.iso2} appears twice`);
+      seen.add(c.iso2);
+      if (!isObj(c.values)) { err(`${p}.values`, 'must be an object'); return; }
+      for (const f of fields) {
+        const prob = /forecast|pessimistic|probability/.test(f);
+        Q(c.values[f], `${p}.values.${f}`, prob ? { max: 1 } : {});
+      }
+      for (const k of Object.keys(c.values)) if (!fields.includes(k)) err(`${p}.values.${k}`, 'is not a field of this family');
+      if (/forecast/.test(fields.join()) ) {
+        for (const f of fields.filter((x) => x.endsWith('.forecast'))) {
+          const q = f.replace('forecast', 'pessimistic');
+          if (isObj(c.values[f]) && isObj(c.values[q]) && c.values[q].mid < c.values[f].mid) err(`${p}.values.${q}`, 'pessimistic mid is below forecast mid');
+        }
+      }
+    });
+    for (const c of COUNTRIES) if (!seen.has(c.iso2)) err('countries', `${c.iso2} (${c.name}) is missing`);
+  }
+
   if (!isObj(doc)) return ['root: must be a JSON object'];
   if (!isStr(doc.group)) err('group', 'must be a non-empty string');
   if (doc.kind === 'items') items(doc);
   else if (doc.kind === 'hazards') hazards(doc);
   else if (doc.kind === 'parameters') parameters(doc);
   else if (doc.kind === 'ai') ai(doc);
-  else err('kind', 'must be items, hazards, parameters or ai');
+  else if (doc.kind === 'countries') countries(doc);
+  else err('kind', 'must be items, hazards, parameters, ai or countries');
   strings(doc.blockedSources, 'blockedSources');
   strings(doc.openQuestions, 'openQuestions');
   return errors;
