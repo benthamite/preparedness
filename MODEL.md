@@ -55,8 +55,14 @@ Canonical hazard ids:
 | `bankingCrisis` | deposit freeze, bank holiday, capital controls, or severe currency crisis |
 | `civilUnrest` | serious unrest or armed conflict disrupting daily life where the household lives |
 
+The AI research added four more: `cyberOutage` (a blackout of 1 to 14 days
+from an attack or a software failure), `paymentsOutage`, `commsOutage` and
+`greatPowerWar` (a conventional war between great powers).
+
 Everyday risks are hazards too, so that ordinary safety items compete on the
-same scale: `houseFire`, `coIncident`, `homeMedicalEmergency`.
+same scale: `houseFire`, `coIncident`, `homeMedicalEmergency`,
+`seasonalIllness` and `violentCrime`. Each is entered as a yearly expectation
+for a home without the relevant item.
 
 ### 2. Events
 
@@ -150,7 +156,10 @@ Items act through effects:
 | `capability` | lets the household do something other items or rules depend on: `cook`, `treatWater`, `fetchWater`, `light`, `chargePhone`, `radio`, `coAlarm`, `smokeAlarm`, `sealRoom`, … |
 | `reduce` | removes a fraction of the harm on a need or channel, in stated hazards, at a stated adherence |
 | `sideRisk` | adds risk while in use (CO or fire from combustion), possibly mitigated by a capability |
-| `other` | anything that fits none of the above, described in words |
+| `leave` | makes leaving likelier to be possible, or cheaper |
+| `annualRisk` | a risk of owning the thing at all, every year |
+| `review` | practice: multiplies every other item's chance of failing |
+| `other` | anything that fits none of the above, described in words (research files only) |
 
 An item can require capabilities or other items (rice requires `cook` and
 water). An item bought late, after warning, counts as owned in both the
@@ -180,6 +189,26 @@ second pass samples all parameters and reports, for each entry, an interval on
 its ratio and the probability that the ratio exceeds 1. For items whose value
 comes mostly from one tail hazard, the list also reports the break-even
 probability: the annual chance of that hazard above which the item pays.
+
+### 9. Advanced AI
+
+The reader states when they expect AGI (a preset anchored on named forecasts,
+or their own probabilities by 2028, 2030 and 2035), how concerned they are,
+and how many years they are planning for. For each hazard the AI research
+gives four yearly rates: with AI's effect removed, now, during the five years
+after AGI arrives, and after that. Each rate is three figures: the view of a
+careful sceptic, the central view, and the view of someone highly concerned;
+the reader's level of concern picks between them. The hazard's probability is
+shifted by the average over the planning horizon of the rate the timeline
+implies, less the rate with AI removed, times the share of that risk a
+household could survive.
+
+Every hazard's weight is also scaled by the chance, over the horizon, that no
+existential catastrophe has happened: nothing a household owns is worth
+anything after one. The chance of such a catastrophe given AGI is one of the
+three-figure quantities, spread evenly over the transition.
+
+A probability the reader sets by hand overrides all of this for that hazard.
 
 ## What the model leaves out
 

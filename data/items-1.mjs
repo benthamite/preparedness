@@ -263,4 +263,5 @@ export const dropped = {
   'spare-rescue-medicine': 'Applies to people with asthma or severe allergy, a profile the model does not have. About half a micromort per day without pharmacy or emergency care.',
   'drug-cooler': 'Applies to households holding refrigerated drugs in hot places; averts about $60 per long hot outage.',
   'spare-glasses': "On the researcher's figures, about $0.15 a year of benefit against about $5 of cost.",
+  'naloxone-nasal-spray': 'Applies to households in which someone takes opioids, a profile the model does not have. There it averts about 20 to 900 micromorts a year for $30, which would put it at the top of the list.',
 };
