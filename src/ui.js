@@ -476,7 +476,7 @@ function render() {
 
   const maxRatio = Math.max(1, ...r.entries.map((e) => (isFinite(e.ratio) ? e.ratio : 0)));
   const barw = (x) => (x > 0 ? Math.max(2, Math.round(36 * Math.log10(1 + x) / Math.log10(1 + maxRatio))) : 0);
-  let html = `<table><thead><tr><th class="cb" title="Tick what you already have">Have</th><th class="r">#</th><th>What</th><th class="r">Upfront</th><th class="r">Cost<br>a year</th><th class="r" title="Hardship averted a year">Hardship<br>averted</th><th class="r" title="Micromorts averted a year">Micro&shy;morts<br>averted</th><th class="r">Benefit<br>÷ cost</th><th class="r" title="Share of plausible parameter sets under which benefit exceeds cost">Chance<br>it pays</th><th class="for">Mostly for</th></tr></thead><tbody>`;
+  let html = `<table><thead><tr><th class="cb" title="Tick what you already have">Have</th><th class="r">#</th><th>What</th><th class="r">Upfront</th><th class="r">Cost<br>a year</th><th class="r" title="Hardship, loss and, for members valued impartially, lost work averted a year, in dollars">Hardship<br>averted</th><th class="r" title="Micromorts averted a year">Micro&shy;morts<br>averted</th><th class="r">Benefit<br>÷ cost</th><th class="r" title="Share of plausible parameter sets under which benefit exceeds cost">Chance<br>it pays</th><th class="for">Mostly for</th></tr></thead><tbody>`;
   // The list shows its first entries until the reader asks for all.
   const shown = showAll ? r.entries.length : Math.max(SHORT_LIST, 0);
   r.entries.forEach((e, i) => {
