@@ -141,20 +141,32 @@ const countryName = (iso2) => (PLACES.countries[iso2] && PLACES.countries[iso2].
 const cityLabel = (c) => [c[0], c[1], countryName(c[2])].filter((x, i) => x && (i !== 1 || x !== c[0])).join(', ');
 
 // Local hazards from a city's district ratings and climate (data/config.mjs,
-// `cityRules`, says how).
+// `cityRules`, says how). Returns the ticks, the fraction at which a medium
+// rating counts, and a note on each tick.
+const LEVEL_NAME = { H: 'high', M: 'medium', L: 'low', V: 'very low', N: 'not rated' };
+const CODE_NAME = { FL: 'river flood', CF: 'coastal flood', EQ: 'earthquake', CY: 'cyclone', WF: 'wildfire', EH: 'extreme heat' };
 function ticksFor(c) {
   const R = PLACES.rules;
-  // c: [name, region, country, ratings, coldest month °C, warmest month °C]
-  const level = (code) => c[3][PLACES.hazardOrder.indexOf(code)] || 'N';
-  const any = (codes, levels) => codes.some((code) => levels.includes(level(code)));
-  return {
-    hurricane: any(['CY'], R.hurricane),
-    earthquake: any(['EQ'], R.earthquake),
-    wildfire: any(['WF'], R.wildfire),
-    flood: any(['FL', 'CF'], R.flood),
-    coldWinters: c[4] !== null && c[4] !== undefined ? c[4] <= R.coldWintersMaxC : false,
-    hotSummers: any(['EH'], R.hotSummersHeat) || (c[5] !== null && c[5] !== undefined && c[5] >= R.hotSummersMinC),
-  };
+  // c: [name, region, country, ratings, coldest month °C, warmest month °C].
+  // A rating in lower case was borrowed from a neighbouring district.
+  const raw = (code) => c[3][PLACES.hazardOrder.indexOf(code)] || 'N';
+  const level = (code) => raw(code).toUpperCase();
+  const said = (code) => `${CODE_NAME[code]} ${LEVEL_NAME[level(code)]}${raw(code) !== level(code) ? ' (from a neighbouring district)' : ''}`;
+  const ticks = {}, scale = {}, notes = {};
+  for (const [k, byCode] of Object.entries(R.levels)) {
+    let best = 0;
+    for (const [code, levels] of Object.entries(byCode)) best = Math.max(best, levels[level(code)] || 0);
+    ticks[k] = best > 0;
+    if (best > 0 && best < 1) scale[k] = best;
+    notes[k] = Object.keys(byCode).map(said).join(', ') + (best > 0 && best < 1 ? `: counted at ${Math.round(100 * best)}% of a zone` : '');
+  }
+  ticks.wildfire = false;
+  notes.wildfire = `${said('WF')}; not ticked from the rating, which measures fire weather`;
+  ticks.coldWinters = c[4] !== null && c[4] !== undefined ? c[4] <= R.coldWintersMaxC : false;
+  notes.coldWinters = c[4] !== null && c[4] !== undefined ? `coldest month ${c[4]} °C on average` : 'no climate data';
+  ticks.hotSummers = R.hotSummersHeat.includes(level('EH')) || (c[5] !== null && c[5] !== undefined && c[5] >= R.hotSummersMinC);
+  notes.hotSummers = `${said('EH')}${c[5] !== null && c[5] !== undefined ? `; warmest month ${c[5]} °C` : ''}`;
+  return { ticks, scale, notes };
 }
 
 function chooseCity(i) {
@@ -166,8 +178,11 @@ function chooseCity(i) {
   settings.country = info.researched && !(info.presetCities || []).includes(c[0]) ? c[2] : null;
   const loc = DATA.locations[settings.location];
   for (const k of HOME) if (loc.home && loc.home[k] !== undefined) settings[k] = loc.home[k];
-  settings.ticks = ticksFor(c);
-  settings.cityTicks = { ...settings.ticks };
+  const t = ticksFor(c);
+  settings.ticks = t.ticks;
+  settings.tickScale = t.scale;
+  settings.tickNotes = t.notes;
+  settings.cityTicks = { ...t.ticks };
   settings.probabilities = {};
 }
 
@@ -178,7 +193,9 @@ function placeNote() {
   const iso = s.city.iso2;
   const info = PLACES.countries[iso] || {};
   if (s.country) {
-    return `${esc(countryName(iso))} has figures of its own for ${(info.families || []).map((f) => FAMILY_TEXT[f]).join(', ')}; everything else comes from the ${esc(preset)} preset.`;
+    const fams = (info.families || []).map((f) => FAMILY_TEXT[f]);
+    const list = fams.length > 1 ? `${fams.slice(0, -1).join(', ')} and ${fams[fams.length - 1]}` : fams.join('');
+    return `${esc(countryName(iso))} has figures of its own for ${list}; everything else comes from the ${esc(preset)} preset.`;
   }
   if (info.presetCities && info.presetCities.includes(s.city.name)) return `${esc(s.city.name)} is one of the model's three presets.`;
   if (iso === 'US') return 'The United States is one of the model\'s three presets.';
@@ -254,8 +271,8 @@ function controls() {
       ${chk('car', 'Car', s.car)}
       ${sel('pantryDays', 'Days you could eat from your kitchen now', [[3, '3'], [7, '7'], [14, '14'], [30, '30']], s.pantryDays ?? 14)}
       <details id="ticks-panel"${s.showTicks ? ' open' : ''}><summary>Local hazards${s.city ? '' : ' (preset)'}${tickDiffers ? ', changed by you' : ''}</summary>
-        ${TICKS.map(([k, label]) => chk(`tick-${k}`, label, s.ticks[k], absent(k))).join('')}
-        <div class="meta">${s.city ? 'Filled in from the World Bank\'s ThinkHazard ratings for the district and from climate normals. They describe the district, not your street: untick a flood zone if your home is well above the flood plain.' : 'Choose a city to fill these in.'}</div>
+        ${TICKS.map(([k, label]) => chk(`tick-${k}`, label, s.ticks[k], absent(k)) + (s.city && s.tickNotes && s.tickNotes[k] ? `<div class="meta ticknote">${esc(s.tickNotes[k])}${s.cityTicks && !!s.cityTicks[k] !== !!s.ticks[k] ? '; changed by you' : ''}</div>` : '')).join('')}
+        <div class="meta">${s.city ? 'Filled in from the World Bank\'s ThinkHazard ratings for the district and from CHELSA climate normals. They describe the district, not your street: untick a flood zone if your home is well above the flood plain, and tick wildfire if you live near wildland.' : 'Choose a city to fill these in.'}</div>
       </details>
     </div>
     ${aiPanel}
@@ -306,7 +323,12 @@ function readControls() {
   for (const k of ['dwelling', 'cooking', 'heating', 'outlook', 'rankOn', 'deathValue']) s[k] = $(k).value;
   for (const k of ['airConditioning', 'pumpedWater', 'car']) s[k] = $(k).checked;
   s.pantryDays = Number($('pantryDays').value);
-  for (const [k] of TICKS) s.ticks[k] = $(`tick-${k}`).checked && !$(`tick-${k}`).disabled;
+  for (const [k] of TICKS) {
+    const on = $(`tick-${k}`).checked && !$(`tick-${k}`).disabled;
+    // A tick the reader sets counts in full.
+    if (on !== !!s.ticks[k] && s.tickScale) delete s.tickScale[k];
+    s.ticks[k] = on;
+  }
   s.parameters = s.parameters || {};
   s.parameters.micromortValueUsd = num0($('p-micromort').value);
   s.budget = num0($('budget').value);
@@ -599,7 +621,7 @@ function drawCityList() {
   const box = $('city-list');
   if (!box) return;
   box.innerHTML = suggestions.map((i, j) => `<span role="option" data-city="${i}" class="${j === picked ? 'on' : ''}">${esc(cityLabel(PLACES.cities[i]))}</span>`).join('');
-  box.style.display = suggestions.length ? '' : 'none';
+  box.style.display = suggestions.length ? 'block' : 'none';
   fit();
 }
 function takeCity(i) {

@@ -103,3 +103,4 @@ body.dark .citylist span.on, body.dark .citylist span:hover { background: #3b4a5
 #ticks-panel summary { cursor: pointer; font-size: 13px; }
 .more { margin: 10px 0; }
 @media (max-width: 600px) { .prow .pname { width: 90px; } }
+.ticknote { margin: -4px 0 6px 22px; }

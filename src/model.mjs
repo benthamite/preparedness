@@ -533,6 +533,9 @@ export function buildWorld(m, settings) {
       const outlook = useAi && m.ai.hazards[id] ? 'forecast' : settings.outlook;
       const byLoc = h.probability[loc] !== undefined ? h.probability[loc] : h.probability.all;
       p = byLoc === undefined ? 0 : (typeof byLoc === 'object' ? (byLoc[outlook] !== undefined ? byLoc[outlook] : byLoc.all) : byLoc);
+      // A local hazard rated medium for the district counts at a fraction
+      // of a zone's probability (data/config.mjs, cityRules).
+      if (h.tickBox && settings.tickScale && settings.tickScale[h.tickBox] !== undefined) p *= settings.tickScale[h.tickBox];
       const own = cv(`${id}.probability`) !== undefined ? cv(`${id}.probability`) : cv(`${id}.${outlook}`);
       if (own !== undefined) p = own;
       p = Math.max(0, Math.min(1, (p || 0) + aiShift(m.ai, settings, id, loc)));

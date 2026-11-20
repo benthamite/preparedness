@@ -2328,7 +2328,7 @@
      "mid": 0.08,
      "hi": 0.2,
      "tag": "derived",
-     "basis": "CEER 6.1 Tables 7/15 only (including exceptional events), 2014-16: SAIDI 145 min, SAIFI 1.13, CAIDI 2.1 h; storms removed by x0.85 SAIFI and x0.8 CAIDI (ratios from countries reporting both): 0.96, 1.7 h. S4 9.5% x 0.9 = 0.082, + 0.0115 = 0.094; mid lowered to 0.08 because Tallinn is far better (Doing Business 2020: 0.3 h, 0.18).",
+     "basis": "CEER 6.1 Tables 7/15 only (including exceptional events), 2014-16: SAIDI 145 min, SAIFI 1.13, CAIDI 2.1 h; storms removed by x0.85 SAIFI and x0.8 CAIDI (ratios from countries reporting both): 0.96, 1.7 h. S4 9.5% x 0.9 = 0.082, + 0.0115 = 0.094; mid lowered to 0.08 because Tallinn is far better (Doing Business 2020: 0.3 h, 0.18). Checker: 0.094 is the rate; as a probability it is 1 - exp(-0.093) = 0.089 before the judgment cut to 0.08, which is kept.",
      "max": 1
     },
     "localOutage.durationFactor": {
@@ -2612,7 +2612,7 @@
      "mid": 0.05,
      "hi": 0.097,
      "tag": "derived",
-     "basis": "CEER 6.1 Table 8: unplanned SAIDI without exceptional events 50 min (2014-16); CEER's French SAIFI (0.08) uses another definition, so SAIFI 0.55 long unplanned cuts per LV customer (2021-24, Enedis via https://selectra.info/energie/actualites/marche/coupure-electricite-france-vivez-vous-zone-haut-risque, which gives critere B 72.9 min in 2023). CAIDI 1.52 h, S4 8.0% x 0.9 = 0.040, + 0.0115 = 0.05.",
+     "basis": "CEER 6.1 Table 8: unplanned SAIDI without exceptional events 50 min (2014-16); CEER's French SAIFI (0.08) uses another definition, so SAIFI 0.55 long unplanned cuts per LV customer (2021-24, Enedis via https://selectra.info/energie/actualites/marche/coupure-electricite-france-vivez-vous-zone-haut-risque, which gives critere B 72.9 min in 2023). CAIDI 1.52 h, S4 8.0% x 0.9 = 0.040, + 0.0115 = 0.05. Checker: the cited Selectra page gives no long-cut frequency and no 0.55; it gives 2.08 cuts per customer in 2023 (the CRE mass-market indicator, which also counts short cuts of 1 s to 3 min) and 72.9 min. The SAIFI input is therefore unsourced. Figure kept because with SAIDI fixed at 50 min the result barely moves: SAIFI 0.4 gives 0.056, 0.8 gives 0.042, 1.0 gives 0.036, all inside the range.",
      "max": 1
     },
     "localOutage.durationFactor": {
@@ -2620,7 +2620,7 @@
      "mid": 1.13,
      "hi": 1.7,
      "tag": "derived",
-     "basis": "CAIDI 1.52 h against 0.83 h."
+     "basis": "CAIDI 1.52 h against 0.83 h. Checker: CAIDI rests on the unsourced SAIFI 0.55; at SAIFI 0.8 the factor is 1.04 and at 1.0 it is 1.00, near the low end of the range."
     },
     "bankingCrisis.forecast": {
      "lo": 0.00053,
@@ -3461,10 +3461,10 @@
    "values": {
     "localOutage.probability": {
      "lo": 0.02,
-     "mid": 0.055,
+     "mid": 0.051,
      "hi": 0.16,
      "tag": "derived",
-     "basis": "Doing Business 2020, Tel Aviv: SAIDI 1.45 h, SAIFI 2.04, CAIDI 0.71 h (https://api.worldbank.org/v2/country/ISR/indicator/IC.ELC.SAIF.XD.DB1619?source=1). S4 2.1%, rate 0.042, + 0.01 for war damage to the grid = 0.052.",
+     "basis": "Doing Business 2020, Tel Aviv: SAIDI 1.45 h, SAIFI 2.04, CAIDI 0.71 h (https://api.worldbank.org/v2/country/ISR/indicator/IC.ELC.SAIF.XD.DB1619?source=1). S4 2.1%, rate 0.042, + 0.01 for war damage to the grid = 0.052. Checker: mid changed from 0.055 to 0.051; the basis's own rate of 0.052 converts to 1 - exp(-0.052) = 0.051, and nothing in the basis supports 0.055.",
      "max": 1
     },
     "localOutage.durationFactor": {
@@ -3633,11 +3633,11 @@
      "max": 1
     },
     "violentCrime.scale": {
-     "lo": 0.26,
-     "mid": 0.57,
-     "hi": 1.2,
+     "lo": 0.31929824561403514,
+     "mid": 0.7,
+     "hi": 1.4736842105263157,
      "tag": "derived",
-     "basis": "D = 0.57/5.0 x 0.7 = 0.079 (UNODC 2024); B = 247 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 1.06."
+     "basis": "D = 0.57/5.0 x 0.7 = 0.079 (UNODC 2024); B = 247 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 1.06. Adjusted: As for Spain."
     },
     "civilUnrest.forecast": {
      "lo": 0.001,
@@ -4543,19 +4543,19 @@
      "basis": "ILOSTAT median hourly earnings 2025 (ENOE, reported take-home) MXN 47.91 (https://rplumber.ilo.org/data/indicator/?id=EAR_EHRM_SEX_CUR_NB_A), x1.06 to November 2026, no deduction, at 19.03 per USD, x0.967 = $2.6."
     },
     "nuclearNear.forecast": {
-     "lo": 7e-7,
-     "mid": 0.0000072,
-     "hi": 0.000043,
+     "lo": 7.6e-7,
+     "mid": 0.0000076,
+     "hi": 0.000046,
      "tag": "guess",
-     "basis": "Not a target; Tijuana and Ciudad Juárez sit beside San Diego and El Paso: 1% of urban households in the damaged area or plume if the US is attacked (0.07% x 0.72 + 0.025% x 0.75 a year), x 0.95 alive, plus 1e-6.",
+     "basis": "Not a target; Tijuana and Ciudad Juárez sit beside San Diego and El Paso: 1% of urban households in the damaged area or plume if the US is attacked (0.07% x 0.72 + 0.025% x 0.75 a year), x 0.95 alive, plus 1e-6. Checker: mid raised from 0.0000072 to 0.0000076 and the range scaled with it (mid/10 to mid x 6, as before), because the stated product is 0.01 x 0.069% x 0.95 = 6.6e-6, plus 1e-6 = 7.6e-6; the old figure matched 0.9 alive, not the 0.95 stated.",
      "max": 1
     },
     "nuclearNear.pessimistic": {
-     "lo": 0.0000049,
-     "mid": 0.000025,
-     "hi": 0.00012,
+     "lo": 0.0000052,
+     "mid": 0.000026,
+     "hi": 0.00013,
      "tag": "guess",
-     "basis": "Same shares with pessimistic rates, plus 3e-6.",
+     "basis": "Same shares with pessimistic rates, plus 3e-6. Checker: mid raised from 0.000025 to 0.000026 and the range scaled with it (mid/5 to mid x 5): 0.01 x (0.25% x 0.72 + 0.08% x 0.75) x 0.95 = 2.28e-5, plus 3e-6 = 2.6e-5.",
      "max": 1
     },
     "nuclearFar.forecast": {
@@ -5621,11 +5621,11 @@
      "max": 1
     },
     "violentCrime.scale": {
-     "lo": 0.2,
-     "mid": 0.43,
-     "hi": 0.93,
+     "lo": 0.24186046511627912,
+     "mid": 0.52,
+     "hi": 1.1246511627906979,
      "tag": "derived",
-     "basis": "D = 0.73/5.0 x 0.7 = 0.10 (UNODC 2024); B = 175 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 0.75."
+     "basis": "D = 0.73/5.0 x 0.7 = 0.10 (UNODC 2024); B = 175 per 100,000 (Eurostat 2022-24) / 140 x 0.6 = 0.75. Adjusted: Burglary reporting factor 0.75, the researcher's rule for southern Europe (research/countries/violence-fire.check.md)."
     },
     "civilUnrest.forecast": {
      "lo": 0.002,
@@ -6031,19 +6031,19 @@
      "basis": "Doing Business CAIDI 2.29 h against 1.9 h gives 1.05."
     },
     "bankingCrisis.forecast": {
-     "lo": 0.18,
-     "mid": 0.32,
-     "hi": 0.55,
+     "lo": 0.056249999999999994,
+     "mid": 0.1,
+     "hi": 0.171875,
      "tag": "guess",
-     "basis": "Currency events 1995-99, 2001, 2021 and 2023 (lira down 34-53%; https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.TR..A), weight 3.45: posterior with the BB prior 16%, times 0.6 for the managed lira (15% loss in the year to October 2026) and CDS of 217 points (https://www.hurriyetdailynews.com/turkiyes-cds-falls-to-lowest-level-in-6-5-months-226086) = 9.6%. Inflation was 29.77% in October 2026 with 2.58% that month (https://www.anews.com.tr/turkey/2026/11/03/turkiyes-annual-consumer-inflation-stands-at-2977-in-october/amp); a 0.25 chance it alone passes 33.3% gives 0.096 + 0.904 x 0.25 = 0.32.",
+     "basis": "Currency events 1995-99, 2001, 2021 and 2023 (lira down 34-53%; https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.TR..A), weight 3.45: posterior with the BB prior 16%, times 0.6 for the managed lira (15% loss in the year to October 2026) and CDS of 217 points (https://www.hurriyetdailynews.com/turkiyes-cds-falls-to-lowest-level-in-6-5-months-226086) = 9.6%. Inflation was 29.77% in October 2026 with 2.58% that month (https://www.anews.com.tr/turkey/2026/11/03/turkiyes-annual-consumer-inflation-stands-at-2977-in-october/amp); a 0.25 chance it alone passes 33.3% gives 0.096 + 0.904 x 0.25 = 0.32. Adjusted: As for Argentina: on the preset's definition (research/countries/grid-banking.check.md).",
      "max": 1
     },
     "bankingCrisis.pessimistic": {
-     "lo": 0.26,
-     "mid": 0.48,
-     "hi": 0.74,
+     "lo": 0.12458333333333334,
+     "mid": 0.23,
+     "hi": 0.35458333333333336,
      "tag": "guess",
-     "basis": "Pessimist curve applied to 0.32. Scenario: a return to the 2021-24 pattern, when 4 years out of 4 met the threshold by currency or inflation.",
+     "basis": "Pessimist curve applied to 0.32. Scenario: a return to the 2021-24 pattern, when 4 years out of 4 met the threshold by currency or inflation. Adjusted: As for the forecast.",
      "max": 1
     },
     "violentCrime.scale": {
@@ -6315,19 +6315,19 @@
      "basis": "Same as the preset."
     },
     "bankingCrisis.forecast": {
-     "lo": 0.25,
-     "mid": 0.42,
-     "hi": 0.67,
+     "lo": 0.16071428571428573,
+     "mid": 0.27,
+     "hi": 0.43071428571428577,
      "tag": "guess",
-     "basis": "Currency-or-freeze years 2001, 2002, 2016, 2018, 2019, 2022, 2023, 2024 (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.AR..A; freezes 1989 and 2001 in https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf) give 32%; the October 2026 central bank survey expects 1,985 pesos per dollar in October 2027 against 2,216 for a 30% loss from 1,551 (https://perfil.com/economia/rem-del-bcra-el-precio-que-le-ponen-a-la-inflacion-y-al-dolar-45-actores-del-mercado-a9fcc7k2dRuP), about 0.27 at 15-20% volatility. Inflation is 33.1% a year (https://www.forbesargentina.com/money/subio-inflacion-octubre-ubico-22-n102387); a 0.2 chance it alone passes 33.3% gives 0.27 + 0.73 x 0.2 = 0.42.",
+     "basis": "Currency-or-freeze years 2001, 2002, 2016, 2018, 2019, 2022, 2023, 2024 (https://stats.bis.org/api/v2/data/dataflow/BIS/WS_XRU/1.0/M.AR..A; freezes 1989 and 2001 in https://www.imf.org/-/media/files/publications/wp/2018/wp18206.pdf) give 32%; the October 2026 central bank survey expects 1,985 pesos per dollar in October 2027 against 2,216 for a 30% loss from 1,551 (https://perfil.com/economia/rem-del-bcra-el-precio-que-le-ponen-a-la-inflacion-y-al-dolar-45-actores-del-mercado-a9fcc7k2dRuP), about 0.27 at 15-20% volatility. Inflation is 33.1% a year (https://www.forbesargentina.com/money/subio-inflacion-octubre-ubico-22-n102387); a 0.2 chance it alone passes 33.3% gives 0.27 + 0.73 x 0.2 = 0.42. Checker: 2024 is the 13 December 2023 devaluation counted twice by December averaging (end-of-December rates give a 21.7% loss in 2024, BIS daily); without it the history gives 0.27 and the survey multiplier becomes about 1.0, so the currency-or-freeze 0.27 stands. The same survey expects 21.8% inflation over the next 12 months (top ten forecasters 23.2%) and 30.4% for 2026; the 0.2 chance that inflation alone passes 33.3% should be read against that. Figure not changed: see openQuestions on whether the inflation-only branch belongs here at all. Adjusted: Devaluations and freezes only, as the preset defines the hazard; chronic inflation that deposits roughly match is left out (research/countries/grid-banking.check.md).",
      "max": 1
     },
     "bankingCrisis.pessimistic": {
-     "lo": 0.31,
-     "mid": 0.55,
-     "hi": 0.84,
+     "lo": 0.24236363636363634,
+     "mid": 0.43,
+     "hi": 0.6567272727272726,
      "tag": "guess",
-     "basis": "Pessimist curve applied to 0.42; 8 of the 10 years 2016-2025 met the threshold by currency or inflation (BIS).",
+     "basis": "Pessimist curve applied to 0.42; 8 of the 10 years 2016-2025 met the threshold by currency or inflation (BIS). Adjusted: As for the forecast.",
      "max": 1
     },
     "violentCrime.scale": {
@@ -7425,29 +7425,1207 @@
   }
  },
  "places": {
-  "hazardOrder": [],
+  "hazardOrder": [
+   "FL",
+   "CF",
+   "EQ",
+   "CY",
+   "WF",
+   "EH"
+  ],
   "rules": {
-   "hurricane": [
-    "H",
-    "M"
-   ],
-   "earthquake": [
-    "H",
-    "M"
-   ],
-   "wildfire": [
-    "H"
-   ],
-   "flood": [
-    "H"
-   ],
+   "levels": {
+    "hurricane": {
+     "CY": {
+      "H": 1,
+      "M": 0.3
+     }
+    },
+    "earthquake": {
+     "EQ": {
+      "H": 1,
+      "M": 0.3
+     }
+    },
+    "flood": {
+     "FL": {
+      "H": 1
+     },
+     "CF": {
+      "H": 1
+     }
+    }
+   },
+   "coldWintersMaxC": 6,
    "hotSummersHeat": [
-    "H"
+    "H",
+    "M"
    ],
-   "coldWintersMaxC": 5,
    "hotSummersMinC": 25
   },
-  "countries": {}
+  "countries": {
+   "AE": {
+    "name": "United Arab Emirates",
+    "preset": "westernEurope"
+   },
+   "AF": {
+    "name": "Afghanistan",
+    "preset": "buenosAires"
+   },
+   "AG": {
+    "name": "Antigua and Barbuda",
+    "preset": "buenosAires"
+   },
+   "AL": {
+    "name": "Albania",
+    "preset": "westernEurope"
+   },
+   "AM": {
+    "name": "Armenia",
+    "preset": "buenosAires"
+   },
+   "AO": {
+    "name": "Angola",
+    "preset": "buenosAires"
+   },
+   "AR": {
+    "name": "Argentina",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ],
+    "presetCities": [
+     "Buenos Aires"
+    ]
+   },
+   "AT": {
+    "name": "Austria",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "AU": {
+    "name": "Australia",
+    "preset": "us",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "AZ": {
+    "name": "Azerbaijan",
+    "preset": "buenosAires"
+   },
+   "BA": {
+    "name": "Bosnia and Herzegovina",
+    "preset": "westernEurope"
+   },
+   "BB": {
+    "name": "Barbados",
+    "preset": "buenosAires"
+   },
+   "BD": {
+    "name": "Bangladesh",
+    "preset": "buenosAires"
+   },
+   "BE": {
+    "name": "Belgium",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "BF": {
+    "name": "Burkina Faso",
+    "preset": "buenosAires"
+   },
+   "BG": {
+    "name": "Bulgaria",
+    "preset": "westernEurope"
+   },
+   "BH": {
+    "name": "Bahrain",
+    "preset": "westernEurope"
+   },
+   "BI": {
+    "name": "Burundi",
+    "preset": "buenosAires"
+   },
+   "BJ": {
+    "name": "Benin",
+    "preset": "buenosAires"
+   },
+   "BN": {
+    "name": "Brunei",
+    "preset": "westernEurope"
+   },
+   "BO": {
+    "name": "Bolivia",
+    "preset": "buenosAires"
+   },
+   "BR": {
+    "name": "Brazil",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "BS": {
+    "name": "Bahamas",
+    "preset": "buenosAires"
+   },
+   "BT": {
+    "name": "Bhutan",
+    "preset": "buenosAires"
+   },
+   "BW": {
+    "name": "Botswana",
+    "preset": "buenosAires"
+   },
+   "BY": {
+    "name": "Belarus",
+    "preset": "westernEurope"
+   },
+   "BZ": {
+    "name": "Belize",
+    "preset": "buenosAires"
+   },
+   "CA": {
+    "name": "Canada",
+    "preset": "us",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "CD": {
+    "name": "Democratic Republic of the Congo",
+    "preset": "buenosAires"
+   },
+   "CF": {
+    "name": "Central African Republic",
+    "preset": "buenosAires"
+   },
+   "CG": {
+    "name": "Republic of the Congo",
+    "preset": "buenosAires"
+   },
+   "CH": {
+    "name": "Switzerland",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "CI": {
+    "name": "Ivory Coast",
+    "preset": "buenosAires"
+   },
+   "CL": {
+    "name": "Chile",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "CM": {
+    "name": "Cameroon",
+    "preset": "buenosAires"
+   },
+   "CN": {
+    "name": "China",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "CO": {
+    "name": "Colombia",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "CR": {
+    "name": "Costa Rica",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "CU": {
+    "name": "Cuba",
+    "preset": "buenosAires"
+   },
+   "CV": {
+    "name": "Cabo Verde",
+    "preset": "buenosAires"
+   },
+   "CW": {
+    "name": "Curacao",
+    "preset": "buenosAires"
+   },
+   "CY": {
+    "name": "Cyprus",
+    "preset": "westernEurope"
+   },
+   "CZ": {
+    "name": "Czechia",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "DE": {
+    "name": "Germany",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "DJ": {
+    "name": "Djibouti",
+    "preset": "buenosAires"
+   },
+   "DK": {
+    "name": "Denmark",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "DO": {
+    "name": "Dominican Republic",
+    "preset": "buenosAires"
+   },
+   "DZ": {
+    "name": "Algeria",
+    "preset": "buenosAires"
+   },
+   "EC": {
+    "name": "Ecuador",
+    "preset": "buenosAires"
+   },
+   "EE": {
+    "name": "Estonia",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "EG": {
+    "name": "Egypt",
+    "preset": "buenosAires"
+   },
+   "EH": {
+    "name": "Western Sahara",
+    "preset": "buenosAires"
+   },
+   "ER": {
+    "name": "Eritrea",
+    "preset": "buenosAires"
+   },
+   "ES": {
+    "name": "Spain",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "ET": {
+    "name": "Ethiopia",
+    "preset": "buenosAires"
+   },
+   "FI": {
+    "name": "Finland",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "FJ": {
+    "name": "Fiji",
+    "preset": "buenosAires"
+   },
+   "FR": {
+    "name": "France",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "GA": {
+    "name": "Gabon",
+    "preset": "buenosAires"
+   },
+   "GB": {
+    "name": "United Kingdom",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "GE": {
+    "name": "Georgia",
+    "preset": "buenosAires"
+   },
+   "GF": {
+    "name": "French Guiana",
+    "preset": "buenosAires"
+   },
+   "GH": {
+    "name": "Ghana",
+    "preset": "buenosAires"
+   },
+   "GM": {
+    "name": "Gambia",
+    "preset": "buenosAires"
+   },
+   "GN": {
+    "name": "Guinea",
+    "preset": "buenosAires"
+   },
+   "GP": {
+    "name": "Guadeloupe",
+    "preset": "buenosAires"
+   },
+   "GQ": {
+    "name": "Equatorial Guinea",
+    "preset": "buenosAires"
+   },
+   "GR": {
+    "name": "Greece",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "GT": {
+    "name": "Guatemala",
+    "preset": "buenosAires"
+   },
+   "GW": {
+    "name": "Guinea-Bissau",
+    "preset": "buenosAires"
+   },
+   "GY": {
+    "name": "Guyana",
+    "preset": "buenosAires"
+   },
+   "HK": {
+    "name": "Hong Kong",
+    "preset": "westernEurope"
+   },
+   "HN": {
+    "name": "Honduras",
+    "preset": "buenosAires"
+   },
+   "HR": {
+    "name": "Croatia",
+    "preset": "westernEurope"
+   },
+   "HT": {
+    "name": "Haiti",
+    "preset": "buenosAires"
+   },
+   "HU": {
+    "name": "Hungary",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "ID": {
+    "name": "Indonesia",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "IE": {
+    "name": "Ireland",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "IL": {
+    "name": "Israel",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "IN": {
+    "name": "India",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "IQ": {
+    "name": "Iraq",
+    "preset": "buenosAires"
+   },
+   "IR": {
+    "name": "Iran",
+    "preset": "buenosAires"
+   },
+   "IS": {
+    "name": "Iceland",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "IT": {
+    "name": "Italy",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "JM": {
+    "name": "Jamaica",
+    "preset": "buenosAires"
+   },
+   "JO": {
+    "name": "Jordan",
+    "preset": "buenosAires"
+   },
+   "JP": {
+    "name": "Japan",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "KE": {
+    "name": "Kenya",
+    "preset": "buenosAires"
+   },
+   "KG": {
+    "name": "Kyrgyzstan",
+    "preset": "buenosAires"
+   },
+   "KH": {
+    "name": "Cambodia",
+    "preset": "buenosAires"
+   },
+   "KM": {
+    "name": "Comoros",
+    "preset": "buenosAires"
+   },
+   "KP": {
+    "name": "North Korea",
+    "preset": "buenosAires"
+   },
+   "KR": {
+    "name": "South Korea",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "KW": {
+    "name": "Kuwait",
+    "preset": "westernEurope"
+   },
+   "KZ": {
+    "name": "Kazakhstan",
+    "preset": "buenosAires"
+   },
+   "LA": {
+    "name": "Laos",
+    "preset": "buenosAires"
+   },
+   "LB": {
+    "name": "Lebanon",
+    "preset": "buenosAires"
+   },
+   "LK": {
+    "name": "Sri Lanka",
+    "preset": "buenosAires"
+   },
+   "LR": {
+    "name": "Liberia",
+    "preset": "buenosAires"
+   },
+   "LS": {
+    "name": "Lesotho",
+    "preset": "buenosAires"
+   },
+   "LT": {
+    "name": "Lithuania",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "LU": {
+    "name": "Luxembourg",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "LV": {
+    "name": "Latvia",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "LY": {
+    "name": "Libya",
+    "preset": "buenosAires"
+   },
+   "MA": {
+    "name": "Morocco",
+    "preset": "buenosAires"
+   },
+   "MD": {
+    "name": "Moldova",
+    "preset": "westernEurope"
+   },
+   "ME": {
+    "name": "Montenegro",
+    "preset": "westernEurope"
+   },
+   "MG": {
+    "name": "Madagascar",
+    "preset": "buenosAires"
+   },
+   "MK": {
+    "name": "North Macedonia",
+    "preset": "westernEurope"
+   },
+   "ML": {
+    "name": "Mali",
+    "preset": "buenosAires"
+   },
+   "MM": {
+    "name": "Myanmar",
+    "preset": "buenosAires"
+   },
+   "MN": {
+    "name": "Mongolia",
+    "preset": "buenosAires"
+   },
+   "MO": {
+    "name": "Macao",
+    "preset": "westernEurope"
+   },
+   "MQ": {
+    "name": "Martinique",
+    "preset": "buenosAires"
+   },
+   "MR": {
+    "name": "Mauritania",
+    "preset": "buenosAires"
+   },
+   "MU": {
+    "name": "Mauritius",
+    "preset": "buenosAires"
+   },
+   "MV": {
+    "name": "Maldives",
+    "preset": "buenosAires"
+   },
+   "MW": {
+    "name": "Malawi",
+    "preset": "buenosAires"
+   },
+   "MX": {
+    "name": "Mexico",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "MY": {
+    "name": "Malaysia",
+    "preset": "buenosAires"
+   },
+   "MZ": {
+    "name": "Mozambique",
+    "preset": "buenosAires"
+   },
+   "NA": {
+    "name": "Namibia",
+    "preset": "buenosAires"
+   },
+   "NC": {
+    "name": "New Caledonia",
+    "preset": "buenosAires"
+   },
+   "NE": {
+    "name": "Niger",
+    "preset": "buenosAires"
+   },
+   "NG": {
+    "name": "Nigeria",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "NI": {
+    "name": "Nicaragua",
+    "preset": "buenosAires"
+   },
+   "NL": {
+    "name": "The Netherlands",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "NO": {
+    "name": "Norway",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "NP": {
+    "name": "Nepal",
+    "preset": "buenosAires"
+   },
+   "NZ": {
+    "name": "New Zealand",
+    "preset": "us",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "OM": {
+    "name": "Oman",
+    "preset": "westernEurope"
+   },
+   "PA": {
+    "name": "Panama",
+    "preset": "buenosAires"
+   },
+   "PE": {
+    "name": "Peru",
+    "preset": "buenosAires"
+   },
+   "PG": {
+    "name": "Papua New Guinea",
+    "preset": "buenosAires"
+   },
+   "PH": {
+    "name": "Philippines",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "PK": {
+    "name": "Pakistan",
+    "preset": "buenosAires"
+   },
+   "PL": {
+    "name": "Poland",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "PR": {
+    "name": "Puerto Rico",
+    "preset": "us"
+   },
+   "PS": {
+    "name": "Palestinian Territory",
+    "preset": "buenosAires"
+   },
+   "PT": {
+    "name": "Portugal",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "PY": {
+    "name": "Paraguay",
+    "preset": "buenosAires"
+   },
+   "QA": {
+    "name": "Qatar",
+    "preset": "westernEurope"
+   },
+   "RE": {
+    "name": "Reunion",
+    "preset": "buenosAires"
+   },
+   "RO": {
+    "name": "Romania",
+    "preset": "westernEurope"
+   },
+   "RS": {
+    "name": "Serbia",
+    "preset": "westernEurope"
+   },
+   "RU": {
+    "name": "Russia",
+    "preset": "westernEurope"
+   },
+   "RW": {
+    "name": "Rwanda",
+    "preset": "buenosAires"
+   },
+   "SA": {
+    "name": "Saudi Arabia",
+    "preset": "westernEurope"
+   },
+   "SB": {
+    "name": "Solomon Islands",
+    "preset": "buenosAires"
+   },
+   "SD": {
+    "name": "Sudan",
+    "preset": "buenosAires"
+   },
+   "SE": {
+    "name": "Sweden",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "SG": {
+    "name": "Singapore",
+    "preset": "westernEurope"
+   },
+   "SI": {
+    "name": "Slovenia",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "SK": {
+    "name": "Slovakia",
+    "preset": "westernEurope",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "SL": {
+    "name": "Sierra Leone",
+    "preset": "buenosAires"
+   },
+   "SN": {
+    "name": "Senegal",
+    "preset": "buenosAires"
+   },
+   "SO": {
+    "name": "Somalia",
+    "preset": "buenosAires"
+   },
+   "SR": {
+    "name": "Suriname",
+    "preset": "buenosAires"
+   },
+   "SS": {
+    "name": "South Sudan",
+    "preset": "buenosAires"
+   },
+   "ST": {
+    "name": "Sao Tome and Principe",
+    "preset": "buenosAires"
+   },
+   "SV": {
+    "name": "El Salvador",
+    "preset": "buenosAires"
+   },
+   "SY": {
+    "name": "Syria",
+    "preset": "buenosAires"
+   },
+   "SZ": {
+    "name": "Eswatini",
+    "preset": "buenosAires"
+   },
+   "TD": {
+    "name": "Chad",
+    "preset": "buenosAires"
+   },
+   "TG": {
+    "name": "Togo",
+    "preset": "buenosAires"
+   },
+   "TH": {
+    "name": "Thailand",
+    "preset": "buenosAires"
+   },
+   "TJ": {
+    "name": "Tajikistan",
+    "preset": "buenosAires"
+   },
+   "TL": {
+    "name": "Timor Leste",
+    "preset": "buenosAires"
+   },
+   "TM": {
+    "name": "Turkmenistan",
+    "preset": "buenosAires"
+   },
+   "TN": {
+    "name": "Tunisia",
+    "preset": "buenosAires"
+   },
+   "TR": {
+    "name": "Turkey",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "TT": {
+    "name": "Trinidad and Tobago",
+    "preset": "buenosAires"
+   },
+   "TW": {
+    "name": "Taiwan",
+    "preset": "westernEurope"
+   },
+   "TZ": {
+    "name": "Tanzania",
+    "preset": "buenosAires"
+   },
+   "UA": {
+    "name": "Ukraine",
+    "preset": "westernEurope"
+   },
+   "UG": {
+    "name": "Uganda",
+    "preset": "buenosAires"
+   },
+   "US": {
+    "name": "United States",
+    "preset": "us"
+   },
+   "UY": {
+    "name": "Uruguay",
+    "preset": "buenosAires"
+   },
+   "UZ": {
+    "name": "Uzbekistan",
+    "preset": "buenosAires"
+   },
+   "VE": {
+    "name": "Venezuela",
+    "preset": "buenosAires"
+   },
+   "VI": {
+    "name": "U.S. Virgin Islands",
+    "preset": "us"
+   },
+   "VN": {
+    "name": "Vietnam",
+    "preset": "buenosAires"
+   },
+   "XK": {
+    "name": "Kosovo",
+    "preset": "westernEurope"
+   },
+   "YE": {
+    "name": "Yemen",
+    "preset": "buenosAires"
+   },
+   "YT": {
+    "name": "Mayotte",
+    "preset": "buenosAires"
+   },
+   "ZA": {
+    "name": "South Africa",
+    "preset": "buenosAires",
+    "researched": true,
+    "families": [
+     "grid",
+     "banking",
+     "violence",
+     "fire",
+     "prices",
+     "nuclear"
+    ]
+   },
+   "ZM": {
+    "name": "Zambia",
+    "preset": "buenosAires"
+   },
+   "ZW": {
+    "name": "Zimbabwe",
+    "preset": "buenosAires"
+   }
+  },
+  "attribution": "Cities: GeoNames (https://www.geonames.org), licensed under CC BY 4.0. Hazard levels: ThinkHazard! by the Global Facility for Disaster Reduction and Recovery (GFDRR) and the World Bank (https://thinkhazard.org); classified hazard levels licensed under CC BY. Each city takes the level of the district (FAO GAUL level 2) it lies in; where ThinkHazard did not rate that district for river flood, earthquake, wildfire or extreme heat (mostly small inner-city districts), each level it lacks is taken from the nearest rated district within 10 km (3 km for coastal flood). Temperatures: CHELSA V2.1 climatologies, mean monthly air temperature 1981-2010 (Karger et al. 2017, Scientific Data 4:170122; Karger et al. 2021, EnviDat, doi:10.16904/envidat.228.v2.1; https://chelsa-climate.org), CC0 1.0."
  },
  "lifeExpectancy": {
   "child": {
@@ -18323,8 +19501,8 @@
      "apartment": 0.5
     },
     "location": {
-     "westernEurope": 0.5,
-     "buenosAires": 1
+     "westernEurope": 0.36,
+     "buenosAires": 0.52
     }
    },
    "durationScale": {
@@ -18379,8 +19557,8 @@
      "apartment": 0.5
     },
     "location": {
-     "westernEurope": 0.8,
-     "buenosAires": 2
+     "westernEurope": 0.51,
+     "buenosAires": 1.8
     },
     "conditions": [
      {

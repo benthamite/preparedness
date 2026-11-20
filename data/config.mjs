@@ -54,11 +54,26 @@ export default {
       IT: { 'violentCrime.scale': { mid: 0.70, reason: 'As for Spain.' } },
     },
     // How a city's district ratings (ThinkHazard: H high, M medium, L low,
-    // V very low) and climate normals become the local-hazard ticks. A tick
-    // stands for living in a zone with the hazard's preset probability.
+    // V very low; data/cities.json) and climate normals (CHELSA) become the
+    // local-hazard ticks. A tick stands for living in a zone with the
+    // hazard's preset probability, which matches a high rating; a medium one
+    // counts at a fraction of it. ThinkHazard's definitions: earthquake high
+    // is more than a 20% chance of damaging shaking in 50 years and medium
+    // 10 to 20% (about 0.3% a year against the 1% of the preset's zone);
+    // cyclone high is more than 20% in 10 years and medium 10 to 20%
+    // (about 1.5% a year against the preset's 6%). Both fractions are the
+    // model's own reading. Flood ticks on a high river or coastal rating
+    // only: the tick means the home's own area floods. Wildfire is never
+    // ticked from the ratings: ThinkHazard rates fire weather, which is high
+    // in four cities in five, Paris and London among them, and says nothing
+    // about whether a home is near wildland.
     cityRules: {
-      hurricane: ['H', 'M'], earthquake: ['H', 'M'], wildfire: ['H'], flood: ['H'],
-      hotSummersHeat: ['H'], coldWintersMaxC: 5, hotSummersMinC: 25,
+      levels: { hurricane: { CY: { H: 1, M: 0.3 } }, earthquake: { EQ: { H: 1, M: 0.3 } }, flood: { FL: { H: 1 }, CF: { H: 1 } } },
+      // Cold winters: the coldest month's mean at or below 6 °C (Paris 4,
+      // London 5, Tokyo 5; not Rome 8 or Buenos Aires 10). Hot summers: a
+      // high or medium extreme-heat rating, or the warmest month's mean at
+      // or above 25 °C.
+      coldWintersMaxC: 6, hotSummersHeat: ['H', 'M'], hotSummersMinC: 25,
     },
   },
 
