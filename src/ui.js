@@ -534,7 +534,8 @@ function costText(all) {
     [sum('upkeepTime'), `${num(upkeepH, upkeepH >= 1 ? 1 : 2)} hours a year of upkeep`],
   ].filter(([v]) => v >= 0.005).map(([v, t]) => `${money(v)} for ${t}`);
   const total = all.reduce((t, e) => t + e.annualCostUsd, 0);
-  const who = all.length > 1 ? ` for ${whoText(all.map((e) => String(e.items[0].person)))} together` : '';
+  const names = whoText(all.map((e) => String(e.items[0].person)));
+  const who = all.length > 1 ? ` for ${names === 'Everyone' ? 'everyone' : names} together` : '';
   return `<p>Yearly cost${who}: ${money(total)}${pieces.length ? `, of which ${pieces.join('; ')}` : ''}. Time is valued at the hour value of whoever spends it; for a shared item, at the lowest in the household.</p>`;
 }
 
