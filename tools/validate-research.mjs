@@ -22,6 +22,11 @@ const CONDITIONS = ['coldWinters', 'hotSummers', 'hurricane', 'earthquake', 'wil
   'house', 'apartment', 'car', 'infant', 'pet', 'powerDependent', 'criticalDrug', 'age60plus'];
 const LOCATIONS = ['us', 'westernEurope', 'buenosAires', 'all'];
 const OUTLOOKS = ['forecast', 'pessimistic', 'all'];
+const AI_HAZARDS = ['pandemicModerate', 'pandemicSevere', 'cyberOutage', 'gridLong', 'waterSystemFailure',
+  'paymentsOutage', 'commsOutage', 'cyberSupplyShock', 'bankingCrisis', 'supplyShock', 'aiFraud',
+  'greatPowerWar', 'nuclearNear', 'nuclearFar', 'civilUnrest'];
+// Years from the start of 2027 to full labour automation.
+const LEAD_YEARS = [1, 3, 5, 8, 12, 20, 30];
 const EFFECT_TYPES = ['supply', 'capability', 'reduce', 'sideRisk', 'other'];
 
 function validate(doc) {
@@ -305,6 +310,34 @@ function validate(doc) {
   }
 
 
+  // How AI-driven risk depends on the years left before full labour
+  // automation (research/BRIEF-AI-LEADTIME.md).
+  function aiLeadTime(doc) {
+    if (!isStr(doc.method)) err('method', 'must be a non-empty string');
+    for (const k of ['turbulentYears', 'runUpYears', 'referenceLeadYears']) Q(doc[k], k);
+    const scale = (x, path) => {
+      if (!isObj(x)) { err(path, 'must be an object'); return; }
+      if (!Array.isArray(x.factors)) { err(`${path}.factors`, 'must be an array'); return; }
+      const leads = x.factors.map((f) => f && f.leadYears);
+      if (JSON.stringify(leads) !== JSON.stringify(LEAD_YEARS)) err(`${path}.factors`, `leadYears must be exactly ${LEAD_YEARS.join(', ')}, in order`);
+      x.factors.forEach((f, i) => Q(f && f.factor, `${path}.factors[${i}].factor`));
+      if (!isStr(x.mechanism)) err(`${path}.mechanism`, 'must be a non-empty string');
+      evidence(x.evidence, `${path}.evidence`, false);
+    };
+    const hz = doc.hazards;
+    if (!isObj(hz)) err('hazards', 'must be an object keyed by hazard id');
+    else {
+      for (const id of AI_HAZARDS) if (!hz[id]) err(`hazards.${id}`, 'missing');
+      for (const [id, x] of Object.entries(hz)) {
+        if (!AI_HAZARDS.includes(id)) err(`hazards.${id}`, `not an AI hazard (${AI_HAZARDS.join(', ')})`);
+        scale(x, `hazards.${id}`);
+        if (x && x.afterFactors !== undefined) scale({ factors: x.afterFactors, mechanism: 'after', evidence: [] }, `hazards.${id}.afterFactors`);
+      }
+    }
+    scale(doc.existential, 'existential');
+    for (const k of ['blockedSources', 'openQuestions']) if (!Array.isArray(doc[k])) err(k, 'must be an array');
+  }
+
   // Country figures (research/BRIEF-COUNTRIES.md): every listed country, every
   // field of the family.
   function countries(d) {
@@ -351,6 +384,7 @@ function validate(doc) {
   else if (doc.kind === 'parameters') parameters(doc);
   else if (doc.kind === 'ai') ai(doc);
   else if (doc.kind === 'countries') countries(doc);
+  else if (doc.kind === 'aiLeadTime') aiLeadTime(doc);
   else err('kind', 'must be items, hazards, parameters, ai or countries');
   strings(doc.blockedSources, 'blockedSources');
   strings(doc.openQuestions, 'openQuestions');
