@@ -338,7 +338,8 @@ function crf(r, years) {
 // about the others.
 // The rate is `now` until a run-up; the excess then grows linearly to its
 // full level, which holds through the turbulent years just before automation;
-// after automation the rate is `after`. The excess is scaled by a factor that
+// after automation the rate is `after`, or, when automation comes within a few
+// years, part of the way back towards `transition`. The excess is scaled by a factor that
 // depends on the lead time, the years left to prepare
 // (research/ai/ai-leadtime.*): the sooner automation comes, the more
 // turbulence. The model's own probabilities are today's, and each is shifted
@@ -388,14 +389,16 @@ export function aiShift(ai, settings, hazardId, loc) {
   const lt = (ai.leadTime && ai.leadTime.hazards && ai.leadTime.hazards[hazardId]) || {};
   const leads = ai.leadTime && ai.leadTime.leads;
   const f = leadFactor(leads, lt.factors, tm.L);
-  const fAfter = leadFactor(leads, lt.afterFactors, tm.L);
+  // Right after a rushed automation the rate stays part of the way from
+  // `after` back towards `transition`.
+  const share = ai.leadTime && ai.leadTime.afterShare ? leadFactor(ai.leadTime.afterShare.leads, ai.leadTime.afterShare.values, tm.L) : 0;
   const { now, transition: during, after } = r;
   const peak = Math.max(0, Math.min(1, now + (during - now) * f));
   let sum = 0;
   for (let k = 0; k < tm.H; k++) {
     const y = ai.startYear + k + 0.5; // the middle of each year of the horizon
     const x = excessShare(y, tm);
-    sum += x === null ? Math.min(1, after * fAfter) : now + (peak - now) * x;
+    sum += x === null ? after + (during - after) * share : now + (peak - now) * x;
   }
   // Only the share of the added risk that a household could survive counts.
   return (sum / tm.H - now) * (r.survivable === undefined ? 1 : r.survivable);
@@ -405,7 +408,8 @@ export function aiShift(ai, settings, hazardId, loc) {
 // catastrophe has happened yet. Nothing a household owns is worth anything
 // after one, so every hazard's weight is scaled by this. The chance of such
 // a catastrophe, scaled by its lead-time factor, is spread evenly over the
-// turbulent years.
+// turbulent years still ahead: none of it falls before the horizon starts,
+// since a household reading this has not seen one.
 export function aiSurvival(ai, settings) {
   if (!aiOn(ai, settings) || !ai.pExistential) return 1;
   const tm = aiTiming(ai, settings);
@@ -414,7 +418,8 @@ export function aiSurvival(ai, settings) {
   let sum = 0;
   for (let k = 0; k < tm.H; k++) {
     const y = ai.startYear + k + 0.5;
-    const elapsed = Math.max(0, Math.min(1, (y - (tm.A - tm.T)) / tm.T));
+    const from = Math.max(ai.startYear, tm.A - tm.T);
+    const elapsed = tm.A > from ? Math.max(0, Math.min(1, (y - from) / (tm.A - from))) : 1;
     sum += 1 - pX * elapsed;
   }
   return sum / tm.H;

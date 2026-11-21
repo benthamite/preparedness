@@ -330,8 +330,13 @@ if (config.ai && Object.keys(AI.rates).length) {
     ai.leadTime = {
       turbulentYears: lt.turbulentYears.mid, runUpYears: lt.runUpYears.mid, referenceLeadYears: lt.referenceLeadYears.mid,
       leads, existential: fs(lt.existential.factors), hazards: {},
+      // The post-automation rate as a share of the way from `after` to
+      // `transition`, by lead time: the researcher's own figures, stated in
+      // ai-leadtime.md (openQuestions), used in place of its afterFactors,
+      // which multiply `after` and cannot say this for every place.
+      afterShare: config.ai.afterShare,
     };
-    for (const [hz, x] of Object.entries(lt.hazards)) ai.leadTime.hazards[hz] = { factors: fs(x.factors), afterFactors: fs(x.afterFactors) };
+    for (const [hz, x] of Object.entries(lt.hazards)) ai.leadTime.hazards[hz] = { factors: fs(x.factors) };
   } else warn('research/ai/ai-leadtime.json not found: AI effects do not depend on the year of full automation');
   for (const [hz, byLoc] of Object.entries(AI.rates)) {
     if (!hazards[hz]) { if (!(config.ai.unused || {})[hz]) warn(`AI rates for ${hz} are neither used nor set aside`); continue; }

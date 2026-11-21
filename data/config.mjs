@@ -425,6 +425,10 @@ export default {
   ai: {
     startYear: 2027,
     horizonYears: 5,
+    // Right after full automation, the rate is this share of the way from
+    // `after` back to `transition`: 40% when it comes within a year, 15%
+    // within three, none from five (research/ai/ai-leadtime.md).
+    afterShare: { leads: [1, 3, 5], values: [0.4, 0.15, 0] },
     // Slips in the researchers' own arithmetic, found on verification.
     corrections: [
       { hazard: 'pandemicSevere', location: 'all', field: 'now', mid: 0.004, reason: 'ai-bio.md: 0.3% + 0.8% x 0.12 = 0.396%, entered as 0.45%.' },

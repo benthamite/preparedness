@@ -364,7 +364,7 @@ test('the year of full automation shifts hazard probabilities, more the sooner i
   d.ai = {
     startYear: 2027, transitionYears: 5, horizonYears: 5, pExistential: 0.2,
     hazards: { storm: { all: { now: 0.2, transition: 0.4, after: 0.05 } } },
-    leadTime: { turbulentYears: 5, runUpYears: 2, leads, existential: f, hazards: { storm: { factors: f } } },
+    leadTime: { turbulentYears: 5, runUpYears: 2, leads, existential: f, hazards: { storm: { factors: f } }, afterShare: { leads: [1, 3, 5], values: [0.4, 0.15, 0] } },
   };
   const run1 = (ai) => run(d, { ai });
   const p = (ai) => run1(ai).hazards[0].p;
@@ -376,9 +376,10 @@ test('the year of full automation shifts hazard probabilities, more the sooner i
   near(p(undefined), 0.1);
   near(p({ automationYear: null }), 0.1);
   // Automation in mid-2031: lead time 4.5 years, factor 1.125, so the
-  // turbulent rate is 0.2 + 0.2 x 1.125 = 0.425 in 2027-2030, and the rate
-  // after automation, 0.05, in 2031. The average, 0.35, is 0.15 above today's.
-  near(p({ automationYear: 2031 }), 0.25);
+  // turbulent rate is 0.2 + 0.2 x 1.125 = 0.425 in 2027-2030. After
+  // automation the rate is 3.75% of the way from 0.05 back to 0.4: 0.063125.
+  // The average, 0.352625, is 0.152625 above today's.
+  near(p({ automationYear: 2031 }), 0.252625);
   // In 2036: lead time 9.5, factor 0.725, turbulent rate 0.345 from mid-2031;
   // the run-up reaches half of the excess in 2030 and all of it in 2031:
   // 0.145 x 1.5 / 5 = 0.0435 above today's.
@@ -388,9 +389,9 @@ test('the year of full automation shifts hazard probabilities, more the sooner i
   // A longer horizon reaches it.
   assert.ok(p({ automationYear: 2040, horizonYears: 12 }) > 0.1);
   // The chance that no existential catastrophe has happened, for automation
-  // in 2031: 0.2 x 1.125 spread over 2026.5-2031.5, so 60% of it elapsed on
-  // average over the horizon.
-  near(run1({ automationYear: 2031 }).survival, 1 - 0.225 * 0.6);
+  // in 2031: 0.2 x 1.125 spread over the turbulent years still ahead,
+  // 2027-2031.5, so on average 5/9 of it has elapsed over the horizon.
+  near(run1({ automationYear: 2031 }).survival, 1 - 0.225 * 5 / 9);
   // A probability the reader sets by hand overrides all of it.
   near(run(d, { ai: { automationYear: 2031 }, probabilities: { storm: 0.07 } }).hazards[0].p, 0.07);
 });
