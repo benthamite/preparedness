@@ -335,6 +335,10 @@ function validate(doc) {
       }
     }
     scale(doc.existential, 'existential');
+    if (doc.afterShare !== undefined) {
+      scale(doc.afterShare, 'afterShare');
+      (doc.afterShare.factors || []).forEach((f, i) => { if (f && f.factor && f.factor.hi > 1) err(`afterShare.factors[${i}]`, 'a share must not exceed 1'); });
+    }
     for (const k of ['blockedSources', 'openQuestions']) if (!Array.isArray(doc[k])) err(k, 'must be an array');
   }
 

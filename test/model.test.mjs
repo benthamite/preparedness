@@ -376,10 +376,12 @@ test('the year of full automation shifts hazard probabilities, more the sooner i
   near(p(undefined), 0.1);
   near(p({ automationYear: null }), 0.1);
   // Automation in mid-2031: lead time 4.5 years, factor 1.125, so the
-  // turbulent rate is 0.2 + 0.2 x 1.125 = 0.425 in 2027-2030. After
-  // automation the rate is 3.75% of the way from 0.05 back to 0.4: 0.063125.
-  // The average, 0.352625, is 0.152625 above today's.
-  near(p({ automationYear: 2031 }), 0.252625);
+  // turbulent rate is 0.2 + 0.2 x 1.125 = 0.425 for the 54 months to then.
+  // In the last 6 months the rate is 3.75% of the way from 0.05 back to 0.4,
+  // a share that fades over 5 years (to 95% of it on average here):
+  // 0.05 + 0.35 x 0.0375 x 0.95 = 0.062469. The average over 60 months is
+  // 0.388747, 0.188747 above today's.
+  near(p({ automationYear: 2031 }), 0.288747, 1e-6);
   // In 2036: lead time 9.5, factor 0.725, turbulent rate 0.345 from mid-2031;
   // the run-up reaches half of the excess in 2030 and all of it in 2031:
   // 0.145 x 1.5 / 5 = 0.0435 above today's.
@@ -389,9 +391,10 @@ test('the year of full automation shifts hazard probabilities, more the sooner i
   // A longer horizon reaches it.
   assert.ok(p({ automationYear: 2040, horizonYears: 12 }) > 0.1);
   // The chance that no existential catastrophe has happened, for automation
-  // in 2031: 0.2 x 1.125 spread over the turbulent years still ahead,
-  // 2027-2031.5, so on average 5/9 of it has elapsed over the horizon.
-  near(run1({ automationYear: 2031 }).survival, 1 - 0.225 * 5 / 9);
+  // in 2031: the odds of 0.2 (0.25) times 1.125 give 0.2195, spread over the
+  // turbulent years still ahead, 2027-2031.5, so on average 55% of it has
+  // elapsed over the horizon.
+  near(run1({ automationYear: 2031 }).survival, 1 - (0.28125 / 1.28125) * 0.55, 1e-6);
   // A probability the reader sets by hand overrides all of it.
   near(run(d, { ai: { automationYear: 2031 }, probabilities: { storm: 0.07 } }).hazards[0].p, 0.07);
 });

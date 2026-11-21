@@ -379,6 +379,22 @@ export function excessShare(y, { A, T, R }) {
   return 0;
 }
 
+// The average of f over the planning horizon, taken month by month, so
+// that a year in which automation comes counts partly before and partly after.
+const MONTHS = 12;
+function overHorizon(ai, tm, f) {
+  let sum = 0;
+  for (let i = 0; i < tm.H * MONTHS; i++) sum += f(ai.startYear + (i + 0.5) / MONTHS);
+  return sum / (tm.H * MONTHS);
+}
+// The post-automation share at lead time L: the research's figures where it
+// gives them, otherwise the configured ones.
+function afterShareAt(ai, L) {
+  const lt = ai.leadTime || {};
+  if (lt.afterShareByLead) return leadFactor(lt.leads, lt.afterShareByLead, L);
+  return lt.afterShare ? leadFactor(lt.afterShare.leads, lt.afterShare.values, L) : 0;
+}
+
 // The shift in a hazard's annual probability.
 export function aiShift(ai, settings, hazardId, loc) {
   if (!aiOn(ai, settings)) return 0;
@@ -390,18 +406,18 @@ export function aiShift(ai, settings, hazardId, loc) {
   const leads = ai.leadTime && ai.leadTime.leads;
   const f = leadFactor(leads, lt.factors, tm.L);
   // Right after a rushed automation the rate stays part of the way from
-  // `after` back towards `transition`.
-  const share = ai.leadTime && ai.leadTime.afterShare ? leadFactor(ai.leadTime.afterShare.leads, ai.leadTime.afterShare.values, tm.L) : 0;
+  // `after` back towards `transition`, a share that fades to nothing over as
+  // many years as the turbulence lasted.
+  const share = afterShareAt(ai, tm.L);
   const { now, transition: during, after } = r;
   const peak = Math.max(0, Math.min(1, now + (during - now) * f));
-  let sum = 0;
-  for (let k = 0; k < tm.H; k++) {
-    const y = ai.startYear + k + 0.5; // the middle of each year of the horizon
+  const rate = (y) => {
     const x = excessShare(y, tm);
-    sum += x === null ? after + (during - after) * share : now + (peak - now) * x;
-  }
+    if (x !== null) return now + (peak - now) * x;
+    return after + (during - after) * share * Math.max(0, 1 - (y - tm.A) / tm.T);
+  };
   // Only the share of the added risk that a household could survive counts.
-  return (sum / tm.H - now) * (r.survivable === undefined ? 1 : r.survivable);
+  return (overHorizon(ai, tm, rate) - now) * (r.survivable === undefined ? 1 : r.survivable);
 }
 
 // The chance, averaged over the planning horizon, that no existential
@@ -414,15 +430,12 @@ export function aiSurvival(ai, settings) {
   if (!aiOn(ai, settings) || !ai.pExistential) return 1;
   const tm = aiTiming(ai, settings);
   const ex = ai.leadTime && ai.leadTime.existential;
-  const pX = Math.min(1, ai.pExistential * leadFactor(ai.leadTime && ai.leadTime.leads, ex, tm.L));
-  let sum = 0;
-  for (let k = 0; k < tm.H; k++) {
-    const y = ai.startYear + k + 0.5;
-    const from = Math.max(ai.startYear, tm.A - tm.T);
-    const elapsed = tm.A > from ? Math.max(0, Math.min(1, (y - from) / (tm.A - from))) : 1;
-    sum += 1 - pX * elapsed;
-  }
-  return sum / tm.H;
+  // The factor acts on the odds, so that it cannot push a probability past 1.
+  const p0 = Math.min(ai.pExistential, 1 - 1e-9);
+  const odds = p0 / (1 - p0) * leadFactor(ai.leadTime && ai.leadTime.leads, ex, tm.L);
+  const pX = odds / (1 + odds);
+  const from = Math.max(ai.startYear, tm.A - tm.T);
+  return overHorizon(ai, tm, (y) => 1 - pX * (tm.A > from ? Math.max(0, Math.min(1, (y - from) / (tm.A - from))) : 1));
 }
 
 // ---------------------------------------------------------------------------
