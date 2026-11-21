@@ -104,3 +104,9 @@ body.dark .citylist span.on, body.dark .citylist span:hover { background: #3b4a5
 .more { margin: 10px 0; }
 @media (max-width: 600px) { .prow .pname { width: 90px; } }
 .ticknote { margin: -4px 0 6px 22px; }
+/* Hover help. */
+th[data-help], .field > label, .pflags label, .pimp label, .prow .hour { cursor: help; }
+#tip { position: fixed; z-index: 10; display: none; max-width: 300px; padding: 6px 9px; border-radius: 4px;
+       background: #333; color: #fff; font-size: 12px; line-height: 1.4; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+       pointer-events: none; text-transform: none; letter-spacing: 0; font-weight: 400; }
+body.dark #tip { background: #e5e5e5; color: #222; }
