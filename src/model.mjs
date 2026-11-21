@@ -63,6 +63,9 @@ export function resolveModel(data, draw, mean = false) {
       if (k === 'steps' && Array.isArray(v)) {
         const z = draw ? draw() : 0;
         out[k] = v.map((s) => walk(s, z));
+      } else if (k === 'ai' && shared === undefined) {
+        // One draw for every AI figure (section 9 of MODEL.md).
+        out[k] = walk(v, draw ? draw() : 0);
       } else out[k] = walk(v, shared);
     }
     return out;
@@ -206,7 +209,7 @@ export const annuity = (r, n) => (n <= 0 ? 0 : r > 0 ? (1 - Math.pow(1 + r, -n))
 //   elsewhere (the cost of saving a life through the most cost-effective
 //   charities). Short disruptions then cost the work days they take.
 export function valuePeople(people, ctx) {
-  const { v, timeValue, rate, life, costPerLife, currentYear, horizonYears, aiOn, deathValue, hoursPerYear, counterfactual } = ctx;
+  const { v, timeValue, rate, life, costPerLife, currentYear, horizonYears, automationYear, deathValue, hoursPerYear, counterfactual } = ctx;
   const lifeYears = deathValue !== 'equal' && life;
   const lyFactor = (age) => (lifeYears ? annuity(rate, life[age]) / annuity(rate, life.reference) : 1);
   for (const p of people) {
@@ -214,7 +217,10 @@ export function valuePeople(people, ctx) {
     const personal = v * lyFactor(p.age);
     if (p.valuation === 'impartial' && p.age !== 'child') {
       const rep = { adult: 37, age60to74: 67, age75plus: 82 }[p.age];
-      const end = p.impactEndYear > 0 ? p.impactEndYear : currentYear + (aiOn ? horizonYears : Math.max(5, 65 - rep));
+      // Their work matters to others until they retire (at 65, or in five
+      // years at the least) or until full labour automation, if sooner.
+      const retire = currentYear + Math.max(5, 65 - rep);
+      const end = automationYear > 0 ? Math.min(retire, automationYear) : retire;
       const years = Math.max(0, Math.min(end - currentYear, life ? life[p.age] : Infinity));
       const hpy = p.hoursPerYear > 0 ? p.hoursPerYear : hoursPerYear;
       const cf = p.counterfactual >= 0 && p.counterfactual <= 1 ? p.counterfactual : counterfactual;
@@ -222,9 +228,9 @@ export function valuePeople(people, ctx) {
       p.hw = personal > 0 ? costPerLife / (1e6 * personal) : 0;
       // A day lost to a disruption is the average calendar day's work, at the
       // full hour value: nobody replaces a lost day. Days after the member's
-      // impact ends are worth nothing; with an AI timeline, the share of the
-      // planning horizon before that point counts.
-      const share = aiOn ? Math.min(1, years / Math.max(1, horizonYears)) : (years > 0 ? 1 : 0);
+      // impact ends are worth nothing, so only the share of the planning
+      // horizon before that point counts.
+      const share = Math.min(1, years / Math.max(1, horizonYears));
       p.dv = hour * hpy / 365 * share;
       p.impactEndYear = end;
       p.impartial = true;
@@ -323,89 +329,95 @@ function crf(r, years) {
 // Advanced AI and the hazard probabilities
 // ---------------------------------------------------------------------------
 //
-// The reader states when they expect AGI and how concerned they are. For each
-// hazard the data gives annual rates for `now` (before AGI), `transition`
-// (the years just after AGI arrives) and `after`. Each rate is [low, middle,
-// high]: the view of a careful sceptic, the central view, and the view of
-// someone highly concerned. The model's own probabilities are today's. With
-// a timeline chosen, each is shifted by the average, over the planning
-// horizon, of the rate the timeline implies, less today's rate.
+// The reader gives one year: their point estimate of full labour
+// automation. For each AI-driven hazard the data gives yearly rates `now`,
+// `transition` and `after`, each a low, middle and high figure (a careful
+// sceptic, the central view, a highly concerned view). Like every uncertain
+// input they are resolved by their averages or middles, or drawn; all AI
+// figures share one draw, since a sceptic about one effect is a sceptic
+// about the others.
+// The rate is `now` until a run-up; the excess then grows linearly to its
+// full level, which holds through the turbulent years just before automation;
+// after automation the rate is `after`. The excess is scaled by a factor that
+// depends on the lead time, the years left to prepare
+// (research/ai/ai-leadtime.*): the sooner automation comes, the more
+// turbulence. The model's own probabilities are today's, and each is shifted
+// by the average over the planning horizon of this path, less today's rate.
 
-// Value of a [low, middle, high] triple at concern c in [0, 1].
-export function atConcern(t, c) {
-  const [lo, mid, hi] = t;
-  const k = Math.max(0, Math.min(1, c));
-  const mix = (a, b, w) => (a > 0 && b > 0 ? a * Math.pow(b / a, w) : a + (b - a) * w);
-  return k <= 0.5 ? mix(lo, mid, 2 * k) : mix(mid, hi, 2 * k - 1);
+const aiOn = (ai, settings) => !!(ai && settings.ai && settings.ai.automationYear > 0);
+
+// A lead-time factor at lead time L, from values at the lead times `leads`:
+// straight lines between them, flat beyond the ends. Without research, 1.
+export function leadFactor(leads, values, L) {
+  if (!leads || !values || !values.length) return 1;
+  if (L <= leads[0]) return values[0];
+  for (let i = 1; i < leads.length; i++) {
+    if (L <= leads[i]) return values[i - 1] + (values[i] - values[i - 1]) * (L - leads[i - 1]) / (leads[i] - leads[i - 1]);
+  }
+  return values[values.length - 1];
 }
 
-// Cumulative probability that AGI has arrived by time y (in years, so 2028.5
-// is mid-2028), from points [{year, p}] giving the probability by the end of
-// each year. Before `zeroAt` it is zero; at `zeroAt` it starts from the latest
-// point already past; then straight lines between points; flat after the last.
-export function arrivalCdf(points, zeroAt) {
-  const all = points.map((x) => ({ year: x.year + 1, p: x.p })).sort((a, b) => a.year - b.year);
-  const past = all.filter((x) => x.year <= zeroAt);
-  const start = past.length ? past[past.length - 1].p : 0;
-  const pts = [{ year: zeroAt, p: start }, ...all.filter((x) => x.year > zeroAt)];
-  return (y) => {
-    if (y < zeroAt) return 0;
-    for (let i = 1; i < pts.length; i++) {
-      if (y <= pts[i].year) {
-        const a = pts[i - 1], b = pts[i];
-        return a.p + (b.p - a.p) * (y - a.year) / (b.year - a.year);
-      }
-    }
-    return pts[pts.length - 1].p;
-  };
+// The timing of the transition: full automation in the middle of the year
+// given, the turbulent years before it, and the run-up before those.
+export function aiTiming(ai, settings) {
+  const lt = ai.leadTime || {};
+  const A = settings.ai.automationYear + 0.5;
+  const T = lt.turbulentYears > 0 ? lt.turbulentYears : ai.transitionYears;
+  const R = lt.runUpYears > 0 ? lt.runUpYears : 0;
+  return { A, T, R, L: Math.max(0, A - ai.startYear), H: Math.max(1, Math.round(settings.ai.horizonYears || ai.horizonYears)) };
 }
 
-const aiOn = (ai, settings) => !!(ai && settings.ai && settings.ai.timeline && settings.ai.timeline !== 'none');
-const aiPoints = (ai, s) => (s.timeline === 'custom' ? (s.custom || []) : ai.timelines[s.timeline].cumulative);
+// The share of the full excess reached at time y: 0 before the run-up, rising
+// linearly through it, 1 in the turbulent years, and null once automation has
+// come.
+export function excessShare(y, { A, T, R }) {
+  if (y >= A) return null;
+  const turbulent = A - T;
+  if (y >= turbulent) return 1;
+  if (R > 0 && y >= turbulent - R) return (y - (turbulent - R)) / R;
+  return 0;
+}
 
 // The shift in a hazard's annual probability.
 export function aiShift(ai, settings, hazardId, loc) {
   if (!aiOn(ai, settings)) return 0;
-  const s = settings.ai;
   const spec = ai.hazards[hazardId];
   const r = spec && (spec[loc] || spec.all);
   if (!r) return 0;
-  const F = arrivalCdf(aiPoints(ai, s), ai.startYear);
-  const c = s.concern === undefined ? 0.5 : s.concern;
-  const now = atConcern(r.now, c), during = atConcern(r.transition, c), after = atConcern(r.after, c);
-  const T = ai.transitionYears;
-  const H = Math.max(1, Math.round(s.horizonYears || ai.horizonYears));
+  const tm = aiTiming(ai, settings);
+  const lt = (ai.leadTime && ai.leadTime.hazards && ai.leadTime.hazards[hazardId]) || {};
+  const leads = ai.leadTime && ai.leadTime.leads;
+  const f = leadFactor(leads, lt.factors, tm.L);
+  const fAfter = leadFactor(leads, lt.afterFactors, tm.L);
+  const { now, transition: during, after } = r;
+  const peak = Math.max(0, Math.min(1, now + (during - now) * f));
   let sum = 0;
-  for (let k = 0; k < H; k++) {
+  for (let k = 0; k < tm.H; k++) {
     const y = ai.startYear + k + 0.5; // the middle of each year of the horizon
-    const arrived = F(y), over = F(y - T);
-    sum += (1 - arrived) * now + (arrived - over) * during + over * after;
+    const x = excessShare(y, tm);
+    sum += x === null ? Math.min(1, after * fAfter) : now + (peak - now) * x;
   }
   // Only the share of the added risk that a household could survive counts.
-  return (sum / H - now) * (r.survivable === undefined ? 1 : r.survivable);
+  return (sum / tm.H - now) * (r.survivable === undefined ? 1 : r.survivable);
 }
 
 // The chance, averaged over the planning horizon, that no existential
 // catastrophe has happened yet. Nothing a household owns is worth anything
 // after one, so every hazard's weight is scaled by this. The chance of such
-// a catastrophe given AGI is spread evenly over the transition.
+// a catastrophe, scaled by its lead-time factor, is spread evenly over the
+// turbulent years.
 export function aiSurvival(ai, settings) {
   if (!aiOn(ai, settings) || !ai.pExistential) return 1;
-  const s = settings.ai;
-  const F = arrivalCdf(aiPoints(ai, s), ai.startYear);
-  const pX = atConcern(ai.pExistential, s.concern === undefined ? 0.5 : s.concern);
-  const T = ai.transitionYears;
-  const H = Math.max(1, Math.round(s.horizonYears || ai.horizonYears));
+  const tm = aiTiming(ai, settings);
+  const ex = ai.leadTime && ai.leadTime.existential;
+  const pX = Math.min(1, ai.pExistential * leadFactor(ai.leadTime && ai.leadTime.leads, ex, tm.L));
   let sum = 0;
-  for (let k = 0; k < H; k++) {
+  for (let k = 0; k < tm.H; k++) {
     const y = ai.startYear + k + 0.5;
-    // Expected share of the transition already elapsed by y.
-    let elapsed = 0;
-    const steps = 20;
-    for (let i = 0; i < steps; i++) elapsed += F(y - T * (i + 0.5) / steps) / steps;
+    const elapsed = Math.max(0, Math.min(1, (y - (tm.A - tm.T)) / tm.T));
     sum += 1 - pX * elapsed;
   }
-  return sum / H;
+  return sum / tm.H;
 }
 
 // ---------------------------------------------------------------------------
@@ -445,7 +457,7 @@ export function buildWorld(m, settings) {
     costPerLife: pick('costPerLifeSavedUsd') || 0,
     currentYear: m.currentYear || 2026,
     horizonYears: Math.max(1, Math.round((settings.ai && settings.ai.horizonYears) || (m.ai && m.ai.horizonYears) || 5)),
-    aiOn: useAiTimeline,
+    automationYear: useAiTimeline ? settings.ai.automationYear : 0,
     deathValue: settings.deathValue || 'lifeYears',
     hoursPerYear: pick('hoursPerYear') || 1800,
     counterfactual: pick('counterfactualShare') === undefined ? 0.5 : pick('counterfactualShare'),

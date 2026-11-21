@@ -120,7 +120,8 @@ export default {
     // The list is ranked on the average of every input, which is what
     // expected value means; the reader can ask for middle values instead.
     rankOn: 'mean',
-    ai: { timeline: 'none', concern: 0.5, horizonYears: 5 },
+    // No year of full labour automation: AI is left out.
+    ai: { automationYear: null, horizonYears: 5 },
   },
 
   parameters: {
@@ -419,17 +420,11 @@ export default {
     },
   },
 
-  // The reader's AI timeline. Presets are the timelines researcher's, built
-  // on the named sources (research/ai/ai-timelines.md).
+  // Advanced AI: the reader gives a year of full labour automation
+  // (MODEL.md, section 9; research/ai/ai-leadtime.md).
   ai: {
     startYear: 2027,
     horizonYears: 5,
-    timelines: {
-      short: { from: 'preset-short', label: 'Short: most likely by 2028 (AI Futures Project, November 2026)' },
-      middle: { from: 'preset-middle', label: 'Middle: around 2030 (Metaculus community)' },
-      long: { from: 'preset-long', label: 'Long: the 2040s (forecasting panels, researcher surveys)' },
-      never: { from: 'preset-not-this-century', label: 'Not this century' },
-    },
     // Slips in the researchers' own arithmetic, found on verification.
     corrections: [
       { hazard: 'pandemicSevere', location: 'all', field: 'now', mid: 0.004, reason: 'ai-bio.md: 0.3% + 0.8% x 0.12 = 0.396%, entered as 0.45%.' },

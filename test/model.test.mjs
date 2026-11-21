@@ -4,7 +4,7 @@
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { rank, robustness, cumulative, windowDays, drawTriple, meanTriple, resolveModel, normInv, STRATA, arrivalCdf, atConcern, valuePeople, annuity, defaultSettings } from '../src/model.mjs';
+import { rank, robustness, cumulative, windowDays, drawTriple, meanTriple, resolveModel, normInv, STRATA, leadFactor, valuePeople, annuity, defaultSettings } from '../src/model.mjs';
 
 const flat = (v) => ({ lo: v, mid: v, hi: v });
 const fixed = (days) => ({ p50: days, p90: days, p99: days });
@@ -357,38 +357,42 @@ test('the ranking is deterministic and, among pure substitutes, never rises', ()
   for (let i = 1; i < a.entries.length; i++) assert.ok(a.entries[i].ratio <= a.entries[i - 1].ratio + 1e-9);
 });
 
-test('AI timelines shift hazard probabilities', () => {
+test('the year of full automation shifts hazard probabilities, more the sooner it comes', () => {
   const d = fixture();
+  const leads = [1, 3, 5, 8, 12, 20, 30];
+  const f = [2, 1.5, 1, 0.8, 0.6, 0.5, 0.5];
   d.ai = {
-    startYear: 2027, transitionYears: 5, horizonYears: 5,
-    timelines: {
-      never: { cumulative: [{ year: 2100, p: 0 }] },
-      arrived: { cumulative: [{ year: 2026, p: 1 }] },
-      longAgo: { cumulative: [{ year: 2020, p: 1 }] },
-    },
-    hazards: { storm: { all: { baseline: [0.1, 0.1, 0.1], now: [0.1, 0.2, 0.4], transition: [0.2, 0.4, 0.8], after: [0.01, 0.05, 0.1] } } },
+    startYear: 2027, transitionYears: 5, horizonYears: 5, pExistential: 0.2,
+    hazards: { storm: { all: { now: 0.2, transition: 0.4, after: 0.05 } } },
+    leadTime: { turbulentYears: 5, runUpYears: 2, leads, existential: f, hazards: { storm: { factors: f } } },
   };
-  const p = (ai) => run(d, { ai }).hazards[0].p;
-  near(arrivalCdf([{ year: 2028, p: 0.5 }], 2027)(2028), 0.25);
-  near(atConcern([1, 4, 16], 0.25), 2);
-  near(atConcern([0, 4, 16], 0.25), 2);
+  const run1 = (ai) => run(d, { ai });
+  const p = (ai) => run1(ai).hazards[0].p;
+  // Straight lines between lead times, flat beyond the ends.
+  near(leadFactor(leads, f, 4.5), 1.125);
+  near(leadFactor(leads, f, 0.5), 2);
+  near(leadFactor(leads, f, 40), 0.5);
+  // No year: AI left out, the model's own rate (0.1).
   near(p(undefined), 0.1);
-  near(p({ timeline: 'none' }), 0.1);
-  // AGI never arrives: today's rate throughout, whatever the concern.
-  near(p({ timeline: 'never', concern: 0.5 }), 0.1);
-  near(p({ timeline: 'never', concern: 1 }), 0.1);
-  // AGI arrives as the horizon starts: every year is a transition year, so
-  // the probability rises by the transition rate less today's.
-  near(p({ timeline: 'arrived', concern: 0.5 }), 0.1 + (0.4 - 0.2));
-  near(p({ timeline: 'arrived', concern: 1 }), 0.1 + (0.8 - 0.4));
-  // Even odds by the end of 2028, nothing after.
-  near(p({ timeline: 'custom', custom: [{ year: 2028, p: 0.5 }], concern: 0.5 }), 0.1 + 0.08);
-  // A longer horizon reaches the years after the transition.
-  near(p({ timeline: 'arrived', concern: 0.5, horizonYears: 10 }), 0.1 + (0.5 * 0.4 + 0.5 * 0.05) - 0.2);
-  // A timeline wholly in the past counts as arriving now.
-  near(p({ timeline: 'longAgo', concern: 0.5 }), 0.1 + (0.4 - 0.2));
+  near(p({ automationYear: null }), 0.1);
+  // Automation in mid-2031: lead time 4.5 years, factor 1.125, so the
+  // turbulent rate is 0.2 + 0.2 x 1.125 = 0.425 in 2027-2030, and the rate
+  // after automation, 0.05, in 2031. The average, 0.35, is 0.15 above today's.
+  near(p({ automationYear: 2031 }), 0.25);
+  // In 2036: lead time 9.5, factor 0.725, turbulent rate 0.345 from mid-2031;
+  // the run-up reaches half of the excess in 2030 and all of it in 2031:
+  // 0.145 x 1.5 / 5 = 0.0435 above today's.
+  near(p({ automationYear: 2036 }), 0.1435);
+  // In 2040: the run-up starts after the five-year horizon.
+  near(p({ automationYear: 2040 }), 0.1);
+  // A longer horizon reaches it.
+  assert.ok(p({ automationYear: 2040, horizonYears: 12 }) > 0.1);
+  // The chance that no existential catastrophe has happened, for automation
+  // in 2031: 0.2 x 1.125 spread over 2026.5-2031.5, so 60% of it elapsed on
+  // average over the horizon.
+  near(run1({ automationYear: 2031 }).survival, 1 - 0.225 * 0.6);
   // A probability the reader sets by hand overrides all of it.
-  near(run(d, { ai: { timeline: 'arrived' }, probabilities: { storm: 0.07 } }).hazards[0].p, 0.07);
+  near(run(d, { ai: { automationYear: 2031 }, probabilities: { storm: 0.07 } }).hazards[0].p, 0.07);
 });
 
 test('robustness: no uncertainty gives no spread; uncertainty gives some', () => {
@@ -490,27 +494,32 @@ test('ranking on averages gives skewed quantities their expected value', () => {
 const adult = (id, extra = {}) => ({ id, age: 'adult', valuation: 'personal', ...extra });
 const ctx = (extra = {}) => ({
   v: 10, timeValue: 20, rate: 0.04, life: null, costPerLife: 0, currentYear: 2026,
-  horizonYears: 5, aiOn: false, deathValue: 'lifeYears', hoursPerYear: 1800, counterfactual: 0.5, ...extra,
+  horizonYears: 5, automationYear: 0, deathValue: 'lifeYears', hoursPerYear: 1800, counterfactual: 0.5, ...extra,
 });
 
 test('the impartial value of a micromort: the worked check', () => {
   // Age 35, $100 an hour, 1,800 hours a year, half of it counterfactual, for
   // 30 years at 4%: 90,000 x 17.292 = $1.556M, so about $1.6 per micromort.
-  const [p] = valuePeople([{ age: 'adult', valuation: 'impartial', hourValue: 100, hoursPerYear: 1800, counterfactual: 0.5, impactEndYear: 2056, flags: {} }], ctx());
   near(annuity(0.04, 30), 17.29203, 1e-6);
-  near(p.v, 1e-6 * 90000 * annuity(0.04, 30));
-  assert.ok(p.v > 1.5 && p.v < 1.6);
+  // The model's adult (15-59) is taken to be 37, so works 28 more years to
+  // 65: 90,000 x 16.663 = $1.50M.
+  const [p] = valuePeople([{ age: 'adult', valuation: 'impartial', hourValue: 100, hoursPerYear: 1800, counterfactual: 0.5, flags: {} }], ctx());
+  near(p.v, 1e-6 * 90000 * annuity(0.04, 28));
+  assert.equal(p.impactEndYear, 2054);
+  assert.ok(p.v > 1.45 && p.v < 1.55);
   // Its own wellbeing is priced at the cost of saving a life elsewhere: here
   // $5,000, half a cent a micromort; and its hardship at 5,000 / 10M.
-  const [q] = valuePeople([{ age: 'adult', valuation: 'impartial', hourValue: 100, impactEndYear: 2056, flags: {} }], ctx({ costPerLife: 5000 }));
+  const [q] = valuePeople([{ age: 'adult', valuation: 'impartial', hourValue: 100, flags: {} }], ctx({ costPerLife: 5000 }));
   near(q.v, p.v + 0.005);
   near(q.hw, 5000 / 10e6);
   // A lost day is the average calendar day's work at the full hour value.
   near(q.dv, 100 * 1800 / 365);
-  // Work ends with the AI horizon when a timeline is set: 5 years.
-  const [r] = valuePeople([{ age: 'adult', valuation: 'impartial', hourValue: 100, flags: {} }], ctx({ aiOn: true }));
+  // Work ends at full labour automation, if that comes before retirement.
+  const [r] = valuePeople([{ age: 'adult', valuation: 'impartial', hourValue: 100, flags: {} }], ctx({ automationYear: 2031 }));
   near(r.v, 1e-6 * 90000 * annuity(0.04, 5));
   assert.equal(r.impactEndYear, 2031);
+  const [r2] = valuePeople([{ age: 'adult', valuation: 'impartial', hourValue: 100, flags: {} }], ctx({ automationYear: 2080 }));
+  assert.equal(r2.impactEndYear, 2054);
 });
 
 test('the personal value of a micromort scales with income and remaining life-years', () => {
@@ -574,7 +583,7 @@ test('impartial members lose work on unmet days; their comfort counts little', (
   // is $730; four unmet days cost 4 x 0.5 x $730 = $1,460, and their
   // hardship, at a cost per life of nil, nothing. The personal member's
   // hardship is 4 x $50.
-  const people = [adult(1, { valuation: 'impartial', hourValue: 73, hoursPerYear: 3650, impactEndYear: 2056 }), adult(2)];
+  const people = [adult(1, { valuation: 'impartial', hourValue: 73, hoursPerYear: 3650 }), adult(2)];
   const r = run(d, { people });
   near(r.people[0].workDayUsd, 730);
   near(r.harm.unprepared.usd, 0.1 * (4 * 0.5 * 730 + 4 * 50));
@@ -603,7 +612,7 @@ test('lost work from needs unmet on the same days is not double-counted', () => 
   // One member, valued impartially, whose work day is worth $730. Water is
   // unmet on 4 days and heat on 5; taken to overlap, that is 1 day at a half
   // and 4 days at 1 − 0.5 × 0.5 = 0.75: 3.5 days, not 4.5.
-  const people = [adult(1, { valuation: 'impartial', hourValue: 73, hoursPerYear: 3650, impactEndYear: 2056 })];
+  const people = [adult(1, { valuation: 'impartial', hourValue: 73, hoursPerYear: 3650 })];
   const r = run(d, { people });
   near(r.harm.unprepared.usd, 0.1 * 3.5 * 730);
   // Two days of stored water now save half a day's work on each, but only

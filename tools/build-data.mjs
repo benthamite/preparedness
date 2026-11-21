@@ -82,6 +82,9 @@ if (existsSync(aiDir)) {
   }
 }
 const tri = (q) => [q.lo, q.mid, q.hi];
+// An uncertain quantity the engine resolves (by its mean, its middle or a
+// draw), without its provenance.
+const q3 = (q) => ({ lo: q.lo, mid: q.mid, hi: q.hi });
 
 // ---- parameters ----
 const parameters = {};
@@ -314,19 +317,27 @@ if (config.ai && Object.keys(AI.rates).length) {
   ai = {
     startYear: config.ai.startYear, horizonYears: config.ai.horizonYears,
     transitionYears: tYears ? tYears.mid : 5,
-    pExistential: pX ? tri(pX) : undefined,
-    timelines: {}, hazards: {},
+    pExistential: pX ? q3(pX) : undefined,
+    hazards: {},
   };
-  for (const [key, spec] of Object.entries(config.ai.timelines)) {
-    const t = AI.timelines.find((x) => x.id === spec.from);
-    if (!t) { warn(`AI timeline ${spec.from} not found`); continue; }
-    ai.timelines[key] = { label: spec.label, source: t.source, cumulative: t.cumulative };
-  }
+  // How the AI-driven excess depends on the years left before full
+  // automation (research/ai/ai-leadtime.*).
+  const ltFile = join(aiDir, 'ai-leadtime.json');
+  if (existsSync(ltFile)) {
+    const lt = JSON.parse(readFileSync(ltFile, 'utf8'));
+    const leads = lt.existential.factors.map((f) => f.leadYears);
+    const fs = (list) => (list ? list.map((f) => q3(f.factor)) : undefined);
+    ai.leadTime = {
+      turbulentYears: lt.turbulentYears.mid, runUpYears: lt.runUpYears.mid, referenceLeadYears: lt.referenceLeadYears.mid,
+      leads, existential: fs(lt.existential.factors), hazards: {},
+    };
+    for (const [hz, x] of Object.entries(lt.hazards)) ai.leadTime.hazards[hz] = { factors: fs(x.factors), afterFactors: fs(x.afterFactors) };
+  } else warn('research/ai/ai-leadtime.json not found: AI effects do not depend on the year of full automation');
   for (const [hz, byLoc] of Object.entries(AI.rates)) {
     if (!hazards[hz]) { if (!(config.ai.unused || {})[hz]) warn(`AI rates for ${hz} are neither used nor set aside`); continue; }
     ai.hazards[hz] = {};
     for (const [l, r] of Object.entries(byLoc)) {
-      ai.hazards[hz][l] = { baseline: tri(r.baseline), now: tri(r.now), transition: tri(r.transition), after: tri(r.after), survivable: r.survivableShare ? r.survivableShare.mid : 1 };
+      ai.hazards[hz][l] = { now: q3(r.now), transition: q3(r.transition), after: q3(r.after), survivable: r.survivableShare ? r.survivableShare.mid : 1 };
     }
   }
 }
@@ -419,7 +430,7 @@ for (const it of items) {
 // The sceptic's AI effect should not exceed the concerned view's.
 for (const [hz, byLoc] of Object.entries((ai || {}).hazards || {})) {
   for (const [l, r] of Object.entries(byLoc)) {
-    if (r.transition[0] - r.now[0] > r.transition[2] - r.now[2] + 1e-12) warn(`AI rates for ${hz} in ${l}: the effect of AGI falls as concern rises`);
+    if (r.transition.lo - r.now.lo > r.transition.hi - r.now.hi + 1e-12) warn(`AI rates for ${hz} in ${l}: the effect of AGI falls as concern rises`);
   }
 }
 

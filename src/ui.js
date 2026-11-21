@@ -21,6 +21,10 @@ function migrate(old) {
     if (people.length) s.people = people;
     s.household = { pets: h.pets || 0 };
   }
+  // Settings from before the year of full automation replaced the AGI
+  // timeline: AI is left out, and the planning horizon is kept.
+  if (old.ai && !('automationYear' in old.ai)) s.ai = { ...defaultSettings(DATA).ai, horizonYears: old.ai.horizonYears || AI_HORIZON };
+  for (const p of s.people || []) delete p.impactEndYear;
   return s;
 }
 let settings = defaultSettings(DATA);
@@ -91,7 +95,7 @@ const pct = (p) => {
 const ITEM = Object.fromEntries(DATA.items.map((it) => [it.id, it]));
 const HAZARD_LABEL = (id) => (DATA.hazards[id] && DATA.hazards[id].label) || id;
 const AI = DATA.ai || null;
-const CUSTOM_YEARS = [2028, 2030, 2035];
+const AI_HORIZON = (DATA.ai && DATA.ai.horizonYears) || 5;
 
 // ---- controls ----
 
@@ -125,7 +129,6 @@ const HELP = {
   'p.infant': 'Under about one year old, so needs formula or other infant food that the household\'s ordinary food can\'t replace.',
   'p.hoursPerYear': 'Hours this member works a year. With the hour value and the counterfactual share it sets what a lost working day costs others.',
   'p.counterfactual': 'The share of this member\'s impact that would be lost if they could not work: 100% if no one would take up the slack, lower if others would. Default 50%.',
-  'p.impactEndYear': 'The year after which this member\'s work no longer matters for the impartial valuation, for example because transformative AI will have made it moot. Empty: their remaining working life, or the end of the AI horizon.',
   'add-person': 'Add another member. Shared items (water, food, a stove) are bought once for the household; personal items (respirators, vaccinations, a go-bag) become one entry per member.',
   'hh-pets': 'Pets need food and water in an emergency too. Adds pet supplies to the list.',
   city: 'Type a city of 50,000 people or more. It brings in the country\'s own figures where the model has them (power cuts, crime, prices, the value of a micromort and others) and fills in the local hazards below. The list of cities is built into the page: nothing you type leaves your browser.',
@@ -143,11 +146,10 @@ const HELP = {
   'tick-earthquake': 'A damaging earthquake is plausible. A medium rating counts at 30% of a high one.',
   'tick-wildfire': 'Your home is near wildland that burns. Never ticked automatically, because ThinkHazard\'s rating measures fire weather, which is high even in Paris and London.',
   'tick-flood': 'Your home is in a river or coastal flood zone. Ticked only on a high rating; untick it if you live well above the flood plain.',
-  'ai-timeline': 'When you expect artificial general intelligence. Several risks (pandemics from AI-assisted bioweapons, cyberattacks, war, unrest, scams) rise in the years around its arrival. "Leave AI out" assumes today\'s rates continue. "My own numbers" lets you give your own probabilities.',
-  'ai-concern': 'Picks between a careful sceptic\'s view of how much AI raises each risk (left), the central view (middle) and a highly concerned view (right).',
+  'ai-year': 'Your best guess of the year by which AI systems, with robots where needed, can do essentially every job more cheaply than people. The sooner it comes, the less time the world has to prepare, and the more turbulent the years before it: cyberattacks, outages, financial crises, unrest, war and engineered pandemics. It also ends the value of impartial members\' work. Leave it empty to leave AI out and assume today\'s rates continue.',
   'ai-horizon': 'How many years ahead you are preparing for. The AI-driven rates are averaged over this period.',
   rankOn: 'Averages weigh rare catastrophes fully, which is what expected value means; middle values use the median of each uncertain input and so favour items that pay in ordinary years.',
-  outlook: 'The probabilities of risks other than those driven by AI: base rates and public forecasts, or the view of a well-informed pessimist. A chosen AI timeline replaces this for the hazards it covers.',
+  outlook: 'The probabilities of risks other than those driven by AI: base rates and public forecasts, or the view of a well-informed pessimist. A year of full labour automation replaces this for the hazards AI drives.',
   deathValue: 'Remaining life-years: a death costs more the younger the person, in proportion to the (discounted) years they lose. Equal for everyone: every death costs the same, as in US government practice.',
   'p-micromort': 'A micromort is a one-in-a-million chance of dying. This is what avoiding one is worth to an adult on the local wage, in US dollars: the value of a statistical life divided by a million. Each personal member\'s value is scaled from this by their hour value and, by default, their age. Empty: the country\'s figure.',
   budget: 'How much you are willing to spend upfront. A line in the list marks where the running total crosses it.',
@@ -160,7 +162,6 @@ const HELP = {
   'show-all': 'The list shows the top 20 entries by default. This shows every item, including those that cost more than they return.',
 };
 
-for (const y of CUSTOM_YEARS) HELP[`ai-p-${y}`] = `Your probability that AGI will have arrived by the end of ${y}. The model interpolates between the three years.`;
 
 // Column headings of the list.
 const COLUMN_HELP = {
@@ -265,6 +266,13 @@ function placeNote() {
   return `<b>${esc(countryName(iso))} has no figures of its own.</b> The model uses those of the ${esc(preset)} preset, the closest of its three in income and region.`;
 }
 
+// What a member's death and lost work are worth, and until when their work
+// counts.
+function memberValueText(out) {
+  const work = out.impartial ? `; an average day of work ${whole(out.workDayUsd)}; work counts until ${out.impactEndYear}` : '';
+  return `${money(out.micromortValueUsd)} per micromort${work}`;
+}
+
 function peoplePanel() {
   const s = settings;
   const rows = s.people.map((p, i) => {
@@ -273,7 +281,7 @@ function peoplePanel() {
     const flags = PERSON_FLAGS.filter(([k]) => k !== 'infant' || child)
       .map(([k, label]) => `<label class="flag"><input type="checkbox" data-p="${i}" data-f="${k}"${p[k] ? ' checked' : ''}> ${label}</label>`).join('');
     const out = result && result.people && result.people[i];
-    const valueText = out ? `${money(out.micromortValueUsd)} per micromort${out.impartial && out.workDayUsd > 0 ? `; a lost work day ${whole(out.workDayUsd)}` : ''}` : '';
+    const valueText = out ? memberValueText(out) : '';
     return `<div class="person">
       <div class="prow">
         <input type="text" class="pname" data-p="${i}" data-f="name" value="${esc(p.name || '')}" placeholder="person ${i + 1}" aria-label="Name">
@@ -286,7 +294,6 @@ function peoplePanel() {
       ${imp ? `<div class="pimp">
         <label>Hours of work a year <input type="number" min="0" step="50" data-p="${i}" data-f="hoursPerYear" value="${p.hoursPerYear ?? ''}" placeholder="${DATA.defaults.hoursPerYear || 1800}"></label>
         <label>Counterfactual share <input type="number" min="0" max="100" step="5" data-p="${i}" data-f="counterfactual" value="${p.counterfactual !== undefined && p.counterfactual !== null ? Math.round(100 * p.counterfactual) : ''}" placeholder="50"> %</label>
-        <label>Impact ends in <input type="number" min="${CURRENT_YEAR}" max="2100" step="1" data-p="${i}" data-f="impactEndYear" value="${p.impactEndYear ?? ''}" placeholder="${out && out.impactEndYear ? out.impactEndYear : ''}"></label>
       </div>` : ''}
       <div class="meta pv">${valueText}</div>
     </div>`;
@@ -308,14 +315,9 @@ function controls() {
   const s = settings;
   const p = s.parameters || {};
   const ai = s.ai || {};
-  const custom = Object.fromEntries((ai.custom || []).map((c) => [c.year, c.p]));
   const aiPanel = !AI ? '' : `
     <div class="panel"><h3>Artificial intelligence</h3>
-      ${sel('ai-timeline', 'When AGI arrives', [['none', 'Leave AI out'], ...Object.entries(AI.timelines).map(([k, v]) => [k, v.label]), ['custom', 'My own numbers']], ai.timeline || 'none')}
-      <div id="ai-custom"${ai.timeline === 'custom' ? '' : ' style="display:none"'}>
-        ${CUSTOM_YEARS.map((y) => numf(`ai-p-${y}`, `Chance of AGI by the end of ${y} (%)`, custom[y] !== undefined ? Math.round(1000 * custom[y]) / 10 : '', 1, 100)).join('')}
-      </div>
-      <div class="field"><label for="ai-concern">How concerned you are</label><span class="range"><span class="meta">sceptic</span><input type="range" id="ai-concern" min="0" max="100" step="5" value="${Math.round(100 * (ai.concern === undefined ? 0.5 : ai.concern))}"><span class="meta">very</span></span></div>
+      <div class="field"><label for="ai-year">Year of full labour automation</label><input type="number" id="ai-year" min="${CURRENT_YEAR + 1}" max="2200" step="1" placeholder="none" value="${ai.automationYear > 0 ? ai.automationYear : ''}"></div>
       ${numf('ai-horizon', 'Years you are planning for', ai.horizonYears || AI.horizonYears, 1, 30)}
       <div class="meta" id="ai-note"></div>
     </div>`;
@@ -398,16 +400,12 @@ function readControls() {
   s.showHazards = $('haz-panel').open;
   s.showTicks = $('ticks-panel').open;
   if (AI) {
-    const points = CUSTOM_YEARS.map((y) => ({ year: y, p: num0($(`ai-p-${y}`).value) })).filter((c) => c.p !== undefined).map((c) => ({ year: c.year, p: Math.min(1, c.p / 100) }));
-    // Later years cannot be less likely than earlier ones.
-    for (let i = 1; i < points.length; i++) points[i].p = Math.max(points[i].p, points[i - 1].p);
+    // A year already past means automation now; an empty box leaves AI out.
+    const year = Math.round(num0($('ai-year').value) || 0);
     s.ai = {
-      timeline: $('ai-timeline').value, custom: points,
-      concern: Number($('ai-concern').value) / 100,
-      horizonYears: Math.max(1, Math.min(30, Math.round(num0($('ai-horizon').value) || AI.horizonYears))),
+      automationYear: year > 0 ? Math.max(CURRENT_YEAR + 1, year) : null,
+      horizonYears: Math.max(1, Math.min(30, Math.round(num0($('ai-horizon').value) || AI_HORIZON))),
     };
-    if (s.ai.timeline === 'custom' && !points.length) s.ai.timeline = 'none';
-    $('ai-custom').style.display = $('ai-timeline').value === 'custom' ? '' : 'none';
   }
 }
 
@@ -548,7 +546,7 @@ function listText() {
   let cutoff = r.entries.findIndex((e) => !(e.ratio > 1));
   if (cutoff < 0) cutoff = r.entries.length;
   const ticks = TICKS.filter(([k]) => s.ticks && s.ticks[k]).map(([, label]) => label.toLowerCase()).join(', ');
-  const timeline = !AI || !s.ai || s.ai.timeline === 'none' ? 'left out' : (AI.timelines && AI.timelines[s.ai.timeline] ? AI.timelines[s.ai.timeline].label : s.ai.timeline);
+  const timeline = !AI || !s.ai || !(s.ai.automationYear > 0) ? 'left out' : `full labour automation in ${s.ai.automationYear}; planning for ${s.ai.horizonYears || AI_HORIZON} years`;
   const rows = listRows(r, [cutoff]);
   const above = rows.filter((row) => row.side === 0).length;
   const several = s.people.length > 1;
@@ -625,9 +623,9 @@ function render() {
     ? `The <b>${nAbove} entries above the line</b> cost <b>${whole(upfront)} upfront</b>, or ${whole(annual)} a year with upkeep and your time. Each year they avert, in expectation, <b>${whole(averted$)} of hardship and loss and ${num(avertedM, avertedM >= 10 ? 0 : 1)} micromorts</b>: worth ${whole(picked.reduce((s, e) => s + e.valueUsd, 0))} in all, with deaths valued as shown for each member.`
     : 'Nothing on the list pays for itself at these settings.';
   if (AI) {
-    const on = settings.ai && settings.ai.timeline && settings.ai.timeline !== 'none';
+    const on = settings.ai && settings.ai.automationYear > 0;
     $('ai-note').textContent = !on ? 'The probabilities below are base rates, with AI left out.'
-      : `The probabilities below now reflect your timeline.${r.survival < 0.995 ? ` Every value is scaled by ${num(r.survival, 2)}: the chance, over your horizon, that no existential catastrophe has made preparation moot.` : ''}`;
+      : `The probabilities below now reflect full automation in ${settings.ai.automationYear}.${r.survival < 0.995 ? ` Every value is scaled by ${num(r.survival, 2)}: the chance, over your horizon, that no existential catastrophe has made preparation moot.` : ''}`;
   }
 
   const owned = ownedGroups();
@@ -675,11 +673,9 @@ function memberValues() {
   document.querySelectorAll('#controls .person').forEach((row, i) => {
     const out = result.people && result.people[i];
     if (!out) return;
-    row.querySelector('.pv').textContent = `${money(out.micromortValueUsd)} per micromort${out.impartial && out.workDayUsd > 0 ? `; an average day of work ${whole(out.workDayUsd)}` : ''}`;
+    row.querySelector('.pv').textContent = memberValueText(out);
     const hour = row.querySelector('[data-f="hourValue"]');
     if (hour) hour.placeholder = Number(result.timeValueUsdPerHour.toPrecision(3));
-    const end = row.querySelector('[data-f="impactEndYear"]');
-    if (end && out.impactEndYear) end.placeholder = out.impactEndYear;
   });
 }
 
@@ -739,7 +735,7 @@ $('controls').addEventListener('change', (ev) => {
     changed();
     return;
   }
-  if (['outlook', 'ai-timeline', 'ai-concern', 'ai-horizon'].includes(t.id) || t.id.startsWith('ai-p-')) {
+  if (['outlook', 'ai-year', 'ai-horizon'].includes(t.id)) {
     settings.probabilities = {};
   }
   // A member's age or standard changes which fields they have.
@@ -750,8 +746,7 @@ $('controls').addEventListener('change', (ev) => {
   changed();
 });
 $('controls').addEventListener('input', (ev) => {
-  if (ev.target.id === 'ai-concern') changed();
-  else if (ev.target.id === 'city') cityList(ev.target.value);
+  if (ev.target.id === 'city') cityList(ev.target.value);
 });
 
 // The city box: suggestions as the reader types, chosen with a click or the

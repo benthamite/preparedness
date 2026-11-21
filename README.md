@@ -10,7 +10,9 @@ actions by cost-effectiveness, for a household and risk outlook the reader sets.
     `research/BRIEF.md` (14 item groups, 6 hazard groups, 1 cross-cutting).
   - `ai/`: how advanced AI changes the hazard probabilities, written to
     `research/BRIEF-AI.md` (pandemics, cyber and infrastructure, war, economy,
-    timelines), with the cyber windows revised in `ai/cyber-windows.*`.
+    timelines), with the cyber windows revised in `ai/cyber-windows.*` and the
+    dependence on the year of full labour automation in `ai/ai-leadtime.*`
+    (brief: `BRIEF-AI-LEADTIME.md`).
   - `countries/`: figures of their own for 46 countries (power cuts, banking
     crises, violence and unrest, fire, prices and incomes, nuclear war),
     written to `research/BRIEF-COUNTRIES.md`, with the checkers' reports.

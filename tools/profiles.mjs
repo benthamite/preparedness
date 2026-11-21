@@ -11,7 +11,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const data = JSON.parse(readFileSync(join(root, 'data', 'model.json'), 'utf8'));
 const top = Number(process.argv[2] || 10);
 const filter = process.argv[3];
-const ai = { timeline: 'middle', concern: 0.5, horizonYears: 5 };
+const ai = { automationYear: 2035, horizonYears: 5 };
 const ba = { location: 'buenosAires', ...data.locations.buenosAires.home, ticks: data.locations.buenosAires.ticks };
 const we = { location: 'westernEurope', ...data.locations.westernEurope.home, ticks: data.locations.westernEurope.ticks };
 
@@ -22,10 +22,10 @@ const ea = (extra = {}) => P('adult', { valuation: 'impartial', hourValue: 100, 
 
 export const PROFILES = {
   'US apartment, two adults': {},
-  'US apartment, two adults, middle AI timeline': { ai },
-  'US apartment, two adults, short AI timeline, very concerned': { ai: { timeline: 'short', concern: 0.85, horizonYears: 5 } },
+  'US apartment, two adults, full automation in 2035': { ai },
+  'US apartment, two adults, full automation in 2030': { ai: { automationYear: 2030, horizonYears: 5 } },
   'US apartment, two adults valued impartially at $100 an hour': people(ea(), ea()),
-  'US apartment, two adults valued impartially, middle AI timeline': { ...people(ea(), ea()), ai },
+  'US apartment, two adults valued impartially, full automation in 2035': { ...people(ea(), ea()), ai },
   'US apartment, two people over 75': people(P('age75plus', { onMedication: true }), P('age75plus', { onMedication: true })),
   'US house, family of four, hurricane and flood zone': { dwelling: 'house', ...people(P('adult'), P('adult'), P('child'), P('child')), ticks: { hurricane: true, flood: true } },
   'US, adult on a critical drug': people(P('adult', { criticalDrug: true }), P('adult')),
@@ -33,7 +33,7 @@ export const PROFILES = {
   'Western Europe apartment, two adults': we,
   'Western Europe apartment, one person over 75 living alone': { ...we, ...people(P('age75plus')) },
   'Buenos Aires apartment, two adults': ba,
-  'Buenos Aires apartment, two adults, middle AI timeline': { ...ba, ai },
+  'Buenos Aires apartment, two adults, full automation in 2035': { ...ba, ai },
 };
 
 function settingsOf(patch) {

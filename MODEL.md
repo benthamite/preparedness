@@ -261,10 +261,10 @@ a standard of value:
   elsewhere. Hardship is wellbeing, so `w_i = C ÷ (10⁶ × personal v_i)`, a
   small number. A day of lost work costs `d_i = hour value × hours a year ÷
   365`, at the full hour value: nobody replaces a lost day, and the
-  counterfactual share applies only to a whole career. Impact ends when the
-  reader says, by default at the end of the AI planning horizon when a
-  timeline is set and at 65 otherwise; with a timeline, a lost day counts in
-  proportion to the share of the horizon before that point. Worked check: age
+  counterfactual share applies only to a whole career. Impact ends at 65 (in
+  five years at the least) or at the reader's year of full labour
+  automation, whichever comes first, and a lost day counts in proportion to
+  the share of the planning horizon before that point. Worked check: age
   35, $100 an hour, 1,800 hours, half counterfactual, 30 years, 4% → $1.56
   per micromort.
 
@@ -315,24 +315,48 @@ probability: the annual chance of that hazard above which the item pays.
 
 ### 9. Advanced AI
 
-The reader states when they expect AGI (a preset anchored on named forecasts,
-or their own probabilities by 2028, 2030 and 2035), how concerned they are,
-and how many years they are planning for. For each hazard the AI research
-gives yearly rates for now, for the five years after AGI arrives, and for the
-time after that. Each rate is three figures: the view of a careful sceptic,
-the central view, and the view of someone highly concerned; the reader's
-level of concern picks between them. The model's own probabilities are
-today's. With a timeline chosen, each is shifted by the average over the
-planning horizon of the rate the timeline implies, less today's rate, times
-the share of that risk a household could survive. Leaving AI out therefore
-means assuming that today's rates persist, not that AI has no effect today.
-A chosen timeline replaces the pessimistic outlook for the hazards it covers,
+The reader gives one year, their point estimate of full labour automation
+(when AI systems, with robots where needed, can do essentially every job more
+cheaply than people), and how many years they are planning for. Leaving the
+year empty leaves AI out: today's rates persist, which is not the same as
+assuming AI has no effect today.
+
+For each AI-driven hazard the AI research gives yearly rates for now, for
+the transition and for the time after full automation, each as three
+figures: the view of a careful sceptic, the central view, and the view of
+someone highly concerned. Like any other uncertain input they are resolved by
+their averages or middles, or drawn; all AI figures share one draw, since a
+sceptic about one effect is a sceptic about the others. The path of a
+hazard's yearly probability is:
+
+- today's rate until a run-up of `R` years before the turbulent period;
+- then an excess rising linearly to its full level, `(transition − now) ×
+  f(L)`, which holds through the `T` turbulent years before full automation;
+- after full automation, the `after` rate (scaled by a second lead-time
+  factor where the research gives one).
+
+`L` is the lead time, the years from the start of 2027 to the middle of the
+year of full automation, and `f(L)` is a factor from
+`research/ai/ai-leadtime.*`, equal to 1 at the lead time the transition
+figures were estimated for. It is larger the sooner automation comes, because
+the world then has less time to prepare: for cyber defence to catch up with
+AI offence, for biosecurity countermeasures, for financial regulation and
+labour markets to adjust, for arrangements that keep crises from becoming
+wars. It is given at lead times of 1, 3, 5, 8, 12, 20 and 30 years, with
+straight lines between them and flat beyond.
+
+The model's own probabilities are today's. With a year given, each is
+shifted by the average of this path over the planning horizon, less today's
+rate, times the share of the added risk a household could survive. A year of
+full automation replaces the pessimistic outlook for the hazards it covers,
 since that outlook was built on the same forecasts.
 
 Every hazard's weight is also scaled by the chance, over the horizon, that no
 existential catastrophe has happened: nothing a household owns is worth
-anything after one. The chance of such a catastrophe given AGI is one of the
-three-figure quantities, spread evenly over the transition.
+anything after one. The research's chance of such a catastrophe, scaled by
+its own lead-time factor, is spread evenly over the turbulent years.
+
+The year also ends the impartial value of members' work (section 7).
 
 A probability the reader sets by hand overrides all of this for that hazard.
 
