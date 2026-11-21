@@ -110,3 +110,5 @@ th[data-help], .field > label, .pflags label, .pimp label, .prow .hour { cursor:
        background: #333; color: #fff; font-size: 12px; line-height: 1.4; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
        pointer-events: none; text-transform: none; letter-spacing: 0; font-weight: 400; }
 body.dark #tip { background: #e5e5e5; color: #222; }
+td.who { font-size: 12px; color: #666; white-space: nowrap; }
+body.dark td.who { color: #999; }
