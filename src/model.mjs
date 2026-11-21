@@ -700,8 +700,8 @@ export function buildWorld(m, settings) {
     // Cash is priced in dollars everywhere, and its cost is given whole as
     // upkeep, so it carries no price index and no charge for capital.
     const unitUsd = it.price * (it.capitalFree ? 1 : priceIndex);
-    const perUnit = (it.capitalFree ? 0 : unitUsd * capital)
-      + (it.upkeepUsdPerUnitYear || 0) + (it.volumeLitres || 0) * storage;
+    const perUnitCapital = it.capitalFree ? 0 : unitUsd * capital;
+    const perUnit = perUnitCapital + (it.upkeepUsdPerUnitYear || 0) + (it.volumeLitres || 0) * storage;
     // A fixed price is paid once, with the first level (a heater, as against
     // the fuel that is the item's ladder), and once for all the members'
     // copies of a personal item (the kit for checking a mask's fit).
@@ -711,9 +711,15 @@ export function buildWorld(m, settings) {
     // person must spend it; and, like money upkeep, cut by the everyday
     // share where the upkeep is itself everyday use. An hour is the owner's,
     // or for shared things that of the member whose hour is valued least.
-    const hours = ((it.setupHours || 0) * crf(rate, it.setupLifeYears || life) + (it.upkeepHoursPerYear || 0))
-      * (owner ? owner.hv : sharedHour) * (it.hoursPerPerson ? scale : 1);
-    const running = (hours + (it.upkeepUsdPerYear || 0)) * (it.everydayUpkeep ? 1 - e : 1);
+    const hourUsd = (owner ? owner.hv : sharedHour) * (it.hoursPerPerson ? scale : 1);
+    const upkeepShare = it.everydayUpkeep ? 1 - e : 1;
+    // The running cost in its three parts, for the item's details.
+    const runningParts = {
+      setupTime: (it.setupHours || 0) * crf(rate, it.setupLifeYears || life) * hourUsd * upkeepShare,
+      upkeepTime: (it.upkeepHoursPerYear || 0) * hourUsd * upkeepShare,
+      money: (it.upkeepUsdPerYear || 0) * upkeepShare,
+    };
+    const running = runningParts.setupTime + runningParts.upkeepTime + runningParts.money;
     const item = {
       i, id: owner ? `${it.id}@${owner.key}` : it.id, baseId: it.id, person, spec: it, applicable, ladder, scale,
       maxLevel: ladder ? ladder.length : 1,
@@ -724,9 +730,10 @@ export function buildWorld(m, settings) {
       reliability: it.reliability === undefined ? 1 : it.reliability,
       lateClass: it.lateBuyClass || 'none',
       requires: it.requires || [],
-      unitUsd, perUnit, fixedCapital: fixedUsd * capital, running, fixedUsd,
+      unitUsd, perUnit, perUnitCapital, fixedCapital: fixedUsd * capital, running, runningParts, fixedUsd,
       siblings: [],
       setupHours: (it.setupHours || 0) * (it.hoursPerPerson ? scale : 1),
+      upkeepHours: (it.upkeepHoursPerYear || 0) * (it.hoursPerPerson ? scale : 1),
       leave: false,
       needSet: new Set(),
       chanSet: new Set(),
@@ -1368,11 +1375,24 @@ export function buildWorld(m, settings) {
     const units = (it.unitsAt(to) - it.unitsAt(from)) * it.scale;
     const first = from === 0;
     const fixed = first && !(level && it.siblings.some((s) => level[s] > 0));
+    const capital = units * it.perUnitCapital + (fixed ? it.fixedCapital : 0);
+    const rp = it.runningParts;
+    // The yearly cost, split: the purchase spread over its life; money spent
+    // on upkeep and storage; and time, to set up (spread over its life) and
+    // to keep up.
+    const parts = {
+      capital,
+      money: units * (it.perUnit - it.perUnitCapital) + (first ? rp.money : 0),
+      setupTime: first ? rp.setupTime : 0,
+      upkeepTime: first ? rp.upkeepTime : 0,
+      upkeepHours: first ? it.upkeepHours : 0,
+    };
     return {
       annual: units * it.perUnit + (first ? it.running : 0) + (fixed ? it.fixedCapital : 0),
       upfront: units * it.unitUsd + (fixed ? it.fixedUsd : 0),
       hours: first ? it.setupHours : 0,
       units,
+      parts,
     };
   }
 
@@ -1437,10 +1457,11 @@ function candidates(W, level) {
 }
 
 function costOf(W, level, add) {
-  const c = { annual: 0, upfront: 0, hours: 0 };
+  const c = { annual: 0, upfront: 0, hours: 0, parts: { capital: 0, money: 0, setupTime: 0, upkeepTime: 0, upkeepHours: 0 } };
   for (const [i, lv] of add) {
     const x = W.cost(i, level[i], lv, level);
     c.annual += x.annual; c.upfront += x.upfront; c.hours += x.hours;
+    for (const k in c.parts) c.parts[k] += x.parts[k];
   }
   return c;
 }
@@ -1522,7 +1543,7 @@ export function rank(data, settings) {
         return { id: it.baseId, key: it.id, person: it.person === undefined ? null : W.people[it.person].key, level: lv, label: it.ladder ? it.ladder[lv - 1].label : null, units: it.unitsAt(lv) * it.scale };
       }),
       add: add.map(([i, lv]) => [W.items[i].id, lv]),
-      upfrontUsd: c.upfront, setupHours: c.hours, annualCostUsd: c.annual,
+      upfrontUsd: c.upfront, setupHours: c.hours, annualCostUsd: c.annual, annualCostParts: c.parts,
       hardshipUsd: d.usd, micromorts: d.mm, valueUsd: value,
       ratio: ratioOf(value, c.annual),
       byHazard, breakEven,

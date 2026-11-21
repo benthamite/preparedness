@@ -1,9 +1,10 @@
 // Tests for the engine on a small synthetic model whose answers can be worked
 // out by hand. Run with: node --test
 
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { rank, robustness, cumulative, windowDays, drawTriple, meanTriple, resolveModel, normInv, STRATA, arrivalCdf, atConcern, valuePeople, annuity } from '../src/model.mjs';
+import { rank, robustness, cumulative, windowDays, drawTriple, meanTriple, resolveModel, normInv, STRATA, arrivalCdf, atConcern, valuePeople, annuity, defaultSettings } from '../src/model.mjs';
 
 const flat = (v) => ({ lo: v, mid: v, hi: v });
 const fixed = (days) => ({ p50: days, p90: days, p99: days });
@@ -610,4 +611,17 @@ test('lost work from needs unmet on the same days is not double-counted', () => 
   // leaving water unmet 2 days; 3 days at a half and 2 at 0.75 = 3 days.
   const w = entry(r, 'water', 1);
   near(w.hardshipUsd, 0.1 * (3.5 - 3) * 730);
+});
+
+test('the parts of the yearly cost add up to it, with time at the hour value', () => {
+  const d = JSON.parse(readFileSync(new URL('../data/model.json', import.meta.url)));
+  const r = rank(d, { ...defaultSettings(d), people: [{ id: 1, age: 'adult', valuation: 'personal', hourValue: 1000 }] });
+  assert.ok(r.entries.every((e) => Number.isFinite(e.annualCostUsd)));
+  for (const e of r.entries) {
+    const p = e.annualCostParts;
+    assert.ok(Math.abs(p.capital + p.money + p.setupTime + p.upkeepTime - e.annualCostUsd) < 1e-6 * Math.max(1, e.annualCostUsd), e.items[0].id);
+  }
+  // The elastomeric mask: upkeep hours a year at $1,000 an hour.
+  const m = r.entries.find((e) => e.items[0].id === 'elastomeric-respirator');
+  assert.ok(Math.abs(m.annualCostParts.upkeepTime - 1000 * m.annualCostParts.upkeepHours) < 1e-6);
 });

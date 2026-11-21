@@ -496,7 +496,7 @@ function peopleText() {
   }).join('; ');
 }
 
-function detail(e) {
+function detail(e, all = [e]) {
   const parts = [];
   for (const x of e.items) {
     const it = ITEM[x.id];
@@ -513,12 +513,29 @@ function detail(e) {
     if (be.probability <= 0) parts.push(`<p>Pays for itself even without “${esc(HAZARD_LABEL(be.hazard))}”.</p>`);
     else if (be.probability <= 1) parts.push(`<p>Pays for itself if the yearly chance of “${esc(HAZARD_LABEL(be.hazard))}” is above ${pct(be.probability)}%. It is set at ${pct(be.current)}%.</p>`);
   }
-  if (e.setupHours > 0) parts.push(`<p>Time to set up: ${num(e.setupHours, 1)} hours, counted in the yearly cost.</p>`);
+  parts.push(costText(all));
   const src = e.items.flatMap((x) => ITEM[x.id].sources || []);
   if (src.length) {
     parts.push('<p>Sources: ' + src.slice(0, 6).map((u) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/, '').split('/')[0])}</a>`).join(', ') + '.</p>');
   }
   return parts.join('');
+}
+
+// Where the yearly cost comes from. Time is valued at the hour value of
+// whoever spends it; for shared items, the lowest in the household.
+function costText(all) {
+  const sum = (f) => all.reduce((t, e) => t + (e.annualCostParts ? e.annualCostParts[f] : 0), 0);
+  const setupH = all.reduce((t, e) => t + e.setupHours, 0);
+  const upkeepH = sum('upkeepHours');
+  const pieces = [
+    [sum('capital'), 'the purchase, spread over its life'],
+    [sum('money'), 'upkeep and storage'],
+    [sum('setupTime'), `${num(setupH, 1)} hours to set up, spread over its life`],
+    [sum('upkeepTime'), `${num(upkeepH, upkeepH >= 1 ? 1 : 2)} hours a year of upkeep`],
+  ].filter(([v]) => v >= 0.005).map(([v, t]) => `${money(v)} for ${t}`);
+  const total = all.reduce((t, e) => t + e.annualCostUsd, 0);
+  const who = all.length > 1 ? ` for ${whoText(all.map((e) => String(e.items[0].person)))} together` : '';
+  return `<p>Yearly cost${who}: ${money(total)}${pieces.length ? `, of which ${pieces.join('; ')}` : ''}. Time is valued at the hour value of whoever spends it; for a shared item, at the lowest in the household.</p>`;
 }
 
 // The list as plain text (Markdown), for the reader to keep or to give to an
@@ -642,7 +659,7 @@ function render() {
     const chance = chances.includes(null) ? '…' : lo === hi ? `${lo}%` : `${lo}–${hi}%`;
     const who = several ? `<td class="who">${esc(whoText(row.who))}</td>` : '';
     html += `<tr class="entry${i >= cutoff ? ' below' : ''}" data-key="${key}"><td class="cb"><input type="checkbox" data-own="${row.idx.join(',')}" title="I already have this"></td><td class="r">${n + 1}</td><td class="name" data-toggle="${key}">${entryName(e)}<div class="sub">${esc(ITEM[e.items[0].id].group || '')}</div></td>${who}<td class="r">${whole(row.upfrontUsd)}</td><td class="r">${money(row.annualCostUsd)}</td><td class="r">${money(row.hardshipUsd)}</td><td class="r">${num(row.micromorts, Math.abs(row.micromorts) >= 10 ? 0 : 2)}</td><td class="r"><span class="bar" style="width:${barw(row.ratio)}px"></span>${ratioText(row.ratio)}</td><td class="r">${chance}</td><td class="for">${mainText}</td></tr>`;
-    if (open[key]) html += `<tr class="detail"><td colspan="${cols}">${detail(e)}</td></tr>`;
+    if (open[key]) html += `<tr class="detail"><td colspan="${cols}">${detail(e, row.entries)}</td></tr>`;
   });
   html += '</tbody></table>';
   if (rows.length > SHORT_LIST) {
