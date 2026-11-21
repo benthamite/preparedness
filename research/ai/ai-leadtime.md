@@ -1,130 +1,147 @@
 # ai-leadtime: AI-driven risk by the years left before full automation
 
-Assignment `ai-leadtime`. Sources read on 20 November 2026. L is the number of years from the start of 2027 to full labour automation.
+Assignment `ai-leadtime`. Sources read on 20 November 2026. Revised the same day after the independent check (`ai-leadtime.check.md`) and the engine changes: monthly averaging, a share after automation that fades, the existential factor on the odds. L is the number of years from the start of 2027 to full labour automation.
 
-| Figure | Middle | Range | Tag |
+| Figure | Middle | Range | First version |
 |---|---|---|---|
-| `referenceLeadYears` | 5 | 3–8 | guess |
-| `turbulentYears` | 5 | 2–10 | guess |
-| `runUpYears` | 3 | 1–8 | guess |
+| `referenceLeadYears` | 5 | 3–8 | 5 |
+| `turbulentYears` | 3.5 | 1.5–10 | 5 |
+| `runUpYears` | 2 | 1–6 | 3 |
 
-Every hazard factor is a guess. Only the existential factors rest on forecasts made conditional on timelines.
+Every factor is a guess. Only the existential factors rest on forecasts made conditional on timelines.
 
-**Reading conventions.** "Verified" means I read the claim on a page I fetched. The fetch tool passes pages through a summarising model and caps quotations at about 125 characters, so check quotations before print. The NIST guide and the White House memorandum were read as PDF text and pages. Claims taken from the sibling files are marked unverified.
+**Reading conventions.** "Verified" means I read the claim on a page I fetched. The fetch tool summarises pages and caps quotations at about 125 characters, so check quotations before print. NIST and the White House memorandum were read as PDF; the Metaculus figures from the data inside the embed pages. Claims taken from sibling files are marked unverified.
 
 ## 1. What sources say
 
-**Forecasts conditional on timelines.** I found four, all about catastrophe or takeover, none about a household-level hazard.
+**Forecasts conditional on timelines.** Four, all about catastrophe or takeover.
 
-- Lifland's thread (LessWrong, 14 September 2022) asked for the chance of an AI-caused existential catastrophe given AGI by 2025, in 2025–2030, 2030–2040, 2040–2060 and after 2060. Lifland: 65%, 60%, 55%, 50%, 45%. Greenblatt: 73, 53, 41, 30, 28. Finnveden: 80, 50, 35, 25, 20. Medians of the 41 to 45 answers per window, computed by me: 84.5, 74, 65, 46, 34.5. The fetch tool rebuilt the answer lists from the page layout.
-- Metaculus question 12840, the same question: 30% for arrival in 2030–2039, 11% for 2060–2099, 20% for 2022–2024 (111 forecasters; embed page only). Dickens reports a range "from 50% to 9.3%" in 2025 without saying which window is which.
-- Greenblatt (8 October 2025), takeover risk by lead time for safety work: 7% with ten years, 13% with one to three years, 20% with one to nine months, 45% with none but "ten people on the inside", 75% otherwise.
-- MacAskill and Taylor (Forethought, 22 January 2026), for AI research automated by 2027, 2035 and 2045: US coup risk "22%/10%/7%"; China's chance of a decisive advantage "10%/30%/50%"; "On longer timelines, takeoff is likely slower"; risk from other catastrophes rises with "a longer 'time of perils'".
+- Lifland's thread (LessWrong, September 2022): the chance of an AI-caused existential catastrophe given AGI by 2025, in 2025–2030, 2030–2040, 2040–2060 and after 2060. Medians of 41 to 45 answers: 84.5, 74, 65, 46, 34.5. Two people are counted twice; without them: 83, 70, 63, 45, 34. Of the 37 who answered every window, two rise after the second.
+- Metaculus 12840 asks a narrower thing: a fall of more than 95% in world population from AI within 25 years of AGI. For arrival in 2025–2029, 2030–2039, 2040–2059 and 2060–2099: 40%, 30%, 17%, 11% (79 to 100 forecasters).
+- Greenblatt (October 2025), takeover risk by lead time bought for safety work: 7% with ten years, 13% with one to three, 20% with months, 45% with none, 75% otherwise; 38% on his own weights.
+- MacAskill and Taylor (Forethought, January 2026), for AI research automated by 2027, 2035 and 2045: US coup risk "22%/10%/7%", conditional on US dominance, itself 85%, 55%, 35%; China's chance of a decisive advantage 10%, 30%, 50%; "On longer timelines, takeoff is likely slower".
 
-FRI's LEAP wave 9 conditions on pace, not date. Median expert, catastrophe killing over 10% of people by 2100: 2% under slow progress, 10% under rapid. FBI-reported cybercrime losses in 2031: $46 billion against $70 billion.
+FRI's LEAP wave 9 conditions on pace: catastrophe by 2100 at 2% under slow progress and 10% under rapid; cybercrime losses in 2031 of $46 billion against $70 billion.
 
 **How fast defences adapt.**
 
-- Software. Mean time to exploit is "an estimated -7 days" (M-Trends 2026). Median time to patch rose "from 32 days to 43 days"; 26% of known-exploited flaws are fully fixed (Verizon via Tenable). Anthropic, June 2026: "within 6 to 12 months" many companies will have Mythos-class models; "the bottleneck in cybersecurity is now verifying, disclosing, and patching". Android's memory-safety share of vulnerabilities fell "from 76 percent in 2019 to an expected 24 percent" in 2024. Sentinel: 35% that a memory-safe operating system passes 5% of servers by 2030; 7.1% that a tenth of new software carries proofs in 2027.
-- Control systems. Operational technology lasts "10 to 15 years and sometimes longer", IT "three to five years" (NIST SP 800-82r3). Large transformers take "as long as four years" (PwC via pv magazine).
-- Biosecurity. FRI's experts: 0.3% a year for a human-caused epidemic, 1.5% with AI capabilities, back to 0.4% with safeguards and mandatory synthesis screening. The US policy of 5 November 2026 binds only recipients of federal funds and gives them 250 to 340 days. COVID-19 vaccines took 326 days; CEPI's goal is 100. The Apollo programme for biodefense set a ten-year horizon ("by 2030", from 2021).
-- Finance and fraud. After three years of rapid credit and asset-price growth, a crisis follows within three years with probability about 40%, against 7% (Greenwood and others). Basel III: published 2010, final reforms 2017, transition to 2028. US chip cards: under 5% of in-person transactions in 2015, nearly 90% in 2022; counterfeit fraud fell on one network type and returned to its 2015 level on the other (Kansas City Fed).
-- Labour and unrest. The China shock "plateaued in 2010"; its local effects "are present out to 2019". Threshing machines caused the Swing riots, less "where alternative employment opportunities softened the blow". "If automation proceeds sufficiently slowly ... wages may rise forever" (Korinek and Suh).
-- War. "Large, rapid shifts in the distribution of power can lead to war" (Powell). SALT I took "two and a half years" of talks, 27 years after the first bomb; the non-proliferation treaty seven years from proposal to signature. Cotton-Barratt: "the rapidity of change during an AI takeoff" raises nuclear risk.
+- Software: mean time to exploit "an estimated -7 days"; median time to patch up "from 32 days to 43 days", 26% of known-exploited flaws fixed; Mythos-class models at many companies "within 6 to 12 months"; Android's memory-safety share "from 76 percent in 2019 to an expected 24 percent" in 2024; Sentinel gives 35% to a memory-safe operating system passing 5% of servers by 2030.
+- Control systems: equipment lasts "10 to 15 years and sometimes longer" (NIST); large transformers take up to four years.
+- Biosecurity: FRI's experts put a human-caused epidemic at 0.3% a year, 1.5% with AI capabilities, 0.4% with safeguards and mandatory screening. The US policy of 5 November 2026 binds only federally funded buyers. Vaccines: 326 days for COVID-19 against a goal of 100. The Apollo programme for biodefense: ten years.
+- Finance and fraud: a crisis follows a credit boom within three years 40% of the time, against 7%. Basel III ran from 2010 to 2028. US chip cards took seven years; counterfeit fraud fell on one network type and returned on the other.
+- Labour: the China shock "plateaued in 2010" and its effects "are present out to 2019"; threshing machines caused riots, fewer where other work existed; "If automation proceeds sufficiently slowly ... wages may rise forever".
+- War: "large, rapid shifts in the distribution of power can lead to war" (Powell); SALT I took two and a half years of talks, 27 years after the first bomb.
 
-**Length of the transition.** AI 2027's race ending: AGI in August 2027, "a million new robots per month" by the end of 2028, "Humans realize that they are obsolete" in 2029. Metaculus: weak AGI 11 Aug 2027, strong AGI (with robotics) 23 May 2030, weak AGI to superintelligence 23.3 months. Davidson: 20% to 100% automation of cognitive tasks in about three years (25% under one, 80% under ten). Davidson and Hadshar: the industrial explosion "will proceed more slowly" than the intelligence explosion.
+**Length of the transition.** AI 2027's race ending: AGI in August 2027, people "obsolete" in 2029. Metaculus: weak AGI August 2027, strong AGI May 2030. Davidson: about three years from 20% to 100% of cognitive tasks.
 
 ## 2. What I infer
 
-**Reference lead time: 5 years.** The five files anchor their transition rates on forecasts and defences of 2026–2028 and on AGI in about 2027–2030:
+**Reference lead time: 5 years.** The five files anchor on forecasts and defences of 2026–2028 and on AGI in about 2027–2030: FRI's conditionals for 2028 (`ai-bio`); the grid pilot for 2026 and Sentinel for 2028 (`ai-cyber`); FRI's rapid scenario for 2030 and the Fed's 2026 debt figures (`ai-economy`); a multiplier on today's rates (`ai-war`); a centre of "about 2027–2029" (`ai-timelines`). AGI at 2028.5 plus about 3.5 years to full automation gives 2032. The 3.5 is above the three fast-view figures because the reader's milestone needs robots at scale; with 3 the reference would be 4.5, with 5, 6.5.
 
-- `ai-bio`: FRI's conditionals for 2028, "2026-era evals", AI 2027 at 70–90% speed.
-- `ai-cyber`: the FRI and GovAI pilot for 2026, Sentinel's forecasts for 2028, open models "4 to 7 months" behind.
-- `ai-economy`: FRI's rapid scenario for 2030, Korinek and Suh's five-year scenario, the Fed's 2026 debt figures.
-- `ai-war`: a multiplier on today's rates, Aschenbrenner and AI 2027.
-- `ai-timelines`: centre "about 2027–2029", Metaculus 2030.
+**`turbulentYears`: 3.5.** The old window was five years from AGI. The full rate now runs from AGI to automation, and the last 1.5 years of the old window fall after automation (`afterShare`). With five, the full rate began 1.5 years before AGI.
 
-AGI at 2028.5 plus about 3.5 years to full automation gives 2032, five years from the start of 2027. By hazard the reference runs from 4 (cyber, bio) to 7 (war). The existential figure of 0.2 is different: its sources (Ord 2020, Christiano 2023, AI Impacts 2024, Samotsvety 2022) had median AGI dates in the 2030s and 2040s, so I set its factor to 1 at eight years.
+**`runUpYears`: 2.** The engine ramps from today's rate, observed at the end of 2026. For the reference reader AGI is two years on. That puts 17% of the excess before AGI; `ai-timelines` says 15%.
 
-**`turbulentYears`: 5.** The old window began at AGI; the new one ends at full automation, about 3.5 years after AGI. A five-year window therefore starts a year before AGI, where `ai-timelines` already puts misuse and economic risk, and the existing yearly figures cover the same number of years.
+**Existential factors, on the odds.** A window stands for a lead of its midpoint (of the part still ahead) plus 3.5 years: about 5, 11.5 and 26.5. Ratios of odds against the level at eight years:
 
-**`runUpYears`: 3.** Today's cyber rates are 2 to 10 times baseline and the first AI-run intrusions date from 2025, three years before the reference turbulent period. Davidson's three years of partial automation agree.
+| Source | L≈5 | L≈11.5 | L≈26.5 | After 2060 |
+|---|---|---|---|---|
+| Thread, no duplicates | 1.16 | 0.85 | 0.41 | 0.26 |
+| Metaculus | 1.22 | 0.78 | 0.37 | 0.23 |
+| Greenblatt, 2022 | 1.25 | 0.77 | 0.47 | 0.43 |
+| Finnveden, 2022 | 1.32 | 0.71 | 0.44 | 0.33 |
 
-**Existential factors.** Windows map to L by adding four to five years to their midpoints: 2025–2030 is L ≈ 5, 2030–2040 L ≈ 12, 2040–2060 L ≈ 28. Relative to the level at eight years, the thread's medians give 1.06, 0.93 and 0.66; Greenblatt and Finnveden 1.12, 0.83 and 0.60; Metaculus is steeper.
+As ratios of probabilities the thread gives 1.05, 0.94, 0.67 and Metaculus 1.13, 0.85, 0.48, 0.31. I use the odds because the engine does; the sources start from 35% to 67%, and carrying their odds ratios down to 0.2 is an assumption. For one year: Greenblatt's no-lead plans against his average are 1.38 in probability, 1.8 in odds; 1.2 if months of lead are still open.
 
 ## 3. My guesses
 
-**Shorter leads.** Factor = compression × unpreparedness × lag. Compression is the same transition in fewer years (about 3 at L = 1, 1.6 at L = 3). Unpreparedness is 1.05 to 1.3. Lag is the time attackers, strikers, armies and crises need (0.35 for fraud to 0.8 for grid sabotage at L = 1).
+**Shorter leads.** Factor = compression (3.5 turbulent years in one: 3.5; in 2.75: 1.27) × unpreparedness (1.02–1.25) × the share that can happen before automation (0.35 for fraud to 0.75 for power at one year). The terms express a judgment; they are not derivations.
 
-**Longer leads.** Factor = dilution × preparedness, down to a floor. Dilution (0.9, 0.78, 0.65, 0.57 at 8, 12, 20, 30) reflects a slower takeoff spread over more than five years. Preparedness follows the adaptation speeds above.
-
-Middle factors:
+**Longer leads.** Factor = what the extra preparation buys, down to a floor. No dilution: the engine keeps the turbulent period fixed.
 
 | Hazard | L=1 | 3 | 5 | 8 | 12 | 20 | 30 |
 |---|---|---|---|---|---|---|---|
-| `pandemicModerate` | 1.4 | 1.2 | 1 | 0.85 | 0.7 | 0.5 | 0.4 |
-| `pandemicSevere` | 1.5 | 1.25 | 1 | 0.85 | 0.68 | 0.5 | 0.42 |
-| `cyberOutage` | 2.3 | 1.5 | 1 | 0.8 | 0.6 | 0.42 | 0.35 |
-| `gridLong` | 2.5 | 1.5 | 1 | 0.8 | 0.62 | 0.45 | 0.38 |
-| `waterSystemFailure` | 1.8 | 1.35 | 1 | 0.85 | 0.65 | 0.42 | 0.33 |
-| `paymentsOutage` | 2.2 | 1.5 | 1 | 0.65 | 0.4 | 0.25 | 0.2 |
-| `commsOutage` | 2.3 | 1.5 | 1 | 0.7 | 0.45 | 0.3 | 0.25 |
-| `cyberSupplyShock` | 2.0 | 1.4 | 1 | 0.75 | 0.55 | 0.35 | 0.3 |
-| `bankingCrisis` | 1.8 | 1.4 | 1 | 0.8 | 0.6 | 0.45 | 0.4 |
-| `supplyShock` | 1.6 | 1.3 | 1 | 0.8 | 0.6 | 0.45 | 0.4 |
-| `aiFraud` | 1.2 | 1.15 | 1 | 0.9 | 0.75 | 0.6 | 0.5 |
-| `greatPowerWar` | 1.6 | 1.3 | 1 | 0.9 | 0.75 | 0.6 | 0.5 |
-| `nuclearNear` | 1.8 | 1.35 | 1 | 0.88 | 0.75 | 0.6 | 0.52 |
-| `nuclearFar` | 1.6 | 1.3 | 1 | 0.9 | 0.78 | 0.65 | 0.55 |
-| `civilUnrest` | 1.5 | 1.35 | 1 | 0.8 | 0.58 | 0.42 | 0.35 |
-| existential | 1.6 | 1.3 | 1.15 | 1 | 0.88 | 0.7 | 0.57 |
+| `pandemicModerate` | 1.55 | 1.1 | 1 | 0.93 | 0.87 | 0.77 | 0.7 |
+| `pandemicSevere` | 1.7 | 1.15 | 1 | 0.93 | 0.86 | 0.76 | 0.72 |
+| `cyberOutage` | 2.9 | 1.3 | 1 | 0.9 | 0.78 | 0.65 | 0.6 |
+| `gridLong` | 2.3 | 1.2 | 1 | 0.9 | 0.8 | 0.7 | 0.65 |
+| `waterSystemFailure` | 2.1 | 1.2 | 1 | 0.93 | 0.82 | 0.65 | 0.57 |
+| `paymentsOutage` | 2.45 | 1.3 | 1 | 0.75 | 0.5 | 0.38 | 0.33 |
+| `commsOutage` | 2.6 | 1.3 | 1 | 0.8 | 0.6 | 0.47 | 0.42 |
+| `cyberSupplyShock` | 2.2 | 1.25 | 1 | 0.85 | 0.7 | 0.55 | 0.5 |
+| `bankingCrisis` | 2.0 | 1.2 | 1 | 0.88 | 0.76 | 0.67 | 0.63 |
+| `supplyShock` | 1.75 | 1.15 | 1 | 0.88 | 0.76 | 0.67 | 0.63 |
+| `aiFraud` | 1.35 | 1.05 | 1 | 0.97 | 0.92 | 0.86 | 0.8 |
+| `greatPowerWar` | 1.9 | 1.15 | 1 | 0.97 | 0.9 | 0.82 | 0.77 |
+| `nuclearNear` | 2.1 | 1.2 | 1 | 0.96 | 0.9 | 0.82 | 0.78 |
+| `nuclearFar` | 1.85 | 1.15 | 1 | 0.97 | 0.92 | 0.86 | 0.82 |
+| `civilUnrest` | 1.75 | 1.15 | 1 | 0.87 | 0.72 | 0.6 | 0.55 |
+| existential (odds) | 1.6 | 1.35 | 1.15 | 1 | 0.8 | 0.58 | 0.42 |
+| `afterShare` | 0.9 | 0.8 | 0.7 | 0.45 | 0.2 | 0.05 | 0 |
 
-Ranges are wide: at L = 1 typically 0.7–5; at L = 30 typically 0.1–1.1, and up to 1.5 for war and nuclear hazards.
+Ranges: at one year typically 0.6–5.5; at 30 years 0.1–1.2, to 1.7 for war and nuclear.
 
-**After automation.** With a lead under five years, the years after automation still lie inside what the old research called the transition. `afterFactors` put the rate 40% (L = 1) and 15% (L = 3) of the way from the after rate to the transition rate, computed on averaged rates and on the place with the smallest ratio. From five years on they are 1.
-
-| Hazard | L=1 | L=3 | Hazard | L=1 | L=3 |
-|---|---|---|---|---|---|
-| `pandemicModerate` | 2.2 | 1.45 | `bankingCrisis` | 1.4 | 1.15 |
-| `pandemicSevere` | 3.1 | 1.8 | `supplyShock` | 1.2 | 1.1 |
-| `cyberOutage` | 3.4 | 1.9 | `aiFraud` | 1.35 | 1.15 |
-| `gridLong` | 3.8 | 2.0 | `greatPowerWar` | 2.8 | 1.7 |
-| `waterSystemFailure` | 3.9 | 2.1 | `nuclearNear` | 1.4 | 1.15 |
-| `paymentsOutage` | 7.4 | 3.4 | `nuclearFar` | 2.0 | 1.4 |
-| `commsOutage` | 8.5 | 3.8 | `civilUnrest` | 1.3 | 1.1 |
-| `cyberSupplyShock` | 4.2 | 2.2 | | | |
+**`afterShare`.** A share s adds 1.75 × s year-equivalents of turbulence after automation. At the reference the old window leaves 1.5 years there (s = 0.86); at shorter leads more than the cap of 1 holds. I shade down for front-loading on fast-takeoff views. No source says how fast hazards fall after automation.
 
 ## 4. Mechanisms behind the biggest differences
 
-- **Payments, communications and shop systems gain most from time** (0.2–0.3 at 30 years). They are software, and software can be audited and rewritten on a five-year scale. Finance adapts fastest; retail and logistics are trailing-edge firms.
-- **Power, grid and water gain less** (0.33–0.38). Equipment lasts 10 to 15 years, transformers take four, and state sabotage of data-centre power is a decision, not a vulnerability.
-- **Pandemics gain slowly** (0.4). Screening removes the lone-actor part; states, accidents and attack-favouring biology remain. A short lead adds less than in cyber because a release takes months.
-- **War and nuclear risk have the highest floors** (0.5–0.55) and high ends above 1. Speed of the shift is the cause in theory, but a longer lead is a longer arms race with China nearer parity.
-- **Fraud is nearly flat.** Criminal take-up lags capability and defences displace fraud.
-- **Unrest** is the one hazard with a conditional forecast behind part of it: 0.38 × 0.45 (coup) + 0.62 × 0.65 (jobs, my guess) = 0.57 at twelve years.
+- **Payments, communications and shop systems gain most from time** (0.33–0.5 at 30 years). Software can be audited and rewritten on a five-to-ten-year scale; finance fastest.
+- **Power, grid and water gain less** (0.57–0.65). Equipment lasts 10 to 15 years, and state sabotage is a decision, not a vulnerability.
+- **Banking crises and supply shocks** fall to 0.63. Here the slower pace is itself the cause: a slower boom, fewer workers displaced a year.
+- **Pandemics gain little** (0.7). Screening removes the lone-actor part; states, accidents and attack-favouring biology remain.
+- **War, nuclear risk and fraud barely move** (0.77–0.82), with high ends to 1.7. A slower shift helps; a longer arms race with China nearer parity does not.
+- **Unrest** has a conditional forecast behind part of it: 0.38 × 0.45 (coup) + 0.62 × 0.83 (jobs, my guess) = 0.69 at twelve years, raised to 0.72 for places where coups matter less.
+- **At one year** the hazards with standing attackers (power, communications, payments) rise most; those with a slow fuse (fraud, unrest, pandemics) least.
 
 ## 5. What it does in the model
 
-Five-year average, middle values, US, percent a year, by year of full automation:
+Computed with the engine's `aiShift` and `aiSurvival` on `data/model.json`, with this file's figures substituted in memory (I did not rebuild `model.json`). Five-year average, middle values, US, percent a year, by year of automation:
 
-| Hazard | Today | 2028 | 2030 | 2032 | 2035 | 2038 |
-|---|---|---|---|---|---|---|
-| `cyberOutage` | 0.10 | 0.47 | 0.82 | 0.97 | 0.52 | 0.14 |
-| `paymentsOutage` | 0.50 | 1.06 | 1.98 | 2.38 | 1.24 | 0.56 |
-| `greatPowerWar` | 1.60 | 2.06 | 3.03 | 3.96 | 2.87 | 1.72 |
+| Hazard | Today | 2027 | 2028 | 2029 | 2030 | 2031 | 2032 | 2033 | 2035 | 2037 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `cyberOutage` | 0.10 | 0.60 | 1.02 | 1.09 | 1.03 | 0.98 | 0.81 | 0.61 | 0.26 | 0.10 |
+| `paymentsOutage` | 0.50 | 1.35 | 2.22 | 2.51 | 2.53 | 2.45 | 2.03 | 1.55 | 0.79 | 0.50 |
+| `greatPowerWar` | 1.60 | 2.17 | 3.13 | 3.58 | 3.78 | 3.84 | 3.51 | 3.02 | 2.06 | 1.60 |
+| `aiFraud` | 6.0 | 8.1 | 9.7 | 10.7 | 11.3 | 11.5 | 10.8 | 9.6 | 7.2 | 6.0 |
+| `pandemicModerate` | 2.20 | 1.49 | 1.97 | 2.32 | 2.56 | 2.71 | 2.67 | 2.55 | 2.31 | 2.20 |
 
-The yearly rate before automation rises the sooner it comes, but the five-year average peaks near 2032, because for 2028 or 2030 part of the horizon lies after automation. The chance of existential catastrophe (middle 0.2) becomes 0.31, 0.25, 0.23, 0.20, 0.17 and 0.13 for 2028, 2030, 2032, 2035, 2040 and 2050.
+- Software and power hazards are about level from 2028 to 2031 (2028 at most 15% below the peak) and fall after.
+- 2027 is lower: half a year lies before automation and the factor is flat below one year.
+- Slow-fuse hazards peak for 2030–2031.
+- Where the `after` rate is far below today's (moderate pandemics 0.5% against 2.2%, war 0.5% against 1.6%), early automation lowers five-year risk because the old research's safer world comes sooner.
 
-## 6. Least sure
+Existential catastrophe (middle 0.2): 0.29, 0.28, 0.25, 0.22, 0.20, 0.16 and 0.12 for 2027, 2028, 2030, 2032, 2035, 2040 and 2050.
 
-1. `afterFactors` at one and three years. They decide the result for readers who give 2027–2029, and rest on one assumption of mine (40% and 15%).
-2. Every factor at L = 1. Compression and lag pull opposite ways and neither is measured.
-3. The reference. If it is 3 or 8 rather than 5, every factor shifts by 20–40%.
-4. Whether long timelines mean slow takeoff. Kokotajlo expects the opposite; then factors at 12–30 belong near 1.
-5. War and nuclear factors beyond eight years, where the sign is unclear.
-6. The existential reference at eight years, which adds 15% at the model's central case.
-7. Buenos Aires: no factor varies by place.
+## 6. Response to the check
 
-## 7. Not opened
+Must-fix 1 to 4 are done; 5 and 6 were the engine's. I re-read Metaculus from the embed data and recomputed the thread without the duplicates.
 
-Metaculus question 12840 and its API (403; embed only, three of five windows). The EA Forum copies of Lifland's thread and Dickens's post (429). RAND's history of US synthesis-screening policy (the fetch tool refused it). Google's 2024 memory-safety post (read via The Register). The Verizon and M-Trends 2026 reports (read via Tenable and Google's blog). The RAND report by Burdette and Demelash (read via MIT's summary). The second half of "Preparing for the Intelligence Explosion". AI 2027's slowdown ending. Wood Mackenzie's transformer survey. Full list in the JSON.
+Judgment calls adopted:
+
+1. **`afterShare`.** In effect. The figures are 0.9, 0.8, 0.7, not 0.7, 0.3, 0, because the share now fades (half the weight) and 1.5 years of the old window moved after automation. Five-year `cyberOutage` for 2028–2031 is 1.02, 1.09, 1.03, 0.98; the check's row was 1.03, 1.02, 1.01, 1.01.
+2. **Existential.** On the odds, 1.6, 1.35, 1.15 give 0.29, 0.25, 0.22 at 0.2; the check's 1.4, 1.25, 1.10 gave 0.28, 0.25, 0.22. All tagged `guess`.
+3. **Low ends** of 0.6 at one year and **high ends** of 1.2 or more at 20 and 30 years.
+4. **Dilution** divided out. War and nuclear now fall to about 0.8, not 0.5.
+5. **`paymentsOutage`** 0.75 and 0.5.
+6. **`turbulentYears`** 3.5, and `runUpYears` 2 so that the reference reader's ramp starts at 2027.
+
+Changed otherwise or declined:
+
+- **`gridLong` at one year** is 2.3, not 2.0. I adopted the principle (between `cyberOutage` and war at every lead); both neighbours rose.
+- **One-year factors rose** (unasked): compression is now 3.5 into one. `cyberOutage` 2.3 → 2.9. Three-year factors fell (1.5 → 1.3), since the old tail now sits after automation.
+- **Coup figures**: I kept the conditional ratios, state the condition, and shade the result up.
+- **3.5 years from AGI to automation** kept, for the reason in section 2.
+- **Run-up and turbulent period growing with the lead**: I think they should. The rule is in `openQuestions`.
+
+## 7. Least sure
+
+1. `afterShare` at one to five years. It rests on the old five-year window and a discount of mine, and decides the result for 2027–2031.
+2. Every factor at one year.
+3. The 3.5 years from AGI to automation, which sets the reference, the tail and the compression.
+4. Long leads: whether a slower pace spreads risk or removes it, and the sign for war.
+5. The existential reference at eight years, and odds ratios carried from sources at 35–67% down to 0.2 and 0.01.
+6. Buenos Aires: no factor varies by place.
+
+## 8. Not opened
+
+The EA Forum copies of Lifland's thread and Dickens's post (429). RAND's history of US synthesis-screening policy (the fetch tool refused it). Google's 2024 memory-safety post (read via The Register). The Verizon and M-Trends 2026 reports (read via Tenable and Google's blog). The RAND report by Burdette and Demelash (read via MIT's summary). The second half of "Preparing for the Intelligence Explosion". AI 2027's slowdown ending. Wood Mackenzie's transformer survey. Full list in the JSON.

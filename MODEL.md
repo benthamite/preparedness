@@ -332,8 +332,12 @@ hazard's yearly probability is:
 - today's rate until a run-up of `R` years before the turbulent period;
 - then an excess rising linearly to its full level, `(transition − now) ×
   f(L)`, which holds through the `T` turbulent years before full automation;
-- after full automation, the `after` rate (scaled by a second lead-time
-  factor where the research gives one).
+- after full automation, the `after` rate, or, when automation comes soon,
+  a share `s(L)` of the way back towards `transition` that fades to nothing
+  over `T` years.
+
+Rates are averaged month by month, so the year of automation counts partly
+before and partly after. The research puts `T` at 3.5 years and `R` at 2.
 
 `L` is the lead time, the years from the start of 2027 to the middle of the
 year of full automation, and `f(L)` is a factor from
@@ -353,8 +357,10 @@ since that outlook was built on the same forecasts.
 
 Every hazard's weight is also scaled by the chance, over the horizon, that no
 existential catastrophe has happened: nothing a household owns is worth
-anything after one. The research's chance of such a catastrophe, scaled by
-its own lead-time factor, is spread evenly over the turbulent years.
+anything after one. The research's chance of such a catastrophe, its odds
+scaled by their own lead-time factor, is spread evenly over the turbulent
+years still ahead (none before 2027, since a household reading this has not
+seen one).
 
 The year also ends the impartial value of members' work (section 7).
 
